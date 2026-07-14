@@ -1124,7 +1124,7 @@ Prioridad recomendada: selección de canal → reducción de potencia propia →
 
 # 16. Riesgos, gobernanza y criterios de éxito
 
-### 16.1 Riesgos principales
+## 16.1 Riesgos principales
 
 | **Riesgo**                       | **Manifestación**                                 | **Mitigación**                                                               |
 |----------------------------------|---------------------------------------------------|------------------------------------------------------------------------------|
@@ -1137,7 +1137,7 @@ Prioridad recomendada: selección de canal → reducción de potencia propia →
 | Fragilidad mecánica              | Conectores/antenas fallan en campo.               | Pigtails fijados, repuestos, cajas y pruebas de transporte.                  |
 | Dependencia de nube              | Pérdida de Internet inutiliza el sistema.         | Offline-first y paquetes de actualización firmados.                          |
 
-### 16.2 Gobernanza open source
+## 16.2 Gobernanza open source
 
 - Software bajo Apache-2.0 para adopción institucional y comercial
   compatible.
@@ -1156,7 +1156,7 @@ Prioridad recomendada: selección de canal → reducción de potencia propia →
 - Perfiles “safe” firmados; las funciones prohibidas quedan fuera del
   repositorio oficial.
 
-### 16.3 Criterio de éxito del proyecto
+## 16.3 Criterio de éxito del proyecto
 
 <table>
 <colgroup>
@@ -1175,7 +1175,7 @@ resultado al agregar sensores o antenas.</p></th>
 </tbody>
 </table>
 
-### 16.4 Próxima decisión
+## 16.4 Próxima decisión
 
 El siguiente paso recomendado no es comprar el nivel Advanced. Es
 ejecutar M0/M1, adquirir un kit MVP reducido y construir un banco de
