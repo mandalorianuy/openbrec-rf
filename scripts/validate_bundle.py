@@ -66,6 +66,8 @@ def main() -> int:
         if not base.exists():
             continue
         for path in base.rglob('*'):
+            if path.resolve() == Path(__file__).resolve():
+                continue
             if not path.is_file() or path.suffix.lower() not in {'.py','.rs','.ts','.js','.sh','.c','.cpp','.h'}:
                 continue
             text = path.read_text(encoding='utf-8', errors='ignore').lower()
