@@ -1,0 +1,19 @@
+name: Experiment proposal
+description: Proponer un experimento reproducible BREC/RF
+title: "[experiment] "
+body:
+  - type: textarea
+    attributes:
+      label: Hipótesis
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Geometría, materiales y ground truth
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Riesgos y controles
+    validations:
+      required: true

@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openbrec.org/schemas/rf-isolation-profile/1.0.0",
+  "title": "RfIsolationProfile",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "profile_id",
+    "configuration",
+    "measurements"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "profile_id": {
+      "type": "string"
+    },
+    "configuration": {
+      "type": "string",
+      "enum": [
+        "curtain",
+        "partial_tent",
+        "full_enclosure",
+        "command_post"
+      ]
+    },
+    "measurements": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "frequency_hz",
+          "attenuation_db"
+        ],
+        "properties": {
+          "frequency_hz": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          },
+          "attenuation_db": {
+            "type": "number"
+          },
+          "uncertainty_db": {
+            "type": "number",
+            "minimum": 0
+          }
+        }
+      }
+    },
+    "seams": {
+      "type": "string"
+    },
+    "floor": {
+      "type": "boolean"
+    },
+    "feedthrough": {
+      "type": "string"
+    },
+    "notes": {
+      "type": "string"
+    }
+  }
+}

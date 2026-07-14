@@ -1,0 +1,11 @@
+name: field-drone-rf
+extends: field-spectrum
+optional:
+  - drone-mavlink
+  - collector-sdr
+capabilities:
+  mobile_rf_scan: experimental
+  synthetic_aperture: research
+constraints:
+  - receive_only
+  - drone_emi_baseline_required

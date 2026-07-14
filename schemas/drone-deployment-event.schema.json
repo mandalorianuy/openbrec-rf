@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openbrec.org/schemas/drone-deployment-event/1.0.0",
+  "title": "DroneDeploymentEvent",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "event_id",
+    "timestamp",
+    "deployment_id",
+    "drone_id",
+    "event_type"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "event_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "deployment_id": {
+      "type": "string"
+    },
+    "drone_id": {
+      "type": "string"
+    },
+    "payload_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "event_type": {
+      "enum": [
+        "drone_pose",
+        "payload_armed",
+        "payload_released",
+        "drop_impact",
+        "drop_stable",
+        "node_online",
+        "mission_aborted"
+      ]
+    },
+    "position": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "lat": {
+          "type": "number"
+        },
+        "lon": {
+          "type": "number"
+        },
+        "alt_m": {
+          "type": "number"
+        },
+        "accuracy_m": {
+          "type": "number",
+          "minimum": 0
+        }
+      }
+    },
+    "quality": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "metadata": {
+      "type": "object"
+    }
+  }
+}

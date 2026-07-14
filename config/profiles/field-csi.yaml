@@ -1,0 +1,8 @@
+name: field-csi
+extends: field-basic
+optional:
+  - collector-csi
+capabilities:
+  radio_perturbation: true
+  movement_indicator: true
+  human_presence: experimental

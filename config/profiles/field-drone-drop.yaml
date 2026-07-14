@@ -1,0 +1,12 @@
+name: field-drone-drop
+extends: field-basic
+optional:
+  - drone-mavlink
+  - collector-csi
+capabilities:
+  aerial_node_deployment: conditional
+  drop_position_estimate: conditional
+constraints:
+  - human_release_confirmation
+  - uas_operator_required
+  - no_flight_authority_in_core

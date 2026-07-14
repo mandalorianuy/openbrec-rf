@@ -1,0 +1,11 @@
+name: field-spectrum
+extends: field-csi
+optional:
+  - collector-sdr
+  - collector-ieee802154
+capabilities:
+  spectrum_baseline: true
+  directional_spectrum_scan: conditional
+  additional_device_families: experimental
+constraints:
+  - receive_only_in_field

@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openbrec.org/schemas/capability-manifest/1.0.0",
+  "title": "OpenBREC Sensor Capability Manifest",
+  "type": "object",
+  "required": ["schema_version", "node_id", "software_version", "capabilities", "health"],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "node_id": {"type": "string"},
+    "software_version": {"type": "string"},
+    "hardware_model": {"type": "string"},
+    "capabilities": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["status"],
+        "properties": {
+          "status": {"enum": ["supported", "experimental", "unverified", "unavailable"]},
+          "bands": {"type": "array", "items": {"type": "string"}},
+          "limits": {"type": "object", "additionalProperties": true}
+        }
+      }
+    },
+    "antenna_profiles": {"type": "array", "items": {"type": "string"}},
+    "health": {
+      "type": "object",
+      "required": ["state", "last_seen"],
+      "properties": {
+        "state": {"enum": ["ok", "degraded", "fault", "offline"]},
+        "last_seen": {"type": "string", "format": "date-time"},
+        "battery_percent": {"type": ["number", "null"], "minimum": 0, "maximum": 100},
+        "temperature_c": {"type": ["number", "null"]}
+      }
+    }
+  },
+  "additionalProperties": false
+}

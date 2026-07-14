@@ -1,0 +1,20 @@
+{
+  "schema_version": "1.0.0",
+  "event_id": "evt-drop-001",
+  "timestamp": "2026-07-14T18:00:00Z",
+  "deployment_id": "training-001",
+  "drone_id": "uas-01",
+  "payload_id": "drop-node-04",
+  "event_type": "payload_released",
+  "position": {
+    "lat": -34.3350641,
+    "lon": -54.754415,
+    "alt_m": 22.4,
+    "accuracy_m": 1.5
+  },
+  "quality": 0.92,
+  "metadata": {
+    "release_mode": "human_confirmed",
+    "motors_active": true
+  }
+}

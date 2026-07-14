@@ -1,0 +1,12 @@
+name: advanced-fusion
+extends: field-csi
+optional:
+  - collector-sdr
+  - collector-ieee802154
+  - collector-uwb
+  - collector-mmwave
+  - collector-acoustic
+  - collector-seismic
+capabilities:
+  convergent_evidence: true
+  precise_location: conditional

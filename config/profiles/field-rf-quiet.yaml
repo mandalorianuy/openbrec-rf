@@ -1,0 +1,10 @@
+name: field-rf-quiet
+extends: field-csi
+optional:
+  - rf-isolation
+capabilities:
+  controlled_interference_reduction: conditional
+constraints:
+  - attenuation_must_be_measured
+  - independent_emergency_comms
+  - no_negative_victim_inference

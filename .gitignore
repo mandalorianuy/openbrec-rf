@@ -1,0 +1,17 @@
+.DS_Store
+.env
+.env.*
+__pycache__/
+*.pyc
+.venv/
+node_modules/
+dist/
+build/
+coverage/
+data/private/
+datasets/raw/
+models/private/
+*.pcap
+*.pcapng
+*.iq
+*.sigmf-data

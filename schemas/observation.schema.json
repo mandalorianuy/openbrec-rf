@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openbrec.org/schemas/observation/1.0.0",
+  "title": "OpenBREC Observation",
+  "type": "object",
+  "required": ["schema_version", "observation_id", "incident_id", "deployment_id", "sensor_id", "sensor_type", "timestamp", "quality", "measurements"],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "observation_id": {"type": "string", "format": "uuid"},
+    "incident_id": {"type": "string"},
+    "deployment_id": {"type": "string"},
+    "sensor_id": {"type": "string"},
+    "sensor_type": {"enum": ["wifi_passive", "ble", "wifi_csi", "wifi_bfi", "sdr", "ieee802154", "uwb", "mmwave", "acoustic", "seismic", "operator"]},
+    "timestamp": {"type": "string", "format": "date-time"},
+    "zone_id": {"type": ["string", "null"]},
+    "antenna_profile_id": {"type": ["string", "null"]},
+    "subject_ref": {"type": ["string", "null"], "description": "Identificador efímero/HMAC; nunca MAC cruda por defecto."},
+    "quality": {"type": "number", "minimum": 0, "maximum": 1},
+    "measurements": {"type": "object", "additionalProperties": true},
+    "privacy": {
+      "type": "object",
+      "properties": {
+        "payload_retained": {"const": false},
+        "identifier_rotation_epoch": {"type": ["string", "null"]}
+      },
+      "required": ["payload_retained"]
+    }
+  },
+  "additionalProperties": false
+}

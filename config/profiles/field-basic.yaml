@@ -1,0 +1,14 @@
+name: field-basic
+required:
+  - mqtt
+  - api
+  - fusion-worker
+  - web
+optional:
+  - collector-kismet
+  - collector-ble
+capabilities:
+  device_activity: true
+  approximate_zone: true
+  human_presence: false
+  precise_location: false

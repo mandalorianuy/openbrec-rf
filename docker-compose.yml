@@ -1,0 +1,51 @@
+services:
+  mqtt:
+    image: eclipse-mosquitto:2
+    profiles: ["lab-sim", "field-basic", "field-csi", "field-spectrum", "lab-bfi", "advanced-fusion", "field-ruview", "field-drone-drop", "field-drone-rf", "field-rf-quiet"]
+    ports: ["1883:1883"]
+  postgres:
+    image: postgres:17-alpine
+    profiles: ["lab-sim", "field-basic", "field-csi", "field-spectrum", "lab-bfi", "advanced-fusion", "field-ruview", "field-drone-drop", "field-drone-rf", "field-rf-quiet"]
+    environment:
+      POSTGRES_DB: openbrec
+      POSTGRES_USER: openbrec
+      POSTGRES_PASSWORD: change-me
+    volumes: ["openbrec-db:/var/lib/postgresql/data"]
+  api:
+    build: ./apps/api
+    profiles: ["lab-sim", "field-basic", "field-csi", "field-spectrum", "lab-bfi", "advanced-fusion", "field-ruview", "field-drone-drop", "field-drone-rf", "field-rf-quiet"]
+    depends_on: [mqtt, postgres]
+  fusion-worker:
+    build: ./apps/fusion-worker
+    profiles: ["lab-sim", "field-basic", "field-csi", "field-spectrum", "lab-bfi", "advanced-fusion", "field-ruview", "field-drone-drop", "field-drone-rf", "field-rf-quiet"]
+    depends_on: [mqtt, postgres]
+  web:
+    build: ./apps/web
+    profiles: ["lab-sim", "field-basic", "field-csi", "field-spectrum", "lab-bfi", "advanced-fusion", "field-ruview", "field-drone-drop", "field-drone-rf", "field-rf-quiet"]
+    depends_on: [api]
+  collector-kismet:
+    build: ./collectors/kismet
+    profiles: ["field-basic", "field-csi", "field-spectrum", "lab-bfi", "advanced-fusion", "field-ruview", "field-drone-drop", "field-drone-rf", "field-rf-quiet"]
+  collector-ble:
+    build: ./collectors/ble-bluez
+    profiles: ["field-basic", "field-csi", "field-spectrum", "lab-bfi", "advanced-fusion", "field-ruview", "field-drone-drop", "field-drone-rf", "field-rf-quiet"]
+  collector-csi:
+    build: ./collectors/esp-csi
+    profiles: ["field-csi", "lab-bfi", "advanced-fusion", "field-ruview", "field-drone-drop", "field-drone-rf", "field-rf-quiet"]
+  collector-sdr:
+    build: ./collectors/sdr-soapysdr
+    profiles: ["field-spectrum", "advanced-fusion", "field-ruview", "field-drone-drop", "field-drone-rf", "field-rf-quiet"]
+  collector-bfi:
+    build: ./collectors/bfi-wibfi
+    profiles: ["lab-bfi", "advanced-fusion", "field-ruview", "field-drone-drop", "field-drone-rf", "field-rf-quiet"]
+  collector-ruview:
+    build: ./collectors/ruview-csi
+    profiles: ["field-ruview", "advanced-fusion"]
+  drone-mavlink:
+    build: ./collectors/drone-mavlink
+    profiles: ["field-drone-drop", "field-drone-rf", "advanced-fusion"]
+  rf-isolation:
+    build: ./collectors/rf-isolation
+    profiles: ["field-rf-quiet", "advanced-fusion"]
+volumes:
+  openbrec-db:

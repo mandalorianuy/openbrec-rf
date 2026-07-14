@@ -1,0 +1,11 @@
+name: lab-bfi
+extends: field-csi
+optional:
+  - collector-bfi
+  - model-server
+capabilities:
+  identity_hypothesis: experimental
+constraints:
+  - controlled_environment
+  - registered_participants
+  - unknown_class_required

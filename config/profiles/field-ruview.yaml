@@ -1,0 +1,11 @@
+name: field-ruview
+extends: field-csi
+optional:
+  - collector-ruview
+capabilities:
+  ruview_raw_csi: true
+  ruview_features: experimental
+constraints:
+  - version_pinned
+  - raw_replay_required
+  - null_output_forbidden
