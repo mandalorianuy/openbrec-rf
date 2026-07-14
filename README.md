@@ -47,19 +47,6 @@ OpenBREC RF es una plataforma open source, modular y offline-first para investig
 python3 scripts/validate_bundle.py
 ```
 
-## Crear el repositorio GitHub
-
-El ZIP incluye un repositorio Git inicializado en `main`, sin remoto ni credenciales. Tras descomprimir:
-
-```bash
-cd OpenBREC-RF-v0.2
-git log --oneline
-git remote add origin git@github.com:TU_USUARIO/openbrec-rf.git
-git push -u origin main
-```
-
-También se incluye [`GITHUB_PUBLISH.md`](GITHUB_PUBLISH.md).
-
 ## Licencias
 
 - software y configuración: Apache-2.0;
