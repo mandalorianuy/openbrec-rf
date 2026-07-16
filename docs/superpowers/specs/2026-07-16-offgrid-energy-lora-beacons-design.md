@@ -1,49 +1,60 @@
 # Addons de energía off-grid, comunicaciones LoRa y beacons para OpenBREC RF
 
-- Estado: diseño aprobado
-- Fecha: 2026-07-16
+- Estado: dirección arquitectónica aprobada; revisión de endurecimiento pendiente de aprobación; planificación bloqueada
+- Fecha inicial: 2026-07-16
+- Revisión incorporada: 2026-07-16
 - Perfil regulatorio inicial: Uruguay
-- Alcance: contratos y simulación P0, referencias físicas P1 y validación controlada P2
+- Alcance: visión padre para contratos P0, banco P1 y validación controlada P2
 
-## 1. Contexto
+## 1. Estado y condición de avance
 
-OpenBREC RF es un marco offline-first, capability-driven y evidence-first para sensing defensivo y fusión explicable de evidencia en operaciones BREC/USAR. El repositorio actual sigue siendo un bundle de diseño cuyo primer incremento ejecutable es `lab-sim`.
+OpenBREC RF es hoy un bundle de diseño TRL 2–3, no una plataforma operacional ejecutable. El comando `python3 scripts/validate_bundle.py` demuestra únicamente que el bundle es estructuralmente válido. No prueba contratos, runtime, replay, privacidad operacional ni hardware.
 
-Este diseño extiende el marco con tres áreas relacionadas pero desplegables de forma independiente:
+Esta especificación define una dirección arquitectónica. No autoriza todavía un plan de implementación P0 off-grid.
 
-1. Energía híbrida solar y portátil.
-2. Comunicaciones LoRa off-grid para componentes OpenBREC y personas.
-3. Beacons modulares para sensing acústico, movimiento, calor y sensores futuros.
+Antes de planificar o implementar estos addons deben cumplirse dos condiciones:
 
-Las tres áreas son addons. No pueden retrasar ni convertirse en dependencias obligatorias del núcleo `lab-sim`.
+1. Terminar M0 real: servicios mínimos, Compose construible, startup offline, contratos generados, simulador y replay determinístico.
+2. Aprobar cuatro especificaciones hijas: contratos/replay, radio/seguridad/regulación, energía y beacons/UX.
 
-## 2. Objetivos
+El trabajo documental de esas especificaciones puede avanzar mientras se completa M0. Su implementación no.
 
-- Mantener un núcleo pequeño e independiente del hardware.
-- Soportar operación solar potencialmente indefinida, condicionada por límites energéticos y ambientales medidos.
-- Mantener 72 horas de reserva sin aporte solar para gateway y servicios críticos.
+## 2. Autoridad y gobernanza
+
+La precedencia dentro del repositorio será:
+
+1. `AGENTS.md` para safety, privacidad y red lines.
+2. ADRs aceptados para decisiones irreversibles o transversales.
+3. Especificaciones aprobadas para comportamiento y criterios de aceptación.
+4. JSON Schema Draft 2020-12 para contratos de datos normativos.
+5. `DELIVERY_BOARD.md` para secuencia y estado.
+6. Diseño técnico y roadmap como contexto no normativo cuando exista conflicto con una autoridad superior.
+
+ADR-0001 deberá formalizar esta precedencia, el alcance del core y las red lines. Cada gate tendrá responsable, comando reproducible y artefacto de evidencia asociado.
+
+## 3. Objetivos
+
+- Mantener un core pequeño e independiente del hardware.
+- Soportar energía híbrida con 72 horas de reserva reproducible.
 - Usar LoRaWAN privado para telemetría de componentes.
-- Usar un plano LoRa P2P/mesh separado para mensajes humanos, estado, SOS y ubicación.
-- Adoptar Meshtastic como referencia opcional, version-pinned y reemplazable para el plano humano.
-- Definir un `BeaconNode` genérico capaz de sensar, retransmitir o cumplir ambos roles.
-- Ofrecer diseños abiertos construibles y permitir reutilizar hardware comercial o comunitario compatible.
-- Fallar de forma cerrada ante regulación incompleta, privacidad, riesgos de seguridad o capacidades no verificadas.
+- Usar LoRa P2P/mesh separado para texto breve, estado, SOS y ubicación.
+- Adoptar Meshtastic como transporte de referencia opcional, version-pinned y reemplazable.
+- Definir `BeaconNode` como sensor, relay o ambos.
+- Permitir construir diseños abiertos o reutilizar hardware compatible.
+- Fallar cerrado ante regulación, seguridad, privacidad o evidencia insuficientes.
 
-## 3. Fuera de alcance
+## 4. Fuera de alcance
 
-- Voz o transferencia general de archivos por LoRa.
-- Escucha remota continua.
-- Reconocimiento de identidad por voz, rostro u otra biometría.
-- Presentar un SOS como equivalente a un servicio de emergencia certificado.
-- Permitir que usuarios de la red humana escriban directamente observaciones o hechos OpenBREC.
-- Exigir Meshtastic, un chipset de radio o un fabricante específico.
-- Declarar autonomía perpetua sin balance energético medido.
-- Habilitar transmisión RF antes de cerrar el gate regulatorio de Uruguay.
-- Modificar las prohibiciones existentes sobre Wi-Fi ofensivo, jamming, interferencia, emulación celular o control autónomo de UAS.
+- Voz o archivos generales por LoRa.
+- Escucha remota continua o reconocimiento de identidad.
+- Presentar SOS como servicio certificado o con entrega garantizada.
+- Permitir que la red humana escriba hechos OpenBREC.
+- Exigir Meshtastic, un chipset o un fabricante.
+- Declarar autonomía perpetua sin balance medido.
+- Habilitar TX radiado antes del gate Uruguay.
+- Modificar prohibiciones sobre radio ofensiva, jamming, interferencia, emulación celular o control UAS.
 
-## 4. Arquitectura y dependencias
-
-El repositorio usará un núcleo estable, addons de referencia y adapters reemplazables.
+## 5. Arquitectura y dependencias
 
 ```text
 packages/
@@ -62,281 +73,351 @@ fixtures/
   replay/
 ```
 
-Las rutas finales podrán ajustarse al scaffold ejecutable, pero la dependencia será siempre unidireccional:
+La dependencia será unidireccional:
 
 ```text
-contratos del core <- addons <- adapters y hardware de referencia
+contratos del core <- addons <- adapters y hardware
 ```
 
-El core no importará addons, SDK de fabricantes ni protocolos externos. Los adapters traducirán protocolos externos a contratos internos versionados. El hardware de referencia implementará capacidades declaradas sin cambiar los contratos.
+El core no importará addons, SDK de fabricante ni protocolos externos. Un addon podrá extraerse a otro repositorio sólo cuando tenga contrato estable y release independiente.
 
-Un addon podrá extraerse a otro repositorio cuando tenga contrato estable y necesidad de release independiente. Esa extracción no podrá alterar la semántica que consumen el core o terceros.
+## 6. Planos de red
 
-## 5. Planos de red
+### 6.1 Plano máquina
 
-### 5.1 Telemetría de componentes
+LoRaWAN privado con network server local transportará telemetría compacta, salud, energía, observaciones y recibos de store-and-forward. No dependerá de nube. La caída de LoRaWAN no detendrá sensing local ni comunicación humana.
 
-El plano máquina usará LoRaWAN privado con network server alojado localmente en el gateway OpenBREC. Transportará telemetría compacta, salud, energía, observaciones de beacons y recibos de store-and-forward.
+### 6.2 Plano humano
 
-No requerirá nube. La caída de LoRaWAN no detendrá el sensing local ni la red humana.
+LoRa P2P/mesh transportará texto breve, estados, SOS y ubicación. Meshtastic será referencia P1 a través de BLE, USB/serial, TCP o un bridge MQTT privado.
 
-### 5.2 Comunicación humana
+Meshtastic será tratado como transporte no confiable para autenticidad de aplicación. Sus Node IDs, campos `from`, acuses y estados no serán identidad ni evidencia suficiente. El adapter sólo aceptará como `HumanMessage` válido un payload OpenBREC cuya firma, identidad por incidente, TTL y secuencia hayan sido verificadas.
 
-El plano humano usará LoRa P2P/mesh para:
+El broker público de Meshtastic, claves predeterminadas y root topics compartidos están prohibidos en perfiles operativos.
 
-- texto breve;
-- estados predefinidos;
-- SOS;
-- ubicación.
+### 6.3 Aislamiento
 
-Meshtastic será la implementación de referencia P1. El adapter se conectará mediante interfaces locales documentadas como BLE, USB/serial o TCP. Podrá usarse un bridge MQTT privado y local; el broker público de Meshtastic no forma parte del diseño operacional.
+Los planos podrán compartir gabinete, energía o gateway sólo después de validar coexistencia. Mantendrán claves, enrolamiento, colas, prioridades, métricas, auditoría, autorización y payloads separados.
 
-El contrato interno `HumanMessage` será independiente de protobufs Meshtastic. Otras mallas LoRa o futuros transportes podrán implementar el mismo contrato.
+La red humana no publicará observaciones, evidencias ni hechos. Un servicio revisado podrá convertir un mensaje autorizado en anotación de operador.
 
-Firmware y protobufs Meshtastic deberán fijarse a versiones revisadas. Su licencia GPL-3.0 exige una revisión explícita de distribución y compatibilidad antes de publicar un artefacto integrado. La frontera de adapter aporta aislamiento arquitectónico, pero no reemplaza esa revisión.
+## 7. Usuarios y terminales
 
-### 5.3 Aislamiento
+Se validarán:
 
-Los planos podrán compartir gabinete, energía, sitio de antena o gateway cuando exista validación, pero mantendrán separados:
+1. Rescatistas y operadores con teléfono/tablet y módulo LoRa por BLE o USB.
+2. Personas no preparadas con terminal entregable o estación simple con SOS/estado, display, ubicación y mensajes predefinidos.
 
-- claves y enrolamiento;
-- colas y prioridades;
-- métricas y auditoría;
-- dominios de fallo;
-- autorización;
-- payloads de protocolo.
+Se documentará, sin validación inicial, una red separada para personas con dispositivos compatibles propios.
 
-La red humana no publicará observaciones, evidencias ni hechos. Un servicio revisado podrá convertir un mensaje permitido en una anotación de operador.
+## 8. Beacon genérico y cadena de evidencia
 
-## 6. Usuarios y terminales
+`BeaconNode` será un rol lógico. Podrá implementar sensores, relay LoRa o ambos. El beacon P1 de referencia incluirá acústica, PIR y matriz térmica de baja resolución; los beacons de sensor único seguirán siendo válidos.
 
-Se validarán dos caminos:
+`BeaconObservation` no creará una cadena paralela. Será una especialización de `Observation` mediante schemas discriminados:
 
-1. Rescatistas y operadores entrenados con teléfono o tablet conectado a un equipo LoRa por BLE o USB.
-2. Personas no preparadas con terminal entregable o estación física: controles simples de SOS/estado, pantalla pequeña, ubicación y mensajes predefinidos.
+- `sensor_type: acoustic`;
+- `sensor_type: pir`;
+- `sensor_type: thermal`.
 
-También se documentará, sin validación inicial, una red humana separada para personas que ya posean dispositivos compatibles. Esa red no tendrá acceso al plano operativo OpenBREC.
+El flujo seguirá siendo `Observation → Evidence → FusionResult`. `EnergyStatus` y `HumanMessage` serán eventos operativos separados, no observaciones. Energía podrá modular calidad o disponibilidad mediante una regla explícita y auditable; mensajería sólo podrá convertirse en `OperatorAnnotation` mediante acción autorizada.
 
-## 7. Beacon genérico
+Cada capacidad declarará `supported`, `experimental`, `unverified` o `unavailable` y reportará versiones, calibración, salud, energía, reloj, sensores ausentes, limitaciones y confianza.
 
-`BeaconNode` será un rol lógico, no un producto fijo. Un dispositivo podrá implementar una o más capacidades de sensing, un relay LoRa o ambos. Los roles serán configurables y degradables por separado.
+### 8.1 Audio
 
-El beacon P1 de referencia será modular e incluirá:
+El modo predeterminado extraerá features localmente y emitirá eventos compactos sin transmitir ni persistir audio crudo. Un modo futuro de fragmento requerirá autorización explícita, cifrado, auditoría, duración limitada, expiración y señalización visible. La escucha continua está prohibida.
 
-- sensing de eventos acústicos;
-- movimiento PIR de bajo consumo;
-- matriz térmica de baja resolución.
+Los modelos usarán `unknown`, abstención, dataset card, model card y validación por entorno. Un sonido compatible con humano o mascota será un indicio, no un hecho.
 
-Los beacons con un único sensor serán válidos. Cada capacidad declarará `supported`, `experimental`, `unverified` o `unavailable`.
+### 8.2 PIR y térmica
 
-Cada beacon reportará calibración, versiones de hardware y firmware, salud, modo energético, calidad de reloj, sensores ausentes, limitaciones y confianza. El fallo de una capacidad no invalidará observaciones de las demás.
+PIR y térmica producirán indicios. La referencia térmica no generará imagen identificable. El silencio de cualquier sensor nunca respaldará ausencia de víctima.
 
-### 7.1 Audio
+## 9. Contratos normativos
 
-El modo predeterminado hará extracción o clasificación local y emitirá sólo eventos compactos. No transmitirá ni persistirá audio crudo.
+JSON Schema Draft 2020-12 será la única fuente para generar Pydantic v2 y TypeScript. `additionalProperties` será `false` por defecto; extensiones permitidas vivirán bajo un objeto namespaced `extensions`.
 
-Un modo futuro de fragmento solicitado por operador requerirá autorización explícita, cifrado, auditoría, duración limitada, expiración de retención y señalización visible. La escucha continua remota está prohibida.
+Todos los eventos de dominio incluirán:
 
-Los modelos acústicos requerirán clase `unknown`, abstención, dataset card, model card y validación por entorno. Un sonido compatible con humano o mascota seguirá siendo un indicio que requiere verificación independiente.
+- `schema_version` semver;
+- `event_id` e `idempotency_id`;
+- `source_event_id`;
+- `incident_id` y `deployment_id` cuando correspondan;
+- `source_node_id` efímero;
+- `boot_id` y `session_id`; `boot_id` será un valor aleatorio de 128 bits nuevo por arranque, persistido antes del primer TX;
+- `sequence` entero no negativo y monotónico dentro de `boot_id`;
+- `captured_at` y `received_at`;
+- `clock_uncertainty_ms` no negativo;
+- provenance con adapter, firmware, hardware y modelo;
+- `retention_policy_id`;
+- privacy flags;
+- limitaciones y capacidades ausentes.
 
-### 7.2 Movimiento y calor
+Los timestamps usarán UTC RFC 3339 con seis dígitos fraccionarios y sufijo `Z`. Ausencia significa “no medido”; `null` sólo se permitirá cuando el schema declare explícitamente “medido pero desconocido/no disponible”.
 
-PIR y térmica producirán indicios, no hechos de presencia. La referencia térmica no generará imágenes identificables. El silencio o ausencia de cualquier sensor nunca respaldará una inferencia negativa de víctima.
+Las mediciones usarán objetos cerrados con `metric`, `value`, `unit`, `uncertainty`, `quality` y `method`. Las unidades usarán UCUM; magnitudes adimensionales usarán `1`. La incertidumbre tendrá la misma unidad que el valor.
 
-## 8. Addon de energía
+Los schemas P0 nuevos serán:
 
-La arquitectura será híbrida:
+- `energy-capability.schema.json`;
+- `energy-status.schema.json`;
+- `energy-budget.schema.json`;
+- `human-message.schema.json`;
+- `human-message-event.schema.json`;
+- `beacon-capability.schema.json`;
+- `beacon-observation.schema.json`;
+- `transport-envelope.schema.json`;
+- `replay-receipt.schema.json`.
 
-- generación solar y almacenamiento LiFePO4 central para gateway, red, PoE y carga;
-- solar individual sólo en relays o beacons remotos que necesiten operación extendida;
-- generadores y estaciones portátiles como fuentes de soporte intercambiables;
-- operación sólo con baterías válida cuando el addon no esté disponible.
+`observation.schema.json` deberá dejar de aceptar un `measurements` arbitrario y referenciar mediciones discriminadas por sensor.
 
-El objetivo será 72 horas sin aporte solar para gateway y comunicaciones críticas. La operación potencialmente indefinida será siempre condicional a generación, almacenamiento, consumo, clima, temperatura, mantenimiento y degradación medidos.
+## 10. Canonicalización y replay
 
-El addon declarará fuentes, almacenamiento, carga, consumo, reserva, calidad de medición y modos soportados.
+La canonicalización usará RFC 8785 JCS sobre I-JSON y UTF-8. El hash será SHA-256 en hexadecimal minúsculo.
 
-Estados de degradación:
+Antes del hash, los eventos válidos se deduplicarán por `idempotency_id` y se ordenarán por:
 
 ```text
-NORMAL -> CONSERVE -> CRITICAL -> SURVIVAL -> SAFE_SHUTDOWN
+(captured_at, source_node_id, boot_id, sequence, event_id)
 ```
 
-La degradación reducirá primero muestreo, inferencia, pantalla y transmisiones no críticas. Un presupuesto reservado protegerá SOS, salud crítica y apagado seguro mientras sea físicamente posible.
-
-Los diseños eléctricos de referencia incluirán BMS, fusibles, protección térmica, envolvente apropiada, conectores seguros, puesta a tierra documentada y separación entre cargas críticas y degradables.
-
-## 9. Contratos internos
-
-### 9.1 Energía
-
-`EnergyCapability`, `EnergyStatus` y `EnergyBudget` incluirán fuentes, almacenamiento nominal y utilizable, estado de carga e incertidumbre, consumo, reserva estimada y supuestos, modo de degradación, salud, timestamp, calidad de reloj, limitaciones y mediciones ausentes.
-
-### 9.2 Mensajería humana
-
-`HumanMessage` incluirá versión, idempotency id, incidente y red, emisor efímero, destino o grupo, clase de mensaje, prioridad, timestamps, calidad de reloj, TTL, expiración, ubicación y política de precisión, requisito de acuse, estado de entrega, privacidad, cifrado, adapter y transporte.
-
-Estados observables de SOS:
+Los outputs se ordenarán por:
 
 ```text
-queued -> transmitted -> relayed -> delivered -> acknowledged
-                         |             |
-                         +-> expired <-+
-                         +-> failed
+(timestamp, result_type, result_id)
 ```
 
-No se inferirá ningún estado posterior a `acknowledged`. La falta de acuse permanecerá visible como pendiente, expirada o fallida.
+El objeto hasheado será:
 
-### 9.3 Beacons
+```json
+{
+  "contract_set_sha256": "hash JCS del array de schemas ordenados por $id",
+  "engine_version": "versión semver",
+  "outputs": []
+}
+```
 
-`BeaconCapability` y `BeaconObservation` incluirán tipo y soporte, versiones, calibración, features compactas, calidad, confianza, incertidumbre, abstención, política de privacidad, flag de retención de media —`false` por defecto—, modo energético, costo estimado, sensores ausentes, limitaciones y referencias a eventos locales.
+`receipt_generated_at`, hostname, duración, rutas y metadata del runner quedarán fuera del objeto hasheado y sólo aparecerán en `ReplayReceipt`. NaN, Infinity, claves duplicadas, Unicode inválido, timestamps no canónicos o outputs que no validen schema harán fallar el replay.
 
-### 9.4 Transporte
+## 11. Autenticidad y ciclo de vida de mensajería
 
-`TransportEnvelope` incluirá transporte, versión del adapter, idempotency id, origen, destino, timestamps, calidad de reloj, saltos, calidad de enlace, reintentos, cola e integridad. El payload de dominio no dependerá de su implementación.
-
-## 10. Flujo y fallos
+Todo `HumanMessage` y todo evento de acuse usarán firma Ed25519 según RFC 8032. La firma cubrirá:
 
 ```text
-hardware o simulador
-  -> adapter validado
-  -> contrato interno versionado
-  -> cola priorizada y store-and-forward local
-  -> LoRaWAN o human mesh
-  -> gateway local
-  -> frontera MQTT/API
-  -> persistencia y UI
+"OpenBREC-SignedEvent-v1\0" || UTF8(schema_id) || "\0" || UTF8(JCS(evento sin signature))
 ```
 
-Comportamiento obligatorio:
+La firma se codificará base64url sin padding e incluirá `signing_key_id`. `actor_id` y `device_id` serán identidades por incidente, separadas del Node ID Meshtastic. El puesto de mando emitirá bindings firmados actor-dispositivo-clave con vigencia y rol.
 
-- Eventos idempotentes y deduplicables.
-- Pérdida de enlace activa store-and-forward acotado.
-- Cada nodo declara capacidad de cola y retención.
-- La presión elimina primero telemetría de baja prioridad.
-- Todo mensaje prioritario descartado o expirado genera transición auditable.
-- La incertidumbre del reloj se conserva.
-- El replay posterior no duplica hechos.
-- La pérdida de un plano o sensor no derriba los demás.
-- Silencio de radio, sensor o red nunca implica ausencia de persona.
+El contenido humano protegido se cifrará además en la capa OpenBREC con `AEAD_AES_256_GCM` según RFC 5116. El cifrado del transporte Meshtastic será defensa en profundidad, no la frontera de confidencialidad ni autenticidad. Cada incidente y canal tendrá una clave de contenido única; canales directos y grupales no compartirán clave.
 
-## 11. Gates de seguridad, privacidad y regulación
+El nonce GCM de 96 bits se derivará como:
 
-### 11.1 Uruguay
+```text
+first_12_bytes(SHA-256(UTF8(JCS([encryption_key_id, device_id, boot_id, sequence]))))
+```
 
-Uruguay será el perfil inicial con configuración multirregión. Como Uruguay no figura actualmente en la tabla oficial de regiones Meshtastic, no se aceptará por presunción ningún preset.
+La unicidad de `boot_id` y la monotonía de `sequence` serán gates fail-closed: si el nodo no puede persistir un `boot_id` nuevo, detecta reutilización de nonce o pierde el contador, no transmitirá con esa clave. Los headers visibles autenticados como associated data serán un objeto cerrado JCS que incluirá al menos `schema_version`, `event_id`, `incident_id`, `actor_id`, `device_id`, destino o grupo, `message_type`, prioridad, `created_at`, `expires_at`, `boot_id`, `sequence`, `signing_key_id` y `encryption_key_id`. Todo header no cifrado que influya en routing, autorización o estado deberá formar parte de ese objeto.
 
-TX permanecerá deshabilitado hasta registrar evidencia de:
+El orden será encrypt-then-sign: primero se cifra el contenido y luego Ed25519 firma el envelope protegido completo sin `signature`, incluyendo nonce, ciphertext, tag y associated data. Fallos de descifrado, tag, firma o coherencia entre associated data y envelope se rechazarán y auditarán. Rotación, revocación y cierre de incidente eliminarán la capacidad futura de cifrar con la clave anterior, sin reescribir el log histórico.
 
-- frecuencias permitidas;
-- potencia conducida y radiada;
-- restricciones de antena y EIRP;
-- duty cycle o uso de canales;
-- homologación e importación;
-- necesidad de autorización URSEC para el despliegue.
+El commissioning incluirá enrolamiento presencial, verificación del binding, entrega separada de claves de firma y contenido, y pruebas de cifrado/firma. Existirán revocación, terminal perdido/robado, lista local de claves revocadas, rekey y cierre de incidente. Un mensaje con firma inválida, clave revocada, secuencia repetida, TTL vencido o binding ausente será rechazado y auditado.
 
-Los perfiles de campo prohibirán overrides de frecuencia, potencia y duty cycle. Toda transmisión será trazable a región, canal/slot, potencia, antena y firmware.
+El MQTT humano usará root topic:
 
-### 11.2 Acceso y claves
+```text
+openbrec/{incident_id}/human-mesh/{direction}/{device_id}
+```
 
-- Planos humano y máquina con claves y rotación independientes.
-- Brokers operativos privados y locales.
-- Prohibición de claves públicas o predeterminadas para datos operativos.
-- Administración con RBAC local y auditoría append-only.
-- Un terminal humano comprometido no accede a sensores ni evidencia.
+Mosquitto aplicará ACL por incidente y dispositivo, `retain=false`, autenticación local y topics allowlisted. El adapter no replicará NodeInfo crudo; transformará Node IDs a HMAC por incidente y no persistirá el identificador de fabricante.
 
-### 11.3 Privacidad y safety
+## 12. SOS como log append-only
 
-- Identificadores por incidente y rotativos.
-- Precisión de ubicación según rol y mensaje.
-- Retención limitada y borrado verificable.
-- SOS no certificado y sin garantía de entrega.
-- Nuevas radios con threat model y safety review.
-- Beacons publican observaciones, nunca hechos.
-- Fallos energéticos preservan estado crítico y apagado seguro mientras sea posible.
+No se recibirá ni persistirá un campo de “estado SOS” confiando en el transporte. El estado se derivará determinísticamente de eventos append-only firmados:
 
-## 12. Marco abierto y reutilización
+- `sos.created` — terminal originador;
+- `sos.queued` — cola local;
+- `transport.transmitted` — adapter local, evidencia de intento;
+- `transport.relay_observed` — evidencia de relay, no de entrega;
+- `gateway.received` — recibo firmado por gateway;
+- `operator.seen` — actor humano firmado;
+- `operator.accepted` — actor humano asume gestión, firmado;
+- `sos.cancel_requested` — originador o actor autorizado;
+- `sos.expired` — TTL agotado;
+- `sos.failed` — política de reintentos agotada o error terminal.
 
-Cada addon ofrecerá dos caminos:
+`gateway.received` es recepción técnica; `operator.seen` es lectura; `operator.accepted` es aceptación operativa. Ninguno implica rescate ni resolución.
 
-1. Construir desde un diseño de referencia abierto.
-2. Reutilizar hardware existente mediante adapter.
+`operator.accepted` sólo será derivable cuando exista, para el mismo `HumanMessage`, un `gateway.received` válido, un `operator.seen` válido y una firma de un actor enrolado con rol autorizado. Cualquier `operator.accepted` que no cumpla esas precondiciones será una confirmación falsa y hará fallar el gate de seguridad.
 
-Documentación mínima:
+Duplicados se absorben por idempotencia. Un mensaje tardío se registra sin retroceder un estado terminal. Reinicios recuperan el log persistido, generan un `boot_id` nuevo, reinician su secuencia y no recrean eventos ya confirmados. Cancelar no borra: agrega un evento.
 
-- propósito, alcance y red lines;
-- contratos y flujo;
-- esquema, BoM, firmware, enclosure y montaje cuando exista hardware;
-- alternativas compatibles y nivel de evidencia;
-- consumo y balance energético medidos;
-- calibración y mantenimiento;
-- privacidad, threat model y safety review;
-- regulación;
-- fixtures de replay;
-- protocolo de aceptación;
-- matriz `supported`, `experimental`, `unverified`, `unavailable`.
+## 13. Seguridad LoRaWAN
 
-Ningún claim de fabricante será `supported` sin evidencia propia.
+Perfiles P1b/P2 usarán OTAA con claves raíz únicas por dispositivo. ABP quedará restringido a simulación o banco conducted explícitamente marcado `unverified` y no podrá habilitar un perfil de campo.
 
-## 13. Fases y aceptación
+Claves raíz se almacenarán en secure element cuando el hardware lo soporte o en almacenamiento cifrado con capacidad declarada `unverified` hasta validación. JoinNonce/DevNonce y frame counters serán monotónicos y persistidos; su reutilización bloqueará TX y generará auditoría.
 
-### 13.1 P0 — Contratos, simulación y replay
+El ciclo de vida incluirá alta, join, rotación, revocación, dispositivo perdido, rejoin y cierre de incidente. Telemetría será unconfirmed por defecto. Confirmed downlinks se reservarán para operaciones justificadas y tendrán presupuesto de airtime explícito.
 
-P0 agregará contratos y simuladores sin hardware y sin retrasar `lab-sim`.
+## 14. Regulación Uruguay y fases P1
 
-- Schemas válidos con JSON Schema Draft 2020-12.
-- Modelos consumidores generables desde una fuente.
-- Replay idéntico produce el mismo hash y explicación.
-- Energía simula generación normal/baja, 72 horas sin generación, reserva y apagado.
-- Red simula particiones, duplicados, desorden, TTL, presión y recuperación.
-- SOS recorre todos sus estados.
-- Beacons cubren positivo, negativo, ambiguo, sensor ausente y `unknown`.
-- Gates demuestran que no se persisten audio crudo ni identificadores directos.
-- Checks concilian manifests, perfiles, Compose, servicios y rutas.
+Uruguay no figura actualmente en la tabla oficial de regiones Meshtastic; no se aceptará ningún preset por presunción.
 
-### 13.2 P1 — Banco físico
+El artefacto `regulatory-profile-uy.yaml` comenzará con:
 
-P1 agregará beacon multisensor, configuraciones de sensor único, gateway y network server LoRaWAN locales, adapter Meshtastic, dispositivos reutilizados, terminal de rescatista, banco energético central y un nodo solar remoto.
+```yaml
+status: blocked_unverified
+tx_allowed: false
+country: UY
+```
 
-- Consumo medido por modo.
-- Capacidad y degradación verificadas bajo carga.
-- Hardware reutilizado y propio emiten los mismos contratos.
-- Un sensor, red o adapter ausente no detiene lo restante.
-- No hay TX de campo antes del gate Uruguay.
+Para cambiar `tx_allowed` a `true` deberá registrar frecuencia, potencia conducida, EIRP, antena, duty cycle/canales, homologación, importación, autorización aplicable, evidencia, fecha, responsable y revisión competente.
 
-### 13.3 P2 — Campo controlado
+P1 se divide:
 
-P2 validará 72 horas continuas, operadores, terminales entregables, particiones, sensores, energía e interoperabilidad.
+- `P1a`: simulación RF, replay, interfaces cableadas, dummy load, conducted testing o recinto de atenuación medido; sin radiación exterior.
+- `P1b`: TX radiado únicamente después de aprobar `regulatory-profile-uy.yaml` y el safety review.
 
-- Cargas críticas disponibles durante 72 horas.
-- Al menos 95% de mensajes y telemetría entregados dentro del escenario, topología y carga documentados.
-- Todo SOS no entregado queda pendiente, expirado o fallido; nunca confirmado.
-- Al menos 99% de eventos retenidos dentro de capacidad se recuperan al restaurar enlace.
-- Cada sensor sigue `experimental` hasta validar precisión, falsos positivos, abstención y generalización.
-- Ningún silencio genera evidencia negativa de presencia.
+Los perfiles de campo prohibirán overrides de frecuencia, potencia y duty cycle.
 
-## 14. Matriz posterior
+## 15. Coexistencia RF
 
-La matriz de integración tendrá una fila por capacidad o alternativa y columnas de funcionalidad, valor BREC, evidencia, alternativa desacoplada, hardware reutilizable, diseño construible, energía, privacidad, safety, regulación, esfuerzo, dependencias, madurez, aceptación, recomendación y siguiente experimento.
+El aislamiento criptográfico no implica coexistencia RF. Antes de P1b se aprobará `rf-coexistence-profile.yaml` con:
 
-Candidatos iniciales: solar, generadores, almacenamiento, LoRaWAN, Meshtastic, otras mallas LoRa, terminales, beacons acústicos/PIR/térmicos, relays y transportes alternativos de mayor ancho de banda.
+- plan de canales/frecuencias por plano;
+- radios y antenas utilizados;
+- separación física, filtrado y aislamiento medido;
+- airtime budget por plano y prioridad;
+- máximo de nodos, payload, hops y mensajes/minuto;
+- presupuesto de downlinks confirmados;
+- política de fragmentación;
+- comportamiento ante congestión;
+- ensayos near-far, co-site y pérdida de relay.
 
-## 15. Riesgos residuales
+La referencia usará radios y antenas separados. Compartir un transceiver será `unsupported` hasta validación. Telemetría normal no fragmentará. Un SOS deberá caber en un único frame para cada data rate habilitado; si no cabe, ese perfil/data rate permanecerá deshabilitado. Mensajes humanos no críticos podrán fragmentarse sólo con límite de tamaño, TTL y cuota documentados.
 
-- Frecuencia, potencia y autorización en Uruguay siguen bloqueando claims de TX.
+## 16. Energía reproducible
+
+La arquitectura será híbrida: LiFePO4 y generación central para gateway/red/PoE/carga; solar individual sólo para relays o beacons remotos; generadores y estaciones portátiles como soporte; batería-only sigue siendo válida.
+
+Cada ensayo usará un `energy-load-profile.yaml` versionado con cargas críticas/degradables, potencia por estado, duty cycle, Wh nominales, DoD, eficiencia DC/DC, derating por temperatura, envejecimiento, margen, reserva SOS y energía de apagado.
+
+```text
+usable_Wh = nominal_Wh * DoD * dc_efficiency * temperature_derating * aging_derating
+required_Wh = sum(power_W * duty_cycle * 72h) + sos_reserve_Wh + shutdown_Wh
+```
+
+El banco pasa si `usable_Wh >= required_Wh * 1.25` y las trazas demuestran continuidad de cargas críticas durante 72 horas.
+
+Umbrales iniciales con hysteresis:
+
+- `NORMAL`: SOC ≥ 50%;
+- `CONSERVE`: entra ≤ 50%, sale ≥ 55%;
+- `CRITICAL`: entra ≤ 30%, sale ≥ 35%;
+- `SURVIVAL`: entra ≤ 15%, sale ≥ 20%;
+- `SAFE_SHUTDOWN`: inicia ≤ 8%.
+
+El último 8% se divide en 5% reservado al terminal SOS/estado crítico y 3% al controlador de apagado. Un perfil de hardware sólo podrá cambiar umbrales mediante evidencia y manteniendo reservas equivalentes o superiores.
+
+Tras brownout, el nodo iniciará en `SURVIVAL`, verificará almacenamiento, recuperará colas append-only, emitirá `boot.recovered` y no duplicará eventos.
+
+## 17. Gates verificables
+
+El job actual se renombrará conceptualmente `bundle-structure`. Cada gate será independiente:
+
+- `schema`: metaschema completo y formatos;
+- `fixtures`: instancias positivas y negativas contra schemas;
+- `schema-compat`: semver y breaking changes;
+- `contracts-gen`: Pydantic/TypeScript reproducibles sin diff;
+- `compose-build`: todos los contextos y Dockerfiles existen y construyen;
+- `offline-startup`: servicios healthy sin Internet;
+- `replay`: receipt y hash determinístico;
+- `privacy`: no audio crudo, payloads ni identificadores directos;
+- `security`: firmas, revocación, replay attacks, claves default y ACL;
+- `secret-scan`;
+- `sbom-license`;
+- `container-policy`: non-root y configuración segura.
+
+Cada ejecución producirá un receipt con git SHA, runtime, comando, resultado, artefactos y hashes. El README distinguirá explícitamente bundle estructural, M0 ejecutable y perfiles experimentales.
+
+## 18. Validación P2 y SLOs
+
+El escenario de referencia tendrá una versión inmutable por campaña:
+
+- 1 gateway;
+- 12 nodos LoRaWAN de componentes;
+- 8 terminales humanos;
+- 3 relays/beacons mesh;
+- máximo 3 hops;
+- telemetría: 1 frame por nodo cada 60 segundos;
+- mensajería normal: 2 mensajes por minuto agregados;
+- 100 SOS inyectados en 5 corridas, separados al menos 30 segundos;
+- fallos: partición de backhaul de 30 minutos, pérdida de un relay y brownout de un nodo.
+
+SLOs separados:
+
+- SOS: al menos 99/100 con `gateway.received` válido dentro de 120 segundos; cero `operator.accepted` falsos.
+- Mensajes humanos no SOS: al menos 95% recibidos dentro de 300 segundos.
+- Telemetría: al menos 95% recibida dentro de 600 segundos.
+- Store-and-forward: al menos 99% de eventos dentro de capacidad recuperados en 15 minutos tras restaurar enlace.
+
+El denominador de mensajes será todo evento válido aceptado por la cola de origen antes de su TTL y dentro de la capacidad declarada. El denominador de telemetría será todo frame válido generado durante la ventana. El denominador de recuperación será todo evento confirmado como persistido antes de la partición. “Recibido” exigirá receipt válido del destino previsto; un intento de TX o relay no contará como entrega.
+
+El reporte incluirá denominador por clase, omitidos completos, p50/p95/p99, intervalo Wilson 95%, topología, configuración RF, carga, fallos y resultados negativos. Los porcentajes serán gates del escenario, no garantías universales.
+
+La prueba energética de 72 horas usará el mismo `energy-load-profile.yaml` y sus trazas, pero será un ensayo separado de los cinco runs de red.
+
+## 19. Marco abierto y reutilización
+
+Cada addon ofrecerá:
+
+1. Diseño de referencia abierto: esquema, BoM, firmware, enclosure, montaje, calibración y mantenimiento.
+2. Reutilización: adapter, versiones compatibles, limitaciones y evidencia para hardware existente.
+
+Toda compatibilidad usará `supported`, `experimental`, `unverified` o `unavailable`. Ningún claim de fabricante será `supported` sin evidencia propia.
+
+## 20. Descomposición obligatoria antes del plan
+
+Esta visión padre se dividirá y aprobará en orden:
+
+1. `openbrec-core-contracts-replay-design`: schemas, provenance, canonicalización, generación, compatibilidad y gates.
+2. `openbrec-radio-security-regulation-design`: Meshtastic, LoRaWAN, identidad, SOS, MQTT, Uruguay y coexistencia.
+3. `openbrec-energy-design`: cargas, dimensionamiento, FSM, brownout y ensayo 72h.
+4. `openbrec-beacons-human-ux-design`: sensores, privacidad, terminales, UI y validación humana.
+
+No se escribirá un plan P0 off-grid hasta que las cuatro estén aprobadas y M0 sea ejecutable.
+
+## 21. Matriz posterior
+
+La matriz tendrá funcionalidad, valor BREC, evidencia, alternativa desacoplada, hardware reutilizable, diseño construible, energía, privacidad, safety, regulación, esfuerzo, dependencias, madurez, aceptación, recomendación y siguiente experimento.
+
+Incluirá solar, generadores, almacenamiento, LoRaWAN, Meshtastic, otras mallas, terminales, beacons acústicos/PIR/térmicos, relays y transportes de mayor ancho de banda.
+
+## 22. Riesgos residuales
+
+- Regulación Uruguay continúa bloqueando TX radiado.
 - Hardware, chipsets e importación pueden cambiar.
 - Capacidad mesh depende de terreno, carga, antena y regulación.
-- Autonomía solar depende de clima, sombra, envejecimiento y mantenimiento.
-- Audio y térmica pueden generar privacidad y falsa confianza.
-- Meshtastic y su licencia deben revisarse contra la versión P1 fijada.
-- Los porcentajes P2 son gates acotados al escenario, no garantías universales.
+- Autonomía depende de clima, sombra, envejecimiento y mantenimiento.
+- Audio y térmica pueden producir privacidad y falsa confianza.
+- Meshtastic/licencia deben revisarse contra la versión fijada.
+- Ed25519 agrega airtime; el gate de frame único puede reducir data rates habilitados.
+- Los SLOs P2 no son garantías fuera del escenario.
 
-## 16. Fuentes primarias
+## 23. Fuentes primarias
 
-- URSEC, sistemas de radiocomunicaciones de uso propio: https://www.gub.uy/tramites/sistemas-radiocomunicaciones-uso-propio-autorizaciones-modificaciones-bajas
-- LoRa Alliance, especificaciones y parámetros regionales: https://resources.lora-alliance.org/technical-specifications
-- Meshtastic, hardware: https://meshtastic.org/docs/hardware/devices/
-- Meshtastic, regiones: https://meshtastic.org/docs/configuration/region-by-country/
-- Meshtastic, Client API: https://meshtastic.org/docs/development/device/client-api/
-- Meshtastic, MQTT: https://meshtastic.org/docs/software/integrations/mqtt/
-- Meshtastic, firmware y licencia: https://github.com/meshtastic/firmware
+- URSEC, sistemas de radiocomunicaciones: https://www.gub.uy/tramites/sistemas-radiocomunicaciones-uso-propio-autorizaciones-modificaciones-bajas
+- LoRa Alliance, especificaciones: https://resources.lora-alliance.org/technical-specifications
+- LoRaWAN security: https://lora-alliance.org/resource_hub/lorawan-is-secure-but-implementation-matters/
+- Meshtastic hardware: https://meshtastic.org/docs/hardware/devices/
+- Meshtastic regiones: https://meshtastic.org/docs/configuration/region-by-country/
+- Meshtastic Client API: https://meshtastic.org/docs/development/device/client-api/
+- Meshtastic Encryption: https://meshtastic.org/docs/overview/encryption/
+- Meshtastic MQTT: https://meshtastic.org/docs/software/integrations/mqtt/
+- Meshtastic firmware/licencia: https://github.com/meshtastic/firmware
+- RFC 8785 JCS: https://www.rfc-editor.org/rfc/rfc8785
+- RFC 8032 Ed25519: https://www.rfc-editor.org/rfc/rfc8032
+- RFC 5116 AEAD: https://www.rfc-editor.org/rfc/rfc5116
+- RFC 3339 timestamps: https://www.rfc-editor.org/rfc/rfc3339
