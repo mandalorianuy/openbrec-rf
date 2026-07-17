@@ -3,10 +3,18 @@ name: openbrec-lab-sim
 x-runtime-environment: &runtime-environment
   OPENBREC_MQTT_HOST: mqtt
   OPENBREC_MQTT_PORT: "1883"
+  OPENBREC_POSTGRES_HOST: postgres
+  OPENBREC_POSTGRES_PORT: "5432"
+  OPENBREC_POSTGRES_DB: openbrec
+  OPENBREC_POSTGRES_USER: openbrec
+  OPENBREC_POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
+  OPENBREC_MASTER_KEY_FILE: /run/secrets/openbrec_master_key
+  OPENBREC_MASTER_KEY_ID: lab-key-1
+  OPENBREC_KEY_EPOCH: "1"
 
 services:
   mqtt:
-    image: eclipse-mosquitto:2
+    image: eclipse-mosquitto:2@sha256:6f8d8a947c506f8a2290ec65cd4bd2bc7cb4d43fb5f6271f861cb013e2ef9797
     profiles: ["lab-sim"]
     command: ["mosquitto", "-c", "/mosquitto-no-auth/lab-sim.conf"]
     volumes:
@@ -22,7 +30,7 @@ services:
       start_period: 3s
 
   postgres:
-    image: postgres:17-alpine
+    image: postgres:17-alpine@sha256:742f40ea20b9ff2ff31db5458d127452988a2164df9e17441e191f3b72252193
     profiles: ["lab-sim"]
     environment:
       POSTGRES_DB: openbrec
@@ -63,6 +71,7 @@ services:
     profiles: ["lab-sim"]
     command: ["python", "-m", "openbrec_worker.worker"]
     environment: *runtime-environment
+    secrets: [postgres_password, openbrec_master_key]
     networks: [lab-core]
     read_only: true
     tmpfs: [/tmp]
@@ -98,7 +107,11 @@ services:
     image: openbrec/runtime:m0
     profiles: ["m0-gate"]
     command: ["python", "-m", "openbrec_api.smoke"]
-    environment: *runtime-environment
+    environment:
+      <<: *runtime-environment
+      OPENBREC_POSTGRES_PASSWORD: ${OPENBREC_POSTGRES_PASSWORD:-}
+      OPENBREC_MASTER_KEY_B64: ${OPENBREC_MASTER_KEY_B64:-}
+      OPENBREC_ALLOW_EPHEMERAL_GATE_SECRETS: "1"
     networks: [lab-core]
     read_only: true
     tmpfs: [/tmp]
@@ -116,4 +129,6 @@ volumes:
 
 secrets:
   postgres_password:
-    environment: OPENBREC_POSTGRES_PASSWORD
+    file: ${OPENBREC_POSTGRES_PASSWORD_FILE_HOST}
+  openbrec_master_key:
+    file: ${OPENBREC_MASTER_KEY_FILE_HOST}

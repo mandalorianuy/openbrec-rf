@@ -1,18 +1,25 @@
 from __future__ import annotations
 
 import argparse
+import base64
 import hashlib
 import json
 import os
 import secrets
+import shutil
 import subprocess
 import sys
+import tempfile
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any, Sequence
 
-from openbrec.contracts import (sync_generated_assets, validate_compatibility,
-                                validate_core_schemas, validate_fixtures)
+from openbrec.contracts import (
+    sync_generated_assets,
+    validate_compatibility,
+    validate_core_schemas,
+    validate_fixtures,
+)
 from openbrec.gates_m0_04 import (
     run_adapter_replay,
     run_core_replay,
@@ -27,17 +34,52 @@ from openbrec.gates_m0_05 import (
     run_simulator_gate,
     run_ui_smoke_gate,
 )
+from openbrec.gates_m0_06 import (
+    build_sbom,
+    run_key_lifecycle_gate,
+    run_license_gate,
+    run_secret_scan,
+    run_vulnerability_gate,
+    write_sbom,
+)
+from openbrec.canonical import canonical_hash
 
 DRAFT_2020_12 = "https://json-schema.org/draft/2020-12/schema"
 VERIFY_VERSION = "0.1.0"
-RUNTIME_GATES = {"compose-build", "offline-startup"}
+RUNTIME_GATES = {"compose-build", "offline-startup", "postgres-disposition"}
 REPLAY_GATES = {"adapter-replay", "core-replay", "determinism"}
 PRIVACY_SAFETY_GATES = {
     "review-quarantine",
     "life-safety-preservation",
     "privacy",
     "security",
+    "key-lifecycle",
+    "secret-scan",
 }
+ALL_GATES = (
+    "bundle-structure",
+    "schema",
+    "fixtures",
+    "schema-compat",
+    "contracts-gen",
+    "compose-build",
+    "offline-startup",
+    "adapter-replay",
+    "core-replay",
+    "determinism",
+    "review-quarantine",
+    "life-safety-preservation",
+    "privacy",
+    "security",
+    "simulator",
+    "ui-smoke",
+    "key-lifecycle",
+    "postgres-disposition",
+    "secret-scan",
+    "sbom",
+    "licenses",
+    "vulnerability-scan",
+)
 
 
 def _sha256(path: Path) -> str:
@@ -67,12 +109,28 @@ def _repository_state(root: Path) -> dict[str, Any]:
 
 
 def _lockfiles(root: Path) -> list[dict[str, str]]:
-    paths = [root / name for name in ("uv.lock", "pnpm-lock.yaml")]
+    paths = [
+        root / "uv.lock",
+        root / "pnpm-lock.yaml",
+        root / "apps/web/pnpm-lock.yaml",
+    ]
     return [
         {"path": str(path.relative_to(root)), "sha256": _sha256(path)}
         for path in paths
         if path.is_file()
     ]
+
+
+def _runtime_versions() -> dict[str, str | None]:
+    versions: dict[str, str | None] = {"python": sys.version.split()[0]}
+    for name, command in (
+        ("node", ["node", "--version"]),
+        ("pnpm", ["pnpm", "--version"]),
+        ("docker", ["docker", "--version"]),
+    ):
+        result = subprocess.run(command, text=True, capture_output=True, check=False)
+        versions[name] = result.stdout.strip() if result.returncode == 0 else None
+    return versions
 
 
 def _resolve_inside(root: Path, value: str, *, label: str) -> Path:
@@ -199,11 +257,29 @@ def _run_bundle_structure(root: Path) -> tuple[list[str], list[str], dict[str, A
 
 
 def _compose_environment() -> dict[str, str]:
+    secret_directory = Path(tempfile.mkdtemp(prefix="openbrec-compose-secrets-"))
+    postgres_secret = secret_directory / "postgres_password"
+    master_key_secret = secret_directory / "openbrec_master_key"
+    postgres_password = secrets.token_urlsafe(32)
+    master_key = base64.b64encode(secrets.token_bytes(32)).decode("ascii")
+    postgres_secret.write_text(postgres_password, encoding="utf-8")
+    master_key_secret.write_text(master_key, encoding="utf-8")
+    postgres_secret.chmod(0o600)
+    master_key_secret.chmod(0o600)
     return {
         **os.environ,
-        "OPENBREC_POSTGRES_PASSWORD": secrets.token_urlsafe(32),
+        "OPENBREC_POSTGRES_PASSWORD": postgres_password,
+        "OPENBREC_MASTER_KEY_B64": master_key,
+        "OPENBREC_POSTGRES_PASSWORD_FILE_HOST": str(postgres_secret),
+        "OPENBREC_MASTER_KEY_FILE_HOST": str(master_key_secret),
         "COMPOSE_MENU": "false",
     }
+
+
+def _cleanup_compose_environment(environment: dict[str, str]) -> None:
+    secret_path = environment.get("OPENBREC_POSTGRES_PASSWORD_FILE_HOST")
+    if secret_path:
+        shutil.rmtree(Path(secret_path).parent, ignore_errors=True)
 
 
 def _compose_command(
@@ -221,38 +297,47 @@ def _compose_command(
 
 def _run_compose_build(root: Path) -> tuple[list[str], list[str], dict[str, Any]]:
     environment = _compose_environment()
-    config = _compose_command(
-        root, ["--profile", "lab-sim", "config", "--quiet"], environment=environment
-    )
     summary: dict[str, Any] = {
-        "compose_config_exit_code": config.returncode,
+        "compose_config_exit_code": None,
         "infrastructure_pull_exit_code": None,
         "compose_build_exit_code": None,
         "services": ["mqtt", "postgres", "api", "fusion-worker", "web"],
     }
     errors: list[str] = []
-    warnings = [line for line in config.stderr.splitlines() if line.strip()]
-    if config.returncode != 0:
-        errors.append(f"docker compose config failed: {config.stderr.strip()}")
+    warnings: list[str] = []
+    try:
+        config = _compose_command(
+            root,
+            ["--profile", "lab-sim", "config", "--quiet"],
+            environment=environment,
+        )
+        summary["compose_config_exit_code"] = config.returncode
+        warnings.extend(line for line in config.stderr.splitlines() if line.strip())
+        if config.returncode != 0:
+            errors.append(f"docker compose config failed: {config.stderr.strip()}")
+            return errors, warnings, summary
+        pull = _compose_command(
+            root,
+            ["--profile", "lab-sim", "pull", "mqtt", "postgres"],
+            environment=environment,
+        )
+        summary["infrastructure_pull_exit_code"] = pull.returncode
+        if pull.returncode != 0:
+            errors.append(f"infrastructure image pull failed: {pull.stderr.strip()}")
+            return errors, warnings, summary
+        build = _compose_command(
+            root, ["--profile", "lab-sim", "build"], environment=environment
+        )
+        summary["compose_build_exit_code"] = build.returncode
+        summary["build_output_tail"] = build.stdout.splitlines()[-20:]
+        warnings.extend(
+            line for line in build.stderr.splitlines() if "warning" in line.lower()
+        )
+        if build.returncode != 0:
+            errors.append(f"docker compose build failed: {build.stderr.strip()}")
         return errors, warnings, summary
-    pull = _compose_command(
-        root,
-        ["--profile", "lab-sim", "pull", "mqtt", "postgres"],
-        environment=environment,
-    )
-    summary["infrastructure_pull_exit_code"] = pull.returncode
-    if pull.returncode != 0:
-        errors.append(f"infrastructure image pull failed: {pull.stderr.strip()}")
-        return errors, warnings, summary
-    build = _compose_command(
-        root, ["--profile", "lab-sim", "build"], environment=environment
-    )
-    summary["compose_build_exit_code"] = build.returncode
-    summary["build_output_tail"] = build.stdout.splitlines()[-20:]
-    warnings.extend(line for line in build.stderr.splitlines() if "warning" in line.lower())
-    if build.returncode != 0:
-        errors.append(f"docker compose build failed: {build.stderr.strip()}")
-    return errors, warnings, summary
+    finally:
+        _cleanup_compose_environment(environment)
 
 
 def _run_offline_startup(root: Path) -> tuple[list[str], list[str], dict[str, Any]]:
@@ -317,6 +402,10 @@ def _run_offline_startup(root: Path) -> tuple[list[str], list[str], dict[str, An
                 summary.update(smoke_result)
                 if smoke_result.get("external_network") != "denied":
                     errors.append("runtime smoke did not prove external network denial")
+                if smoke_result.get("postgres_durable") != "passed":
+                    errors.append("runtime smoke did not prove PostgreSQL durability")
+                if smoke_result.get("unreconciled") != 0:
+                    errors.append("runtime smoke found unreconciled disposition units")
     finally:
         shutdown = _compose_command(
             root,
@@ -326,6 +415,78 @@ def _run_offline_startup(root: Path) -> tuple[list[str], list[str], dict[str, An
         summary["shutdown_exit_code"] = shutdown.returncode
         if shutdown.returncode != 0:
             errors.append(f"compose cleanup failed: {shutdown.stderr.strip()}")
+        _cleanup_compose_environment(environment)
+    return errors, warnings, summary
+
+
+def _run_postgres_disposition(
+    root: Path,
+) -> tuple[list[str], list[str], dict[str, Any]]:
+    environment = _compose_environment()
+    errors: list[str] = []
+    warnings: list[str] = []
+    summary: dict[str, Any] = {
+        "startup_exit_code": None,
+        "gate_exit_code": None,
+        "shutdown_exit_code": None,
+    }
+    try:
+        startup = _compose_command(
+            root,
+            [
+                "--profile",
+                "lab-sim",
+                "up",
+                "--detach",
+                "--no-build",
+                "--pull",
+                "never",
+                "--wait",
+                "--wait-timeout",
+                "60",
+                "postgres",
+            ],
+            environment=environment,
+        )
+        summary["startup_exit_code"] = startup.returncode
+        if startup.returncode != 0:
+            errors.append(f"PostgreSQL startup failed: {startup.stderr.strip()}")
+            return errors, warnings, summary
+        gate = _compose_command(
+            root,
+            [
+                "--profile",
+                "lab-sim",
+                "--profile",
+                "m0-gate",
+                "run",
+                "--rm",
+                "--no-deps",
+                "runtime-smoke",
+                "python",
+                "-m",
+                "openbrec.postgres_gate",
+            ],
+            environment=environment,
+        )
+        summary["gate_exit_code"] = gate.returncode
+        if gate.returncode != 0:
+            errors.append(f"PostgreSQL disposition gate failed: {gate.stderr.strip()}")
+        else:
+            try:
+                summary.update(json.loads(gate.stdout.strip().splitlines()[-1]))
+            except (IndexError, json.JSONDecodeError):
+                errors.append("PostgreSQL disposition gate emitted no JSON result")
+    finally:
+        shutdown = _compose_command(
+            root,
+            ["--profile", "lab-sim", "down", "--volumes", "--remove-orphans"],
+            environment=environment,
+        )
+        summary["shutdown_exit_code"] = shutdown.returncode
+        if shutdown.returncode != 0:
+            errors.append(f"PostgreSQL cleanup failed: {shutdown.stderr.strip()}")
+        _cleanup_compose_environment(environment)
     return errors, warnings, summary
 
 
@@ -354,7 +515,7 @@ def _write_receipt(
         "scope": scope,
         "result": "failed" if errors else "passed",
         **state,
-        "runtime": {"python": sys.version.split()[0]},
+        "runtime": _runtime_versions(),
         "lockfiles": _lockfiles(root),
         "command": list(command),
         "inputs": [
@@ -363,6 +524,14 @@ def _write_receipt(
             if path.is_file() and path.is_relative_to(root)
         ],
         "summary": summary,
+        "output_sha256": canonical_hash(
+            {
+                "result": "failed" if errors else "passed",
+                "summary": summary,
+                "errors": errors,
+                "warnings": warnings,
+            }
+        ),
         "errors": errors,
         "warnings": warnings,
         "started_at": started_at,
@@ -386,6 +555,39 @@ def _write_receipt(
     )
 
 
+def validate_receipt(
+    receipt_path: Path,
+    *,
+    expected_git_sha: str | None,
+    require_clean: bool,
+) -> list[str]:
+    try:
+        receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        return [f"receipt unreadable: {receipt_path}: {exc}"]
+    errors: list[str] = []
+    if expected_git_sha and receipt.get("git_sha") != expected_git_sha:
+        errors.append(
+            f"receipt git_sha mismatch: {receipt.get('git_sha')} != {expected_git_sha}"
+        )
+    if require_clean and receipt.get("dirty") is not False:
+        errors.append("receipt was not evaluated from a clean checkout")
+    for field in ("runtime", "lockfiles", "inputs"):
+        if not receipt.get(field):
+            errors.append(f"receipt has no {field} evidence")
+    expected_output = canonical_hash(
+        {
+            "result": receipt.get("result"),
+            "summary": receipt.get("summary"),
+            "errors": receipt.get("errors"),
+            "warnings": receipt.get("warnings"),
+        }
+    )
+    if receipt.get("output_sha256") != expected_output:
+        errors.append("receipt output_sha256 does not match canonical gate output")
+    return errors
+
+
 def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="python -m openbrec.verify")
     subparsers = parser.add_subparsers(dest="gate", required=True)
@@ -406,6 +608,13 @@ def _parser() -> argparse.ArgumentParser:
         "security",
         "simulator",
         "ui-smoke",
+        "secret-scan",
+        "sbom",
+        "licenses",
+        "vulnerability-scan",
+        "key-lifecycle",
+        "postgres-disposition",
+        "all",
     ):
         subparser = subparsers.add_parser(gate)
         subparser.add_argument("--root", default=".")
@@ -420,12 +629,96 @@ def _parser() -> argparse.ArgumentParser:
             subparser.add_argument("--scenario", required=True)
         if gate == "core-replay":
             subparser.add_argument("--bundle")
+        if gate == "sbom":
+            subparser.add_argument("--output")
+        if gate == "all":
+            subparser.add_argument("--evidence-dir", default="evidence/m0")
+            subparser.add_argument("--plan-only", action="store_true")
     return parser
+
+
+def _all_arguments(gate: str, temporary: Path) -> list[str]:
+    if gate == "contracts-gen":
+        return ["--check"]
+    if gate == "determinism":
+        return ["--runs", "10"]
+    if gate == "simulator":
+        return ["--scenario", "fixtures/replay/core/m0-six-node.json"]
+    if gate == "sbom":
+        return ["--output", str(temporary / "sbom/openbrec-m0.cdx.json")]
+    return []
+
+
+def _run_all(root: Path, evidence_dir: str) -> tuple[int, dict[str, Any]]:
+    target = Path(evidence_dir)
+    if not target.is_absolute():
+        target = root / target
+    gate_results: list[dict[str, Any]] = []
+    state = _repository_state(root)
+    with tempfile.TemporaryDirectory(prefix="openbrec-m0-exit-") as directory:
+        temporary = Path(directory)
+        for gate in ALL_GATES:
+            receipt = temporary / gate / "m0-06-receipt.json"
+            command = [
+                sys.executable,
+                "-m",
+                "openbrec.verify",
+                gate,
+                "--root",
+                str(root),
+                *_all_arguments(gate, temporary),
+                "--receipt",
+                str(receipt),
+            ]
+            result = subprocess.run(
+                command, cwd=root, text=True, capture_output=True, check=False
+            )
+            integrity_errors = validate_receipt(
+                receipt,
+                expected_git_sha=state["git_sha"],
+                require_clean=True,
+            )
+            gate_results.append(
+                {
+                    "gate": gate,
+                    "exit_code": result.returncode,
+                    "receipt": str(receipt.relative_to(temporary)),
+                    "receipt_integrity": (
+                        "passed" if not integrity_errors else "failed"
+                    ),
+                    "integrity_errors": integrity_errors,
+                }
+            )
+        manifest = {
+            "manifest_version": "1.0.0",
+            "result": (
+                "passed"
+                if all(
+                    item["exit_code"] == 0 and item["receipt_integrity"] == "passed"
+                    for item in gate_results
+                )
+                else "failed"
+            ),
+            "gates": gate_results,
+        }
+        (temporary / "m0-exit-manifest.json").write_text(
+            json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+        )
+        target.mkdir(parents=True, exist_ok=True)
+        shutil.copytree(temporary, target, dirs_exist_ok=True)
+    return (0 if manifest["result"] == "passed" else 1), manifest
 
 
 def main(argv: Sequence[str] | None = None) -> int:
     args = _parser().parse_args(argv)
     root = Path(args.root).resolve()
+    if args.gate == "all" and args.plan_only:
+        print(json.dumps({"result": "planned", "gates": list(ALL_GATES)}))
+        return 0
+    if args.gate == "all":
+        exit_code, manifest = _run_all(root, args.evidence_dir)
+        print(json.dumps(manifest, sort_keys=True))
+        return exit_code
     started_at = datetime.now(UTC).isoformat().replace("+00:00", "Z")
     inputs: list[Path] = []
     if args.gate == "bundle-structure":
@@ -438,10 +731,13 @@ def main(argv: Sequence[str] | None = None) -> int:
             inputs.append(catalog_path)
             errors, summary = _validate_catalog(root, catalog_path)
         except ValueError as exc:
-            errors, summary = [str(exc)], {
-                "catalog": args.catalog,
-                "catalog_entries": 0,
-            }
+            errors, summary = (
+                [str(exc)],
+                {
+                    "catalog": args.catalog,
+                    "catalog_entries": 0,
+                },
+            )
         warnings = []
         scope = "catalog_integrity_only"
     elif args.gate == "schema":
@@ -601,6 +897,68 @@ def main(argv: Sequence[str] | None = None) -> int:
                 root / "apps/web/scripts/ui-smoke.mjs",
                 root / "docker-compose.yml",
                 root / "fixtures/replay/core/m0-six-node.json",
+            ]
+        )
+    elif args.gate == "secret-scan":
+        errors, warnings, summary = run_secret_scan(root)
+        scope = "tracked_source_high_confidence_secrets"
+        inputs.extend([root / ".gitignore", root / "openbrec/supply_chain.py"])
+    elif args.gate == "sbom":
+        sbom = build_sbom(root)
+        if args.output:
+            output_path = Path(args.output)
+            if not output_path.is_absolute():
+                output_path = root / output_path
+            write_sbom(root, output_path)
+        errors, warnings = [], []
+        summary = {
+            "format": "CycloneDX",
+            "spec_version": sbom["specVersion"],
+            "components": len(sbom["components"]),
+            "sbom_sha256": canonical_hash(sbom),
+            "output": str(args.output) if args.output else None,
+        }
+        scope = "installed_locked_component_inventory"
+        inputs.extend(
+            [
+                root / "uv.lock",
+                root / "pnpm-lock.yaml",
+                root / "apps/web/pnpm-lock.yaml",
+            ]
+        )
+    elif args.gate == "licenses":
+        errors, warnings, summary = run_license_gate(root)
+        scope = "installed_component_license_policy"
+        inputs.extend(
+            [
+                root / "uv.lock",
+                root / "pnpm-lock.yaml",
+                root / "apps/web/pnpm-lock.yaml",
+            ]
+        )
+    elif args.gate == "vulnerability-scan":
+        errors, warnings, summary = run_vulnerability_gate(root)
+        scope = "current_locked_dependency_advisories"
+        inputs.extend(
+            [
+                root / "uv.lock",
+                root / "pnpm-lock.yaml",
+                root / "apps/web/pnpm-lock.yaml",
+            ]
+        )
+    elif args.gate == "key-lifecycle":
+        errors, warnings, summary = run_key_lifecycle_gate(root)
+        scope = "lab_key_rotation_recovery_and_rollback"
+        inputs.extend([root / "openbrec/keyring.py", root / "openbrec/disposition.py"])
+    elif args.gate == "postgres-disposition":
+        errors, warnings, summary = _run_postgres_disposition(root)
+        scope = "postgres_four_destination_runtime_boundary"
+        inputs.extend(
+            [
+                root / "docker-compose.yml",
+                root / "openbrec/postgres_disposition.py",
+                root / "migrations/postgresql/0001_m0_disposition.sql",
+                root / "apps/fusion-worker/openbrec_worker/worker.py",
             ]
         )
     else:

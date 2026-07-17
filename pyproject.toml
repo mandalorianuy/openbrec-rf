@@ -9,6 +9,7 @@ dependencies = [
     "httpx==0.28.1",
     "jsonschema[format]==4.26.0",
     "paho-mqtt==2.1.0",
+    "psycopg[binary]==3.3.4",
     "pydantic==2.13.4",
     "pyyaml==6.0.3",
     "rfc8785==0.1.4",
@@ -21,4 +22,5 @@ package = false
 [dependency-groups]
 dev = [
     "datamodel-code-generator==0.37.0",
+    "pip-audit==2.10.1",
 ]

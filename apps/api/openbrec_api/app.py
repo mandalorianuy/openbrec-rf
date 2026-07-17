@@ -10,7 +10,7 @@ import paho.mqtt.client as mqtt
 from fastapi import FastAPI, HTTPException, status
 
 from openbrec.runtime import ACCEPTED_OBSERVATION_TOPIC, ContractValidationError
-from openbrec.runtime import validate_observation
+from openbrec.runtime import observation_to_event, validate_observation
 
 
 class Publisher(Protocol):
@@ -123,7 +123,9 @@ def create_app(publisher: Publisher | None = None) -> FastAPI:
         except ContractValidationError as exc:
             raise HTTPException(status_code=422, detail=exc.errors) from exc
         try:
-            selected.publish(ACCEPTED_OBSERVATION_TOPIC, observation)
+            selected.publish(
+                ACCEPTED_OBSERVATION_TOPIC, observation_to_event(observation)
+            )
         except RuntimeError as exc:
             raise HTTPException(status_code=503, detail=str(exc)) from exc
         return {
