@@ -18,7 +18,7 @@ OpenBREC RF es una plataforma open source, modular y offline-first para investig
 > El sistema produce **indicios**, no diagnósticos ni certezas de víctima. La ausencia de RF nunca descarta una persona atrapada.
 
 > [!NOTE]
-> Estado actual: M0 completo como referencia de laboratorio sobre el SHA `2648f38`. Existen contratos core `supported`, API, worker con commit PostgreSQL previo al ACK, replay determinístico, disposición portable/PostgreSQL, simulador de seis nodos y PWA explicable offline. Los 22 gates y sus receipts están en `evidence/m0/`. No es una plataforma operacional ni un perfil de campo; radio, energía, beacons, identidad y federación siguen sin implementar.
+> Estado actual: M0 completo como referencia de laboratorio sobre el SHA `2648f38`. Existen contratos core `supported`, API, worker con commit PostgreSQL previo al ACK, replay determinístico, disposición portable/PostgreSQL, simulador de seis nodos y PWA explicable offline. Los 22 gates y sus receipts están en `evidence/m0/`. El plan P0 simulado está aprobado con `0 / 9` tasks aceptadas y sólo `P0-01` elegible; todavía no existe implementación addon. No es una plataforma operacional ni un perfil de campo.
 
 ## Documentos principales
 
@@ -29,6 +29,8 @@ OpenBREC RF es una plataforma open source, modular y offline-first para investig
 - [`docs/08-ruview-evaluation.md`](docs/08-ruview-evaluation.md) — validación e integración de RuView.
 - [`docs/09-drone-deployment.md`](docs/09-drone-deployment.md) — drones, Drop Pods y scans móviles.
 - [`docs/10-rf-quieting.md`](docs/10-rf-quieting.md) — cortinas, carpas y aislamiento medido.
+- [`docs/superpowers/plans/2026-07-17-openbrec-p0-simulated-addons-plan.md`](docs/superpowers/plans/2026-07-17-openbrec-p0-simulated-addons-plan.md) — plan P0 activo, completamente simulado.
+- [`docs/governance/P0_RESIDUAL_REGISTER.md`](docs/governance/P0_RESIDUAL_REGISTER.md) — residuales, owners, gates y stop conditions P0.
 
 ## Perfiles planificados posteriores a M0
 
@@ -113,7 +115,7 @@ uv run python -m openbrec.verify all --evidence-dir /tmp/openbrec-m0-evidence
 
 El último comando orquesta los mismos gates independientes y exige SHA limpio e integridad canónica de cada receipt. `vulnerability-scan` necesita acceso a los servicios de advisories; `offline-startup` continúa sin build, pull ni egress. El cierre, sus límites y las aprobaciones lógicas están en [`docs/security/2026-07-17-m0-06-exit-review.md`](docs/security/2026-07-17-m0-06-exit-review.md).
 
-Los residuales aceptados, resueltos o planificados están en [`docs/governance/M0_RESIDUAL_REGISTER.md`](docs/governance/M0_RESIDUAL_REGISTER.md).
+Los residuales M0 están en [`docs/governance/M0_RESIDUAL_REGISTER.md`](docs/governance/M0_RESIDUAL_REGISTER.md). Los residuales iniciales del plan P0 están en [`docs/governance/P0_RESIDUAL_REGISTER.md`](docs/governance/P0_RESIDUAL_REGISTER.md); ninguno autoriza claims físicos o de campo.
 
 ## Licencias
 

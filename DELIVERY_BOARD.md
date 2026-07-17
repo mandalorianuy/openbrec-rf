@@ -1,9 +1,10 @@
 # OpenBREC RF — Delivery Board
 
 - Autoridad de secuencia: este board
-- Plan activo aprobado: `docs/superpowers/plans/2026-07-17-openbrec-m0-executable-plan.md`
-- Estado real: M0 completo; M0-01–M0-06 cerrados sobre evidencia limpia
-- Regla de avance: addons P0 sólo mediante plan explícito posterior; el cierre M0 no los inicia automáticamente
+- Plan activo aprobado: `docs/superpowers/plans/2026-07-17-openbrec-p0-simulated-addons-plan.md`
+- Baseline cerrado: `docs/superpowers/plans/2026-07-17-openbrec-m0-executable-plan.md`
+- Estado real: M0 completo; P0 planificado y no iniciado (`0 / 9` tasks aceptadas)
+- Regla de avance: sólo `P0-01` está elegible; ninguna task se inicia automáticamente
 
 ## Decisiones de gobernanza cerradas
 
@@ -11,6 +12,8 @@
 - [x] Revisión multi-bearer aprobada el 2026-07-17.
 - [x] Matriz conjunta de energía, comunicaciones y beacons aprobada el 2026-07-17.
 - [x] Plan M0 aprobado para ejecución el 2026-07-17.
+- [x] Exit M0 aceptado y mergeado el 2026-07-17.
+- [x] Plan P0 completamente simulado aprobado el 2026-07-17.
 
 ## Now — M0 Fundación
 
@@ -92,17 +95,29 @@ Registro obligatorio: `docs/governance/M0_RESIDUAL_REGISTER.md`.
 - [x] Gates de estructura, schema, fixtures, compatibilidad, generación, Compose, offline, replay, privacidad, seguridad y supply chain producen receipts verificables.
 - [x] Threat model y safety/privacy review reflejan la implementación M0.
 
-## Eligible para planificación — Addons P0
+## Now — P0 addons completamente simulados
 
-La matriz aprobada conserva todas las opciones y resultados para revisión. El gate M0 está cerrado, pero ninguno de estos frentes se inicia sin seleccionar alcance P0, criterios de aceptación y owners:
+Progreso de aceptación: `0 / 9` (`0%`). Una task marcada sólo cambia después de
+su implementación, validación, review y receipt; planificación o inicio no suman.
 
-- Energía, storage, solar, generadores y autonomía de 72 horas.
-- LoRaWAN, Meshtastic, MeshCore, Reticulum/RNode y selección multi-bearer.
-- Mensajería humana, estado, SOS, ubicación, federación y operación masiva multi-equipo.
-- Beacons acústicos, PIR/movimiento, térmicos y otras modalidades.
-- Compra de hardware, TX radiado, banco P1 y despliegue de campo.
+- [ ] `P0-01`: contratos addon, catálogo, fixtures y modelos generados.
+- [ ] `P0-02`: EnergyDomain/FSM/budget y brownout replay.
+- [ ] `P0-03`: HumanMessage protegido, SOS append-only y transporte hostil.
+- [ ] `P0-04`: comparación Meshtastic/MeshCore/Reticulum por TransportProfile.
+- [ ] `P0-05`: federación 50k sites/60 cells/5 areas/2 hubs.
+- [ ] `P0-06`: terminal offline para texto, estado, SOS y ubicación.
+- [ ] `P0-07`: beacons acústico/PIR/térmico, fusión, review y retención.
+- [ ] `P0-08`: campaña integrada con fallos y adversarios.
+- [ ] `P0-09`: exit P0, support status por perfil y decisión P1a.
 
-Autoridades: `docs/decision-matrices/2026-07-17-offgrid-addons-decision-matrix.md` y `docs/research/2026-07-17-offgrid-communications-state-of-art.md`.
+Única task elegible: `P0-01`. Este board no registra inicio ni implementación.
+
+Plan: `docs/superpowers/plans/2026-07-17-openbrec-p0-simulated-addons-plan.md`.
+Residuales: `docs/governance/P0_RESIDUAL_REGISTER.md`.
+
+Frontera: P0 no autoriza compra, hardware, TX, captura real, ensayo de 72 horas,
+campo ni claims físicos. Solar, storage, generadores, conducted/radiated radio,
+beacons físicos y validación humana pertenecen a planes posteriores.
 
 ## After M0 — roadmap existente sujeto a replan
 
