@@ -1,7 +1,7 @@
 # OpenBREC RF — Delivery Board
 
 - Autoridad de secuencia: este board
-- Plan activo propuesto: `docs/superpowers/plans/2026-07-17-openbrec-m0-executable-plan.md`
+- Plan activo aprobado: `docs/superpowers/plans/2026-07-17-openbrec-m0-executable-plan.md`
 - Estado real: bundle de diseño estructuralmente válido; M0 no implementado
 - Regla de avance: una sola task M0 a la vez, con gate y receipt; no iniciar addons antes del M0 exit
 
@@ -16,12 +16,21 @@
 
 Los checks permanecen abiertos hasta producir la evidencia exigida por el plan. El orden es obligatorio.
 
-- [ ] `M0-01` / F-01: aceptar ADR-0001, catálogo core y registro inmutable de schemas legacy. **En ejecución.**
+- [x] `M0-01` / F-01: aceptar ADR-0001, catálogo core y registro inmutable de schemas legacy.
 - [ ] `M0-02` / F-01: implementar schemas, fixtures, modelos Pydantic/TypeScript y compatibilidad SemVer.
 - [ ] `M0-03` / F-02: crear API, worker y PWA mínimos; construir y arrancar `lab-sim` sin Internet.
 - [ ] `M0-04` / F-03–F-04: implementar accepted log, vault/quarantine/ledger y replay determinístico en dos niveles.
 - [ ] `M0-05` / F-05: simular seis nodos, dos tracks y tres zonas; mostrar capacidades, mapa, timeline y explicación.
 - [ ] `M0-06` / F-06: separar gates CI, generar receipts y demostrar el M0 exit completo.
+
+### Evidencia M0-01
+
+- ADR aceptado: `docs/adr/ADR-0001-core-scope-authority-and-red-lines.md`.
+- Baseline legacy: seis schemas registrados por path, `$id`, versión declarada y SHA-256.
+- Catálogo core: reservado y vacío hasta M0-02; no afirma contratos inexistentes.
+- Gates mínimos: `bundle-structure` con alcance `structural_only` y `schema` con alcance `catalog_integrity_only`.
+- Receipts: `evidence/m0/bundle-structure/receipt.json` y `evidence/m0/schema/*-catalog-receipt.json`, evaluados sobre `b10c2c587cec746a5fbfd91a81ce8bedebb173ea` con `dirty: false`.
+- Residual conocido: el receipt estructural conserva la advertencia de que PyYAML no está en el entorno Python 3.12 mínimo; no se interpreta como validación de perfiles YAML.
 
 ## Gate de salida M0
 

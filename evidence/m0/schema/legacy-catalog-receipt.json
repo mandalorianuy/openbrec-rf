@@ -1,0 +1,47 @@
+{
+  "command": [
+    "python",
+    "-m",
+    "openbrec.verify",
+    "schema",
+    "--catalog",
+    "schemas/legacy/catalog.json",
+    "--receipt",
+    "evidence/m0/schema/legacy-catalog-receipt.json"
+  ],
+  "dirty": false,
+  "errors": [],
+  "finished_at": "2026-07-17T12:44:00.504657Z",
+  "gate": "schema",
+  "gate_version": "0.1.0",
+  "git_sha": "b10c2c587cec746a5fbfd91a81ce8bedebb173ea",
+  "inputs": [
+    {
+      "path": "schemas/legacy/catalog.json",
+      "sha256": "c807f918de32144bd379e4d04cc3dc037517901f978bc10d686490fe0efae5a3"
+    }
+  ],
+  "lockfiles": [
+    {
+      "path": "uv.lock",
+      "sha256": "82ed01760540b13fe6503f9c473fac3f9e91fe8280692abd3d71886cd6339bb7"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "sha256": "17c814b167307942d3609c7b9d916ceddb85839573ab39baa114e30edb132a1a"
+    }
+  ],
+  "receipt_version": "1.0.0",
+  "responsible_role": "contract-maintainer",
+  "result": "passed",
+  "runtime": {
+    "python": "3.12.13"
+  },
+  "scope": "catalog_integrity_only",
+  "started_at": "2026-07-17T12:43:59.979441Z",
+  "summary": {
+    "catalog": "schemas/legacy/catalog.json",
+    "catalog_entries": 6
+  },
+  "warnings": []
+}

@@ -1,0 +1,50 @@
+{
+  "command": [
+    "python",
+    "-m",
+    "openbrec.verify",
+    "bundle-structure",
+    "--receipt",
+    "evidence/m0/bundle-structure/receipt.json"
+  ],
+  "dirty": false,
+  "errors": [],
+  "finished_at": "2026-07-17T12:43:42.323836Z",
+  "gate": "bundle-structure",
+  "gate_version": "0.1.0",
+  "git_sha": "b10c2c587cec746a5fbfd91a81ce8bedebb173ea",
+  "inputs": [
+    {
+      "path": "scripts/validate_bundle.py",
+      "sha256": "54b2d7fb6fbf7cf50b79e4288975900171c584ed23cfaacbb2f5b61952ed6474"
+    }
+  ],
+  "lockfiles": [
+    {
+      "path": "uv.lock",
+      "sha256": "82ed01760540b13fe6503f9c473fac3f9e91fe8280692abd3d71886cd6339bb7"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "sha256": "17c814b167307942d3609c7b9d916ceddb85839573ab39baa114e30edb132a1a"
+    }
+  ],
+  "receipt_version": "1.0.0",
+  "responsible_role": "contract-maintainer",
+  "result": "passed",
+  "runtime": {
+    "python": "3.12.13"
+  },
+  "scope": "structural_only",
+  "started_at": "2026-07-17T12:43:41.973545Z",
+  "summary": {
+    "exit_code": 0,
+    "legacy_validator": "scripts/validate_bundle.py",
+    "legacy_validator_sha256": "54b2d7fb6fbf7cf50b79e4288975900171c584ed23cfaacbb2f5b61952ed6474",
+    "stderr": "",
+    "stdout": "Advertencias:\n- PyYAML no instalado; perfiles YAML no validados\nOpenBREC RF v0.2: repositorio estructuralmente v\u00e1lido."
+  },
+  "warnings": [
+    "PyYAML no instalado; perfiles YAML no validados"
+  ]
+}
