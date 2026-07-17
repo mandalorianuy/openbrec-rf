@@ -216,6 +216,19 @@ class VerifyCliTests(unittest.TestCase):
             result = self.run_verify(gate, "--help")
             self.assertEqual(result.returncode, 0, result.stderr)
 
+    def test_m0_04_gates_are_registered(self) -> None:
+        for gate in (
+            "adapter-replay",
+            "core-replay",
+            "determinism",
+            "review-quarantine",
+            "life-safety-preservation",
+            "privacy",
+            "security",
+        ):
+            result = self.run_verify(gate, "--help")
+            self.assertEqual(result.returncode, 0, result.stderr)
+
 
 if __name__ == "__main__":
     unittest.main()

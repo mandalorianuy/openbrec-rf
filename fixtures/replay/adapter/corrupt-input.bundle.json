@@ -1,0 +1,7 @@
+{
+  "base": "synthetic-observation.bundle.json",
+  "mutation": "replace input_sha256 with 64 zeroes",
+  "expected_result": "failed",
+  "expected_outputs": 0,
+  "expected_error": "input hash mismatch"
+}

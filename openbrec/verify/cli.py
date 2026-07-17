@@ -13,10 +13,26 @@ from typing import Any, Sequence
 
 from openbrec.contracts import (sync_generated_assets, validate_compatibility,
                                 validate_core_schemas, validate_fixtures)
+from openbrec.gates_m0_04 import (
+    run_adapter_replay,
+    run_core_replay,
+    run_determinism,
+    run_life_safety_preservation,
+    run_privacy,
+    run_review_quarantine,
+    run_security,
+)
 
 DRAFT_2020_12 = "https://json-schema.org/draft/2020-12/schema"
 VERIFY_VERSION = "0.1.0"
 RUNTIME_GATES = {"compose-build", "offline-startup"}
+REPLAY_GATES = {"adapter-replay", "core-replay", "determinism"}
+PRIVACY_SAFETY_GATES = {
+    "review-quarantine",
+    "life-safety-preservation",
+    "privacy",
+    "security",
+}
 
 
 def _sha256(path: Path) -> str:
@@ -347,7 +363,13 @@ def _write_receipt(
         "started_at": started_at,
         "finished_at": datetime.now(UTC).isoformat().replace("+00:00", "Z"),
         "responsible_role": (
-            "runtime-maintainer" if gate in RUNTIME_GATES else "contract-maintainer"
+            "runtime-maintainer"
+            if gate in RUNTIME_GATES
+            else "core-replay-maintainer"
+            if gate in REPLAY_GATES
+            else "privacy-safety-reviewer"
+            if gate in PRIVACY_SAFETY_GATES
+            else "contract-maintainer"
         ),
     }
     receipt_path.write_text(
@@ -366,6 +388,13 @@ def _parser() -> argparse.ArgumentParser:
         "contracts-gen",
         "compose-build",
         "offline-startup",
+        "adapter-replay",
+        "core-replay",
+        "determinism",
+        "review-quarantine",
+        "life-safety-preservation",
+        "privacy",
+        "security",
     ):
         subparser = subparsers.add_parser(gate)
         subparser.add_argument("--root", default=".")
@@ -374,6 +403,8 @@ def _parser() -> argparse.ArgumentParser:
             subparser.add_argument("--catalog")
         if gate == "contracts-gen":
             subparser.add_argument("--check", action="store_true")
+        if gate == "determinism":
+            subparser.add_argument("--runs", type=int, default=10)
     return parser
 
 
@@ -438,6 +469,77 @@ def main(argv: Sequence[str] | None = None) -> int:
                 root / "docker-compose.yml",
                 root / "config/mosquitto/lab-sim.conf",
                 root / "schemas/core/catalog.json",
+            ]
+        )
+    elif args.gate == "adapter-replay":
+        errors, warnings, summary = run_adapter_replay(root)
+        scope = "adapter_fixture_to_domain_events"
+        inputs.extend(
+            [
+                root / "fixtures/replay/adapter/synthetic-observation.bundle.json",
+                root / "openbrec/replay.py",
+                root / "openbrec/semantic.py",
+            ]
+        )
+    elif args.gate == "core-replay":
+        errors, warnings, summary = run_core_replay(root)
+        scope = "domain_events_to_derived_outputs"
+        inputs.extend(
+            [
+                root / "fixtures/replay/core/synthetic-observation.events.json",
+                root / "fixtures/replay/failure-cases.json",
+                root / "openbrec/replay.py",
+                root / "openbrec/semantic.py",
+            ]
+        )
+    elif args.gate == "determinism":
+        errors, warnings, summary = run_determinism(root, args.runs)
+        scope = "replay_result_hash_stability"
+        inputs.extend(
+            [
+                root / "fixtures/replay/adapter/synthetic-observation.bundle.json",
+                root / "openbrec/canonical.py",
+                root / "openbrec/replay.py",
+            ]
+        )
+    elif args.gate == "review-quarantine":
+        errors, warnings, summary = run_review_quarantine(root)
+        scope = "exactly_one_primary_disposition"
+        inputs.extend(
+            [
+                root / "fixtures/replay/core/synthetic-observation.events.json",
+                root / "openbrec/disposition.py",
+                root / "migrations/0001_m0_disposition.sql",
+            ]
+        )
+    elif args.gate == "life-safety-preservation":
+        errors, warnings, summary = run_life_safety_preservation(root)
+        scope = "sealed_audited_ttl_preservation"
+        inputs.extend(
+            [
+                root / "openbrec/disposition.py",
+                root / "migrations/0001_m0_disposition.sql",
+            ]
+        )
+    elif args.gate == "privacy":
+        errors, warnings, summary = run_privacy(root)
+        scope = "sensitive_cleartext_minimization"
+        inputs.extend(
+            [
+                root / "openbrec/disposition.py",
+                root / "migrations/0001_m0_disposition.sql",
+            ]
+        )
+    elif args.gate == "security":
+        errors, warnings, summary = run_security(root)
+        scope = "tamper_and_fail_closed"
+        inputs.extend(
+            [
+                root / "openbrec/canonical.py",
+                root / "openbrec/disposition.py",
+                root / "openbrec/replay.py",
+                root / "openbrec/semantic.py",
+                root / "migrations/0001_m0_disposition.sql",
             ]
         )
     else:
