@@ -45,11 +45,13 @@ from openbrec.gates_m0_06 import (
     write_sbom,
 )
 from openbrec.canonical import canonical_hash
+from openbrec.energy import run_energy_replay_gate
 
 DRAFT_2020_12 = "https://json-schema.org/draft/2020-12/schema"
 VERIFY_VERSION = "0.1.0"
 RUNTIME_GATES = {"compose-build", "offline-startup", "postgres-disposition"}
 REPLAY_GATES = {"adapter-replay", "core-replay", "determinism"}
+ENERGY_GATES = {"energy-replay"}
 PRIVACY_SAFETY_GATES = {
     "review-quarantine",
     "life-safety-preservation",
@@ -139,6 +141,18 @@ def _runtime_versions() -> dict[str, str | None]:
         else:
             versions[name] = result.stdout.strip() if result.returncode == 0 else None
     return versions
+
+
+def _responsible_role(gate: str) -> str:
+    if gate in RUNTIME_GATES or gate == "ui-smoke":
+        return "runtime-maintainer"
+    if gate in REPLAY_GATES or gate == "simulator":
+        return "core-replay-maintainer"
+    if gate in ENERGY_GATES:
+        return "energy-maintainer"
+    if gate in PRIVACY_SAFETY_GATES:
+        return "privacy-safety-reviewer"
+    return "contract-maintainer"
 
 
 def _resolve_inside(root: Path, value: str, *, label: str) -> Path:
@@ -553,19 +567,7 @@ def _write_receipt(
         "warnings": warnings,
         "started_at": started_at,
         "finished_at": datetime.now(UTC).isoformat().replace("+00:00", "Z"),
-        "responsible_role": (
-            "runtime-maintainer"
-            if gate in RUNTIME_GATES
-            else "core-replay-maintainer"
-            if gate in REPLAY_GATES
-            else "privacy-safety-reviewer"
-            if gate in PRIVACY_SAFETY_GATES
-            else "core-replay-maintainer"
-            if gate == "simulator"
-            else "runtime-maintainer"
-            if gate == "ui-smoke"
-            else "contract-maintainer"
-        ),
+        "responsible_role": _responsible_role(gate),
     }
     receipt_path.write_text(
         json.dumps(receipt, indent=2, sort_keys=True) + "\n", encoding="utf-8"
@@ -621,6 +623,7 @@ def _parser() -> argparse.ArgumentParser:
         "adapter-replay",
         "core-replay",
         "determinism",
+        "energy-replay",
         "review-quarantine",
         "life-safety-preservation",
         "privacy",
@@ -645,6 +648,8 @@ def _parser() -> argparse.ArgumentParser:
         if gate == "determinism":
             subparser.add_argument("--runs", type=int, default=10)
         if gate == "simulator":
+            subparser.add_argument("--scenario", required=True)
+        if gate == "energy-replay":
             subparser.add_argument("--scenario", required=True)
         if gate == "core-replay":
             subparser.add_argument("--bundle")
@@ -862,6 +867,21 @@ def main(argv: Sequence[str] | None = None) -> int:
                 root / "openbrec/replay.py",
             ]
         )
+    elif args.gate == "energy-replay":
+        try:
+            scenario_path = _resolve_inside(root, args.scenario, label="scenario")
+            errors, warnings, summary = run_energy_replay_gate(root, scenario_path)
+            inputs.extend(
+                [
+                    scenario_path,
+                    root / "openbrec/energy.py",
+                    root / "schemas/addons/1.0.0/energy-budget.schema.json",
+                    root / "schemas/addons/1.0.0/energy-status.schema.json",
+                ]
+            )
+        except (OSError, ValueError) as exc:
+            errors, warnings, summary = [str(exc)], [], {"scenario": args.scenario}
+        scope = "three_domain_energy_replay"
     elif args.gate == "review-quarantine":
         errors, warnings, summary = run_review_quarantine(root)
         scope = "exactly_one_primary_disposition"

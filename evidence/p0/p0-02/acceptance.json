@@ -1,0 +1,18 @@
+{
+  "acceptance_version": "1.0.0",
+  "accepted_at": "2026-07-17",
+  "implementation_role": "energy-maintainer",
+  "implementation_sha": "91c78a09200b592aa1c4b1bb6c416026213d1a1d",
+  "progress": {
+    "accepted_tasks": 2,
+    "percent": 22.2,
+    "total_tasks": 9
+  },
+  "receipt_sha256": {
+    "determinism": "4a48a19849f82210c176259913d93afe6d8b2735cd3df8da65e25d701bebdf69",
+    "energy-replay": "e3421575c8f892eb7e0b82ea740f8f9966e975cd81f7baa60447139391b6bd9f"
+  },
+  "review_role": "core-replay-maintainer",
+  "status": "accepted",
+  "task": "P0-02"
+}

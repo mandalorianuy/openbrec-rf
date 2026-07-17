@@ -5,7 +5,7 @@
 - Autoridad de secuencia: `DELIVERY_BOARD.md`
 - Baseline requerido: M0 cerrado en `0dee758af0a1ea02578e0710f81d361933651756`
 - Alcance: P0-01–P0-09, simulación, fixtures, replay, UI y receipts
-- Estado de ejecución: `1 / 9` tasks aceptadas (`11.1%`); `P0-02` elegible, no iniciada
+- Estado de ejecución: `2 / 9` tasks aceptadas (`22.2%`); `P0-03` elegible, no iniciada
 - Fuera de alcance: compra, hardware, TX, ensayo radiado, campo y claims físicos
 
 ## 1. Objetivo
@@ -463,10 +463,15 @@ El único numerador de progreso es `tasks aceptadas / 9`.
 - simulación P0: no cuenta como progreso P1 ni evidencia física;
 - cierre de una task no suma la siguiente ni autoriza trabajo oportunista.
 
-## 9. Primera acción gobernada
+## 9. Estado de ejecución gobernado
 
 P0-01 fue aceptada el 2026-07-17 sobre el SHA de implementación
 `9f741fd204c5abb89c1ca1b457b9d4cc9c910f24`; sus cuatro receipts limpios viven
 en `evidence/p0/p0-01/` y su review en
-`docs/security/2026-07-17-p0-01-addon-contracts-review.md`. P0-02 queda como
-única task elegible, pero este closeout no la inicia. El progreso P0 es `1 / 9`.
+`docs/security/2026-07-17-p0-01-addon-contracts-review.md`.
+
+P0-02 fue aceptada el 2026-07-17 sobre el SHA de implementación
+`91c78a09200b592aa1c4b1bb6c416026213d1a1d`; sus receipts limpios viven en
+`evidence/p0/p0-02/` y su review en
+`docs/security/2026-07-17-p0-02-energy-replay-review.md`. P0-03 queda como única
+task elegible, pero este closeout no la inicia. El progreso P0 es `2 / 9`.
