@@ -298,6 +298,18 @@ class ExitOrchestrationTests(unittest.TestCase):
         self.assertIsNone(versions["pnpm"])
         self.assertIsNone(versions["docker"])
 
+    def test_compose_gate_secrets_are_private_and_container_readable(self) -> None:
+        cli = require_module("openbrec.verify.cli", "openbrec/verify/cli.py")
+        environment = cli._compose_environment()
+        try:
+            password = Path(environment["OPENBREC_POSTGRES_PASSWORD_FILE_HOST"])
+            master = Path(environment["OPENBREC_MASTER_KEY_FILE_HOST"])
+            self.assertEqual(password.parent.stat().st_mode & 0o777, 0o700)
+            self.assertEqual(password.stat().st_mode & 0o777, 0o444)
+            self.assertEqual(master.stat().st_mode & 0o777, 0o444)
+        finally:
+            cli._cleanup_compose_environment(environment)
+
 
 if __name__ == "__main__":
     unittest.main()

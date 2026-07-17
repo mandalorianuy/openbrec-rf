@@ -270,8 +270,8 @@ def _compose_environment() -> dict[str, str]:
     master_key = base64.b64encode(secrets.token_bytes(32)).decode("ascii")
     postgres_secret.write_text(postgres_password, encoding="utf-8")
     master_key_secret.write_text(master_key, encoding="utf-8")
-    postgres_secret.chmod(0o600)
-    master_key_secret.chmod(0o600)
+    postgres_secret.chmod(0o444)
+    master_key_secret.chmod(0o444)
     return {
         **os.environ,
         "OPENBREC_POSTGRES_PASSWORD": postgres_password,

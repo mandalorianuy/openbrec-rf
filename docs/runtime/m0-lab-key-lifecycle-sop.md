@@ -10,7 +10,7 @@ La vida y la preservación de posible evidencia life-safety tienen prioridad sob
 
 1. Generar 32 bytes con CSPRNG fuera del repositorio y codificarlos en Base64 estricto.
 2. Crear un `key_id` opaco por incidente y un `epoch` monotónico persistido por el custodio externo.
-3. Entregar la key por archivo `0600` mediante el mecanismo de secrets. Nunca usar argumento CLI, log, variable versionada o valor default.
+3. Entregar la key mediante el mecanismo de secrets: directorio host privado `0700`, archivo montado read-only `0444` para el proceso no-root. Nunca usar argumento CLI, log, variable versionada o valor default.
 4. Arrancar y ejecutar `key-lifecycle`, `postgres-disposition` y `offline-startup`.
 5. Confirmar que las tablas cifradas registran `key_id`, nonce único por incidente/key y AAD canónico.
 

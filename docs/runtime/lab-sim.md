@@ -4,7 +4,7 @@
 
 `lab-sim` es un entorno contenido de validación, no un deployment de campo. Ejecuta API, worker, PWA, Mosquitto y PostgreSQL sobre una única red Docker con `internal: true`. MQTT y PostgreSQL no publican puertos; sólo la PWA publica `127.0.0.1:${OPENBREC_WEB_PORT:-8080}` para un navegador local. Los servicios no tienen ruta de salida a Internet durante startup ni smoke.
 
-La contraseña PostgreSQL y una master key AES-256 se generan por corrida dentro de `openbrec.verify`, se escriben en un directorio temporal con modo `0600` y se entregan mediante Docker Compose secrets. El directorio se elimina al terminar el gate. No existe credencial ni key default versionada.
+La contraseña PostgreSQL y una master key AES-256 se generan por corrida dentro de `openbrec.verify`, se escriben en un directorio temporal host `0700` y se montan read-only (`0444`) mediante Docker Compose secrets para que el worker no-root pueda leerlas. El directorio se elimina al terminar el gate. No existe credencial ni key default versionada.
 
 ## Gates
 
