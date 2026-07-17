@@ -46,12 +46,19 @@ from openbrec.gates_m0_06 import (
 )
 from openbrec.canonical import canonical_hash
 from openbrec.energy import run_energy_replay_gate
+from openbrec.messaging import SCENARIO_PATH as MESSAGE_SCENARIO_PATH
+from openbrec.messaging import run_p0_message_gate
 
 DRAFT_2020_12 = "https://json-schema.org/draft/2020-12/schema"
 VERIFY_VERSION = "0.1.0"
 RUNTIME_GATES = {"compose-build", "offline-startup", "postgres-disposition"}
 REPLAY_GATES = {"adapter-replay", "core-replay", "determinism"}
 ENERGY_GATES = {"energy-replay"}
+P0_MESSAGE_GATES = {
+    "human-message-security",
+    "sos-state-replay",
+    "transport-policy",
+}
 PRIVACY_SAFETY_GATES = {
     "review-quarantine",
     "life-safety-preservation",
@@ -59,6 +66,7 @@ PRIVACY_SAFETY_GATES = {
     "security",
     "key-lifecycle",
     "secret-scan",
+    *P0_MESSAGE_GATES,
 }
 ALL_GATES = (
     "bundle-structure",
@@ -624,6 +632,9 @@ def _parser() -> argparse.ArgumentParser:
         "core-replay",
         "determinism",
         "energy-replay",
+        "human-message-security",
+        "sos-state-replay",
+        "transport-policy",
         "review-quarantine",
         "life-safety-preservation",
         "privacy",
@@ -882,6 +893,23 @@ def main(argv: Sequence[str] | None = None) -> int:
         except (OSError, ValueError) as exc:
             errors, warnings, summary = [str(exc)], [], {"scenario": args.scenario}
         scope = "three_domain_energy_replay"
+    elif args.gate in P0_MESSAGE_GATES:
+        errors, warnings, summary = run_p0_message_gate(root, args.gate)
+        scope = {
+            "human-message-security": "application_authenticity_aead_and_offline_rekey",
+            "sos-state-replay": "append_only_distress_state_derivation",
+            "transport-policy": "hostile_bearer_deduplication_and_anti_loop",
+        }[args.gate]
+        inputs.extend(
+            [
+                root / MESSAGE_SCENARIO_PATH,
+                root / "openbrec/messaging.py",
+                root / "schemas/addons/1.0.0/human-message.schema.json",
+                root / "schemas/addons/1.0.0/human-message-event.schema.json",
+                root / "schemas/addons/1.0.0/transport-envelope.schema.json",
+                root / "schemas/addons/1.0.0/transport-policy-decision.schema.json",
+            ]
+        )
     elif args.gate == "review-quarantine":
         errors, warnings, summary = run_review_quarantine(root)
         scope = "exactly_one_primary_disposition"

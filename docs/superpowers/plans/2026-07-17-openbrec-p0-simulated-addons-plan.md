@@ -5,7 +5,7 @@
 - Autoridad de secuencia: `DELIVERY_BOARD.md`
 - Baseline requerido: M0 cerrado en `0dee758af0a1ea02578e0710f81d361933651756`
 - Alcance: P0-01–P0-09, simulación, fixtures, replay, UI y receipts
-- Estado de ejecución: `2 / 9` tasks aceptadas (`22.2%`); `P0-03` elegible, no iniciada
+- Estado de ejecución: `3 / 9` tasks aceptadas (`33.3%`); `P0-04` elegible, no iniciada
 - Fuera de alcance: compra, hardware, TX, ensayo radiado, campo y claims físicos
 
 ## 1. Objetivo
@@ -473,5 +473,10 @@ en `evidence/p0/p0-01/` y su review en
 P0-02 fue aceptada el 2026-07-17 sobre el SHA de implementación
 `91c78a09200b592aa1c4b1bb6c416026213d1a1d`; sus receipts limpios viven en
 `evidence/p0/p0-02/` y su review en
-`docs/security/2026-07-17-p0-02-energy-replay-review.md`. P0-03 queda como única
-task elegible, pero este closeout no la inicia. El progreso P0 es `2 / 9`.
+`docs/security/2026-07-17-p0-02-energy-replay-review.md`.
+
+P0-03 fue aceptada el 2026-07-17 sobre el SHA de implementación
+`c6a3dc15ccf045dac60148080870a5f44eb2027c`; sus receipts limpios viven en
+`evidence/p0/p0-03/` y su review en
+`docs/security/2026-07-17-p0-03-secure-messaging-review.md`. P0-04 queda como
+única task elegible, pero este closeout no la inicia. El progreso P0 es `3 / 9`.

@@ -3,8 +3,8 @@
 - Autoridad de secuencia: este board
 - Plan activo aprobado: `docs/superpowers/plans/2026-07-17-openbrec-p0-simulated-addons-plan.md`
 - Baseline cerrado: `docs/superpowers/plans/2026-07-17-openbrec-m0-executable-plan.md`
-- Estado real: M0 completo; P0-01 y P0-02 aceptadas (`2 / 9`, `22.2%`)
-- Regla de avance: sólo `P0-03` queda elegible; ninguna task se inicia automáticamente
+- Estado real: M0 completo; P0-01–P0-03 aceptadas (`3 / 9`, `33.3%`)
+- Regla de avance: sólo `P0-04` queda elegible; ninguna task se inicia automáticamente
 
 ## Decisiones de gobernanza cerradas
 
@@ -97,12 +97,12 @@ Registro obligatorio: `docs/governance/M0_RESIDUAL_REGISTER.md`.
 
 ## Now — P0 addons completamente simulados
 
-Progreso de aceptación: `2 / 9` (`22.2%`). Una task marcada sólo cambia después de
+Progreso de aceptación: `3 / 9` (`33.3%`). Una task marcada sólo cambia después de
 su implementación, validación, review y receipt; planificación o inicio no suman.
 
 - [x] `P0-01`: contratos addon, catálogo, fixtures y modelos generados.
 - [x] `P0-02`: EnergyDomain/FSM/budget y brownout replay.
-- [ ] `P0-03`: HumanMessage protegido, SOS append-only y transporte hostil.
+- [x] `P0-03`: HumanMessage protegido, SOS append-only y transporte hostil.
 - [ ] `P0-04`: comparación Meshtastic/MeshCore/Reticulum por TransportProfile.
 - [ ] `P0-05`: federación 50k sites/60 cells/5 areas/2 hubs.
 - [ ] `P0-06`: terminal offline para texto, estado, SOS y ubicación.
@@ -147,7 +147,36 @@ su implementación, validación, review y receipt; planificación o inicio no su
   para energía y sigue planificado para P0-03–P0-07; P0-R011 gobierna recovery
   durable y power-cut real.
 
-Única task elegible: `P0-03`. No está iniciada por este cierre.
+### Evidencia P0-03
+
+- Seguridad de aplicación: Ed25519 y AES-256-GCM sobre JCS, AAD ligada a
+  incidente/celda/actor/dispositivo/destino/tipo/secuencia/TTL y vectores
+  sintéticos reproducibles; cero autenticaciones falsas.
+- Identidad offline: bindings por incidente, enrolamiento local con fingerprint,
+  derechos mínimos, revocación cacheada y rekey grupal epoch 2 sin red. Clave
+  anterior, default/shared secret, rol insuficiente, replay, nonce reuse y
+  sequence rollback fallan cerrados con eventos de seguridad.
+- SOS: seis eventos append-only derivan estado técnico `gateway_received` y
+  estado operativo `accepted` por separado; un transporte no puede crear
+  `operator.accepted` y el intento se preserva como distress no verificado.
+- Transporte hostil: un mensaje lógico llega por Meshtastic, MeshCore y
+  carry-bundle con tres receipts; dos caminos quedan deduplicados, loops/raw
+  bridge/payload alterado se rechazan y la decisión de política valida schema.
+- Hashes normativos: `human-message-security`
+  `1873e747c33026e186ff0a32dd8c66c97f4f7213cb69d875d2a3162ef05cda64`,
+  `sos-state-replay`
+  `7fcbea861218c18b03811c5a3b58a2be6963633e13deb036bc295ab3cdb0b839`
+  y `transport-policy`
+  `002488b7837dedd562abeda05e6e5314aec5878b6b958680939221e1e5a4cf95`.
+- Receipts: `evidence/p0/p0-03/`, evaluados sobre
+  `c6a3dc15ccf045dac60148080870a5f44eb2027c` con `dirty: false` e integridad
+  canónica aprobada.
+- Review: `docs/security/2026-07-17-p0-03-secure-messaging-review.md`.
+- Residuales: P0-R001/P0-R008 siguen gobernando adapters reales; P0-R007
+  conserva custodia física; P0-R010 queda resuelto para P0-03 y P0-R012 impide
+  reutilizar claves sintéticas fuera del replay.
+
+Única task elegible: `P0-04`. No está iniciada por este cierre.
 
 Plan: `docs/superpowers/plans/2026-07-17-openbrec-p0-simulated-addons-plan.md`.
 Residuales: `docs/governance/P0_RESIDUAL_REGISTER.md`.

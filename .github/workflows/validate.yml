@@ -112,11 +112,20 @@ jobs:
       - run: uv run --offline python -m openbrec.verify privacy --receipt evidence/m0/privacy/m0-06-receipt.json
       - run: uv run --offline python -m openbrec.verify security --receipt evidence/m0/security/m0-06-receipt.json
       - run: uv run --offline python -m openbrec.verify key-lifecycle --receipt evidence/m0/key-lifecycle/m0-06-receipt.json
+      - run: uv run --offline python -m openbrec.verify human-message-security --receipt evidence/p0/p0-03/human-message-security/p0-03-receipt.json
+      - run: uv run --offline python -m openbrec.verify sos-state-replay --receipt evidence/p0/p0-03/sos-state-replay/p0-03-receipt.json
+      - run: uv run --offline python -m openbrec.verify transport-policy --receipt evidence/p0/p0-03/transport-policy/p0-03-receipt.json
       - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: m0-privacy-security-receipts
           path: evidence/m0
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: p0-secure-messaging-receipts
+          path: evidence/p0/p0-03
           if-no-files-found: error
 
   simulation-ui:

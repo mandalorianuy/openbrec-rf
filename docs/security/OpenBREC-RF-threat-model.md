@@ -42,9 +42,17 @@ Assumptions:
 - operators can make mistakes under time pressure, including break-glass activation;
 - an attacker or uncontrolled environment can inject sound, heat, movement, vibration or misleading context near a beacon;
 - cryptographic libraries and primitives are correctly implemented only after vector and misuse tests prove it;
-- the repository has executable M0 contracts/services/replay, while radio, identity, beacon, federation and field controls remain unimplemented.
+- the repository has executable M0 contracts/services/replay plus P0 simulated
+  energy and incident-scoped messaging/SOS controls; bearer-specific adapters,
+  physical radio, beacon, federation and field controls remain unimplemented.
 
-Repository evidence: `AGENTS.md`, `SECURITY.md`, `docker-compose.yml`, `openbrec/replay.py`, `openbrec/disposition.py`, `openbrec/postgres_disposition.py`, `openbrec/keyring.py`, `openbrec/simulator.py`, `apps/web/src/main.tsx`, both versioned disposition migrations, the dated reviews under `docs/security/`, the M0 key lifecycle SOP and the approved design specifications under `docs/superpowers/specs/`.
+Repository evidence: `AGENTS.md`, `SECURITY.md`, `docker-compose.yml`,
+`openbrec/replay.py`, `openbrec/disposition.py`,
+`openbrec/postgres_disposition.py`, `openbrec/keyring.py`,
+`openbrec/simulator.py`, `openbrec/messaging.py`, `apps/web/src/main.tsx`, both
+versioned disposition migrations, the dated reviews under `docs/security/`, the
+M0 key lifecycle SOP and the approved design specifications under
+`docs/superpowers/specs/`.
 
 Open questions before field implementation:
 
