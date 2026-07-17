@@ -1,0 +1,19 @@
+{
+  "acceptance_version": "1.0.0",
+  "accepted_at": "2026-07-17",
+  "implementation_role": "product-ux-reviewer",
+  "implementation_sha": "d100f75a3cd3d18abffa15573799726c545b96fe",
+  "progress": {
+    "accepted_tasks": 6,
+    "percent": 66.7,
+    "total_tasks": 9
+  },
+  "receipt_sha256": {
+    "accessibility": "699f81b40ddee353f799901b8e663067eebca1cdef86778d3d9008e6de77d046",
+    "terminal-ux": "3f0c6e9cb15170fc82a0f4b2e112840d85b1dc522376919ffc0ec31eb9ccbd48",
+    "ui-smoke": "9887f15802ba314258d3c6b4ffdb62a11e36c85ed9630936d13a9dbca7c31ef8"
+  },
+  "review_role": "privacy-safety-reviewer",
+  "status": "accepted",
+  "task": "P0-06"
+}
