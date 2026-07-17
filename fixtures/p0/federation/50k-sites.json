@@ -1,0 +1,71 @@
+{
+  "scenario_version": "1.0.0",
+  "claim_scope": "deterministic_simulation_only",
+  "generator": {
+    "version": "1.0.0",
+    "seed": 50060,
+    "assignment": "seed_rotated_modulo",
+    "site_id_format": "site-{sequence:05d}"
+  },
+  "scale": {
+    "sites": 50000,
+    "response_cells": 60,
+    "operational_areas": 5,
+    "hubs": 2
+  },
+  "partition": {
+    "duration_s": 86400,
+    "unavailable_hubs": ["hub-a", "hub-b"],
+    "backhaul_available": false
+  },
+  "critical_path_dependencies": [
+    "local_event_log",
+    "local_trust_cache",
+    "local_policy_cache",
+    "local_identity_root"
+  ],
+  "local_critical_operations": [
+    "sos",
+    "sensing",
+    "messaging",
+    "rf_decision"
+  ],
+  "gateway_policy": {
+    "outbound_only": true,
+    "inbound_listener": false,
+    "carry_bundle_fallback": true,
+    "raw_payload_export": false,
+    "authorized_event_types": [
+      "cell_status",
+      "distress_summary",
+      "resource_request"
+    ]
+  },
+  "hub_authority": {
+    "cell_private_keys": false,
+    "decrypt_local_content": false,
+    "order_tx": false,
+    "create_operational_acceptance": false
+  },
+  "reconciliation_campaign": {
+    "identical_duplicates": 10,
+    "same_id_conflicts": 5,
+    "handoff_conflicts": 5,
+    "resource_assignment_conflicts": 5
+  },
+  "hostile_hub_cases": [
+    {"case_id": "hub-001", "kind": "forged_cell_signature", "expected_disposition": "rejected"},
+    {"case_id": "hub-002", "kind": "request_cell_private_key", "expected_disposition": "rejected"},
+    {"case_id": "hub-003", "kind": "request_local_plaintext", "expected_disposition": "rejected"},
+    {"case_id": "hub-004", "kind": "order_tx", "expected_disposition": "rejected"},
+    {"case_id": "hub-005", "kind": "forge_operator_accepted", "expected_disposition": "review_quarantine"},
+    {"case_id": "hub-006", "kind": "replay_expired_event", "expected_disposition": "rejected"},
+    {"case_id": "hub-007", "kind": "topology_overwrite_intent", "expected_disposition": "rejected"},
+    {"case_id": "hub-008", "kind": "central_ca_dependency", "expected_disposition": "rejected"},
+    {"case_id": "hub-009", "kind": "unsigned_distress", "expected_disposition": "review_quarantine"}
+  ],
+  "expected_result_sha256": {
+    "federation-scale": "75373845865ca37ffca83748cd521ce0322705af3da096c89a98621befaf86c4",
+    "federation-reconciliation": "1980e711c94d33118101601e09d37888690bcfa64f2e6177b70dd9239c92333f"
+  }
+}

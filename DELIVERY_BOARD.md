@@ -3,8 +3,8 @@
 - Autoridad de secuencia: este board
 - Plan activo aprobado: `docs/superpowers/plans/2026-07-17-openbrec-p0-simulated-addons-plan.md`
 - Baseline cerrado: `docs/superpowers/plans/2026-07-17-openbrec-m0-executable-plan.md`
-- Estado real: M0 completo; P0-01–P0-04 aceptadas (`4 / 9`, `44.4%`)
-- Regla de avance: sólo `P0-05` queda elegible; ninguna task se inicia automáticamente
+- Estado real: M0 completo; P0-01–P0-05 aceptadas (`5 / 9`, `55.6%`)
+- Regla de avance: sólo `P0-06` queda elegible; ninguna task se inicia automáticamente
 
 ## Decisiones de gobernanza cerradas
 
@@ -97,14 +97,14 @@ Registro obligatorio: `docs/governance/M0_RESIDUAL_REGISTER.md`.
 
 ## Now — P0 addons completamente simulados
 
-Progreso de aceptación: `4 / 9` (`44.4%`). Una task marcada sólo cambia después de
+Progreso de aceptación: `5 / 9` (`55.6%`). Una task marcada sólo cambia después de
 su implementación, validación, review y receipt; planificación o inicio no suman.
 
 - [x] `P0-01`: contratos addon, catálogo, fixtures y modelos generados.
 - [x] `P0-02`: EnergyDomain/FSM/budget y brownout replay.
 - [x] `P0-03`: HumanMessage protegido, SOS append-only y transporte hostil.
 - [x] `P0-04`: comparación Meshtastic/MeshCore/Reticulum por TransportProfile.
-- [ ] `P0-05`: federación 50k sites/60 cells/5 areas/2 hubs.
+- [x] `P0-05`: federación 50k sites/60 cells/5 areas/2 hubs.
 - [ ] `P0-06`: terminal offline para texto, estado, SOS y ubicación.
 - [ ] `P0-07`: beacons acústico/PIR/térmico, fusión, review y retención.
 - [ ] `P0-08`: campaña integrada con fallos y adversarios.
@@ -199,7 +199,32 @@ su implementación, validación, review y receipt; planificación o inicio no su
   P0-R008 queda controlado por pins con reapertura obligatoria; P0-R010 queda
   resuelto para P0-04 y sigue planificado para P0-05–P0-07.
 
-Única task elegible: `P0-05`. No está iniciada por este cierre.
+### Evidencia P0-05
+
+- Escala: generador `1.0.0`/seed `50060` materializa 50.000 sites, 60 cells,
+  5 areas, 60 deployments y una raíz; 50.126 topology events quedan firmados y
+  las cinco formas se validan contra el schema normativo.
+- Autonomía: pérdida de ambos hubs durante 86.400 segundos deja 60/60 celdas y
+  50.126/50.126 entidades operando localmente; 240/240 operaciones críticas se
+  ejecutan sin dependencias centrales.
+- Federación: 60 gateways outbound-only, 180 resúmenes autorizados y 60 carry
+  bundles; cero listeners, raw payloads, claves de celda en hubs, disclosure
+  excesivo, aceptación falsa o inputs no reconciliados.
+- Reconciliación: 215 inputs en 10 órdenes producen una proyección; 10
+  duplicados, 5 conflictos de integridad, 5 handoffs y 5 asignaciones quedan
+  contabilizados, con 15 resoluciones humanas pendientes y cero overwrite,
+  pérdida silenciosa o last-write-wins.
+- Hub hostil: 9/9 casos tienen disposición calculada; cero firmas/aceptaciones
+  falsas, órdenes TX ejecutadas o disclosure local.
+- Receipts: `evidence/p0/p0-05/`, evaluados sobre
+  `de188c2ab13e19cdfe3ed15842df19575c25badc` con `dirty: false` e integridad
+  canónica aprobada.
+- Review: `docs/security/2026-07-17-p0-05-federation-autonomy-review.md`.
+- Residuales: P0-R006 queda controlado para correctness simulado y planificado
+  para performance/representatividad; P0-R010 se resuelve para P0-05 y sigue
+  planificado para P0-06–P0-07. TM-005/TM-010 permanecen High.
+
+Única task elegible: `P0-06`. No está iniciada por este cierre.
 
 Plan: `docs/superpowers/plans/2026-07-17-openbrec-p0-simulated-addons-plan.md`.
 Residuales: `docs/governance/P0_RESIDUAL_REGISTER.md`.
