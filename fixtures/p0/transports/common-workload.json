@@ -1,0 +1,157 @@
+{
+  "workload_version": "1.0.0",
+  "claim_scope": "deterministic_simulation_only",
+  "reviewed_at": "2026-07-17",
+  "bearer_models": {
+    "meshtastic": {
+      "source_pin": {
+        "version": "v2.7.26.54e0d8d",
+        "commit": "54e0d8d0ab2ff56b3a9ce967e53f79e49af560fb",
+        "url": "https://github.com/meshtastic/firmware/releases/tag/v2.7.26.54e0d8d",
+        "license": "GPL-3.0"
+      },
+      "support_status": "unverified",
+      "model_basis": "OpenBREC synthetic opaque-envelope model informed by official release and routing documentation",
+      "raw_frame_bridge_allowed": false,
+      "synthetic_coefficients": {
+        "profile_success_bps": {
+          "mobile_spontaneous_team": 9550,
+          "planned_urban_response_cell": 8750,
+          "heterogeneous_gateway_backbone": 7600
+        },
+        "scale_penalty_bps_per_node": 9,
+        "latency_base_ms": 800,
+        "airtime_units_per_message": 1.35,
+        "retry_fraction": 0.18,
+        "duplicate_fraction": 0.14,
+        "convergence_base_ms": 2800,
+        "energy_units_per_message": 1.15,
+        "metadata_disclosure_fields": 5
+      },
+      "limitations": [
+        "managed-flooding behavior is abstracted and not a wire implementation",
+        "no physical range, hop, congestion threshold or device-support claim"
+      ]
+    },
+    "meshcore": {
+      "source_pin": {
+        "version": "companion-v1.16.0",
+        "commit": "07a3ca9e05b0ab23b878200b2c44b04e08131972",
+        "url": "https://github.com/meshcore-dev/MeshCore/releases/tag/companion-v1.16.0",
+        "license": "MIT"
+      },
+      "support_status": "unverified",
+      "model_basis": "OpenBREC synthetic opaque-envelope model informed by official release, FAQ and security policy",
+      "raw_frame_bridge_allowed": false,
+      "synthetic_coefficients": {
+        "profile_success_bps": {
+          "mobile_spontaneous_team": 7900,
+          "planned_urban_response_cell": 9700,
+          "heterogeneous_gateway_backbone": 8500
+        },
+        "scale_penalty_bps_per_node": 5,
+        "latency_base_ms": 650,
+        "airtime_units_per_message": 0.92,
+        "retry_fraction": 0.11,
+        "duplicate_fraction": 0.04,
+        "convergence_base_ms": 1900,
+        "energy_units_per_message": 0.98,
+        "metadata_disclosure_fields": 4
+      },
+      "limitations": [
+        "companion/repeater roles are abstracted and not a wire implementation",
+        "no physical range, hop, congestion threshold or device-support claim"
+      ]
+    },
+    "reticulum": {
+      "source_pin": {
+        "version": "1.3.8",
+        "commit": "dca2a9282935d3dd251f2a1588daa41b5deee8c7",
+        "url": "https://github.com/markqvist/Reticulum/releases/tag/1.3.8",
+        "license": "Reticulum License"
+      },
+      "support_status": "unverified",
+      "model_basis": "OpenBREC synthetic opaque-envelope model informed by the official stack manual and release",
+      "raw_frame_bridge_allowed": false,
+      "synthetic_coefficients": {
+        "profile_success_bps": {
+          "mobile_spontaneous_team": 7200,
+          "planned_urban_response_cell": 8300,
+          "heterogeneous_gateway_backbone": 9650
+        },
+        "scale_penalty_bps_per_node": 4,
+        "latency_base_ms": 1100,
+        "airtime_units_per_message": 1.58,
+        "retry_fraction": 0.09,
+        "duplicate_fraction": 0.02,
+        "convergence_base_ms": 3400,
+        "energy_units_per_message": 1.42,
+        "metadata_disclosure_fields": 2
+      },
+      "limitations": [
+        "multi-interface and cryptographic routing are abstracted and not a stack implementation",
+        "no physical range, hop, congestion threshold or device-support claim"
+      ]
+    }
+  },
+  "profiles": {
+    "mobile_spontaneous_team": {
+      "plane": "human",
+      "mission": "sos",
+      "mobility": "mobile",
+      "topology": "unknown",
+      "message_rate_per_hour": 36,
+      "payload_bytes": 180,
+      "latency_class": "distress"
+    },
+    "planned_urban_response_cell": {
+      "plane": "human",
+      "mission": "chat",
+      "mobility": "mixed",
+      "topology": "planned",
+      "message_rate_per_hour": 120,
+      "payload_bytes": 160,
+      "latency_class": "urgent"
+    },
+    "heterogeneous_gateway_backbone": {
+      "plane": "federation",
+      "mission": "status",
+      "mobility": "nomadic",
+      "topology": "partially_planned",
+      "message_rate_per_hour": 90,
+      "payload_bytes": 220,
+      "latency_class": "minutes"
+    }
+  },
+  "node_scales": [12, 40, 100],
+  "faults": {
+    "mobility": {"seed": 40401, "events": 7},
+    "relay_loss": {"seed": 40402, "events": 3},
+    "path_churn": {"seed": 40403, "events": 5},
+    "flood": {"seed": 40404, "events": 2},
+    "partition": {"seed": 40405, "events": 2},
+    "carry": {"seed": 40406, "events": 4}
+  },
+  "traffic": [
+    {"message_type": "sos", "priority": 0, "ttl_s": 900},
+    {"message_type": "status", "priority": 10, "ttl_s": 3600},
+    {"message_type": "location", "priority": 20, "ttl_s": 1800}
+  ],
+  "hostile_cases": [
+    {"case_id": "mt-001", "kind": "forged_operator_acceptance", "expected_disposition": "review_quarantine"},
+    {"case_id": "mt-002", "kind": "raw_frame_bridge", "expected_disposition": "rejected"},
+    {"case_id": "mt-003", "kind": "native_flood_bridge", "expected_disposition": "rejected"},
+    {"case_id": "mt-004", "kind": "default_transport_secret", "expected_disposition": "rejected"},
+    {"case_id": "mt-005", "kind": "expired_envelope", "expected_disposition": "review_quarantine"},
+    {"case_id": "mt-006", "kind": "oversize_payload", "expected_disposition": "rejected"},
+    {"case_id": "mt-007", "kind": "looped_envelope", "expected_disposition": "rejected"},
+    {"case_id": "mt-008", "kind": "duplicate_path", "expected_disposition": "rejected"},
+    {"case_id": "mt-009", "kind": "unpinned_adapter", "expected_disposition": "rejected"},
+    {"case_id": "mt-010", "kind": "transport_role_elevation", "expected_disposition": "review_quarantine"},
+    {"case_id": "mt-011", "kind": "silent_drop_attempt", "expected_disposition": "review_quarantine"}
+  ],
+  "expected_result_sha256": {
+    "transport-comparison": "d5f54dfa69d8f1198c71823405bb25644823ed88c08d0df9c1901410764bf7b9",
+    "malicious-transport": "63caebfa0dbd7058a4e2a85b1e979b9a3a8e4ebf3575c39cb79f1293bc9e49d9"
+  }
+}
