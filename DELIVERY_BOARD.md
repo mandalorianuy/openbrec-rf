@@ -3,8 +3,8 @@
 - Autoridad de secuencia: este board
 - Plan activo aprobado: `docs/superpowers/plans/2026-07-17-openbrec-p0-simulated-addons-plan.md`
 - Baseline cerrado: `docs/superpowers/plans/2026-07-17-openbrec-m0-executable-plan.md`
-- Estado real: M0 completo; P0-01 aceptada (`1 / 9`, `11.1%`)
-- Regla de avance: sólo `P0-02` queda elegible; ninguna task se inicia automáticamente
+- Estado real: M0 completo; P0-01 y P0-02 aceptadas (`2 / 9`, `22.2%`)
+- Regla de avance: sólo `P0-03` queda elegible; ninguna task se inicia automáticamente
 
 ## Decisiones de gobernanza cerradas
 
@@ -97,11 +97,11 @@ Registro obligatorio: `docs/governance/M0_RESIDUAL_REGISTER.md`.
 
 ## Now — P0 addons completamente simulados
 
-Progreso de aceptación: `1 / 9` (`11.1%`). Una task marcada sólo cambia después de
+Progreso de aceptación: `2 / 9` (`22.2%`). Una task marcada sólo cambia después de
 su implementación, validación, review y receipt; planificación o inicio no suman.
 
 - [x] `P0-01`: contratos addon, catálogo, fixtures y modelos generados.
-- [ ] `P0-02`: EnergyDomain/FSM/budget y brownout replay.
+- [x] `P0-02`: EnergyDomain/FSM/budget y brownout replay.
 - [ ] `P0-03`: HumanMessage protegido, SOS append-only y transporte hostil.
 - [ ] `P0-04`: comparación Meshtastic/MeshCore/Reticulum por TransportProfile.
 - [ ] `P0-05`: federación 50k sites/60 cells/5 areas/2 hubs.
@@ -125,7 +125,29 @@ su implementación, validación, review y receipt; planificación o inicio no su
 - Residuales: P0-R009 controlado permanentemente y P0-R010 planificado por las
   tasks consumidoras; ninguno habilita runtime, hardware, TX o campo.
 
-Única task elegible: `P0-02`. No está iniciada por este cierre.
+### Evidencia P0-02
+
+- Replay: tres dominios energéticos autónomos simulan cargas L0–L3, pérdidas,
+  incertidumbre, source loss, SOS, brownout, restart y SOC `unknown`.
+- Presupuesto: capacidad utilizable, carga crítica superior, reservas y margen
+  storage-only permanecen separados; la generación auxiliar se declara pero no
+  se acredita a la reserva. SOC desconocido conserva resultado `unknown`.
+- FSM: hysteresis visible, degradación de cargas L2/L3 y reserva L0/L1; el modelo
+  de brownout preserva secuencia, accepted-log y estado vital en supervivencia.
+- Determinismo: diez corridas con orden, locale y timezone alternados producen
+  un solo hash energético
+  `ab3427bee8d71163cfdbcbe8c900426e63364a333f8ec45a67dd85915fc66833`;
+  el hash core permanece
+  `bf4ad6c38a7ed8bdcd2e0f0106aec916f9d2a36b55bd104293206cc754a132fe`.
+- Receipts: `evidence/p0/p0-02/{energy-replay,determinism}/`, evaluados sobre
+  `91c78a09200b592aa1c4b1bb6c416026213d1a1d`, con `dirty: false` e integridad
+  canónica aprobada.
+- Review: `docs/security/2026-07-17-p0-02-energy-replay-review.md`.
+- Residuales: P0-R003 continúa controlando claims físicos; P0-R010 queda resuelto
+  para energía y sigue planificado para P0-03–P0-07; P0-R011 gobierna recovery
+  durable y power-cut real.
+
+Única task elegible: `P0-03`. No está iniciada por este cierre.
 
 Plan: `docs/superpowers/plans/2026-07-17-openbrec-p0-simulated-addons-plan.md`.
 Residuales: `docs/governance/P0_RESIDUAL_REGISTER.md`.
