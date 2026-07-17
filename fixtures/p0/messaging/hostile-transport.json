@@ -1,0 +1,166 @@
+{
+  "scenario_version": "1.0.0",
+  "scenario_id": "p0-secure-sos-hostile-transport",
+  "logical_now": "2026-07-17T15:05:00.000000Z",
+  "network_available": false,
+  "claim_scope": "simulation_only",
+  "expected_result_sha256": {
+    "human-message-security": "1873e747c33026e186ff0a32dd8c66c97f4f7213cb69d875d2a3162ef05cda64",
+    "sos-state-replay": "7fcbea861218c18b03811c5a3b58a2be6963633e13deb036bc295ab3cdb0b839",
+    "transport-policy": "002488b7837dedd562abeda05e6e5314aec5878b6b958680939221e1e5a4cf95"
+  },
+  "incident_id": "11111111-1111-4111-8111-111111111111",
+  "cell_id": "cell-alpha",
+  "limitations": [
+    "synthetic keys and payloads only",
+    "transport models are hostile byte carriers",
+    "no delivery or rescue guarantee",
+    "no hardware-backed custody claim"
+  ],
+  "bearers": ["meshtastic", "meshcore", "carry_bundle"],
+  "enrollment": {
+    "mode": "local_human_approval",
+    "fingerprint_confirmation": true,
+    "unknown_peer_rights": "minimal",
+    "revocation_cache_local": true,
+    "trust_stale_restrictions": [
+      "remote_enrollment",
+      "policy_change",
+      "sensitive_federation"
+    ],
+    "distress_reception_when_stale": true
+  },
+  "bindings": [
+    {
+      "binding_id": "binding-sender-epoch-1",
+      "actor_id": "actor-1111111111111111",
+      "device_id": "device-2222222222222222",
+      "roles": ["responder", "distress_sender"],
+      "signing_key_id": "sign-cell-alpha-sender-1",
+      "encryption_key_ids": ["sos-cell-alpha-2"],
+      "valid_from": "2026-07-17T14:00:00.000000Z",
+      "valid_until": "2026-07-17T16:00:00.000000Z"
+    },
+    {
+      "binding_id": "binding-operator-epoch-1",
+      "actor_id": "actor-4444444444444444",
+      "device_id": "device-4444444444444444",
+      "roles": ["operator", "distress_acceptor"],
+      "signing_key_id": "sign-cell-alpha-operator-1",
+      "encryption_key_ids": ["sos-cell-alpha-2"],
+      "valid_from": "2026-07-17T14:00:00.000000Z",
+      "valid_until": "2026-07-17T16:00:00.000000Z"
+    },
+    {
+      "binding_id": "binding-stolen-epoch-1",
+      "actor_id": "actor-5555555555555555",
+      "device_id": "device-5555555555555555",
+      "roles": ["responder", "distress_sender"],
+      "signing_key_id": "sign-cell-alpha-stolen-1",
+      "encryption_key_ids": ["sos-cell-alpha-1"],
+      "valid_from": "2026-07-17T14:00:00.000000Z",
+      "valid_until": "2026-07-17T16:00:00.000000Z",
+      "revoked_at": "2026-07-17T14:30:00.000000Z"
+    },
+    {
+      "binding_id": "binding-rekeyed-epoch-2",
+      "actor_id": "actor-5555555555555555",
+      "device_id": "device-6666666666666666",
+      "roles": ["responder", "distress_sender"],
+      "signing_key_id": "sign-cell-alpha-rekeyed-2",
+      "encryption_key_ids": ["sos-cell-alpha-2"],
+      "valid_from": "2026-07-17T14:31:00.000000Z",
+      "valid_until": "2026-07-17T16:00:00.000000Z"
+    },
+    {
+      "binding_id": "binding-unverified-peer",
+      "actor_id": "actor-7777777777777777",
+      "device_id": "device-7777777777777777",
+      "roles": ["unverified_peer"],
+      "signing_key_id": "sign-cell-alpha-unverified-1",
+      "encryption_key_ids": ["sos-cell-alpha-2"],
+      "valid_from": "2026-07-17T14:31:00.000000Z",
+      "valid_until": "2026-07-17T15:31:00.000000Z"
+    }
+  ],
+  "messages": [
+    {
+      "case_id": "valid-sos",
+      "message_type": "sos",
+      "message_id": "20000000-0000-4000-8000-000000000101",
+      "binding_id": "binding-sender-epoch-1",
+      "recipient": "role:rescue-command",
+      "priority": "distress",
+      "created_at": "2026-07-17T15:00:00.000000Z",
+      "expires_at": "2026-07-17T15:15:00.000000Z",
+      "boot_id": "33333333-3333-4333-8333-333333333333",
+      "sequence": 41,
+      "encryption_key_id": "sos-cell-alpha-2",
+      "plaintext": {"text": "SOS", "location": {"zone": "zone-17", "precision_m": 25}}
+    },
+    {
+      "case_id": "offline-rekey-valid",
+      "message_type": "status",
+      "message_id": "20000000-0000-4000-8000-000000000102",
+      "binding_id": "binding-rekeyed-epoch-2",
+      "recipient": "role:cell-lead",
+      "priority": "urgent",
+      "created_at": "2026-07-17T15:01:00.000000Z",
+      "expires_at": "2026-07-17T15:16:00.000000Z",
+      "boot_id": "77777777-7777-4777-8777-777777777777",
+      "sequence": 1,
+      "encryption_key_id": "sos-cell-alpha-2",
+      "plaintext": {"status": "rekeyed-device-active"}
+    }
+  ],
+  "sos_events": [
+    {"event_id": "21000000-0000-4000-8000-000000000101", "event_type": "sos.created", "occurred_at": "2026-07-17T15:00:00.000000Z", "actor_type": "terminal", "binding_id": "binding-sender-epoch-1", "causation_event_ids": []},
+    {"event_id": "21000000-0000-4000-8000-000000000102", "event_type": "sos.queued", "occurred_at": "2026-07-17T15:00:01.000000Z", "actor_type": "terminal", "binding_id": "binding-sender-epoch-1", "causation_event_ids": ["21000000-0000-4000-8000-000000000101"]},
+    {"event_id": "21000000-0000-4000-8000-000000000103", "event_type": "transport.transmitted", "occurred_at": "2026-07-17T15:00:02.000000Z", "actor_type": "adapter", "actor_id": "adapter-meshtastic-model", "signing_key_id": "sign-cell-alpha-adapter-1", "causation_event_ids": ["21000000-0000-4000-8000-000000000102"]},
+    {"event_id": "21000000-0000-4000-8000-000000000104", "event_type": "gateway.received", "occurred_at": "2026-07-17T15:00:10.000000Z", "actor_type": "gateway", "actor_id": "gateway-cell-alpha", "signing_key_id": "sign-cell-alpha-gateway-1", "causation_event_ids": ["21000000-0000-4000-8000-000000000103"]},
+    {"event_id": "21000000-0000-4000-8000-000000000105", "event_type": "operator.seen", "occurred_at": "2026-07-17T15:00:20.000000Z", "actor_type": "operator", "binding_id": "binding-operator-epoch-1", "causation_event_ids": ["21000000-0000-4000-8000-000000000104"]},
+    {"event_id": "21000000-0000-4000-8000-000000000106", "event_type": "operator.accepted", "occurred_at": "2026-07-17T15:00:30.000000Z", "actor_type": "operator", "binding_id": "binding-operator-epoch-1", "causation_event_ids": ["21000000-0000-4000-8000-000000000104", "21000000-0000-4000-8000-000000000105"], "reason": "operator assumed management"}
+  ],
+  "transport": {
+    "policy": {
+      "schema_version": "1.0.0",
+      "decision_type": "transport_policy",
+      "decision_id": "24000000-0000-4000-8000-000000000101",
+      "message_id": "20000000-0000-4000-8000-000000000101",
+      "profile_id": "transport-hostile-replay",
+      "decided_at": "2026-07-17T14:59:00.000000Z",
+      "allowed_bearers": ["meshtastic", "meshcore", "carry_bundle"],
+      "prohibited_bearers": ["lorawan"],
+      "decision_actor": "role:communications-lead",
+      "reason": "offline distress multi-bearer replay",
+      "expires_at": "2026-07-17T15:15:00.000000Z",
+      "limitations": ["simulation decision", "technical delivery only"]
+    },
+    "prohibited_raw_bridge": true,
+    "max_hop_budget": 7,
+    "paths": [
+      {"envelope_id": "22000000-0000-4000-8000-000000000101", "bearer": "meshtastic", "path_id": "mesh-a", "hop_budget": 3},
+      {"envelope_id": "22000000-0000-4000-8000-000000000102", "bearer": "meshcore", "path_id": "mesh-b", "hop_budget": 5},
+      {"envelope_id": "22000000-0000-4000-8000-000000000103", "bearer": "carry_bundle", "path_id": "custody-a", "hop_budget": 0}
+    ]
+  },
+  "offline_rekey": {
+    "required": true,
+    "revoked_binding_id": "binding-stolen-epoch-1",
+    "replacement_binding_id": "binding-rekeyed-epoch-2",
+    "old_group_key_id": "sos-cell-alpha-1",
+    "new_group_key_id": "sos-cell-alpha-2",
+    "new_epoch": 2
+  },
+  "hostile_cases": [
+    {"case_id": "forged-signature", "kind": "forged", "target": "valid-sos", "expected": "unverified_distress"},
+    {"case_id": "replayed-message", "kind": "replayed", "target": "valid-sos", "expected": "rejected_replay"},
+    {"case_id": "revoked-device", "kind": "revoked", "target": "binding-stolen-epoch-1", "expected": "unverified_distress"},
+    {"case_id": "expired-message", "kind": "late", "target": "valid-sos", "expected": "unverified_distress"},
+    {"case_id": "same-message-second-path", "kind": "duplicate", "target": "valid-sos", "expected": "deduplicated"},
+    {"case_id": "transport-role-elevation", "kind": "malicious_transport", "target": "operator.accepted", "expected": "unverified_distress"},
+    {"case_id": "nonce-reuse-after-restart", "kind": "nonce_reuse", "target": "valid-sos", "expected": "rejected_nonce_reuse"},
+    {"case_id": "sequence-rollback-after-restart", "kind": "sequence_rollback", "target": "valid-sos", "expected": "rejected_sequence_rollback"},
+    {"case_id": "known-default-channel-secret", "kind": "default_secret", "target": "meshtastic", "expected": "rejected_default_secret"}
+  ]
+}
