@@ -1,0 +1,19 @@
+{
+  "acceptance_version": "1.0.0",
+  "accepted_at": "2026-07-17",
+  "implementation_role": "privacy-safety-reviewer",
+  "implementation_sha": "c6a3dc15ccf045dac60148080870a5f44eb2027c",
+  "progress": {
+    "accepted_tasks": 3,
+    "percent": 33.3,
+    "total_tasks": 9
+  },
+  "receipt_sha256": {
+    "human-message-security": "0b3a772876bc7070405abaec0ae7af6cfbe57aa942d796538a7f0a9a170c3624",
+    "sos-state-replay": "81b48fb6d08ee25a8d293b092d75bdf7bb606c0a8cfebabb2c535aa9a66a3f97",
+    "transport-policy": "5ef8b6cc4ed0dddbaa3824ad7e7d5bb1ea334e1aa85c1db8670ca264f707793e"
+  },
+  "review_role": "core-replay-maintainer",
+  "status": "accepted",
+  "task": "P0-03"
+}

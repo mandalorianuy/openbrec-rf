@@ -1,0 +1,166 @@
+{
+  "command": [
+    "python",
+    "-m",
+    "openbrec.verify",
+    "human-message-security",
+    "--receipt",
+    "/tmp/openbrec-p0-03-c6a3dc15ccf045dac60148080870a5f44eb2027c-receipts/human-message-security/p0-03-receipt.json"
+  ],
+  "dirty": false,
+  "errors": [],
+  "finished_at": "2026-07-17T21:28:56.392841Z",
+  "gate": "human-message-security",
+  "gate_version": "0.1.0",
+  "git_sha": "c6a3dc15ccf045dac60148080870a5f44eb2027c",
+  "inputs": [
+    {
+      "path": "fixtures/p0/messaging/hostile-transport.json",
+      "sha256": "39802bcca7beab9326c75978cd6edac70da348e80362d58d25601dc27fca7fa0"
+    },
+    {
+      "path": "openbrec/messaging.py",
+      "sha256": "4104d21c0eca3c8015482f9ae75a7a55c403682d506056dd54b0bb5e2fe7ab9b"
+    },
+    {
+      "path": "schemas/addons/1.0.0/human-message.schema.json",
+      "sha256": "7a3f524578716378307a5914750eacdc61e682ddbf2429ed2ccd10c26e1b7a1a"
+    },
+    {
+      "path": "schemas/addons/1.0.0/human-message-event.schema.json",
+      "sha256": "838378f2cf08202cfda062e7e5aceb1b84377f363ad700430a9aef50a4a84c8e"
+    },
+    {
+      "path": "schemas/addons/1.0.0/transport-envelope.schema.json",
+      "sha256": "9d34b71f20a3bb22427b2f4a04c64aa6c557d1bdfa5086777a0a502ae8a45516"
+    },
+    {
+      "path": "schemas/addons/1.0.0/transport-policy-decision.schema.json",
+      "sha256": "27841ca34221fd19405240f81ce02b3c134be9b2d770417d5bf702ef87500731"
+    }
+  ],
+  "lockfiles": [
+    {
+      "path": "uv.lock",
+      "sha256": "2d1b79df4cd5878ec7f4674a133c54ca7b16dfa559560ba3a93911e620f435d5"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "sha256": "ed7659f050b279f37e5cf84fb065fc528e15b3204d374681f3a70ad081d1c25a"
+    },
+    {
+      "path": "apps/web/pnpm-lock.yaml",
+      "sha256": "12a1ed34e601b49a319846ef8d87c316708bb695853661ec3b3b95208701d278"
+    }
+  ],
+  "output_sha256": "571d018d12609e469e7d64e3d4e38d469d6d8639de046ed4f6df2b364ca8d69a",
+  "receipt_version": "1.0.0",
+  "responsible_role": "privacy-safety-reviewer",
+  "result": "passed",
+  "runtime": {
+    "docker": "Docker version 29.5.3, build d1c06ef",
+    "node": "v26.5.0",
+    "pnpm": "11.9.0",
+    "python": "3.12.13"
+  },
+  "scope": "application_authenticity_aead_and_offline_rekey",
+  "started_at": "2026-07-17T21:28:56.127065Z",
+  "summary": {
+    "active_group_key_epoch": 2,
+    "authenticated_messages": 2,
+    "authenticated_payload_sha256": "094379e7ea0d5a1b3db83c5fe8762244bef39c1754f7a6ae5548ef58c6418200",
+    "claim_scope": "simulation_only",
+    "default_secret_rejected": true,
+    "enrollment_modeled": true,
+    "false_authentications": 0,
+    "network_available": false,
+    "nonce_uniqueness_enforced": true,
+    "offline_rekey_succeeded": true,
+    "old_group_key_rejected": true,
+    "rejection_reasons": {
+      "default_secret": "default or shared incident secret is prohibited",
+      "forged": "application signature is invalid",
+      "late": "message TTL expired",
+      "nonce_reuse": "AEAD nonce reuse detected",
+      "old_group_key": "binding is not authorized for encryption key",
+      "replayed": "message replay detected",
+      "revoked": "binding is revoked in local cache",
+      "sequence_rollback": "sequence rollback detected",
+      "unauthorized_role": "binding role cannot originate SOS"
+    },
+    "result_sha256": "1873e747c33026e186ff0a32dd8c66c97f4f7213cb69d875d2a3162ef05cda64",
+    "revocation_cache_local": true,
+    "security_events": [
+      {
+        "disposition": "rejection_ledger",
+        "evidence_sha256": "91b2a54336b17ba8d31377fc63d1b23317402b542be4199252e6cf0952002a2b",
+        "security_event": "default_secret"
+      },
+      {
+        "disposition": "review_quarantine",
+        "evidence_sha256": "b4352d0655cc98ab48d208a5d16e1960f56d18dc51c52ede88f14cb49b425271",
+        "security_event": "forged"
+      },
+      {
+        "disposition": "review_quarantine",
+        "evidence_sha256": "c196d0097e9c6339408d8010d0cceeef4fda9f7ed157aae4e5e3b11ee29d8e86",
+        "security_event": "late"
+      },
+      {
+        "disposition": "rejection_ledger",
+        "evidence_sha256": "8d2c3c5568e2ee7c98d9000ed5caeaf309c5fce2f88af8e39871cf442efa8e77",
+        "security_event": "nonce_reuse"
+      },
+      {
+        "disposition": "rejection_ledger",
+        "evidence_sha256": "a5f8aa6fd500ba43ebbe037c5fddd89a103f743f656fa402304658ff907600cb",
+        "security_event": "old_group_key"
+      },
+      {
+        "disposition": "rejection_ledger",
+        "evidence_sha256": "ddb2b9989e6e2892f2b38bd887b05fe456ad1bb9386f97fb4d8d695d0eed9038",
+        "security_event": "replayed"
+      },
+      {
+        "disposition": "review_quarantine",
+        "evidence_sha256": "db31879de2c81e324357bf33fc021076dfad4a97d82ceefd585bd1832ec2dca9",
+        "security_event": "revoked"
+      },
+      {
+        "disposition": "rejection_ledger",
+        "evidence_sha256": "6579ceb56a7b88eeeba94dac5e98a5b4127636dd70f1480a8f805eef65638059",
+        "security_event": "sequence_rollback"
+      },
+      {
+        "disposition": "rejection_ledger",
+        "evidence_sha256": "0b2d3fde903131315dfb4c36099d9e208c07878ababa687cbfd1a0578da9ed86",
+        "security_event": "unauthorized_role"
+      }
+    ],
+    "sequence_monotonicity_enforced": true,
+    "unauthorized_message_type_rejected": true,
+    "unknown_peer_minimum_rights": true,
+    "unverified_distress_preserved": 3,
+    "unverified_distress_receipts": [
+      {
+        "case": "forged",
+        "disposition": "review_quarantine",
+        "input_sha256": "bd73ee8cf26c2403641c77e48738817ba5e9e354173e1ad587754004ff6d092c",
+        "reason": "application signature is invalid"
+      },
+      {
+        "case": "revoked",
+        "disposition": "review_quarantine",
+        "input_sha256": "e3b0788b4a581495ef25251116e72d1075b64368df00d3960ee61cdc5e1172f0",
+        "reason": "binding is revoked in local cache"
+      },
+      {
+        "case": "late",
+        "disposition": "review_quarantine",
+        "input_sha256": "80340681757fe298c678013a078be9fcf798e07c4097b71ee35296d712ac9661",
+        "reason": "message TTL expired"
+      }
+    ]
+  },
+  "warnings": []
+}
