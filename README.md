@@ -18,7 +18,7 @@ OpenBREC RF es una plataforma open source, modular y offline-first para investig
 > El sistema produce **indicios**, no diagnósticos ni certezas de víctima. La ausencia de RF nunca descarta una persona atrapada.
 
 > [!NOTE]
-> Estado actual: M0 parcial con M0-01–M0-03 validados. Existen contratos, API, worker, shell PWA y `lab-sim` construible/arrancable sin Internet; todavía faltan persistencia reconciliada, replay, simulación completa y gates de salida. No es una plataforma operacional ni un perfil de campo.
+> Estado actual: M0 parcial con M0-01–M0-04 validados. Existen contratos, API, worker, shell PWA, `lab-sim`, replay determinístico y una frontera portable de disposición reconciliada; todavía faltan el simulador/PWA explicable, la integración durable del runtime con PostgreSQL y los gates finales de salida. No es una plataforma operacional ni un perfil de campo.
 
 ## Documentos principales
 
@@ -71,6 +71,20 @@ uv run --offline python -m openbrec.verify offline-startup
 ```
 
 El primer gate puede descargar imágenes y construye los servicios. El segundo usa `--pull never --no-build`, prueba API → MQTT → worker, rechazo contractual, shell PWA y ausencia de egress. La operación y sus límites están en [`docs/runtime/lab-sim.md`](docs/runtime/lab-sim.md).
+
+M0-04 separa replay de adaptador y core, y verifica disposición/preservación:
+
+```bash
+uv run --offline python -m openbrec.verify adapter-replay
+uv run --offline python -m openbrec.verify core-replay
+uv run --offline python -m openbrec.verify determinism --runs 10
+uv run --offline python -m openbrec.verify review-quarantine
+uv run --offline python -m openbrec.verify life-safety-preservation
+uv run --offline python -m openbrec.verify privacy
+uv run --offline python -m openbrec.verify security
+```
+
+Los receipts evaluados sobre un SHA limpio están en `evidence/m0/<gate>/m0-04-receipt.json`. El storage SQLite es una referencia ejecutable portable de laboratorio; no acredita todavía la integración del worker con PostgreSQL ni custodia de claves de campo.
 
 Los residuales aceptados, resueltos o planificados están en [`docs/governance/M0_RESIDUAL_REGISTER.md`](docs/governance/M0_RESIDUAL_REGISTER.md).
 

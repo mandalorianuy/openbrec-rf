@@ -26,7 +26,7 @@ El smoke demuestra:
 ## Límites gobernados
 
 - MQTT anónimo está permitido sólo dentro de esta red interna y sin listeners publicados.
-- PostgreSQL todavía no prueba durabilidad del pipeline; eso pertenece a M0-04.
+- M0-04 prueba la semántica durable y reconciliada en un storage SQLite portable de laboratorio; el worker de `lab-sim` todavía no escribe PostgreSQL. Esa integración, sus migraciones específicas y pruebas de concurrencia/rollback pertenecen al residual M0-R017 y bloquean el M0 exit.
 - El acuse `processed` es efímero y sólo sirve al smoke; no es evidencia ni hecho.
 - La exposición local de la PWA y su prueba browser offline pertenecen a M0-05.
 - Los digests, SBOM y licencias del conjunto final pertenecen a M0-06.

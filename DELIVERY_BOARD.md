@@ -2,7 +2,7 @@
 
 - Autoridad de secuencia: este board
 - Plan activo aprobado: `docs/superpowers/plans/2026-07-17-openbrec-m0-executable-plan.md`
-- Estado real: M0 parcial; M0-01, M0-02 y M0-03 cerrados; M0-04 no iniciado
+- Estado real: M0 parcial; M0-01, M0-02, M0-03 y M0-04 cerrados; M0-05 no iniciado
 - Regla de avance: una sola task M0 a la vez, con gate y receipt; no iniciar addons antes del M0 exit
 
 ## Decisiones de gobernanza cerradas
@@ -19,7 +19,7 @@ Los checks permanecen abiertos hasta producir la evidencia exigida por el plan. 
 - [x] `M0-01` / F-01: aceptar ADR-0001, catálogo core y registro inmutable de schemas legacy.
 - [x] `M0-02` / F-01: implementar schemas, fixtures, modelos Pydantic/TypeScript y compatibilidad SemVer.
 - [x] `M0-03` / F-02: crear API, worker y PWA mínimos; construir y arrancar `lab-sim` sin Internet.
-- [ ] `M0-04` / F-03–F-04: implementar accepted log, vault/quarantine/ledger y replay determinístico en dos niveles.
+- [x] `M0-04` / F-03–F-04: implementar accepted log, vault/quarantine/ledger y replay determinístico en dos niveles.
 - [ ] `M0-05` / F-05: simular seis nodos, dos tracks y tres zonas; mostrar capacidades, mapa, timeline y explicación.
 - [ ] `M0-06` / F-06: separar gates CI, generar receipts y demostrar el M0 exit completo.
 
@@ -52,12 +52,22 @@ Registro obligatorio: `docs/governance/M0_RESIDUAL_REGISTER.md`.
 - Receipts: `evidence/m0/{compose-build,offline-startup}/m0-03-receipt.json`, evaluados sobre `a2b446f8a5214ff2cfcb115f1a82573acc31d142` con `dirty: false` y `warnings: []`.
 - Residuales M0-R011–M0-R015: uno `controlled` y cuatro `planned` con owners y stop conditions para M0-04/M0-05/M0-06.
 
+### Evidencia M0-04
+
+- Replay: adaptador y core separados, vínculo verificable con receipt upstream, JCS RFC 8785, SHA-256, orden normativo y reglas semánticas antes de derivar.
+- Determinismo: diez corridas con orden invertido, `UTC`/`Pacific/Auckland` y `C`/`C.UTF-8` producen un único `result_sha256` (`bf4ad6c38a7ed8bdcd2e0f0106aec916f9d2a36b55bd104293206cc754a132fe`).
+- Disposición: cuatro inputs sintéticos terminan uno por destino en accepted log, quarantine, vault y ledger, con `unreconciled: 0`.
+- Life safety y privacidad: posible material vital se cifra y conserva antes de minimizar; break-glass, lectura, TTL y borrado requieren audit/review; secretos ajenos no persisten en claro.
+- Seguridad: fixture/ciphertext alterado, JSON con claves duplicadas, schema desconocido, tardío, colisión y secuencia regresiva fallan cerrados; el replay funciona con red, reloj del host y aleatoriedad bloqueados.
+- Receipts: siete `evidence/m0/*/m0-04-receipt.json`, todos sobre `803f4c196f50ab7d45156190428748996961d860`, `dirty: false`, sin errores ni warnings.
+- Límite: SQLite acredita la semántica portable de laboratorio. PostgreSQL/runtime, custodia/rotación de master key y rollback/concurrencia permanecen planificados para M0-06 y bloquean el M0 exit; campo sigue `unverified`.
+
 ## Gate de salida M0
 
 - [x] Todos los servicios referenciados por Compose existen, construyen y arrancan offline.
 - [x] Catálogo, metaschemas y fixtures pasan; modelos generados se regeneran sin diff.
-- [ ] Replay adapter/core produce hashes estables en diez ejecuciones y bajo variación de orden, locale y timezone.
-- [ ] Cada input termina exactamente en accepted log, quarantine, vault o ledger; no existe descarte silencioso.
+- [x] Replay adapter/core produce hashes estables en diez ejecuciones y bajo variación de orden, locale y timezone.
+- [x] Cada input termina exactamente en accepted log, quarantine, vault o ledger; no existe descarte silencioso.
 - [ ] La UI muestra incertidumbre, fuentes, sensores/capacidades ausentes, degradación y abstención.
 - [ ] Gates de estructura, schema, fixtures, compatibilidad, generación, Compose, offline, replay, privacidad, seguridad y SBOM producen receipts verificables.
 - [ ] Threat model y safety/privacy review reflejan la implementación M0.

@@ -2,11 +2,11 @@
 
 ## Executive summary
 
-OpenBREC RF is currently a TRL 2–3 design bundle rather than an operational runtime. Its planned addons combine private LoRa communications, acoustic/PIR/thermal beacons, human terminals, local processing and a multi-organization federation with intermittent backhaul. The highest risks are forged distress semantics, sensor spoofing or misleading automation, unauthorized raw capture, stolen endpoint keys, insecure development configuration, RF denial and over-trust in a federation hub or transport identity.
+OpenBREC RF is currently a TRL 2–3 laboratory reference with executable core contracts, a contained `lab-sim`, deterministic replay and a portable disposition store; it is not an operational or field runtime. Its planned addons combine private LoRa communications, acoustic/PIR/thermal beacons, human terminals, local processing and a multi-organization federation with intermittent backhaul. The highest risks are forged distress semantics, sensor spoofing or misleading automation, unauthorized raw capture, stolen endpoint keys, insecure development configuration, RF denial and over-trust in a federation hub or transport identity.
 
 The design mitigates those risks with application-layer signatures and encryption, incident-scoped identity, append-only distress state, local autonomy, outbound-only federation gateways, hub key isolation, explicit RF operating profiles and replayable security gates. Possible distress is preserved even when invalid; it is marked `unverified_distress` and cannot become authenticated or `operator.accepted` without the required signed evidence.
 
-There is no currently deployed application code to assess. Threat ratings therefore describe the proposed architecture and conditional risk if placeholders such as the current Compose file were deployed. Before implementation, every high-risk path needs schemas, fixtures, negative tests, owners and evidence receipts.
+There is no deployed field application to assess. M0-03 and M0-04 now provide executable laboratory evidence, but addon threat ratings still describe proposed architecture and conditional risk. Before field implementation, every high-risk path needs schemas, fixtures, negative tests, owners and evidence receipts. The implemented M0-04 delta and remaining limits are reviewed in `docs/security/2026-07-17-m0-04-replay-storage-review.md`.
 
 ## Scope and assumptions
 
@@ -42,11 +42,11 @@ Assumptions:
 - operators can make mistakes under time pressure, including break-glass activation;
 - an attacker or uncontrolled environment can inject sound, heat, movement, vibration or misleading context near a beacon;
 - cryptographic libraries and primitives are correctly implemented only after vector and misuse tests prove it;
-- the repository currently has schemas and services that are placeholders; planned controls are not implemented.
+- the repository has executable M0 contracts/services/replay, while radio, identity, beacon, federation and field controls remain unimplemented.
 
-Repository evidence: `AGENTS.md`, `SECURITY.md`, `docker-compose.yml`, `services/README.md`, `scripts/validate_bundle.py`, `docs/superpowers/specs/2026-07-16-offgrid-energy-lora-beacons-design.md`, `docs/superpowers/specs/2026-07-16-openbrec-core-contracts-replay-design.md`, `docs/superpowers/specs/2026-07-17-openbrec-radio-security-regulation-design.md`, and `docs/superpowers/specs/2026-07-17-openbrec-beacons-human-ux-design.md`.
+Repository evidence: `AGENTS.md`, `SECURITY.md`, `docker-compose.yml`, `openbrec/replay.py`, `openbrec/disposition.py`, `migrations/0001_m0_disposition.sql`, `docs/security/2026-07-17-m0-04-replay-storage-review.md`, `docs/superpowers/specs/2026-07-16-offgrid-energy-lora-beacons-design.md`, `docs/superpowers/specs/2026-07-16-openbrec-core-contracts-replay-design.md`, `docs/superpowers/specs/2026-07-17-openbrec-radio-security-regulation-design.md`, and `docs/superpowers/specs/2026-07-17-openbrec-beacons-human-ux-design.md`.
 
-Open questions before implementation:
+Open questions before field implementation:
 
 - which hardware profiles provide validated non-exportable key storage;
 - exact maximum credential validity by role and storage level;
@@ -92,7 +92,7 @@ Open questions before implementation:
 11. During partition, signed encrypted bundles may cross a physical custody boundary and reconcile by append-only union.
 12. Operators cross privileged boundaries when enrolling peers, accepting SOS, authorizing raw capture, changing trust or enabling RF modes.
 
-Current runtime and CI distinction: `scripts/validate_bundle.py` performs structural file/JSON/name checks and an offensive-term scan. It does not validate schemas, crypto, Compose startup, replay, privacy or security. `docker-compose.yml` currently exposes Mosquitto port 1883 without a mounted authentication policy and contains a placeholder PostgreSQL password; `services/README.md` states that service implementations are placeholders. These are development artifacts and must not be treated as field controls.
+Current runtime and CI distinction: `scripts/validate_bundle.py` still performs only structural file/JSON/name checks and an offensive-term scan. Separate M0 gates now validate schemas, Compose startup, replay, privacy and the implemented storage security boundary. In `lab-sim`, Mosquitto and PostgreSQL publish no host ports, the network is internal and the PostgreSQL password is injected as a Compose secret. MQTT remains anonymous inside that contained network, and the worker does not yet write the portable disposition boundary to PostgreSQL. These are laboratory controls and must not be treated as field controls.
 
 ### Diagram
 
