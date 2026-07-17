@@ -2,7 +2,7 @@
 
 - Autoridad de secuencia: este board
 - Plan activo aprobado: `docs/superpowers/plans/2026-07-17-openbrec-m0-executable-plan.md`
-- Estado real: M0 parcial; M0-01 cerrado y M0-02 en validación; runtime M0 inexistente
+- Estado real: M0 parcial; M0-01 y M0-02 cerrados; runtime M0 inexistente
 - Regla de avance: una sola task M0 a la vez, con gate y receipt; no iniciar addons antes del M0 exit
 
 ## Decisiones de gobernanza cerradas
@@ -17,7 +17,7 @@
 Los checks permanecen abiertos hasta producir la evidencia exigida por el plan. El orden es obligatorio.
 
 - [x] `M0-01` / F-01: aceptar ADR-0001, catálogo core y registro inmutable de schemas legacy.
-- [ ] `M0-02` / F-01: implementar schemas, fixtures, modelos Pydantic/TypeScript y compatibilidad SemVer. **En validación.**
+- [x] `M0-02` / F-01: implementar schemas, fixtures, modelos Pydantic/TypeScript y compatibilidad SemVer.
 - [ ] `M0-03` / F-02: crear API, worker y PWA mínimos; construir y arrancar `lab-sim` sin Internet.
 - [ ] `M0-04` / F-03–F-04: implementar accepted log, vault/quarantine/ledger y replay determinístico en dos niveles.
 - [ ] `M0-05` / F-05: simular seis nodos, dos tracks y tres zonas; mostrar capacidades, mapa, timeline y explicación.
@@ -34,10 +34,19 @@ Los checks permanecen abiertos hasta producir la evidencia exigida por el plan. 
 
 Registro obligatorio: `docs/governance/M0_RESIDUAL_REGISTER.md`.
 
+### Evidencia M0-02
+
+- Catálogo core: 18 schemas Draft 2020-12, `$id` únicos y `contract_set_sha256` verificable.
+- Fixtures: 36 válidos y 126 inválidos; validación normativa con formatos y resolución local de refs.
+- Consumidores: 20 archivos Python/Pydantic estrictos y 21 TypeScript; 36 fixtures válidos compilados con TypeScript estricto.
+- Compatibilidad: seis schemas legacy y 18 core congelados en `schemas/core/compatibility-baseline.json`.
+- Receipts: `evidence/m0/{bundle-structure,schema,fixtures,schema-compat,contracts-gen}/`, evaluados sobre `eaa3fa8816e6d7bf48816655f4b574b13627ed72` con `dirty: false`.
+- Residuales: todos registrados como `resolved`, `controlled` o `planned`; M0-R003/M0-R004/M0-R009 bloquean el cierre de M0-04 y M0-R006/M0-R007 el M0 exit.
+
 ## Gate de salida M0
 
 - [ ] Todos los servicios referenciados por Compose existen, construyen y arrancan offline.
-- [ ] Catálogo, metaschemas y fixtures pasan; modelos generados se regeneran sin diff.
+- [x] Catálogo, metaschemas y fixtures pasan; modelos generados se regeneran sin diff.
 - [ ] Replay adapter/core produce hashes estables en diez ejecuciones y bajo variación de orden, locale y timezone.
 - [ ] Cada input termina exactamente en accepted log, quarantine, vault o ledger; no existe descarte silencioso.
 - [ ] La UI muestra incertidumbre, fuentes, sensores/capacidades ausentes, degradación y abstención.
