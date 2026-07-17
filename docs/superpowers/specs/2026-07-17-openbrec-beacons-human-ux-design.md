@@ -1,6 +1,6 @@
 # Beacons, terminales humanos, privacidad y UX de OpenBREC RF
 
-- Estado: diseño derivado de decisiones aprobadas; documento pendiente de revisión
+- Estado: especificación aprobada; implementación no autorizada
 - Fecha: 2026-07-17
 - Especificación padre: `2026-07-16-offgrid-energy-lora-beacons-design.md`
 - Dependencias: contratos/replay, radio/seguridad/regulación y energía

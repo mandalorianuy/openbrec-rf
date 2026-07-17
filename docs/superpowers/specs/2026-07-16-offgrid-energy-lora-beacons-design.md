@@ -1,6 +1,6 @@
 # Addons de energía off-grid, comunicaciones LoRa y beacons para OpenBREC RF
 
-- Estado: dirección arquitectónica aprobada; cuatro especificaciones hijas documentadas; planificación bloqueada
+- Estado: cuatro especificaciones hijas aprobadas; matriz de decisión en revisión; planificación bloqueada por M0
 - Fecha inicial: 2026-07-16
 - Revisión incorporada: 2026-07-17
 - Perfil regulatorio inicial: Uruguay
@@ -394,6 +394,8 @@ Esta visión padre se dividirá y aprobará en orden:
 No se escribirá un plan P0 off-grid hasta que las cuatro estén aprobadas y M0 sea ejecutable.
 
 ## 21. Matriz posterior
+
+La matriz inicial está documentada en `docs/decision-matrices/2026-07-17-offgrid-addons-decision-matrix.md`. Permanece pendiente de aprobación y no modifica todavía `DELIVERY_BOARD.md`.
 
 La matriz tendrá funcionalidad, valor BREC, evidencia, alternativa desacoplada, hardware reutilizable, diseño construible, energía, privacidad, safety, regulación, esfuerzo, dependencias, madurez, aceptación, recomendación y siguiente experimento.
 
