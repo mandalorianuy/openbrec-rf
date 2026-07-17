@@ -26,7 +26,7 @@ jobs:
         with:
           node-version: "24"
           package-manager-cache: false
-      - run: corepack enable && corepack install pnpm@11.9.0 --activate
+      - run: corepack enable && corepack install --global pnpm@11.9.0
       - run: uv sync --frozen
       - run: pnpm install --frozen-lockfile
       - run: uv run --offline python -m openbrec.verify bundle-structure --receipt evidence/m0/bundle-structure/m0-06-receipt.json
@@ -40,7 +40,6 @@ jobs:
           name: m0-contract-receipts
           path: evidence/m0
           if-no-files-found: error
-
   runtime:
     runs-on: ubuntu-latest
     steps:
@@ -55,7 +54,7 @@ jobs:
         with:
           node-version: "24"
           package-manager-cache: false
-      - run: corepack enable && corepack install pnpm@11.9.0 --activate
+      - run: corepack enable && corepack install --global pnpm@11.9.0
       - run: uv sync --frozen
       - run: uv run --offline python -m openbrec.verify compose-build --receipt evidence/m0/compose-build/m0-06-receipt.json
       - run: uv run --offline python -m openbrec.verify offline-startup --receipt evidence/m0/offline-startup/m0-06-receipt.json
@@ -125,7 +124,7 @@ jobs:
         with:
           node-version: "24"
           package-manager-cache: false
-      - run: corepack enable && corepack install pnpm@11.9.0 --activate
+      - run: corepack enable && corepack install --global pnpm@11.9.0
       - run: uv sync --frozen
       - run: pnpm --dir apps/web install --frozen-lockfile
       - run: pnpm --dir apps/web exec playwright install --with-deps chromium
@@ -152,7 +151,7 @@ jobs:
         with:
           node-version: "24"
           package-manager-cache: false
-      - run: corepack enable && corepack install pnpm@11.9.0 --activate
+      - run: corepack enable && corepack install --global pnpm@11.9.0
       - run: uv sync --frozen
       - run: pnpm install --frozen-lockfile
       - run: pnpm --dir apps/web install --frozen-lockfile
@@ -182,7 +181,7 @@ jobs:
         with:
           node-version: "24"
           package-manager-cache: false
-      - run: corepack enable && corepack install pnpm@11.9.0 --activate
+      - run: corepack enable && corepack install --global pnpm@11.9.0
       - run: uv sync --frozen
       - run: pnpm install --frozen-lockfile
       - run: pnpm --dir apps/web install --frozen-lockfile

@@ -289,6 +289,15 @@ class ExitOrchestrationTests(unittest.TestCase):
             )
         self.assertTrue(any("output_sha256" in error for error in errors))
 
+    def test_runtime_receipt_tolerates_optional_tool_absence(self) -> None:
+        cli = require_module("openbrec.verify.cli", "openbrec/verify/cli.py")
+        with patch("subprocess.run", side_effect=FileNotFoundError):
+            versions = cli._runtime_versions()
+        self.assertIsNotNone(versions["python"])
+        self.assertIsNone(versions["node"])
+        self.assertIsNone(versions["pnpm"])
+        self.assertIsNone(versions["docker"])
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -128,8 +128,14 @@ def _runtime_versions() -> dict[str, str | None]:
         ("pnpm", ["pnpm", "--version"]),
         ("docker", ["docker", "--version"]),
     ):
-        result = subprocess.run(command, text=True, capture_output=True, check=False)
-        versions[name] = result.stdout.strip() if result.returncode == 0 else None
+        try:
+            result = subprocess.run(
+                command, text=True, capture_output=True, check=False
+            )
+        except OSError:
+            versions[name] = None
+        else:
+            versions[name] = result.stdout.strip() if result.returncode == 0 else None
     return versions
 
 
