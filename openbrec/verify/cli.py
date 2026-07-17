@@ -22,6 +22,11 @@ from openbrec.gates_m0_04 import (
     run_review_quarantine,
     run_security,
 )
+from openbrec.gates_m0_05 import (
+    run_core_scenario_gate,
+    run_simulator_gate,
+    run_ui_smoke_gate,
+)
 
 DRAFT_2020_12 = "https://json-schema.org/draft/2020-12/schema"
 VERIFY_VERSION = "0.1.0"
@@ -369,6 +374,10 @@ def _write_receipt(
             if gate in REPLAY_GATES
             else "privacy-safety-reviewer"
             if gate in PRIVACY_SAFETY_GATES
+            else "core-replay-maintainer"
+            if gate == "simulator"
+            else "runtime-maintainer"
+            if gate == "ui-smoke"
             else "contract-maintainer"
         ),
     }
@@ -395,6 +404,8 @@ def _parser() -> argparse.ArgumentParser:
         "life-safety-preservation",
         "privacy",
         "security",
+        "simulator",
+        "ui-smoke",
     ):
         subparser = subparsers.add_parser(gate)
         subparser.add_argument("--root", default=".")
@@ -405,6 +416,10 @@ def _parser() -> argparse.ArgumentParser:
             subparser.add_argument("--check", action="store_true")
         if gate == "determinism":
             subparser.add_argument("--runs", type=int, default=10)
+        if gate == "simulator":
+            subparser.add_argument("--scenario", required=True)
+        if gate == "core-replay":
+            subparser.add_argument("--bundle")
     return parser
 
 
@@ -481,6 +496,20 @@ def main(argv: Sequence[str] | None = None) -> int:
                 root / "openbrec/semantic.py",
             ]
         )
+    elif args.gate == "core-replay" and args.bundle:
+        try:
+            bundle_path = _resolve_inside(root, args.bundle, label="bundle")
+            errors, warnings, summary = run_core_scenario_gate(root, bundle_path)
+            inputs.extend(
+                [
+                    bundle_path,
+                    root / "openbrec/simulator.py",
+                    root / "openbrec/canonical.py",
+                ]
+            )
+        except (OSError, ValueError) as exc:
+            errors, warnings, summary = [str(exc)], [], {"bundle": args.bundle}
+        scope = "scenario_semantic_replay"
     elif args.gate == "core-replay":
         errors, warnings, summary = run_core_replay(root)
         scope = "domain_events_to_derived_outputs"
@@ -540,6 +569,38 @@ def main(argv: Sequence[str] | None = None) -> int:
                 root / "openbrec/replay.py",
                 root / "openbrec/semantic.py",
                 root / "migrations/0001_m0_disposition.sql",
+            ]
+        )
+    elif args.gate == "simulator":
+        try:
+            scenario_path = _resolve_inside(root, args.scenario, label="scenario")
+            errors, warnings, summary = run_simulator_gate(root, scenario_path)
+            inputs.extend(
+                [
+                    scenario_path,
+                    root / "openbrec/simulator.py",
+                    root / "openbrec/canonical.py",
+                ]
+            )
+        except (OSError, ValueError) as exc:
+            errors, warnings, summary = [str(exc)], [], {"scenario": args.scenario}
+        scope = "six_node_logical_campaign"
+    elif args.gate == "ui-smoke":
+        errors, warnings, summary = run_ui_smoke_gate(root)
+        scope = "explainable_offline_pwa"
+        inputs.extend(
+            [
+                root / "apps/web/src/main.tsx",
+                root / "apps/web/src/style.css",
+                root / "apps/web/index.html",
+                root / "apps/web/package.json",
+                root / "apps/web/pnpm-lock.yaml",
+                root / "apps/web/public/favicon.svg",
+                root / "apps/web/public/m0-projection.json",
+                root / "apps/web/public/sw.js",
+                root / "apps/web/scripts/ui-smoke.mjs",
+                root / "docker-compose.yml",
+                root / "fixtures/replay/core/m0-six-node.json",
             ]
         )
     else:
