@@ -1,0 +1,149 @@
+{
+  "command": [
+    "python",
+    "-m",
+    "openbrec.verify",
+    "federation-reconciliation",
+    "--receipt",
+    "/tmp/openbrec-p0-05-de188c2-receipts/federation-reconciliation/p0-05-receipt.json"
+  ],
+  "dirty": false,
+  "errors": [],
+  "finished_at": "2026-07-17T22:51:50.909817Z",
+  "gate": "federation-reconciliation",
+  "gate_version": "0.1.0",
+  "git_sha": "de188c2ab13e19cdfe3ed15842df19575c25badc",
+  "inputs": [
+    {
+      "path": "fixtures/p0/federation/50k-sites.json",
+      "sha256": "c6b771e69d37c0545096f0487d29acbf1d52ea879132a2a91ad28cde0247b226"
+    },
+    {
+      "path": "openbrec/federation.py",
+      "sha256": "f8df10ae7c0f8894d5dac870495515e73dcf711e8de78434181d4bd5f3fa725d"
+    },
+    {
+      "path": "schemas/addons/1.0.0/federation-event.schema.json",
+      "sha256": "f38a02ec3b8158788c63153bb9cb02f6958a59c159a9cef476c9401a56eaabc4"
+    },
+    {
+      "path": "schemas/addons/1.0.0/federation-topology-event.schema.json",
+      "sha256": "6ac7ca7381ee241cce52f16de32eab9d90fed490e216ee0d7bf1031e7b71c792"
+    }
+  ],
+  "lockfiles": [
+    {
+      "path": "uv.lock",
+      "sha256": "2d1b79df4cd5878ec7f4674a133c54ca7b16dfa559560ba3a93911e620f435d5"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "sha256": "ed7659f050b279f37e5cf84fb065fc528e15b3204d374681f3a70ad081d1c25a"
+    },
+    {
+      "path": "apps/web/pnpm-lock.yaml",
+      "sha256": "12a1ed34e601b49a319846ef8d87c316708bb695853661ec3b3b95208701d278"
+    }
+  ],
+  "output_sha256": "8d3b0eac7424fe7c54ca666780b4fb599eab9519d65fdccdfa57d67883d08991",
+  "receipt_version": "1.0.0",
+  "responsible_role": "federation-maintainer",
+  "result": "passed",
+  "runtime": {
+    "docker": "Docker version 29.5.3, build d1c06ef",
+    "node": "v26.5.0",
+    "pnpm": "11.9.0",
+    "python": "3.12.13"
+  },
+  "scope": "append_only_partition_and_hostile_hub_reconciliation",
+  "started_at": "2026-07-17T22:51:50.206539Z",
+  "summary": {
+    "accepted_unique_events": 195,
+    "claim_scope": "deterministic_simulation_only",
+    "false_operational_acceptance": 0,
+    "handoff_conflicts": 5,
+    "hostile_dispositions": [
+      {
+        "case_id": "hub-001",
+        "disposition": "rejected",
+        "evidence_sha256": "5b928426186a7e9b3d6318eb703d97ef2f49740ef600c4ef25f078789a8229e5",
+        "kind": "forged_cell_signature"
+      },
+      {
+        "case_id": "hub-002",
+        "disposition": "rejected",
+        "evidence_sha256": "0eebd8ed5ef554ad4d08358a9037c6207929692c9aee18d13952069232d19a53",
+        "kind": "request_cell_private_key"
+      },
+      {
+        "case_id": "hub-003",
+        "disposition": "rejected",
+        "evidence_sha256": "9f7a270d22e2b41a970392a8445158e9339c5019dfeff2eb59d7582b44d13c34",
+        "kind": "request_local_plaintext"
+      },
+      {
+        "case_id": "hub-004",
+        "disposition": "rejected",
+        "evidence_sha256": "fd0637762ca888e3f8119bfff72d2e64aee5781b3b177454dfea9def209047dc",
+        "kind": "order_tx"
+      },
+      {
+        "case_id": "hub-005",
+        "disposition": "review_quarantine",
+        "evidence_sha256": "bdb6d60cde0724a17ca9c200b454aba1dd9bab26a47174ccab04e68ef992674b",
+        "kind": "forge_operator_accepted"
+      },
+      {
+        "case_id": "hub-006",
+        "disposition": "rejected",
+        "evidence_sha256": "748589984ae34877894f9eb88534788b1f0efb65cb8ed2e31469448ca3e523ee",
+        "kind": "replay_expired_event"
+      },
+      {
+        "case_id": "hub-007",
+        "disposition": "rejected",
+        "evidence_sha256": "6eccab29de4d1d9f2ea07d612fc13e7c11a2c37c8a6500442b2801f687fe4947",
+        "kind": "topology_overwrite_intent"
+      },
+      {
+        "case_id": "hub-008",
+        "disposition": "rejected",
+        "evidence_sha256": "28742c8fb2e43438003cf44d67c332b81719f13c8e0e43f5ce698771a6bd839c",
+        "kind": "central_ca_dependency"
+      },
+      {
+        "case_id": "hub-009",
+        "disposition": "review_quarantine",
+        "evidence_sha256": "acec4cb1584c2303b70d46f714b487ab7db6ee3998c6fe1035a95021e5ede218",
+        "kind": "unsigned_distress"
+      }
+    ],
+    "hostile_hub_cases": 9,
+    "hostile_unreconciled": 0,
+    "hub_forged_cell_events_accepted": 0,
+    "hub_tx_orders_executed": 0,
+    "human_resolutions_pending": 15,
+    "identical_duplicates": 10,
+    "input_events": 215,
+    "integrity_conflicts": 5,
+    "last_write_wins_used": false,
+    "limitations": [
+      "reconciliation uses generated signed events only",
+      "human conflict resolution remains deliberately pending"
+    ],
+    "local_content_disclosures": 0,
+    "monotonic_safety_violations": 0,
+    "overwritten_events": 0,
+    "projection_sha256": "0a1a4fcd5a863439e7adcd4e811d5991290bd1cb9671e2184d82469dc2873de1",
+    "quarantined_variants": 10,
+    "reconciled_inputs": 215,
+    "replay_runs": 10,
+    "resource_assignment_conflicts": 5,
+    "result_sha256": "1980e711c94d33118101601e09d37888690bcfa64f2e6177b70dd9239c92333f",
+    "silently_lost_events": 0,
+    "unique_replay_hashes": 1,
+    "unreconciled": 0,
+    "visible_conflicts": 15
+  },
+  "warnings": []
+}
