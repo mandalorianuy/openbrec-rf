@@ -3,8 +3,8 @@
 - Autoridad de secuencia: este board
 - Plan activo aprobado: `docs/superpowers/plans/2026-07-17-openbrec-p0-simulated-addons-plan.md`
 - Baseline cerrado: `docs/superpowers/plans/2026-07-17-openbrec-m0-executable-plan.md`
-- Estado real: M0 completo; P0-01–P0-03 aceptadas (`3 / 9`, `33.3%`)
-- Regla de avance: sólo `P0-04` queda elegible; ninguna task se inicia automáticamente
+- Estado real: M0 completo; P0-01–P0-04 aceptadas (`4 / 9`, `44.4%`)
+- Regla de avance: sólo `P0-05` queda elegible; ninguna task se inicia automáticamente
 
 ## Decisiones de gobernanza cerradas
 
@@ -97,13 +97,13 @@ Registro obligatorio: `docs/governance/M0_RESIDUAL_REGISTER.md`.
 
 ## Now — P0 addons completamente simulados
 
-Progreso de aceptación: `3 / 9` (`33.3%`). Una task marcada sólo cambia después de
+Progreso de aceptación: `4 / 9` (`44.4%`). Una task marcada sólo cambia después de
 su implementación, validación, review y receipt; planificación o inicio no suman.
 
 - [x] `P0-01`: contratos addon, catálogo, fixtures y modelos generados.
 - [x] `P0-02`: EnergyDomain/FSM/budget y brownout replay.
 - [x] `P0-03`: HumanMessage protegido, SOS append-only y transporte hostil.
-- [ ] `P0-04`: comparación Meshtastic/MeshCore/Reticulum por TransportProfile.
+- [x] `P0-04`: comparación Meshtastic/MeshCore/Reticulum por TransportProfile.
 - [ ] `P0-05`: federación 50k sites/60 cells/5 areas/2 hubs.
 - [ ] `P0-06`: terminal offline para texto, estado, SOS y ubicación.
 - [ ] `P0-07`: beacons acústico/PIR/térmico, fusión, review y retención.
@@ -176,7 +176,30 @@ su implementación, validación, review y receipt; planificación o inicio no su
   conserva custodia física; P0-R010 queda resuelto para P0-03 y P0-R012 impide
   reutilizar claves sintéticas fuera del replay.
 
-Única task elegible: `P0-04`. No está iniciada por este cierre.
+### Evidencia P0-04
+
+- Modelos: Meshtastic `v2.7.26.54e0d8d`, MeshCore
+  `companion-v1.16.0` y Reticulum `1.3.8` quedan fijados por commit, fuente,
+  licencia, fecha y limitaciones; todos continúan `unverified`.
+- Comparación: 27 corridas cubren tres perfiles y escalas 12/40/100 con SOS,
+  estado, ubicación y 23 eventos de seis clases de falla. Los tres modelos consumen el mismo
+  `OpenBRECEnvelope`; no se puentean frames ni floods nativos.
+- Denominador: 4.104 mensajes, 3.138 entregados modelados y 966 fallidos
+  modelados; cero omisiones, cero prioridad SOS invertida y cero ganador global.
+- Métricas: PDR, p50/p95/p99, airtime, retries, duplicates, convergencia,
+  energía modelada y metadata disclosure quedan limitadas a modelo/versión,
+  perfil y escala; no son benchmarks ni claims físicos.
+- Adversarios: 11/11 casos tienen disposición explícita, cero raw bridges, cero
+  pérdida silenciosa y cero aceptación operacional falsa.
+- Receipts: `evidence/p0/p0-04/`, evaluados sobre
+  `7e01320ec9520316add7a7d2915fbb1426106bc1` con `dirty: false` e integridad
+  canónica aprobada.
+- Review: `docs/security/2026-07-17-p0-04-transport-comparison-review.md`.
+- Residuales: P0-R001 queda controlado para simulación y planificado para P1a;
+  P0-R008 queda controlado por pins con reapertura obligatoria; P0-R010 queda
+  resuelto para P0-04 y sigue planificado para P0-05–P0-07.
+
+Única task elegible: `P0-05`. No está iniciada por este cierre.
 
 Plan: `docs/superpowers/plans/2026-07-17-openbrec-p0-simulated-addons-plan.md`.
 Residuales: `docs/governance/P0_RESIDUAL_REGISTER.md`.

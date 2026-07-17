@@ -1,0 +1,143 @@
+{
+  "command": [
+    "python",
+    "-m",
+    "openbrec.verify",
+    "malicious-transport",
+    "--receipt",
+    "/tmp/openbrec-p0-04-7e01320-receipts/malicious-transport/p0-04-receipt.json"
+  ],
+  "dirty": false,
+  "errors": [],
+  "finished_at": "2026-07-17T22:26:46.499077Z",
+  "gate": "malicious-transport",
+  "gate_version": "0.1.0",
+  "git_sha": "7e01320ec9520316add7a7d2915fbb1426106bc1",
+  "inputs": [
+    {
+      "path": "fixtures/p0/transports/common-workload.json",
+      "sha256": "905d485d1da531334dce633d4dc573f3467955319c92ebe51e9bbd9eeaecfd47"
+    },
+    {
+      "path": "openbrec/transports.py",
+      "sha256": "0ef05ebbb116041c9e41ecb139b036ebda70635ce45fd9a3d241b0658e7588e3"
+    },
+    {
+      "path": "openbrec/messaging.py",
+      "sha256": "4104d21c0eca3c8015482f9ae75a7a55c403682d506056dd54b0bb5e2fe7ab9b"
+    },
+    {
+      "path": "schemas/addons/1.0.0/transport-profile.schema.json",
+      "sha256": "b358e08293a206f6e6da9b13b789f50030d56bd655c92e337af94775266ab4da"
+    },
+    {
+      "path": "schemas/addons/1.0.0/transport-envelope.schema.json",
+      "sha256": "9d34b71f20a3bb22427b2f4a04c64aa6c557d1bdfa5086777a0a502ae8a45516"
+    }
+  ],
+  "lockfiles": [
+    {
+      "path": "uv.lock",
+      "sha256": "2d1b79df4cd5878ec7f4674a133c54ca7b16dfa559560ba3a93911e620f435d5"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "sha256": "ed7659f050b279f37e5cf84fb065fc528e15b3204d374681f3a70ad081d1c25a"
+    },
+    {
+      "path": "apps/web/pnpm-lock.yaml",
+      "sha256": "12a1ed34e601b49a319846ef8d87c316708bb695853661ec3b3b95208701d278"
+    }
+  ],
+  "output_sha256": "ed19cc744144eb2287698c4dad6d079e573dcae261c67c91c4b628252242a268",
+  "receipt_version": "1.0.0",
+  "responsible_role": "radio-transport-maintainer",
+  "result": "passed",
+  "runtime": {
+    "docker": "Docker version 29.5.3, build d1c06ef",
+    "node": "v26.5.0",
+    "pnpm": "11.9.0",
+    "python": "3.12.13"
+  },
+  "scope": "hostile_transport_disposition_and_safety_boundary",
+  "started_at": "2026-07-17T22:26:46.236782Z",
+  "summary": {
+    "claim_scope": "deterministic_simulation_only",
+    "dispositions": [
+      {
+        "case_id": "mt-001",
+        "disposition": "review_quarantine",
+        "evidence_sha256": "e847f7ef9db1384b2ec37b115b4548ebc0b54570a0a72ea0553bbfb43cd0ba68",
+        "kind": "forged_operator_acceptance"
+      },
+      {
+        "case_id": "mt-002",
+        "disposition": "rejected",
+        "evidence_sha256": "f67ff1e036d5e49c11b3084ffc9f0741a27c93b1d1bc23c887ec78a44886d1c6",
+        "kind": "raw_frame_bridge"
+      },
+      {
+        "case_id": "mt-003",
+        "disposition": "rejected",
+        "evidence_sha256": "0e2fed59e6e615133c9b549ad4469ba67c37b7eda7640add3ac5d44025383d80",
+        "kind": "native_flood_bridge"
+      },
+      {
+        "case_id": "mt-004",
+        "disposition": "rejected",
+        "evidence_sha256": "86846195b0345347be4d3c672608cab2d1caa264d8df1d8293a801f87ad1ae88",
+        "kind": "default_transport_secret"
+      },
+      {
+        "case_id": "mt-005",
+        "disposition": "review_quarantine",
+        "evidence_sha256": "68ec0b64679360e7307742e718e61b4c79e71431bfdb660c4747170fb1783c2b",
+        "kind": "expired_envelope"
+      },
+      {
+        "case_id": "mt-006",
+        "disposition": "rejected",
+        "evidence_sha256": "4b888ce6d539d7b34b7e046caefe230b67e2607f52f04d64c444c07e982f6564",
+        "kind": "oversize_payload"
+      },
+      {
+        "case_id": "mt-007",
+        "disposition": "rejected",
+        "evidence_sha256": "0983dd362609bca887ab7f7c1c49e63f312c5f6b83ad644cdfb70f6d69ddc26a",
+        "kind": "looped_envelope"
+      },
+      {
+        "case_id": "mt-008",
+        "disposition": "rejected",
+        "evidence_sha256": "2151037f76f433ae767280774a62271c94e876235f616d658212db0eb159ae57",
+        "kind": "duplicate_path"
+      },
+      {
+        "case_id": "mt-009",
+        "disposition": "rejected",
+        "evidence_sha256": "70f21f864ccc9bf124592e50036084d3d73dfebabe270ced051fd0375de055a8",
+        "kind": "unpinned_adapter"
+      },
+      {
+        "case_id": "mt-010",
+        "disposition": "review_quarantine",
+        "evidence_sha256": "8d7efa9e5905bf25693618ee89b1326d4aabe7b53b4f27d29f5d5b33fc0c590f",
+        "kind": "transport_role_elevation"
+      },
+      {
+        "case_id": "mt-011",
+        "disposition": "review_quarantine",
+        "evidence_sha256": "98d7150f1e5d4af03a733d1c9680bc308cec9b73bb02c093570ac67aac180c52",
+        "kind": "silent_drop_attempt"
+      }
+    ],
+    "distress_preserved_for_review": 4,
+    "false_operational_acceptance": 0,
+    "hostile_cases": 11,
+    "raw_bridges_emitted": 0,
+    "result_sha256": "63caebfa0dbd7058a4e2a85b1e979b9a3a8e4ebf3575c39cb79f1293bc9e49d9",
+    "transport_ack_is_operational": false,
+    "unreconciled": 0
+  },
+  "warnings": []
+}
