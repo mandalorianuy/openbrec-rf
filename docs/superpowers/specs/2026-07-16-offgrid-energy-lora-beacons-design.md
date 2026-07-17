@@ -14,6 +14,8 @@ Esta especificación define una dirección arquitectónica. No autoriza todavía
 
 Enmienda 2026-07-17: `2026-07-17-openbrec-radio-security-regulation-design.md` reemplaza la política `blocked_unverified` de esta visión por los modos `receive_only`, `conducted_only`, `jurisdiction_validated` y `emergency_assumed_risk`. También agrega federación multi-equipo con autonomía recursiva. Esa especificación hija es la autoridad en radio, regulación, seguridad y federación; el texto histórico incompatible de esta visión no debe implementarse.
 
+Revisión multi-bearer 2026-07-17: `docs/research/2026-07-17-offgrid-communications-state-of-art.md` corrige y amplía la comparación de transportes. Meshtastic, MeshCore y Reticulum/RNode se evalúan por perfiles distintos; ninguno constituye por sí solo la red OpenBREC.
+
 Enmienda energética 2026-07-17: `2026-07-17-openbrec-energy-design.md` es la autoridad para cargas, fronteras de medición, dimensionamiento, FSM, brownout, solar y ensayos. La reserva de 72 horas se demuestra sobre la cadena completa de servicios críticos, sin contar generación externa; cada componente aporta autonomía propia o una ruta de recarga/reemplazo ensayada.
 
 Enmienda beacons/UX 2026-07-17: `2026-07-17-openbrec-beacons-human-ux-design.md` es la autoridad para sensores acústicos/PIR/térmicos, captura controlada, revisión, terminales, privacidad y accesibilidad. Prioridad y confianza son dimensiones separadas; ningún sensor o silencio produce confirmación o ausencia.
@@ -44,7 +46,7 @@ ADR-0001 deberá formalizar esta precedencia, el alcance del core y las red line
 - Soportar energía híbrida con 72 horas de reserva reproducible.
 - Usar LoRaWAN privado para telemetría de componentes.
 - Usar LoRa P2P/mesh separado para texto breve, estado, SOS y ubicación.
-- Adoptar Meshtastic como transporte de referencia opcional, version-pinned y reemplazable.
+- Adoptar un portafolio opcional, version-pinned y reemplazable; Meshtastic prioriza movilidad espontánea, MeshCore infraestructura planificada y Reticulum gateways heterogéneos.
 - Definir `BeaconNode` como sensor, relay o ambos.
 - Permitir construir diseños abiertos o reutilizar hardware compatible.
 - Fallar cerrado para elevar confianza, roles, aceptación SOS o publicación sensible; preservar y mostrar posible distress aunque no pueda autenticarse.
@@ -395,7 +397,7 @@ No se escribirá un plan P0 off-grid hasta que las cuatro estén aprobadas y M0 
 
 ## 21. Matriz posterior
 
-La matriz inicial está documentada en `docs/decision-matrices/2026-07-17-offgrid-addons-decision-matrix.md`. Permanece pendiente de aprobación y no modifica todavía `DELIVERY_BOARD.md`.
+La matriz inicial está documentada en `docs/decision-matrices/2026-07-17-offgrid-addons-decision-matrix.md`. La revisión de transportes que evita privilegiar una única mesh está en `docs/research/2026-07-17-offgrid-communications-state-of-art.md`. Ambas permanecen pendientes de aprobación y no modifican todavía `DELIVERY_BOARD.md`.
 
 La matriz tendrá funcionalidad, valor BREC, evidencia, alternativa desacoplada, hardware reutilizable, diseño construible, energía, privacidad, safety, regulación, esfuerzo, dependencias, madurez, aceptación, recomendación y siguiente experimento.
 

@@ -13,7 +13,8 @@ There is no currently deployed application code to assess. Threat ratings theref
 In scope:
 
 - the planned LoRaWAN component plane and human LoRa P2P/mesh plane;
-- Meshtastic and its local MQTT/serial/BLE/TCP adapters;
+- Meshtastic, MeshCore, Reticulum/RNode and their local radio/IP/device adapters;
+- transport-profile selection, multi-bearer failover, deduplication, anti-loop and carry bundles;
 - application identity, protected human messages, SOS and distress handling;
 - `IncidentFederation → OperationalArea → ResponseCell → Deployment → Site`;
 - federation gateways, at least two hubs, intermittent backhaul and physical bundles;
@@ -49,7 +50,7 @@ Open questions before implementation:
 
 - which hardware profiles provide validated non-exportable key storage;
 - exact maximum credential validity by role and storage level;
-- which LoRaWAN network server and Meshtastic firmware version become the P1 reference;
+- which LoRaWAN network server and Meshtastic/MeshCore/Reticulum versions become P1 references for each profile;
 - measured antenna isolation, filter needs and capacity bounds;
 - responsible security, RF, privacy and incident-operation owners;
 - jurisdiction-specific evidence and review cadence for each deployment.
@@ -64,7 +65,8 @@ Open questions before implementation:
 - Beacon sensor boundary: microphones, PIR and low-resolution thermal arrays exposed to physical tampering, adversarial stimuli and environmental interference.
 - Local feature/model pipeline: turns raw windows into typed observations and must abstain outside validated conditions.
 - LoRaWAN network server: local machine-plane session and routing authority for a `ResponseCell`.
-- Meshtastic or alternative mesh: untrusted transport for short human messages.
+- Meshtastic, MeshCore, Reticulum/RNode or alternative bearer: untrusted transport selected per human/gateway profile.
+- Transport policy controller: chooses authorized primary/fallback/carry bearers and must prevent loops and duplicate semantics.
 - Raw transport boundary: contains protobufs, manufacturer IDs and transport metadata.
 - MQTT brokers: a raw bridge broker/listener and a distinct core event bus; the current Compose file shows only a development placeholder.
 - Identity authority and trust store: cell-local incident root, actor-device bindings, cached revocations and policy.
@@ -79,7 +81,7 @@ Open questions before implementation:
 
 1. A radio or terminal emits transport bytes into a physically hostile RF boundary.
 2. A local adapter parses bytes inside `RawTransportBoundary`; transport identity is not trusted.
-3. Application signatures, AEAD, incident binding, TTL, sequence and authorization are verified before an authenticated `HumanMessage` reaches the core boundary.
+3. Transport policy validates that the bearer/profile is authorized; application signatures, AEAD, incident binding, TTL, sequence and authorization are verified before an authenticated `HumanMessage` reaches the core boundary.
 4. Possible distress that fails validation crosses only into the restricted preservation boundary as `unverified_distress`.
 5. Beacon raw windows cross into a local processing boundary; only typed observations reach the core, while authorized snippets/grids enter the restricted evidence vault by hash.
 6. LoRaWAN observations cross through a separate adapter after session, counter and provenance checks.
@@ -139,6 +141,7 @@ flowchart LR
 - Passive RF monitoring and traffic analysis, including location correlation.
 - Packet injection, replay, spoofing of transport fields, congestion and jamming.
 - Possession of a Meshtastic channel key or default configuration.
+- Manipulation of MeshCore paths/default credentials, Reticulum announces/interfaces or multi-bearer routing policy.
 - Theft or temporary physical access to terminals, nodes, storage and removable media.
 - Compromise of a peer cell, federation hub, backhaul endpoint or operator account.
 - Submission of malformed, oversized, duplicated, delayed or conflicting payloads and bundles.
@@ -161,7 +164,7 @@ These non-capabilities are design assumptions to be challenged by implementation
 ## Entry points and attack surfaces
 
 - LoRaWAN RF frames, joins, frame counters and downlinks.
-- LoRa mesh RF packets and relay behavior.
+- LoRa mesh RF packets, paths, announces, relay behavior and version downgrade.
 - BLE, USB/serial and TCP device control interfaces.
 - Raw Meshtastic protobufs and MQTT bridge topics.
 - Local MQTT listeners, credentials, ACLs and retained messages.
@@ -191,6 +194,7 @@ These non-capabilities are design assumptions to be challenged by implementation
 11. An attacker or ordinary rescue equipment emits sound, heat or movement crafted to look like a victim signal; naive fusion creates a high-confidence candidate and diverts resources.
 12. A compromised operator account enables snippets or thermal-grid retention broadly, exports raw material and exposes victims, responders or private locations.
 13. Alert copy, color or automation presents silence as absence or a candidate as confirmed; responders deprioritize a real search area or over-trust a false signal.
+14. A multi-bearer gateway bridges raw floods or repeatedly fails over the same message; packets loop across adapters, exhaust airtime/energy and obscure whether a distress is one logical event or many.
 
 ## Threat model table
 
@@ -209,6 +213,7 @@ These non-capabilities are design assumptions to be challenged by implementation
 | TM-011 | Adversarial or environmental sound, heat, motion or placement creates or suppresses a beacon candidate. | Physical/RF proximity, unmodeled environment, stale baseline or overconfident model/fusion. | Resource diversion, missed distress, false location and alert fatigue. | Typed observations, health/placement invalidation, deterministic baseline, OOD/abstention, non-independent fusion and mandatory human review. | Adversarial fixtures, 20+ background beacon-hours per environment and relocation drills; owners: sensing + search operations. | Real incidents exceed test coverage and multiple sensors may share one false cause. | High |
 | TM-012 | Raw audio, thermal grids or fine placement data are captured, retained or exported without justified scope. | Compromised operator, broad role, weak retention worker or exposed vault. | Victim/responder privacy harm, surveillance, legal risk and loss of trust. | Features-only default, dual-role authorization, bounded break-glass, encryption, hash references, vault ACL, hold/review and deletion receipts. | Negative authorization/export tests and retention fault injection; owners: privacy + security. | Life-safety preservation intentionally retains some sensitive material longer. | High |
 | TM-013 | UX or automation communicates a false presence, false absence or rescue guarantee. | Ambiguous copy, color-only state, hidden missing sensor, alert pressure or derived score treated as fact. | Unsafe prioritization, abandoned search area, false expectation and operational error. | Prohibited labels, separate priority/confidence, visible coverage/missing sensors, signed external confirmation and comprehension gates. | Contract copy scan and usability tests with responders/non-prepared users; owners: product safety + operations. | Stress, language and accessibility conditions can still produce misinterpretation. | High |
+| TM-014 | Multi-bearer failover, raw bridging or downgrade creates loops, duplicate semantics or priority inversion. | Two or more adapters are active; policy trusts transport ACK/path, re-emits raw traffic or lacks stable message identity/TTL. | Airtime and battery exhaustion, SOS delay, duplicate dispatch and cross-bearer compromise. | `TransportProfile`, common signed message ID, per-path receipts, dedup, anti-loop, no raw bridge, authorized failover and SOS scheduling before interfaces. | Meshtastic/MeshCore/Reticulum+carry replay with partition, flood, path churn and malicious adapter; owners: communications + core security. | Independent bearers can fail together through shared spectrum, power, hardware or policy. | High |
 
 ## Criticality calibration
 
@@ -224,7 +229,7 @@ Ratings must be recalibrated when runtime, deployment topology and hardware evid
 2. Derivation of SOS state and the absolute prevention of false `operator.accepted`.
 3. Preservation boundary for `unverified_distress`, including access, retention and no silent loss.
 4. Cell incident-root lifecycle, QR/fingerprint enrolment, loss, revocation, rekey and stale-trust behavior.
-5. Raw Meshtastic/MQTT containment and proof that transport IDs or ACKs cannot become identity or facts.
+5. Raw Meshtastic/MeshCore/Reticulum/MQTT containment and proof that transport IDs, paths, announces or ACKs cannot become identity or facts.
 6. Field Compose/network exposure, secret handling, broker separation and negative ACL tests.
 7. LoRaWAN OTAA key custody, DevNonce/JoinNonce/frame-counter durability and brownout recovery.
 8. Federation event minimization, outbound-only gateway, malicious-hub behavior and cross-cell authorization.
@@ -235,3 +240,4 @@ Ratings must be recalibrated when runtime, deployment topology and hardware evid
 13. Beacon raw boundary, capture authorization, vault access, review hold and deletion receipts.
 14. Sensor spoofing, placement invalidation, OOD/abstention and proof that fusion cannot emit presence or absence.
 15. Operator/terminal copy, priority-confidence separation, missing coverage, SOS semantics and accessibility under offline field conditions.
+16. Transport-profile selection, multi-bearer dedup/anti-loop, downgrade behavior, SOS priority before interfaces and failure-domain independence.

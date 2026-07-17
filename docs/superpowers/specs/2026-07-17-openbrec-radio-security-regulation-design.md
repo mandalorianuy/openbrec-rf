@@ -1,11 +1,12 @@
 # Radio, seguridad, regulación y federación de OpenBREC RF
 
-- Estado: especificación aprobada; implementación no autorizada
+- Estado: especificación aprobada; revisión multi-bearer pendiente de aprobación; implementación no autorizada
 - Fecha: 2026-07-17
 - Especificación padre: `2026-07-16-offgrid-energy-lora-beacons-design.md`
 - Dependencia contractual: `2026-07-16-openbrec-core-contracts-replay-design.md`
 - Alcance: planos LoRa, identidad, mensajería humana, SOS, coexistencia, regulación y federación autónoma
 - Fuera de alcance: implementación, selección final de hardware, dimensionamiento energético y UX de beacons
+- Revisión de estado del arte: `docs/research/2026-07-17-offgrid-communications-state-of-art.md`
 
 ## 1. Propósito y condición de avance
 
@@ -13,7 +14,7 @@ Esta especificación convierte la visión de comunicaciones off-grid en límites
 
 La jerarquía facilita coordinación, pero nunca se ubica en el camino crítico local. Cada nivel conserva capacidad de operar aislado, registrar evidencia, comunicar SOS, administrar confianza y reconciliarse después.
 
-Este documento no autoriza TX radiado, despliegue de campo ni implementación. Tampoco abre todavía el plan P0 conjunto. Después de su aprobación corresponde diseñar energía y luego beacons/UX; el plan conjunto permanece condicionado por las cuatro especificaciones hijas y por M0 ejecutable.
+Este documento no autoriza TX radiado, despliegue de campo ni implementación. Las cuatro especificaciones hijas ya fueron aprobadas, pero la revisión multi-bearer y la matriz conjunta permanecen en revisión. Cualquier plan addon sigue condicionado por M0 ejecutable.
 
 ## 2. Autoridad y corrección de la especificación padre
 
@@ -37,8 +38,8 @@ Esta especificación reemplaza, únicamente en su dominio, las afirmaciones de l
 
 ## 3. Decisiones aprobadas
 
-1. Se separan un plano máquina LoRaWAN privado y un plano humano LoRa P2P/mesh.
-2. Meshtastic es transporte de referencia opcional, version-pinned, reemplazable y no confiable para autenticidad de aplicación.
+1. Se separan un plano máquina LoRaWAN privado y un plano humano multi-bearer; ningún protocolo es "la red" OpenBREC.
+2. Meshtastic, MeshCore y Reticulum/RNode son adapters opcionales, version-pinned, reemplazables y no confiables para semántica o autenticidad de aplicación.
 3. La autenticidad, confidencialidad y semántica SOS pertenecen a OpenBREC, no al transporte.
 4. La jerarquía es `IncidentFederation → OperationalArea → ResponseCell → Deployment → Site`.
 5. Cada nivel funciona sin conectividad, autorización ni quorum de su superior.
@@ -49,6 +50,7 @@ Esta especificación reemplaza, únicamente en su dominio, las afirmaciones de l
 10. La vida precede a privacidad y minimización en un perfil BREC declarado, con acceso, retención y auditoría proporcionales.
 11. La operación RF puede usar riesgo de emergencia explícito, con alcance, TTL, responsables, monitoreo y kill switch.
 12. Jamming deliberado, TX continuo, suplantación de servicios y radio ofensiva permanecen prohibidos sin excepción.
+13. Cada `ResponseCell` selecciona primary, fallbacks y carry bearer mediante un `TransportProfile` reproducible; puede operar con uno, varios o ninguno disponible.
 
 ## 4. Objetivos y no objetivos
 
@@ -62,6 +64,7 @@ Esta especificación reemplaza, únicamente en su dominio, las afirmaciones de l
 - Identidad por incidente, revocación offline y recuperación ante terminal perdido.
 - Operación reproducible en simulación, banco conducted y campo bajo perfiles explícitos.
 - Coexistencia medible entre radios, planos, canales y equipos próximos.
+- Selección contextual entre movilidad espontánea, infraestructura planificada, backbone heterogéneo, telemetría, malla IP, sensor local y DTN.
 
 ### 4.2 No objetivos
 
@@ -70,6 +73,7 @@ Esta especificación reemplaza, únicamente en su dominio, las afirmaciones de l
 - Crear una PSK común para todo el desastre.
 - Federar MQTT local, frames LoRaWAN o protobufs Meshtastic crudos.
 - Requerir un fabricante, chipset, network server o firmware específico.
+- Declarar un ganador global de mesh a partir de hops máximos, popularidad o claims del proyecto.
 - Controlar vuelos, interferir señales, emular redes públicas o responder ofensivamente a jamming.
 - Usar una autoridad central online, OCSP, DNS o nube en el camino crítico.
 - Resolver voz, video o archivos de gran tamaño por LoRa; otros transportes podrán registrarse como addons.
@@ -118,7 +122,16 @@ La línea base de interoperabilidad será LoRaWAN L2 TS001 1.0.4 y Regional Para
 
 ### 6.2 Plano humano
 
-LoRa P2P/mesh transporta texto breve, estado, SOS y ubicación. Meshtastic es la referencia inicial por BLE, USB/serial, TCP o bridge MQTT privado, pero su adapter no puede filtrar protobufs o IDs de fabricante al core.
+El plano humano transporta texto breve, estado, SOS y ubicación mediante el bearer apropiado al perfil:
+
+- Meshtastic para equipos móviles, topología desconocida y commissioning rápido;
+- MeshCore para celdas planificadas con repeaters estratégicos y tráfico directo predominante;
+- Reticulum/RNode para gateways heterogéneos, DTN o enlaces que combinan LoRa, packet radio e IP;
+- Ethernet/Wi-Fi mesh, LMR u otros adapters cuando el entorno, payload o equipo disponible lo justifique.
+
+Los tres primeros son candidatos P0/P1a de igual jerarquía experimental, no equivalentes funcionalmente. Ningún adapter puede filtrar frames, protobufs, path hashes, Node IDs o identities del transporte al core. Los perfiles y comparaciones normativas están en la revisión de estado del arte.
+
+Un incidente masivo usa muchas redes locales por `ResponseCell`; no construye una malla LoRa única encadenando el máximo de hops del protocolo. La escala superior proviene de federar eventos con autonomía recursiva.
 
 P1 valida este plano con rescatistas/operadores y valida el plano máquina con componentes. Queda documentada, pero fuera de la aceptación P1 inicial, la posibilidad de levantar una red separada para personas con dispositivos propios compatibles. Esa red civil tendrá canal, claves, enrolamiento, cuotas, gateway y trust policy propios; no comparte una PSK ni obtiene acceso implícito a la red operativa. Un gateway revisado podrá intercambiar únicamente los tipos mínimos autorizados, en especial distress preservable.
 
@@ -136,6 +149,9 @@ Al menos dos hubs replican eventos. Un hub puede ayudar a descubrir, enrutar y v
 
 - `LoRaWANAdapter`: valida sesión, contador, provenance y capability antes de publicar observaciones.
 - `HumanMeshAdapter`: convierte payloads protegidos y verificados en eventos humanos.
+- `MeshtasticAdapter`, `MeshCoreAdapter` y `ReticulumAdapter`: implementaciones sustituibles de la misma frontera humana.
+- `TransportPolicyController`: selecciona primary/fallback/carry bearer con decisión reproducible y anti-loop.
+- `BearerCapabilityRegistry`: registra límites medidos, energía, movilidad, regulación y support status por perfil exacto.
 - `RawTransportBoundary`: contiene protobufs, Node IDs y errores del transporte fuera del core.
 - `IdentityAuthority`: emite bindings por incidente y funciona offline.
 - `TrustStore`: raíces, bindings, revocaciones y estado de frescura local.
@@ -163,6 +179,10 @@ schemas/addons/radio/1.0.0/
   regulatory-profile.schema.json
   radio-override-event.schema.json
   rf-coexistence-profile.schema.json
+  transport-profile.schema.json
+  bearer-capability.schema.json
+  transport-policy-decision.schema.json
+  transport-receipt.schema.json
 ```
 
 Cada payload viaja en el `DomainEvent` del core. Comparte `incident_id`, `deployment_id`, provenance, handling policy, idempotencia, canonicalización y replay; no crea una cadena de evidencia paralela.
@@ -254,11 +274,19 @@ El adapter verifica, en orden:
 
 Sólo después publica un `HumanMessage` autenticado. El material que pueda representar peligro vital sigue la ruta de preservación descrita en la sección 12.
 
-## 11. Meshtastic, MQTT y LoRaWAN
+## 11. Portafolio de transportes, MQTT y LoRaWAN
 
-### 11.1 Meshtastic como transporte no confiable
+### 11.1 Selección contextual y multi-bearer
 
-La documentación oficial advierte que los mensajes de canal no ofrecen autenticación fuerte del emisor y recomienda autenticación en la aplicación; también publica una clave de canal predeterminada conocida. Por ello:
+`TransportProfile` declara misión, plano, movilidad, topología, nodos, carga, payload, latencia, energía, hardware, regulación, amenaza y backhaul. Su decisión contiene `primary_bearer`, fallbacks, carry bearer, bridges prohibidos, airtime, activation/expiry, evidencia y actor.
+
+La selección ocurre inicialmente en commissioning. Failover automático sólo puede usar bearers previamente autorizados y debe conservar el mismo `message_id`, firma, TTL y prioridad. El receptor deduplica y conserva receipts por camino. Se prohíbe bridgear floods o frames crudos: un adapter termina su transporte y sólo un `DomainEvent` válido puede ser emitido por otro.
+
+### 11.2 Meshtastic como transporte no confiable
+
+Meshtastic usa managed flooding para broadcasts y, desde firmware 2.6, next-hop por salto para mensajes directos con fallback a flooding. Admite roles que no repiten y roles de infraestructura. El máximo configurable es 7 hops y el default 3; ninguna de esas cifras prueba capacidad bajo la carga OpenBREC.
+
+La documentación oficial indica que DMs modernos incluyen PKC/firma, pero que los mensajes de canal no ofrecen integridad/autenticación fuerte del emisor y publica una clave de canal predeterminada conocida. Por ello:
 
 - la PSK predeterminada está prohibida en operación;
 - el broker público está prohibido;
@@ -266,7 +294,19 @@ La documentación oficial advierte que los mensajes de canal no ofrecen autentic
 - las protecciones direct-message de una versión concreta son defensa adicional, no contrato OpenBREC;
 - firmware, protobuf y adapter quedan version-pinned y con SBOM/licencias.
 
-### 11.2 Boundary MQTT
+### 11.3 MeshCore como transporte no confiable
+
+MeshCore separa companions y repeaters. El primer mensaje directo descubre camino por flood y los siguientes usan un path explícito; los canales grupales siguen usando flood. El máximo interno de 64 hops aplica a paths de un byte y no es un claim operacional: paths mayores reducen el máximo, pueden existir colisiones de hashes y versiones antiguas pueden descartar formatos nuevos silenciosamente.
+
+El perfil OpenBREC exige versión soportada, credenciales default reemplazadas, claves enroladas, tests de path churn/flood/legacy y overlay OpenBREC. MeshCore se evalúa para repeaters planificados; no se presume apto para todos los nodos móviles ni para escala por su hop limit.
+
+### 11.4 Reticulum/RNode como transporte no confiable
+
+Reticulum aporta routing cifrado sobre bearers heterogéneos, DTN/LXMF, transferencia de recursos e initiator anonymity. Su API y wire format son declarados estables, pero el proyecto se considera joven y no auditado externamente.
+
+El forwarding general es priority-agnostic y un Link cuesta tres paquetes/297 bytes. Por ello OpenBREC prioriza y limita tráfico antes del interface, controla announces por boundary y mide overhead/goodput. No se afirma menor alcance RF por handshake: alcance y airtime se ensayan por separado con PHY/hardware equivalentes.
+
+### 11.5 Boundary MQTT
 
 El bridge crudo usa broker/listener y credenciales distintos del bus core. El topic local es:
 
@@ -278,11 +318,13 @@ El perfil de campo exige autenticación, ACL por celda/plano/dirección, TLS o a
 
 MQTT local no cruza la frontera federada. `FederationGateway` publica eventos autorizados mediante su protocolo separado; nunca reexpone topics o brokers.
 
-### 11.3 LoRaWAN
+### 11.6 LoRaWAN
 
 El campo usa OTAA y claves raíz únicas por dispositivo. ABP queda restringido a simulación, dummy load o banco conducted marcado `unverified`. Deben persistirse de forma segura nonces, frame counters y estado de join para impedir rollback o reutilización después de brownout.
 
 Uplinks normales son unconfirmed por defecto. Confirmed downlinks se presupuestan. Una degradación del network server no elimina captura o almacenamiento local.
+
+LoRaWAN Relay TS011 puede evaluarse para extender cobertura del plano máquina entre end-device y gateway/network server. No crea mensajería humana mesh ni elimina la dependencia lógica del network server local.
 
 ## 12. SOS y distress sin descarte
 
@@ -359,6 +401,7 @@ Separar claves y payloads no evita saturación, near-far o desensibilización co
 - presupuesto de confirmed downlinks y fragmentación;
 - reacción ante congestión, near-far, co-site, relay loss y jamming detectado;
 - firmware, hardware, escenario, fecha, evidencia y responsable.
+- bearers primario/fallback, reglas anti-loop y condiciones de failover.
 
 La referencia P1 usa radios y antenas separados. Un transceiver compartido es `unsupported` hasta validación. SOS desplaza telemetría no crítica, pero nunca habilita TX continuo. Cada SOS debe caber en un único frame para todo data rate habilitado; el perfil deshabilita data rates que no lo permitan.
 
@@ -373,6 +416,7 @@ Gates separados:
 - `contract`: metaschema, schemas, fixtures y modelos generados sin diff;
 - `crypto`: vectores válidos/forjados, nonce, rollback, revocación y rekey;
 - `mesh-boundary`: ningún protobuf, ID persistente o ACK no confiable entra como hecho;
+- `transport-policy`: profiles, capability manifests, deduplicación, anti-loop, failover y receipts por bearer;
 - `mqtt-field`: auth, ACL, no-default-secret, retención, cuota y exposición;
 - `lorawan`: OTAA, claves únicas, contadores y recuperación tras brownout;
 - `federation`: partición, hub hostil, peering, handoff y reconciliación;
@@ -388,6 +432,9 @@ Fallan cerrado los cambios de confianza, elevación de rol, `operator.accepted`,
 ### 16.1 P0 simulado
 
 - schemas y fixtures válidos/inválidos;
+- adapters/modelos comparables de Meshtastic, MeshCore y Reticulum sobre el mismo `OpenBRECEnvelope`;
+- perfiles mobile-spontaneous, planned-repeater y heterogeneous-backbone con workloads idénticos donde corresponda;
+- 12, 40 y 100 nodos, path churn, flood, relay loss, duplicación multi-bearer y carry bundle;
 - vectores criptográficos reproducibles;
 - replay determinístico de eventos auténticos, duplicados, tardíos, forjados y sin firma;
 - partición de 24 horas, reloj degradado, reinicio y rollback;
@@ -398,7 +445,7 @@ Fallan cerrado los cambios de confianza, elevación de rol, `operator.accepted`,
 
 ### 16.2 P1a conducted
 
-Incluye hardware LoRaWAN y mesh mediante dummy load, interfaces cableadas o recinto de atenuación medido. Verifica potencia, airtime, un frame SOS, brownout de contadores, co-site y near-far sin radiación exterior intencional.
+Incluye hardware LoRaWAN y al menos Meshtastic, MeshCore y RNode mediante dummy load, interfaces cableadas o recinto de atenuación medido. Verifica potencia, airtime, goodput, overhead, un frame SOS, brownout de contadores, co-site, near-far, path churn y downgrade legacy sin radiación exterior intencional. El resultado asigna support status por `TransportProfile`; no declara ganador global.
 
 ### 16.3 P1b radiado
 
@@ -451,6 +498,9 @@ Cada corrida conserva configuración versionada, capability manifests, hashes de
 - Un jammer puede impedir comunicación local; OpenBREC sólo detecta y ofrece rutas alternativas.
 - Un dispositivo robado puede exponer mensajes anteriores si su almacenamiento no es hardware-backed.
 - Meshtastic puede cambiar propiedades de seguridad entre versiones; el pin y los tests son obligatorios.
+- MeshCore puede cambiar path encoding, ACLs, bridge y criptografía; defaults, compatibilidad legacy y pin son gates.
+- Reticulum aporta seguridad y heterogeneidad útiles, pero carece de auditoría externa y no prioriza SOS dentro de su forwarding general.
+- Un selector multi-bearer mal configurado puede duplicar floods, crear loops o agotar energía/espectro.
 - Una decisión `emergency_assumed_risk` puede producir consecuencias regulatorias o interferencia aun cumpliendo este proceso.
 - Particiones pueden producir asignaciones incompatibles que requieren resolución humana.
 - Los metadatos de tráfico y ubicación siguen siendo sensibles aun con contenido cifrado.
@@ -459,10 +509,23 @@ Cada corrida conserva configuración versionada, capability manifests, hashes de
 ## 19. Fuentes primarias y evidencia contextual
 
 - Meshtastic Encryption: https://meshtastic.org/docs/overview/encryption/
+- Meshtastic mesh algorithm: https://meshtastic.org/docs/overview/mesh-algo/
+- Meshtastic LoRa/max hops: https://meshtastic.org/docs/configuration/radio/lora/
+- Meshtastic device roles: https://meshtastic.org/docs/configuration/radio/device/
 - Meshtastic MQTT: https://meshtastic.org/docs/software/integrations/mqtt/
 - Meshtastic regiones por país: https://meshtastic.org/docs/configuration/region-by-country/
+- MeshCore repository/roadmap: https://github.com/meshcore-dev/MeshCore
+- MeshCore FAQ: https://github.com/meshcore-dev/MeshCore/blob/main/docs/faq.md
+- MeshCore security policy: https://github.com/meshcore-dev/MeshCore/blob/main/SECURITY.md
+- Reticulum manual: https://reticulum.network/manual/
+- Reticulum status/security caveat: https://github.com/markqvist/Reticulum
 - LoRa Alliance Technical Specifications: https://resources.lora-alliance.org/technical-specifications
+- LoRaWAN Relay TS011: https://resources.lora-alliance.org/technical-specifications/ts011-1-0-0-relay
 - LoRaWAN security implementation: https://lora-alliance.org/resource_hub/lorawan-is-secure-but-implementation-matters/
+- Babel RFC 8966: https://www.rfc-editor.org/rfc/rfc8966.html
+- Linux batman-adv: https://www.kernel.org/doc/html/latest/networking/batman-adv.html
+- OpenThread: https://openthread.io/
+- Bundle Protocol v7: https://www.rfc-editor.org/rfc/rfc9171.html
 - URSEC, sistemas de radiocomunicaciones de uso propio: https://www.gub.uy/tramites/sistemas-radiocomunicaciones-uso-propio-autorizaciones-modificaciones-bajas
 - URSEC, Reglamento del Servicio de Radioaficionados: https://www.gub.uy/unidad-reguladora-servicios-comunicaciones/institucional/normativa/resolucion-n-321022-apruebase-reglamento-del-servicio-radioaficionados
 - URSEC, normativa de radiocomunicaciones: https://www.gub.uy/unidad-reguladora-servicios-comunicaciones/normativa-radiocomunicaciones
@@ -471,4 +534,4 @@ Las versiones y condiciones externas se vuelven a verificar al crear cada perfil
 
 ## 20. Siguiente gate
 
-La aprobación de este documento habilita únicamente la tercera especificación hija: energía híbrida, cargas, reserva, brownout y ensayo reproducible de 72 horas. No habilita implementación ni TX. La matriz final de decisión y el plan P0/P1/P2 se construyen después de aprobar las cuatro especificaciones hijas y cerrar el M0 ejecutable.
+La revisión multi-bearer debe aprobarse junto con su actualización de la matriz conjunta. No habilita implementación ni TX. Después de aprobarla, el siguiente trabajo ejecutable sigue siendo M0 core; la comparación P0 de transportes sólo se planifica después de demostrar M0 exit.

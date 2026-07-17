@@ -1,6 +1,6 @@
 # Matriz de decisión: energía, comunicaciones off-grid y beacons
 
-- Estado: análisis inicial completo; pendiente de revisión
+- Estado: análisis inicial y revisión multi-bearer completas; pendiente de aprobación
 - Fecha: 2026-07-17
 - Alcance: decisión y orden de experimentos M0/P0/P1/P2
 - Autoridad de entrada: cuatro especificaciones hijas aprobadas
@@ -20,9 +20,9 @@ OpenBREC debe seguir una estrategia core-first e híbrida:
 Recomendaciones principales:
 
 - `BUILD`: contratos/replay, preservación, overlay de seguridad, federación y UX semántica.
-- `ADAPT`: ChirpStack/LoRaWAN, Meshtastic, hardware LoRa existente, estaciones portátiles y sensores commodity.
-- `EVALUATE`: Reticulum/RNode como alternativa desacoplada, MeshCore como watchlist emergente y BPv7/file bundles para disrupción.
-- `DEFER`: mesh propio, LoRa federation-relay, audio raw amplio, mmWave, cámara y otras modalidades hasta que el core y las métricas justifiquen su costo/riesgo.
+- `ADAPT`: ChirpStack/LoRaWAN, Meshtastic, MeshCore, Reticulum/RNode, hardware existente, estaciones portátiles y sensores commodity según perfil.
+- `EVALUATE`: LoRaWAN Relay, mallas IP, Thread/802.15.4, LMR/backhaul oportunista y BPv7/file bundles en su contexto propio.
+- `DEFER`: mesh propio, LoRa federation-relay, bridging raw, audio raw amplio, mmWave, cámara y otras modalidades hasta que el core y las métricas justifiquen su costo/riesgo.
 - `PROHIBIT`: jamming, TX continuo, identidad biométrica, ausencia por silencio, streaming acústico permanente y PSK común del incidente.
 
 ## 2. Estado real del repositorio
@@ -170,37 +170,51 @@ Cada funcionalidad se lee como un registro unido por su ID entre la tabla de dec
 | ID | Funcionalidad | Valor/evidencia | Alternativa desacoplada | Reuso o build | Esfuerzo | Madurez ext/OB | Decisión |
 |---|---|---|---|---|---|---|---|
 | C-01 | LoRaWAN privado para componentes | V5/A | MQTT/IP, 802.15.4 o enlace cableado | ADAPT ChirpStack/otro NS y gateways existentes | L | M5/M1 | GO-P0→P1a |
-| C-02 | Meshtastic para texto/estado/SOS/ubicación | V5/B | Reticulum, MeshCore o P2P propio | ADAPT firmware/hardware compatible y pin | L | M4/M1 | GO-P0→P1a |
+| C-02 | Meshtastic para equipo móvil/espontáneo: texto/estado/SOS/ubicación | V5/B | MeshCore planificado, Reticulum gateway o P2P directo | ADAPT firmware/hardware compatible y pin | L | M4/M1 | GO-P0→P1a |
 | C-03 | Overlay OpenBREC de identidad, firma y AEAD | V5/A | Seguridad de transporte sola; insuficiente | BUILD transport-agnostic | L | M5/M1 | GO-P0 |
 | C-04 | Dos hubs y FederationGateway outbound-only | V5/A | Hub único o cloud; rechazados como dependencia | BUILD eventos/gateway; ADAPT HTTPS/mTLS | XL | M5/M1 | GO-P0→P1b |
 | C-05 | Red civil separada | V4/B | Terminal entregable en red controlada | ADAPT compatible hardware, claves/gateway propios | L | M4/M1 | P2-CANDIDATE |
 | C-06 | Bundles físicos/DTN para store-and-forward | V4/A | HTTPS batch/poll o archivos firmados simples | EVALUATE BPv7; BUILD formato OpenBREC mínimo | M | M5/M1 | GO-P0 |
 | C-07 | Backhaul IP de mayor ancho de banda | V4/A | USB/medios físicos o satélite/microondas addon | ADAPT Ethernet/Wi-Fi táctico | M | M5/M1 | GO-P1a |
 | C-08 | LoRa `federation-relay` de resúmenes | V3/C | Backhaul IP/DTN | BUILD/ADAPT canal separado | L | M3/M1 | DEFER |
+| C-09 | Selección por `TransportProfile`, multi-bearer, dedup y anti-loop | V5/A | Selección manual por SOP; fallback inicial | BUILD controller y contratos; adapters sustituibles | L | M5/M1 | GO-P0 |
 
-### 7.2 Alternativas de mesh
+### 7.2 Bearers alternativos y perfiles especializados
+
+Los IDs `A-*` de esta sección son alternativas de bearer, no una categoría de menor prioridad. Su decisión depende del perfil operacional.
 
 | ID | Funcionalidad | Valor/evidencia | Alternativa | Reuso/build | Esfuerzo | Madurez ext/OB | Decisión |
 |---|---|---|---|---|---|---|---|
-| A-01 | Reticulum/RNode + LXMF | V4/B | Meshtastic | ADAPT stack y hardware abierto; review criptográfico propio | L | M4/M0 | WATCH-P0 |
-| A-02 | MeshCore | V3/C | Meshtastic/Reticulum | ADAPT proyecto emergente MIT | M | M3/M0 | WATCH |
+| A-01 | Reticulum/RNode + LXMF para gateway/backbone heterogéneo | V5/B | IP+BPv7 o LoRa P2P dedicado | ADAPT stack/hardware abierto; review criptográfico propio | L | M4/M0 | GO-P0→P1a |
+| A-02 | MeshCore para celda con repeaters planificados | V5/B | Meshtastic/Reticulum | ADAPT firmware MIT y hardware LoRa reutilizable | L | M4/M0 | GO-P0→P1a |
 | A-03 | Mesh LoRa OpenBREC propio | V3/D | C-02/A-01/A-02 | BUILD completo | XL | M0/M0 | DEFER |
+| A-09 | Wi-Fi/Ethernet mesh con Babel o `batman-adv` | V4/A | Ethernet simple/Reticulum sobre IP | ADAPT routers/OpenWrt/Linux | L | M5/M0 | GO-P0→P1a |
+| A-10 | Thread/OpenThread para cluster local de sensores | V3/A | LoRaWAN/cable | ADAPT 802.15.4 y border router | L | M5/M0 | WATCH-P0 |
+| A-11 | LoRaWAN Relay TS011 para cobertura máquina | V3/A | Gateway adicional/store-forward | ADAPT relay/end-device/NS compatibles | L | M4/M0 | WATCH-P1 |
+| A-12 | LMR/VHF/UHF para voz humana | V5/A | sat/celular/PTT IP | ADAPT equipos existentes; OpenBREC sólo boundary/health | XL | M5/M0 | WATCH-P1 |
+| A-13 | Backhaul celular/satelital/microondas oportunista | V4/A | IP terrestre/carry bundle | ADAPT modem/terminal autorizado | L | M5/M0 | WATCH-P1 |
 
 ### 7.3 Gates y aceptación
 
-| ID | Energía | Privacidad | Safety | Regulación | Criterio de aceptación | Próximo experimento |
-|---|---|---|---|---|---|---|
-| C-01 | Airtime/load en E-01 | DevEUI/metadata boundary | SEC+C; OTAA/counters | RF profile | 12 nodos simulados; OTAA único; brownout no rollback; MQTT ACL | ChirpStack offline con dos dispositivos simulados |
-| C-02 | Terminal/relay load | IDs HMAC; no broker público | SEC+UX; transporte no confiable | RF profile | Default PSK prohibida; forged sender no valida; SOS en un frame | Adapter contra fixtures protobuf pinneados |
-| C-03 | Crypto airtime medido | Contenido/roles por incidente | SEC absoluto | N/A lógico | Vectores authentic/forged/replay/revoked; cero false acceptance | Implementar sólo vectores y schema en P0 |
-| C-04 | Hubs fuera de cadena local | Resúmenes mínimos | SEC+OPS; malicious hub | Backhaul aplicable | 50k sites/60 cells/5 areas/2 hubs; 24h partition; cero overwrite | Simulador masivo antes de hubs reales |
-| C-05 | Carga separada | Alta; unverified distress | SEC+PRV+UX | RF/network local | Sin clave compartida; allowlist; mensaje civil no escribe facts | Simular 10 clientes civiles y gateway hostil |
-| C-06 | Bajo; storage dimensionado | Bundle minimizado/cifrado | SEC+C; custody | Transporte físico local | Duplicado/tardío/conflictivo idempotente; firma y expiry | Comparar file bundle mínimo vs BPv7 POC |
-| C-07 | Mayor consumo | Raw sólo autorizado | SEC+RF coexistence | Banda/infra local | Failover sin exponer MQTT; throughput suficiente para artefacto aprobado | Ethernet/Wi-Fi local con gateway outbound-only |
-| C-08 | Airtime crítico | Sólo resúmenes | RF+SEC+OPS | Perfil separado | No degrada SOS/telemetría; hops/airtime y kill switch | Mantener simulado hasta demostrar necesidad sin backhaul |
-| A-01 | Perfil por RNode | Revisar metadata y claves | Threat model/crypto audit gap | Perfil RF propio | Mismos HumanMessage/DomainEvent; no bypass overlay | Adapter read-only y replay sobre dos RNodes conducted |
-| A-02 | Perfil por board | Revisar protocolo/keys | Proyecto emergente; pin/SBOM | Perfil RF propio | Adapter sin claims de seguridad heredados; capacity test | Revisión documental y fixture, sin compra |
-| A-03 | Desconocida | Diseñable | Todo SEC/RF desde cero | Completa | Sólo reabrir si ninguna alternativa cumple un requisito medido | Documentar requisito imposible y comparative failure |
+| ID | Energía | Privacidad | Safety | Regulación | Dependencias | Criterio de aceptación | Próximo experimento |
+|---|---|---|---|---|---|---|---|
+| C-01 | Airtime/load en E-01 | DevEUI/metadata boundary | SEC+C; OTAA/counters | RF profile | F-01/F-03/E-01 | 12 nodos simulados; OTAA único; brownout no rollback; MQTT ACL | ChirpStack offline con dos dispositivos simulados |
+| C-02 | Terminal/relay load | IDs HMAC; no broker público | SEC+UX; transporte no confiable | RF profile | F-01/F-03/C-03/C-09 | Default PSK prohibida; forged sender no valida; SOS en un frame | Adapter contra fixtures protobuf pinneados |
+| C-03 | Crypto airtime medido | Contenido/roles por incidente | SEC absoluto | N/A lógico | F-01/F-03 | Vectores authentic/forged/replay/revoked; cero false acceptance | Implementar sólo vectores y schema en P0 |
+| C-04 | Hubs fuera de cadena local | Resúmenes mínimos | SEC+OPS; malicious hub | Backhaul aplicable | F-03/F-04/C-03/C-06 | 50k sites/60 cells/5 areas/2 hubs; 24h partition; cero overwrite | Simulador masivo antes de hubs reales |
+| C-05 | Carga separada | Alta; unverified distress | SEC+PRV+UX | RF/network local | C-02/C-03/C-09 | Sin clave compartida; allowlist; mensaje civil no escribe facts | Simular 10 clientes civiles y gateway hostil |
+| C-06 | Bajo; storage dimensionado | Bundle minimizado/cifrado | SEC+C; custody | Transporte físico local | F-03/F-04/C-03 | Duplicado/tardío/conflictivo idempotente; firma y expiry | Comparar file bundle mínimo vs BPv7 POC |
+| C-07 | Mayor consumo | Raw sólo autorizado | SEC+RF coexistence | Banda/infra local | C-04/C-09 | Failover sin exponer MQTT; throughput suficiente para artefacto aprobado | Ethernet/Wi-Fi local con gateway outbound-only |
+| C-08 | Airtime crítico | Sólo resúmenes | RF+SEC+OPS | Perfil separado | C-03/C-04/C-09 | No degrada SOS/telemetría; hops/airtime y kill switch | Mantener simulado hasta demostrar necesidad sin backhaul |
+| C-09 | Duplication/failover presupuestados | Selección minimiza disclosure | SEC+RF+OPS; dedup/anti-loop | Cada bearer conserva perfil | F-01/F-03/C-03 | Mismo ID por dos bearers produce un mensaje lógico y receipts separados; fallback no cicla | Replay Meshtastic+MeshCore+carry con partición y duplicados |
+| A-01 | Medir Link/announce/transfer | Source-address privacy no basta | No audit externo; forwarding sin prioridad | Perfil RF/IP por interface | C-03/C-09 | Mismo envelope; SOS priorizado antes del interface; no airtime leak entre boundaries | Adapter/replay y luego RNode conducted contra workload común |
+| A-02 | Repeater fijo y companion medidos | Path/keys/location sensibles | Defaults eliminados; legacy/path churn/flood | Perfil RF propio | C-03/C-09 | Direct, group y movilidad medidos; cero silent drop no declarado; 64 hops no es acceptance | Adapter/replay y luego hardware reutilizable conducted |
+| A-03 | Desconocida | Diseñable | Todo SEC/RF desde cero | Completa | C-03/C-09 + comparative failure | Sólo reabrir si ninguna alternativa cumple un requisito medido | Documentar requisito imposible y comparative failure |
+| A-09 | Alto frente a LoRa | IP/MAC/topología sensibles | SEC+RF; segmentación y updates | 2.4/5/6 GHz/local | C-03/C-09 | Reconverge sin loop; throughput/energía superan bearer LoRa para artefacto aprobado | Babel vs batman-adv en namespace/emulación, luego routers |
+| A-10 | Bajo por nodo; border router aparte | IPv6/topología sensibles | SEC+SCI; commissioning | 2.4 GHz/local | F-01/F-03/C-09 | Cluster opera sin cloud; pérdida de border router no pierde sensing; coexistencia medida | OpenThread simulado con 12 sensores y dos border routers |
+| A-11 | Relay consume y agrega failure domain | DevEUI/metadata | LoRaWAN SEC completo | TS011+perfil RF | C-01/C-09 | Extiende coverage máquina sin rollback/counter loss; no se usa para mensajes humanos | Revisar compatibilidad NS/end-device antes de hardware |
+| A-12 | Radio/terminal según equipo | Voz/identidad muy sensibles | OPS+SEC; no recording default | Licencia/servicio aplicable | C-09 + SOP operacional | Voice plane funciona separado; OpenBREC no controla PTT ni interpreta contenido | Capability inventory y SOP, sin integración inicial |
+| A-13 | Alto/variable | Proveedor/location metadata | SEC+OPS+cost; no dependencia | Operador/banda aplicable | C-04/C-06/C-09 | Desconexión no afecta cell; gateway outbound-only y carry fallback | Emular link intermitente/costoso antes de contratar |
 
 ## 8. Beacons, sensores y terminales
 
@@ -229,21 +243,21 @@ Cada funcionalidad se lee como un registro unido por su ID entre la tabla de dec
 
 ### 8.3 Gates y aceptación
 
-| ID | Energía | Privacidad | Safety/ciencia | Regulación | Criterio de aceptación | Próximo experimento |
-|---|---|---|---|---|---|---|
-| B-01 | Load profile real | Ubicación/actor local | UX+SEC | Dispositivo/radio | Offline; coverage/missing visibles; no absence; 8 operadores y ≥90% task completion | Prototipo lógico con fixtures, luego visual design |
-| B-02 | Reserva SOS L0 | Location/estado sensible | UX+SEC absoluto | Red humana | 8/8 comprende estados; cero SOS/cancel accidental; queue visible | Wireflow offline con estados append-only |
-| B-03 | Duty cycle medido | Features-only default | SCI+PRV; no identidad | Captura local aplicable | 100 trials/clase +20 beacon-hours/entorno; unknown/OOD; no raw | Fixture/audio consentido y feature baseline CPU |
-| B-04 | Storage/radio no automático | Alta; vault/roles/hold | PRV+SEC+OPS | Audio/local | ≤15s; dual auth o break-glass; nada sin review se borra | P0 retention fault test; P1 audio controlado |
-| B-05 | Bajo/medido | Bajo-medio | SCI; no ocupación/inmovilidad | N/A | Sólo motion window; masking/moved node; no absence | PIR bench con movimiento, inmovilidad y heat interference |
-| B-06 | Medio/medido | Grid sensible | SCI+PRV; no body/medical | N/A | Features/uncertainty; raw grid sólo autorizado; hot-source confounders | Matriz low-res contra fuentes calibradas |
-| B-07 | Entra en 72h chain | Multiplica coverage data | SCI+UX+OPS | RF si transmite | Cero confirmación/ausencia; corroboración no independiente; relay/node loss visible | 1 beacon primero, luego 3 en training site |
-| B-08 | Relay desplaza sensing | Gaps/coverage visibles | RF+EN+SCI | Perfil RF | SOS priority sin pérdida silenciosa; sensing local sigue con backhaul caído | Fault injection relay-off/sensor-on y viceversa |
-| A-04 | Medir | Señal ambiental sensible | SCI; geometry/sync | N/A | Reabrir si acústica no cubre una clase y sensor aporta evidencia independiente | Benchmark contra acoustic baseline |
-| A-05 | Calibración/heat | Ambiente/ocupación | SCI fuerte; no presence claim | Sensor/local | Reabrir sólo con protocolo de entorno y ground truth | Literature/protocol review, no hardware aún |
-| A-06 | Anchors consumen energía | Tracking sensible | SEC+SCI; sólo tags conocidos | UWB local | Error medido para nodos/rescatistas; nunca víctimas pasivas | 4 anchors/2 tags en banco después de M0 |
-| A-07 | Alto | Potencial presencia sensible | SCI+PRV+model card | Banda/hardware | Gana información sobre tri-modal en blind test | Mantener eval kit fuera de compra hasta baseline |
-| A-08 | Alto/backhaul | Muy alta | PRV+OPS; consent/access | Captura/local | Search workflow y red separada; no identidad automática | Evaluar integración de cámara USAR comercial, no construir primero |
+| ID | Energía | Privacidad | Safety/ciencia | Regulación | Dependencias | Criterio de aceptación | Próximo experimento |
+|---|---|---|---|---|---|---|---|
+| B-01 | Load profile real | Ubicación/actor local | UX+SEC | Dispositivo/radio | F-02/F-03/C-03/C-09 | Offline; coverage/missing visibles; no absence; 8 operadores y ≥90% task completion | Prototipo lógico con fixtures, luego visual design |
+| B-02 | Reserva SOS L0 | Location/estado sensible | UX+SEC absoluto | Red humana | B-01/C-03/C-09 | 8/8 comprende estados; cero SOS/cancel accidental; queue visible | Wireflow offline con estados append-only |
+| B-03 | Duty cycle medido | Features-only default | SCI+PRV; no identidad | Captura local aplicable | F-01/F-03/E-01 | 100 trials/clase +20 beacon-hours/entorno; unknown/OOD; no raw | Fixture/audio consentido y feature baseline CPU |
+| B-04 | Storage/radio no automático | Alta; vault/roles/hold | PRV+SEC+OPS | Audio/local | F-04/B-03 | ≤15s; dual auth o break-glass; nada sin review se borra | P0 retention fault test; P1 audio controlado |
+| B-05 | Bajo/medido | Bajo-medio | SCI; no ocupación/inmovilidad | N/A | F-01/F-03/E-01 | Sólo motion window; masking/moved node; no absence | PIR bench con movimiento, inmovilidad y heat interference |
+| B-06 | Medio/medido | Grid sensible | SCI+PRV; no body/medical | N/A | F-01/F-03/E-01 | Features/uncertainty; raw grid sólo autorizado; hot-source confounders | Matriz low-res contra fuentes calibradas |
+| B-07 | Entra en 72h chain | Multiplica coverage data | SCI+UX+OPS | RF si transmite | B-03/B-05/B-06/E-01/C-09 | Cero confirmación/ausencia; corroboración no independiente; relay/node loss visible | 1 beacon primero, luego 3 en training site |
+| B-08 | Relay desplaza sensing | Gaps/coverage visibles | RF+EN+SCI | Perfil RF | B-07/C-09 | SOS priority sin pérdida silenciosa; sensing local sigue con backhaul caído | Fault injection relay-off/sensor-on y viceversa |
+| A-04 | Medir | Señal ambiental sensible | SCI; geometry/sync | N/A | B-03/B-05 | Reabrir si acústica no cubre una clase y sensor aporta evidencia independiente | Benchmark contra acoustic baseline |
+| A-05 | Calibración/heat | Ambiente/ocupación | SCI fuerte; no presence claim | Sensor/local | F-05/B-06 | Reabrir sólo con protocolo de entorno y ground truth | Literature/protocol review, no hardware aún |
+| A-06 | Anchors consumen energía | Tracking sensible | SEC+SCI; sólo tags conocidos | UWB local | F-03/C-09 | Error medido para nodos/rescatistas; nunca víctimas pasivas | 4 anchors/2 tags en banco después de M0 |
+| A-07 | Alto | Potencial presencia sensible | SCI+PRV+model card | Banda/hardware | B-05/B-06 | Gana información sobre tri-modal en blind test | Mantener eval kit fuera de compra hasta baseline |
+| A-08 | Alto/backhaul | Muy alta | PRV+OPS; consent/access | Captura/local | C-07/F-04 | Search workflow y red separada; no identidad automática | Evaluar integración de cámara USAR comercial, no construir primero |
 
 ## 9. Funcionalidades prohibidas o fuera de frontera
 
@@ -285,14 +299,15 @@ Si M0 no pasa, no comienza implementación addon. La documentación y fixtures p
 
 Orden:
 
-1. `P0-01`: schemas addon y fixtures de energía, radio, federación, terminal y beacon.
+1. `P0-01`: schemas addon y fixtures de energía, radio, `TransportProfile`, bearer capability, policy decision, federación, terminal y beacon.
 2. `P0-02`: EnergyDomain/FSM/budget y brownout replay.
-3. `P0-03`: HumanMessage protegido, SOS append-only, revocación y malicious transport.
-4. `P0-04`: federation/reconciliation a 50.000 sites, 60 cells, 5 areas y 2 hubs.
-5. `P0-05`: terminal offline y copy safety sin ausencia/garantía.
-6. `P0-06`: beacon observations, health, deterministic fusion, review y retention fault injection.
-7. `P0-07`: campaña integrada con partición 24h, node loss, brownout, forged distress, spoofed sensor y hub hostil.
-8. `P0-08`: matriz de receipts y decisión de hardware piloto.
+3. `P0-03`: HumanMessage protegido, SOS append-only, revocación, dedup/anti-loop multi-bearer y malicious transport.
+4. `P0-04`: comparación Meshtastic/MeshCore/Reticulum por perfiles mobile, planned y heterogeneous con workloads comunes.
+5. `P0-05`: federation/reconciliation a 50.000 sites, 60 cells, 5 areas y 2 hubs.
+6. `P0-06`: terminal offline y copy safety sin ausencia/garantía.
+7. `P0-07`: beacon observations, health, deterministic fusion, review y retention fault injection.
+8. `P0-08`: campaña integrada con partición 24h, node loss, brownout, forged distress, spoofed sensor y hub hostil.
+9. `P0-09`: matriz de receipts, support status por perfil y decisión de hardware piloto.
 
 Exit:
 
@@ -301,14 +316,15 @@ Exit:
 - cero overwrite o pérdida silenciosa;
 - toda celda sigue operando aislada;
 - energía/radio/sensing degradan con estado visible;
-- cada hardware candidate conserva `unverified` hasta P1.
+- cada hardware candidate conserva `unverified` hasta P1;
+- ningún protocolo obtiene support global; la decisión queda por `TransportProfile`.
 
 ### 10.3 P1a — banco y conducted
 
 Orden:
 
-1. `P1a-01`: comprar/prestar una unidad por categoría candidata; capability manifests exactos.
-2. `P1a-02`: radio LoRaWAN y Meshtastic conducted/dummy load, seguridad y frame/airtime.
+1. `P1a-01`: comprar/prestar una unidad por categoría candidata, priorizando hardware reutilizable; capability manifests exactos.
+2. `P1a-02`: LoRaWAN, Meshtastic, MeshCore y RNode conducted/dummy load; seguridad, frame, airtime, goodput, path churn y legacy downgrade.
 3. `P1a-03`: terminal offline con 8 operadores y 8 personas no preparadas.
 4. `P1a-04`: un beacon tri-modal aislado; calibración y datasets controlados.
 5. `P1a-05`: tres beacons; overlap, node movement, relay loss y false alerts.
@@ -320,6 +336,7 @@ Exit:
 
 - todos los manifests coinciden con hardware exacto;
 - radio/security/coexistence conducted pasan;
+- support status de cada bearer queda limitado a perfiles y versiones ensayados;
 - UX critical comprehension pasa;
 - beacon reporta performance completa por entorno;
 - 72 horas pasan con reservas y cero interrupción crítica;
@@ -371,20 +388,21 @@ Exit:
 1. F-01–F-06: M0 real.
 2. C-03 y F-04: autenticidad/preservación antes de transportar SOS.
 3. E-01: energía como contrato y degradación, antes de comprar storage.
-4. C-01/C-02: adapters simulados y conducted, no mesh propio.
-5. C-04/C-06: federation event y store-and-forward antes de hubs físicos.
-6. B-01/B-02: semántica terminal offline antes de styling final.
-7. B-03/B-05/B-06: modalidades individuales antes de B-07 tri-modal.
-8. E-02/E-03: almacenamiento y cargas reales; luego 72 horas.
-9. E-04/E-05/E-06: extensiones de generación en P1b.
-10. C-05/C-08/A-04–A-08: sólo cuando un resultado previo demuestre necesidad.
+4. C-09/C-03: selector, envelope, dedup y seguridad antes de elegir bearer.
+5. C-01/C-02/A-01/A-02: LoRaWAN y comparación Meshtastic/MeshCore/Reticulum por perfil, no mesh propio.
+6. C-04/C-06: federation event y store-and-forward antes de hubs físicos.
+7. B-01/B-02: semántica terminal offline antes de styling final.
+8. B-03/B-05/B-06: modalidades individuales antes de B-07 tri-modal.
+9. E-02/E-03: almacenamiento y cargas reales; luego 72 horas.
+10. E-04/E-05/E-06: extensiones de generación en P1b.
+11. C-05/C-08/A-04–A-13: sólo según el estado y gate específico de cada fila.
 
 ## 12. Reglas de procurement
 
 - Una unidad por categoría antes de compra en escala.
 - Verificar chipset, firmware, conectores, región, BMS, capacidad y drivers exactos.
 - Ningún vendor claim sube de `unverified` sin receipt propio.
-- Preferir hardware reutilizable entre Meshtastic, RNode, LoRaWAN o test fixtures cuando no mezcle failure domains.
+- Preferir hardware reutilizable entre Meshtastic, MeshCore, RNode, LoRaWAN o test fixtures cuando no mezcle failure domains ni invalide la comparación.
 - Mantener repuestos de cables, conectores, antenas, sensores y baterías consumibles.
 - No comprar solar/generador antes de medir loads.
 - No comprar mmWave/cámara/mesh alternativo antes del baseline que justifique el experimento.
@@ -393,10 +411,16 @@ Exit:
 
 | Opción | Reabrir cuando |
 |---|---|
-| Reticulum/RNode | Meshtastic falle un requisito medido de autonomía, federación o seguridad; o se requiera bearer heterogéneo. |
-| MeshCore | Exista versión fijable, documentación/protocolo revisable y ventaja medida de airtime/capacidad. |
+| Meshtastic | Restringir o cambiar de perfil cuando flooding/airtime, 7 hops, group security o densidad no cumplan el workload medido. |
+| MeshCore | Avanzar a hardware sólo si planned-repeater P0 supera path churn, group flood, legacy silent-drop y defaults/security gates. |
+| Reticulum/RNode | Avanzar a hardware sólo si heterogeneous-backbone P0 controla announces, prioridad SOS, 297-byte Link setup y complejidad operacional. |
 | Mesh propio | Dos alternativas abiertas fallen el mismo requisito obligatorio con evidencia. |
 | LoRa federation-relay | Backhaul IP/físico no cubra un resumen crítico y el airtime SOS siga protegido. |
+| Malla IP Babel/`batman-adv` | Exista energía y una carga local que exceda LoRa; comparar convergencia, throughput, privacidad y segmentación. |
+| Thread/OpenThread | Un cluster de sensores cercano justifique 802.15.4 y pueda operar ante pérdida del border router. |
+| LoRaWAN Relay | Falte cobertura de gateway para el plano máquina y exista compatibilidad TS011 end-to-end verificable. |
+| LMR/VHF/UHF | La voz sea requisito operacional y exista perfil regulatorio/equipo autorizado; mantener plano separado. |
+| Backhaul oportunista | Exista proveedor/enlace disponible y la caída total siga cubierta por operación local y carry bundle. |
 | Sísmica/vibración | Acústica no cubra golpes/vibración y el nuevo sensor aporte evidencia independiente. |
 | CO2/air quality | Exista protocolo BREC con ground truth que evite claims de presencia. |
 | UWB | Se necesite localizar equipos/nodos conocidos y GNSS/fiducials no alcancen. |
@@ -419,6 +443,7 @@ Autoridad interna:
 
 - `2026-07-16-openbrec-core-contracts-replay-design.md`
 - `2026-07-17-openbrec-radio-security-regulation-design.md`
+- `2026-07-17-offgrid-communications-state-of-art.md`
 - `2026-07-17-openbrec-energy-design.md`
 - `2026-07-17-openbrec-beacons-human-ux-design.md`
 - `OpenBREC-RF-threat-model.md`
@@ -428,9 +453,16 @@ Referencias externas:
 - LoRaWAN specifications: https://resources.lora-alliance.org/technical-specifications
 - ChirpStack architecture: https://www.chirpstack.io/docs/architecture.html
 - Meshtastic encryption: https://meshtastic.org/docs/overview/encryption/
+- Meshtastic mesh algorithm: https://meshtastic.org/docs/overview/mesh-algo/
+- Meshtastic LoRa/max hops: https://meshtastic.org/docs/configuration/radio/lora/
+- Meshtastic device roles: https://meshtastic.org/docs/configuration/radio/device/
 - Meshtastic MQTT: https://meshtastic.org/docs/software/integrations/mqtt/
-- Reticulum/RNode: https://reticulum.network/manual/hardware.html
-- MeshCore: https://github.com/meshcore-dev/MeshCore
+- Reticulum/RNode: https://reticulum.network/manual/ and https://github.com/markqvist/Reticulum
+- MeshCore: https://github.com/meshcore-dev/MeshCore and https://github.com/meshcore-dev/MeshCore/blob/main/docs/faq.md
+- LoRaWAN Relay TS011: https://resources.lora-alliance.org/technical-specifications/ts011-1-0-0-relay
+- Babel RFC 8966: https://www.rfc-editor.org/rfc/rfc8966.html
+- Linux batman-adv: https://www.kernel.org/doc/html/latest/networking/batman-adv.html
+- OpenThread: https://openthread.io/
 - IETF Bundle Protocol v7: https://www.rfc-editor.org/rfc/rfc9171.html
 - IEC 62619:2022: https://webstore.iec.ch/en/publication/64073
 - UNECE Manual of Tests and Criteria Rev.8: https://unece.org/transport/standards/transport/dangerous-goods/un-manual-tests-and-criteria-rev8-2023
