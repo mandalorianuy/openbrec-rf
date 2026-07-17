@@ -203,6 +203,27 @@ jobs:
           path: evidence/p0/p0-06
           if-no-files-found: error
 
+  beacon-simulation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
+        with:
+          version: "0.11.1"
+      - run: uv sync --frozen
+      - run: uv run --offline python -m openbrec.verify beacon-replay --receipt evidence/p0/p0-07/beacon-replay/p0-07-receipt.json
+      - run: uv run --offline python -m openbrec.verify beacon-adversarial --receipt evidence/p0/p0-07/beacon-adversarial/p0-07-receipt.json
+      - run: uv run --offline python -m openbrec.verify retention-fault --receipt evidence/p0/p0-07/retention-fault/p0-07-receipt.json
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: p0-beacon-simulation-receipts
+          path: evidence/p0/p0-07
+          if-no-files-found: error
+
   supply-chain:
     runs-on: ubuntu-latest
     steps:

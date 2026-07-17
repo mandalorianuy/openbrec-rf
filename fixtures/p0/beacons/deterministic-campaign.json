@@ -1,0 +1,252 @@
+{
+  "campaign_version": "1.0.0",
+  "claim_scope": "deterministic_simulation_only",
+  "provenance": {
+    "source_type": "synthetic_generated",
+    "generator": "openbrec-beacon-campaign",
+    "generator_version": "1.0.0",
+    "license": "CC0-1.0",
+    "consent_basis": "not_applicable_no_human_data",
+    "contains_real_sensor_data": false,
+    "contains_human_data": false
+  },
+  "environment_classes": [
+    "synthetic_quiet_lab",
+    "synthetic_tool_noise",
+    "synthetic_heat_motion"
+  ],
+  "omitted_environment_classes": [
+    "real_rubble",
+    "weather",
+    "structural_vibration",
+    "crowded_response_site"
+  ],
+  "configuration": {
+    "engine_version": "1.0.0",
+    "candidate_threshold": 0.7,
+    "maximum_clock_uncertainty_ms": 1000,
+    "maximum_snippet_duration_s": 15,
+    "order_variations": 10,
+    "rules": [
+      "never infer presence or absence",
+      "distinct modalities on one beacon are not independent",
+      "shared cause groups are not independent",
+      "invalid placement or baseline forces unknown"
+    ]
+  },
+  "capabilities": [
+    {
+      "schema_version": "1.0.0",
+      "capability_type": "beacon",
+      "beacon_id": "beacon-a1b2c3d4",
+      "node_id": "node-a1b2c3d4",
+      "declared_at": "2026-07-17T16:00:00.000000Z",
+      "support_status": "experimental",
+      "modalities": ["acoustic_features", "pir_motion", "thermal_low_resolution", "imu_self_motion"],
+      "storage_mode": "authorized_snippet_vault",
+      "clock_uncertainty_ms": 100,
+      "store_forward": true,
+      "capabilities_absent": ["triangulation", "live_stream", "field_evidence"],
+      "limitations": ["synthetic fixtures only", "no presence or absence inference"]
+    },
+    {
+      "schema_version": "1.0.0",
+      "capability_type": "beacon",
+      "beacon_id": "beacon-a1b2c3d5",
+      "node_id": "node-a1b2c3d5",
+      "declared_at": "2026-07-17T16:00:01.000000Z",
+      "support_status": "experimental",
+      "modalities": ["acoustic_features", "pir_motion", "thermal_low_resolution", "imu_self_motion"],
+      "storage_mode": "features_only",
+      "clock_uncertainty_ms": 250,
+      "store_forward": true,
+      "capabilities_absent": ["triangulation", "live_stream", "field_evidence"],
+      "limitations": ["synthetic fixtures only", "co-located modalities are correlated"]
+    },
+    {
+      "schema_version": "1.0.0",
+      "capability_type": "beacon",
+      "beacon_id": "beacon-a1b2c3d6",
+      "node_id": "node-a1b2c3d6",
+      "declared_at": "2026-07-17T16:00:02.000000Z",
+      "support_status": "unverified",
+      "modalities": ["acoustic_features", "pir_motion"],
+      "storage_mode": "features_only",
+      "clock_uncertainty_ms": 750,
+      "store_forward": true,
+      "capabilities_absent": ["thermal_low_resolution", "imu_self_motion", "triangulation", "field_evidence"],
+      "limitations": ["partial synthetic capability", "isolated relay"]
+    }
+  ],
+  "health": [
+    {
+      "schema_version": "1.0.0",
+      "health_type": "beacon_health",
+      "beacon_id": "beacon-a1b2c3d4",
+      "observed_at": "2026-07-17T16:10:00.000000Z",
+      "health_state": "healthy",
+      "energy_state": "normal",
+      "clock_uncertainty_ms": 100,
+      "modalities_available": ["acoustic_features", "pir_motion", "thermal_low_resolution", "imu_self_motion"],
+      "modalities_absent": [],
+      "storage_state": "available",
+      "relay_state": "available",
+      "limitations": ["synthetic health only"]
+    },
+    {
+      "schema_version": "1.0.0",
+      "health_type": "beacon_health",
+      "beacon_id": "beacon-a1b2c3d5",
+      "observed_at": "2026-07-17T16:10:01.000000Z",
+      "health_state": "degraded",
+      "energy_state": "conserve",
+      "clock_uncertainty_ms": 250,
+      "modalities_available": ["acoustic_features", "pir_motion", "thermal_low_resolution", "imu_self_motion"],
+      "modalities_absent": [],
+      "storage_state": "constrained",
+      "relay_state": "available",
+      "limitations": ["baseline invalid after modeled movement"]
+    },
+    {
+      "schema_version": "1.0.0",
+      "health_type": "beacon_health",
+      "beacon_id": "beacon-a1b2c3d6",
+      "observed_at": "2026-07-17T16:10:02.000000Z",
+      "health_state": "isolated",
+      "energy_state": "critical",
+      "clock_uncertainty_ms": 750,
+      "modalities_available": ["acoustic_features", "pir_motion"],
+      "modalities_absent": ["thermal_low_resolution", "imu_self_motion"],
+      "storage_state": "available",
+      "relay_state": "unavailable",
+      "limitations": ["local sensing continues", "coverage gap and relay loss visible"]
+    }
+  ],
+  "placements": [
+    {
+      "schema_version": "1.0.0",
+      "placement_event_type": "installed",
+      "placement_id": "30000000-0000-4000-8000-000000000101",
+      "beacon_id": "beacon-a1b2c3d4",
+      "zone_id": "zone-alpha",
+      "placed_at": "2026-07-17T16:05:00.000000Z",
+      "position_precision_m": 3,
+      "height_m": 1.2,
+      "orientation_deg": 0,
+      "mounting": "tripod",
+      "occlusions": ["synthetic wall"],
+      "known_interferences": ["generator"],
+      "baseline_ref": "urn:sha256:1111111111111111111111111111111111111111111111111111111111111111",
+      "actor_id": "actor-simulated",
+      "limitations": ["synthetic placement"]
+    },
+    {
+      "schema_version": "1.0.0",
+      "placement_event_type": "installed",
+      "placement_id": "30000000-0000-4000-8000-000000000102",
+      "beacon_id": "beacon-a1b2c3d5",
+      "zone_id": "zone-alpha",
+      "placed_at": "2026-07-17T16:05:01.000000Z",
+      "position_precision_m": 4,
+      "height_m": 1.5,
+      "orientation_deg": 90,
+      "mounting": "wall",
+      "occlusions": ["modeled rubble"],
+      "known_interferences": ["tools", "rescuers"],
+      "baseline_ref": "urn:sha256:2222222222222222222222222222222222222222222222222222222222222222",
+      "actor_id": "actor-simulated",
+      "limitations": ["synthetic placement"]
+    },
+    {
+      "schema_version": "1.0.0",
+      "placement_event_type": "installed",
+      "placement_id": "30000000-0000-4000-8000-000000000103",
+      "beacon_id": "beacon-a1b2c3d6",
+      "zone_id": "zone-bravo",
+      "placed_at": "2026-07-17T16:05:02.000000Z",
+      "position_precision_m": 5,
+      "height_m": 1,
+      "orientation_deg": 180,
+      "mounting": "tripod",
+      "occlusions": ["synthetic slab"],
+      "known_interferences": ["radio", "wind"],
+      "baseline_ref": "urn:sha256:3333333333333333333333333333333333333333333333333333333333333333",
+      "actor_id": "actor-simulated",
+      "limitations": ["thermal modality absent", "synthetic placement"]
+    },
+    {
+      "schema_version": "1.0.0",
+      "placement_event_type": "relocated",
+      "placement_id": "30000000-0000-4000-8000-000000000104",
+      "beacon_id": "beacon-a1b2c3d5",
+      "zone_id": "zone-charlie",
+      "placed_at": "2026-07-17T16:25:00.000000Z",
+      "position_precision_m": 6,
+      "height_m": 0.8,
+      "orientation_deg": 270,
+      "mounting": "floor",
+      "occlusions": ["modeled rubble"],
+      "known_interferences": ["unknown"],
+      "baseline_ref": "urn:sha256:4444444444444444444444444444444444444444444444444444444444444444",
+      "actor_id": "actor-simulated",
+      "limitations": ["previous baseline invalidated", "recommissioning required"]
+    }
+  ],
+  "observations": [
+    {"schema_version":"1.0.0","observation_id":"31000000-0000-4000-8000-000000000101","sensor_id":"beacon-a1b2c3d4","sensor_type":"addon_registered","observation_kind":"measurement","window_start":"2026-07-17T16:20:00.000000Z","window_end":"2026-07-17T16:20:01.000000Z","zone_id":"zone-alpha","measurements":[{"measurement_type":"scalar","metric":"acoustic.human_compatible_candidate","value":0.82,"unit":"1","uncertainty":0.18,"quality":0.82,"method":"feature:synthetic-v1"}],"quality":0.82,"uncertainty":0.18,"coverage":"synthetic acoustic window","calibration_ref":"urn:sha256:1111111111111111111111111111111111111111111111111111111111111111","capabilities_absent":[],"limitations":["candidate only","no waveform retained"]},
+    {"schema_version":"1.0.0","observation_id":"31000000-0000-4000-8000-000000000102","sensor_id":"beacon-a1b2c3d4","sensor_type":"addon_registered","observation_kind":"measurement","window_start":"2026-07-17T16:20:00.000000Z","window_end":"2026-07-17T16:20:02.000000Z","zone_id":"zone-alpha","measurements":[{"measurement_type":"scalar","metric":"pir.motion_window","value":0.79,"unit":"1","uncertainty":0.21,"quality":0.79,"method":"pir:synthetic-v1"}],"quality":0.79,"uncertainty":0.21,"coverage":"synthetic PIR field","calibration_ref":"urn:sha256:1111111111111111111111111111111111111111111111111111111111111111","capabilities_absent":[],"limitations":["movement is not occupancy"]},
+    {"schema_version":"1.0.0","observation_id":"31000000-0000-4000-8000-000000000103","sensor_id":"beacon-a1b2c3d4","sensor_type":"addon_registered","observation_kind":"measurement","window_start":"2026-07-17T16:20:00.000000Z","window_end":"2026-07-17T16:20:02.000000Z","zone_id":"zone-alpha","measurements":[{"measurement_type":"scalar","metric":"thermal.hot_source_candidate","value":31.5,"unit":"Cel","uncertainty":2,"quality":0.76,"method":"thermal:synthetic-v1"}],"quality":0.76,"uncertainty":0.24,"coverage":"synthetic low-resolution thermal field","calibration_ref":"urn:sha256:1111111111111111111111111111111111111111111111111111111111111111","capabilities_absent":[],"limitations":["heat source candidate only","no raw grid retained"]},
+    {"schema_version":"1.0.0","observation_id":"31000000-0000-4000-8000-000000000104","sensor_id":"beacon-a1b2c3d5","sensor_type":"addon_registered","observation_kind":"measurement","window_start":"2026-07-17T16:20:00.000000Z","window_end":"2026-07-17T16:20:01.000000Z","zone_id":"zone-alpha","measurements":[{"measurement_type":"scalar","metric":"acoustic.human_compatible_candidate","value":0.74,"unit":"1","uncertainty":0.26,"quality":0.74,"method":"feature:synthetic-v1"}],"quality":0.74,"uncertainty":0.26,"coverage":"second synthetic acoustic window","calibration_ref":"urn:sha256:2222222222222222222222222222222222222222222222222222222222222222","capabilities_absent":[],"limitations":["independent synthetic source","candidate only"]},
+    {"schema_version":"1.0.0","observation_id":"31000000-0000-4000-8000-000000000105","sensor_id":"beacon-a1b2c3d5","sensor_type":"addon_registered","observation_kind":"measurement","window_start":"2026-07-17T16:20:00.000000Z","window_end":"2026-07-17T16:20:02.000000Z","zone_id":"zone-alpha","measurements":[{"measurement_type":"scalar","metric":"thermal.hot_source_candidate","value":29.8,"unit":"Cel","uncertainty":2.5,"quality":0.71,"method":"thermal:synthetic-v1"}],"quality":0.71,"uncertainty":0.29,"coverage":"second synthetic thermal field","calibration_ref":"urn:sha256:2222222222222222222222222222222222222222222222222222222222222222","capabilities_absent":[],"limitations":["correlation must be evaluated","no raw grid retained"]},
+    {"schema_version":"1.0.0","observation_id":"31000000-0000-4000-8000-000000000106","sensor_id":"beacon-a1b2c3d6","sensor_type":"addon_registered","observation_kind":"measurement","window_start":"2026-07-17T16:21:00.000000Z","window_end":"2026-07-17T16:21:01.000000Z","zone_id":"zone-bravo","measurements":[{"measurement_type":"scalar","metric":"acoustic.impact_candidate","value":0.88,"unit":"1","uncertainty":0.12,"quality":0.88,"method":"feature:synthetic-v1"}],"quality":0.88,"uncertainty":0.12,"coverage":"isolated synthetic acoustic window","calibration_ref":"urn:sha256:3333333333333333333333333333333333333333333333333333333333333333","capabilities_absent":["thermal_low_resolution"],"limitations":["relay unavailable","candidate stored locally"]},
+    {"schema_version":"1.0.0","observation_id":"31000000-0000-4000-8000-000000000107","sensor_id":"beacon-a1b2c3d6","sensor_type":"addon_registered","observation_kind":"measurement","window_start":"2026-07-17T16:21:00.000000Z","window_end":"2026-07-17T16:21:02.000000Z","zone_id":"zone-bravo","measurements":[{"measurement_type":"scalar","metric":"pir.motion_window","value":0.66,"unit":"1","uncertainty":0.34,"quality":0.66,"method":"pir:synthetic-v1"}],"quality":0.66,"uncertainty":0.34,"coverage":"isolated synthetic PIR field","calibration_ref":"urn:sha256:3333333333333333333333333333333333333333333333333333333333333333","capabilities_absent":["thermal_low_resolution"],"limitations":["below threshold","relay unavailable"]},
+    {"schema_version":"1.0.0","observation_id":"31000000-0000-4000-8000-000000000108","sensor_id":"beacon-a1b2c3d5","sensor_type":"addon_registered","observation_kind":"measurement","window_start":"2026-07-17T16:26:00.000000Z","window_end":"2026-07-17T16:26:01.000000Z","zone_id":"zone-charlie","measurements":[{"measurement_type":"scalar","metric":"acoustic.unknown","value":0.55,"unit":"1","uncertainty":0.45,"quality":0.55,"method":"feature:synthetic-v1"}],"quality":0.55,"uncertainty":0.45,"coverage":"post-move synthetic window","calibration_ref":"urn:sha256:4444444444444444444444444444444444444444444444444444444444444444","capabilities_absent":[],"limitations":["baseline invalid","recommissioning required"]},
+    {"schema_version":"1.0.0","observation_id":"31000000-0000-4000-8000-000000000109","sensor_id":"beacon-a1b2c3d4","sensor_type":"addon_registered","observation_kind":"measurement","window_start":"2026-07-17T16:22:00.000000Z","window_end":"2026-07-17T16:22:02.000000Z","zone_id":"zone-alpha","measurements":[{"measurement_type":"scalar","metric":"thermal.unknown","value":0.5,"unit":"1","uncertainty":0.5,"quality":0.5,"method":"thermal:synthetic-v1"}],"quality":0.5,"uncertainty":0.5,"coverage":"occluded synthetic field","calibration_ref":"urn:sha256:1111111111111111111111111111111111111111111111111111111111111111","capabilities_absent":["usable_thermal_coverage"],"limitations":["occluded","insufficient coverage"]},
+    {"schema_version":"1.0.0","observation_id":"31000000-0000-4000-8000-000000000110","sensor_id":"beacon-a1b2c3d5","sensor_type":"addon_registered","observation_kind":"measurement","window_start":"2026-07-17T16:23:00.000000Z","window_end":"2026-07-17T16:23:02.000000Z","zone_id":"zone-alpha","measurements":[{"measurement_type":"scalar","metric":"pir.unknown","value":0.2,"unit":"1","uncertainty":0.8,"quality":0.2,"method":"pir:synthetic-v1"}],"quality":0.2,"uncertainty":0.8,"coverage":"masked synthetic PIR field","calibration_ref":"urn:sha256:2222222222222222222222222222222222222222222222222222222222222222","capabilities_absent":["usable_pir_coverage"],"limitations":["masking","no absence inference"]},
+    {"schema_version":"1.0.0","observation_id":"31000000-0000-4000-8000-000000000111","sensor_id":"beacon-a1b2c3d4","sensor_type":"addon_registered","observation_kind":"measurement","window_start":"2026-07-17T16:24:00.000000Z","window_end":"2026-07-17T16:24:01.000000Z","zone_id":"zone-alpha","measurements":[{"measurement_type":"scalar","metric":"acoustic.repetitive_signal_candidate","value":0.91,"unit":"1","uncertainty":0.09,"quality":0.91,"method":"feature:synthetic-v1"}],"quality":0.91,"uncertainty":0.09,"coverage":"synthetic generator window","calibration_ref":"urn:sha256:1111111111111111111111111111111111111111111111111111111111111111","capabilities_absent":[],"limitations":["known generator interference","artifact candidate"]},
+    {"schema_version":"1.0.0","observation_id":"31000000-0000-4000-8000-000000000112","sensor_id":"beacon-a1b2c3d5","sensor_type":"addon_registered","observation_kind":"measurement","window_start":"2026-07-17T16:24:00.000000Z","window_end":"2026-07-17T16:24:02.000000Z","zone_id":"zone-alpha","measurements":[{"measurement_type":"scalar","metric":"thermal.grid_variation","value":0.84,"unit":"1","uncertainty":0.16,"quality":0.84,"method":"thermal:synthetic-v1"}],"quality":0.84,"uncertainty":0.16,"coverage":"synthetic generator heat field","calibration_ref":"urn:sha256:2222222222222222222222222222222222222222222222222222222222222222","capabilities_absent":[],"limitations":["shared generator cause","no raw grid retained"]}
+  ],
+  "fusion_cases": [
+    {"case_id":"fusion-single-colocated","source_observation_ids":["31000000-0000-4000-8000-000000000101","31000000-0000-4000-8000-000000000102","31000000-0000-4000-8000-000000000103"],"independence_groups":["beacon-a1b2c3d4:stimulus-a","beacon-a1b2c3d4:stimulus-a","beacon-a1b2c3d4:stimulus-a"],"coverage_status":"sufficient","baseline_valid":true,"placement_valid":true,"ood":false,"known_artifact":false,"expected_output":"single_modality_candidate"},
+    {"case_id":"fusion-independent","source_observation_ids":["31000000-0000-4000-8000-000000000101","31000000-0000-4000-8000-000000000104"],"independence_groups":["beacon-a1b2c3d4:stimulus-a","beacon-a1b2c3d5:stimulus-b"],"coverage_status":"sufficient","baseline_valid":true,"placement_valid":true,"ood":false,"known_artifact":false,"expected_output":"corroborated_candidate"},
+    {"case_id":"fusion-generator-artifact","source_observation_ids":["31000000-0000-4000-8000-000000000111","31000000-0000-4000-8000-000000000112"],"independence_groups":["shared:generator-1","shared:generator-1"],"coverage_status":"sufficient","baseline_valid":true,"placement_valid":true,"ood":false,"known_artifact":true,"expected_output":"sensor_artifact_likely"},
+    {"case_id":"fusion-insufficient","source_observation_ids":["31000000-0000-4000-8000-000000000109","31000000-0000-4000-8000-000000000110"],"independence_groups":["coverage:occluded","coverage:masked"],"coverage_status":"insufficient","baseline_valid":true,"placement_valid":true,"ood":false,"known_artifact":false,"expected_output":"insufficient_coverage"},
+    {"case_id":"fusion-moved-node","source_observation_ids":["31000000-0000-4000-8000-000000000108"],"independence_groups":["beacon-a1b2c3d5:post-move"],"coverage_status":"sufficient","baseline_valid":false,"placement_valid":false,"ood":false,"known_artifact":false,"expected_output":"unknown"}
+  ],
+  "hostile_cases": [
+    {"case_id":"hostile-voice-playback","attack":"spoofed_sound","coverage_status":"sufficient","baseline_valid":true,"placement_valid":true,"ood":false,"raw_material_present":false,"shared_cause":false,"expected_disposition":"sensor_artifact_likely"},
+    {"case_id":"hostile-animal","attack":"animal_sound","coverage_status":"sufficient","baseline_valid":true,"placement_valid":true,"ood":false,"raw_material_present":false,"shared_cause":false,"expected_disposition":"sensor_artifact_likely"},
+    {"case_id":"hostile-radio","attack":"radio_voice","coverage_status":"sufficient","baseline_valid":true,"placement_valid":true,"ood":false,"raw_material_present":false,"shared_cause":false,"expected_disposition":"sensor_artifact_likely"},
+    {"case_id":"hostile-tools","attack":"tool_impact","coverage_status":"sufficient","baseline_valid":true,"placement_valid":true,"ood":false,"raw_material_present":false,"shared_cause":false,"expected_disposition":"sensor_artifact_likely"},
+    {"case_id":"hostile-sun","attack":"sun_heat","coverage_status":"sufficient","baseline_valid":true,"placement_valid":true,"ood":false,"raw_material_present":false,"shared_cause":false,"expected_disposition":"sensor_artifact_likely"},
+    {"case_id":"hostile-hot-equipment","attack":"equipment_heat","coverage_status":"sufficient","baseline_valid":true,"placement_valid":true,"ood":false,"raw_material_present":false,"shared_cause":true,"expected_disposition":"sensor_artifact_likely"},
+    {"case_id":"hostile-rescuer-motion","attack":"rescuer_motion","coverage_status":"sufficient","baseline_valid":true,"placement_valid":true,"ood":false,"raw_material_present":false,"shared_cause":false,"expected_disposition":"single_modality_candidate"},
+    {"case_id":"hostile-pir-masking","attack":"pir_masking","coverage_status":"insufficient","baseline_valid":true,"placement_valid":true,"ood":false,"raw_material_present":false,"shared_cause":false,"expected_disposition":"insufficient_coverage"},
+    {"case_id":"hostile-node-moved","attack":"node_moved","coverage_status":"sufficient","baseline_valid":false,"placement_valid":false,"ood":false,"raw_material_present":false,"shared_cause":false,"expected_disposition":"unknown"},
+    {"case_id":"hostile-clock","attack":"clock_uncertain","coverage_status":"sufficient","baseline_valid":true,"placement_valid":true,"ood":true,"raw_material_present":false,"shared_cause":false,"expected_disposition":"unknown"},
+    {"case_id":"hostile-raw-waveform","attack":"raw_waveform_injection","coverage_status":"sufficient","baseline_valid":true,"placement_valid":true,"ood":false,"raw_material_present":true,"shared_cause":false,"expected_disposition":"unknown"},
+    {"case_id":"hostile-shared-cause","attack":"correlated_heat_motion_sound","coverage_status":"sufficient","baseline_valid":true,"placement_valid":true,"ood":false,"raw_material_present":false,"shared_cause":true,"expected_disposition":"sensor_artifact_likely"}
+  ],
+  "retention_cases": [
+    {"case_id":"features-only","capture_mode":"features_only","capture_at":"2026-07-17T16:30:00.000000Z","attempted_capture":false,"authorization_events":[],"review_events":[],"material":null,"expected_disposition":"no_material"},
+    {"case_id":"dual-authorized","capture_mode":"triggered_snippet","capture_at":"2026-07-17T16:32:00.000000Z","attempted_capture":true,"authorization_events":[
+      {"schema_version":"1.0.0","authorization_event_type":"granted","event_id":"32000000-0000-4000-8000-000000000101","beacon_id":"beacon-a1b2c3d4","capture_mode":"triggered_snippet","occurred_at":"2026-07-17T16:31:00.000000Z","valid_until":"2026-07-17T16:46:00.000000Z","actor_id":"role:search-lead","retention_policy_id":"urn:openbrec:retention:life-safety:1.0.0","reason":"synthetic candidate review","signature":"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA","limitations":["simulation only"]},
+      {"schema_version":"1.0.0","authorization_event_type":"granted","event_id":"32000000-0000-4000-8000-000000000102","beacon_id":"beacon-a1b2c3d4","capture_mode":"triggered_snippet","occurred_at":"2026-07-17T16:31:01.000000Z","valid_until":"2026-07-17T16:46:00.000000Z","actor_id":"role:privacy-safety-reviewer","retention_policy_id":"urn:openbrec:retention:life-safety:1.0.0","reason":"synthetic candidate review","signature":"BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB","limitations":["simulation only"]}
+    ],"review_events":[{"schema_version":"1.0.0","review_event_type":"created","event_id":"33000000-0000-4000-8000-000000000101","task_id":"33000000-0000-4000-8000-000000000201","source_observation_id":"31000000-0000-4000-8000-000000000101","occurred_at":"2026-07-17T16:33:00.000000Z","review_state":"open","actor_id":"policy:review-router","disposition":"pending","signature":"CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC","limitations":["candidate requires review"]}],"material":{"duration_s":12,"encrypted":true,"preservation_record":{"schema_version":"1.0.0","record_id":"bbbbbbbb-bbbb-4bbb-8bbb-000000000101","recorded_at":"2026-07-17T16:32:01.000000Z","incident_id":"11111111-1111-4111-8111-111111111111","material_sha256":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","size_bytes":2048,"classification":"potentially_life_saving","purpose":"synthetic authorized review","sealed":true,"retention_until":"2026-07-24T16:32:01.000000Z","trigger_type":"authorized_actor","trigger_ref":"role:search-lead","custody_events":[]},"retention_state":"active","disposition_receipt":"urn:sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1"},"expected_disposition":"preserved_for_review"},
+    {"case_id":"unauthorized","capture_mode":"triggered_snippet","capture_at":"2026-07-17T16:34:00.000000Z","attempted_capture":true,"authorization_events":[],"review_events":[],"material":null,"expected_disposition":"rejected"},
+    {"case_id":"expired-authorization","capture_mode":"triggered_snippet","capture_at":"2026-07-17T17:00:00.000000Z","attempted_capture":true,"authorization_events":[{"schema_version":"1.0.0","authorization_event_type":"granted","event_id":"32000000-0000-4000-8000-000000000103","beacon_id":"beacon-a1b2c3d4","capture_mode":"triggered_snippet","occurred_at":"2026-07-17T16:31:00.000000Z","valid_until":"2026-07-17T16:46:00.000000Z","actor_id":"role:search-lead","retention_policy_id":"urn:openbrec:retention:life-safety:1.0.0","reason":"expired synthetic grant","signature":"DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD","limitations":["simulation only"]}],"review_events":[],"material":null,"expected_disposition":"rejected_expired"},
+    {"case_id":"break-glass-hold","capture_mode":"triggered_snippet","capture_at":"2026-07-17T16:36:00.000000Z","attempted_capture":true,"authorization_events":[{"schema_version":"1.0.0","authorization_event_type":"break_glass","event_id":"32000000-0000-4000-8000-000000000104","beacon_id":"beacon-a1b2c3d4","capture_mode":"triggered_snippet","occurred_at":"2026-07-17T16:35:00.000000Z","valid_until":"2026-07-17T16:50:00.000000Z","actor_id":"role:incident-commander","retention_policy_id":"urn:openbrec:retention:life-safety:1.0.0","reason":"synthetic urgent preservation drill","signature":"EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE","limitations":["review required","simulation only"]}],"review_events":[{"schema_version":"1.0.0","review_event_type":"created","event_id":"33000000-0000-4000-8000-000000000102","task_id":"33000000-0000-4000-8000-000000000202","source_observation_id":"31000000-0000-4000-8000-000000000106","occurred_at":"2026-07-17T16:37:00.000000Z","review_state":"open","actor_id":"policy:review-router","disposition":"pending","signature":"FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF","limitations":["break-glass review required"]}],"material":{"duration_s":15,"encrypted":true,"preservation_record":{"schema_version":"1.0.0","record_id":"bbbbbbbb-bbbb-4bbb-8bbb-000000000102","recorded_at":"2026-07-17T16:36:01.000000Z","incident_id":"11111111-1111-4111-8111-111111111111","material_sha256":"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb","size_bytes":3072,"classification":"potentially_life_saving","purpose":"synthetic break-glass review","sealed":true,"retention_until":"2026-07-18T16:36:01.000000Z","trigger_type":"authorized_actor","trigger_ref":"role:incident-commander","custody_events":[]},"retention_state":"hold","disposition_receipt":"urn:sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb1"},"expected_disposition":"hold_for_review"},
+    {"case_id":"expiry-fault-hold","capture_mode":"triggered_snippet","capture_at":"2026-07-18T16:36:02.000000Z","attempted_capture":false,"authorization_events":[],"review_events":[{"schema_version":"1.0.0","review_event_type":"reopened","event_id":"33000000-0000-4000-8000-000000000103","task_id":"33000000-0000-4000-8000-000000000203","source_observation_id":"31000000-0000-4000-8000-000000000106","occurred_at":"2026-07-18T16:35:00.000000Z","review_state":"reopened","actor_id":"actor-reviewer","disposition":"pending","signature":"GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG","limitations":["retention fault injected"]}],"material":{"duration_s":10,"encrypted":true,"preservation_record":{"schema_version":"1.0.0","record_id":"bbbbbbbb-bbbb-4bbb-8bbb-000000000103","recorded_at":"2026-07-17T16:36:02.000000Z","incident_id":"11111111-1111-4111-8111-111111111111","material_sha256":"cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc","size_bytes":1024,"classification":"potentially_life_saving","purpose":"synthetic expiry fault review","sealed":true,"retention_until":"2026-07-18T16:36:01.000000Z","trigger_type":"policy","custody_events":[]},"retention_state":"hold","disposition_receipt":"urn:sha256:ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc1"},"expected_disposition":"hold_before_delete"},
+    {"case_id":"reviewed-delete","capture_mode":"triggered_snippet","capture_at":"2026-07-18T17:00:00.000000Z","attempted_capture":false,"authorization_events":[],"review_events":[{"schema_version":"1.0.0","review_event_type":"closed","event_id":"33000000-0000-4000-8000-000000000104","task_id":"33000000-0000-4000-8000-000000000204","source_observation_id":"31000000-0000-4000-8000-000000000111","occurred_at":"2026-07-18T16:59:00.000000Z","review_state":"closed","actor_id":"actor-reviewer","disposition":"artifact","notes":"synthetic generator artifact","signature":"HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH","limitations":["review does not establish absence"]}],"material":{"duration_s":8,"encrypted":true,"preservation_record":{"schema_version":"1.0.0","record_id":"bbbbbbbb-bbbb-4bbb-8bbb-000000000104","recorded_at":"2026-07-17T16:40:00.000000Z","incident_id":"11111111-1111-4111-8111-111111111111","material_sha256":"dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd","size_bytes":768,"classification":"operational_evidence","purpose":"synthetic reviewed artifact","sealed":true,"retention_until":"2026-07-18T16:40:00.000000Z","trigger_type":"policy","custody_events":[]},"retention_state":"deleted","disposition_receipt":"urn:sha256:ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd1"},"expected_disposition":"deleted_after_review"}
+  ],
+  "expected_result_sha256": {
+    "beacon-replay": "81af9595ddf2a5212026cbd0addf990357e0956f234e5a2baf0bf71131d6d8a5",
+    "beacon-adversarial": "b9c9a8677f1af5703a28af7b8aaf1e7b511c36ad274f1dcdb8368eeb8323548b",
+    "retention-fault": "814bd4d3e263fca03ebbe8b695433ee041e41f962c81bb3ed5eb5bdf0ef0e68b"
+  },
+  "limitations": [
+    "synthetic campaign only",
+    "no hardware, RF, field, sensitivity or false-alert performance claim",
+    "no human presence or absence conclusion"
+  ]
+}
