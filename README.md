@@ -18,7 +18,7 @@ OpenBREC RF es una plataforma open source, modular y offline-first para investig
 > El sistema produce **indicios**, no diagnósticos ni certezas de víctima. La ausencia de RF nunca descarta una persona atrapada.
 
 > [!NOTE]
-> Estado actual: M0 parcial con M0-01–M0-04 validados. Existen contratos, API, worker, shell PWA, `lab-sim`, replay determinístico y una frontera portable de disposición reconciliada; todavía faltan el simulador/PWA explicable, la integración durable del runtime con PostgreSQL y los gates finales de salida. No es una plataforma operacional ni un perfil de campo.
+> Estado actual: M0 parcial con M0-01–M0-05 validados. Existen contratos, API, worker, `lab-sim`, replay determinístico, disposición portable, un simulador sintético de seis nodos y una PWA explicable con recarga offline real; todavía faltan la integración durable del runtime con PostgreSQL y los gates finales de salida M0-06. No es una plataforma operacional ni un perfil de campo.
 
 ## Documentos principales
 
@@ -85,6 +85,17 @@ uv run --offline python -m openbrec.verify security
 ```
 
 Los receipts evaluados sobre un SHA limpio están en `evidence/m0/<gate>/m0-04-receipt.json`. El storage SQLite es una referencia ejecutable portable de laboratorio; no acredita todavía la integración del worker con PostgreSQL ni custodia de claves de campo.
+
+M0-05 ejecuta la campaña sintética común y la PWA explicable:
+
+```bash
+uv run --offline python -m openbrec.verify simulator --scenario fixtures/replay/core/m0-six-node.json
+uv run --offline python -m openbrec.verify core-replay --bundle fixtures/replay/core/m0-six-node.json
+uv run --offline python -m openbrec.verify determinism --runs 10
+uv run --offline python -m openbrec.verify ui-smoke
+```
+
+El gate de UI construye la PWA, la sirve sólo en loopback y conduce Chromium para comprobar capas semánticas, selección de zona y recarga sin red. Los receipts limpios están en `evidence/m0/<gate>/m0-05-receipt.json`. La campaña es sintética y todos los resultados se abstienen; no acredita detección ni operación de campo.
 
 Los residuales aceptados, resueltos o planificados están en [`docs/governance/M0_RESIDUAL_REGISTER.md`](docs/governance/M0_RESIDUAL_REGISTER.md).
 
