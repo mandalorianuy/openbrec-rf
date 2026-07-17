@@ -1,6 +1,6 @@
 # Addons de energía off-grid, comunicaciones LoRa y beacons para OpenBREC RF
 
-- Estado: dirección arquitectónica aprobada; dos especificaciones hijas documentadas; planificación bloqueada
+- Estado: dirección arquitectónica aprobada; tres especificaciones hijas documentadas; planificación bloqueada
 - Fecha inicial: 2026-07-16
 - Revisión incorporada: 2026-07-17
 - Perfil regulatorio inicial: Uruguay
@@ -13,6 +13,8 @@ OpenBREC RF es hoy un bundle de diseño TRL 2–3, no una plataforma operacional
 Esta especificación define una dirección arquitectónica. No autoriza todavía un plan de implementación P0 off-grid.
 
 Enmienda 2026-07-17: `2026-07-17-openbrec-radio-security-regulation-design.md` reemplaza la política `blocked_unverified` de esta visión por los modos `receive_only`, `conducted_only`, `jurisdiction_validated` y `emergency_assumed_risk`. También agrega federación multi-equipo con autonomía recursiva. Esa especificación hija es la autoridad en radio, regulación, seguridad y federación; el texto histórico incompatible de esta visión no debe implementarse.
+
+Enmienda energética 2026-07-17: `2026-07-17-openbrec-energy-design.md` es la autoridad para cargas, fronteras de medición, dimensionamiento, FSM, brownout, solar y ensayos. La reserva de 72 horas se demuestra sobre la cadena completa de servicios críticos, sin contar generación externa; cada componente aporta autonomía propia o una ruta de recarga/reemplazo ensayada.
 
 Antes de planificar o implementar estos addons deben cumplirse dos condiciones:
 
@@ -302,14 +304,14 @@ La referencia usará radios y antenas separados. Compartir un transceiver será 
 
 La arquitectura será híbrida: LiFePO4 y generación central para gateway/red/PoE/carga; solar individual sólo para relays o beacons remotos; generadores y estaciones portátiles como soporte; batería-only sigue siendo válida.
 
-Cada ensayo usará un `energy-load-profile.yaml` versionado con cargas críticas/degradables, potencia por estado, duty cycle, Wh nominales, DoD, eficiencia DC/DC, derating por temperatura, envejecimiento, margen, reserva SOS y energía de apagado.
+Cada ensayo usará un `energy-load-profile.yaml` versionado con cargas críticas/degradables, potencia por estado, duty cycle, capacidad descargable medida, DoD, rutas/eficiencias, derating por temperatura, envejecimiento, margen, reserva SOS y energía de apagado.
 
 ```text
-usable_Wh = nominal_Wh * DoD * dc_efficiency * temperature_derating * aging_derating
-required_Wh = sum(power_W * duty_cycle * 72h) + sos_reserve_Wh + shutdown_Wh
+usable_Wh = measured_discharge_capacity_Wh * allowed_DoD * temperature_derating * aging_derating
+required_Wh = integral_0_72h(storage_output_power_W, dt) + sos_reserve_Wh + transition_reserve_Wh + shutdown_Wh
 ```
 
-El banco pasa si `usable_Wh >= required_Wh * 1.25` y las trazas demuestran continuidad de cargas críticas durante 72 horas.
+El banco storage-only pasa si `usable_Wh >= required_Wh * 1.25` y las trazas demuestran continuidad de la cadena crítica durante 72 horas. Solar, red y generador se validan como extensiones separadas y no reducen esta reserva.
 
 Umbrales iniciales con hysteresis:
 
