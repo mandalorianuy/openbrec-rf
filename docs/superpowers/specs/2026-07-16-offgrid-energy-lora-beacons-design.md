@@ -1,6 +1,6 @@
 # Addons de energía off-grid, comunicaciones LoRa y beacons para OpenBREC RF
 
-- Estado: dirección arquitectónica aprobada; tres especificaciones hijas documentadas; planificación bloqueada
+- Estado: dirección arquitectónica aprobada; cuatro especificaciones hijas documentadas; planificación bloqueada
 - Fecha inicial: 2026-07-16
 - Revisión incorporada: 2026-07-17
 - Perfil regulatorio inicial: Uruguay
@@ -15,6 +15,8 @@ Esta especificación define una dirección arquitectónica. No autoriza todavía
 Enmienda 2026-07-17: `2026-07-17-openbrec-radio-security-regulation-design.md` reemplaza la política `blocked_unverified` de esta visión por los modos `receive_only`, `conducted_only`, `jurisdiction_validated` y `emergency_assumed_risk`. También agrega federación multi-equipo con autonomía recursiva. Esa especificación hija es la autoridad en radio, regulación, seguridad y federación; el texto histórico incompatible de esta visión no debe implementarse.
 
 Enmienda energética 2026-07-17: `2026-07-17-openbrec-energy-design.md` es la autoridad para cargas, fronteras de medición, dimensionamiento, FSM, brownout, solar y ensayos. La reserva de 72 horas se demuestra sobre la cadena completa de servicios críticos, sin contar generación externa; cada componente aporta autonomía propia o una ruta de recarga/reemplazo ensayada.
+
+Enmienda beacons/UX 2026-07-17: `2026-07-17-openbrec-beacons-human-ux-design.md` es la autoridad para sensores acústicos/PIR/térmicos, captura controlada, revisión, terminales, privacidad y accesibilidad. Prioridad y confianza son dimensiones separadas; ningún sensor o silencio produce confirmación o ausencia.
 
 Antes de planificar o implementar estos addons deben cumplirse dos condiciones:
 
@@ -130,7 +132,7 @@ Cada capacidad declarará `supported`, `experimental`, `unverified` o `unavailab
 
 ### 8.1 Audio
 
-El modo predeterminado extraerá features localmente y emitirá eventos compactos sin transmitir ni persistir audio crudo. Un modo futuro de fragmento requerirá autorización explícita, cifrado, auditoría, duración limitada, expiración y señalización visible. La escucha continua está prohibida.
+El modo predeterminado procesará ventanas continuamente en local y emitirá features compactas sin transmitir ni persistir audio crudo. El modo experimental de snippet requerirá autorización explícita, cifrado, auditoría, duración limitada, expiración y señalización cuando sea segura. La escucha o transmisión remota continua está prohibida; el procesamiento local `features_only` está permitido.
 
 Los modelos usarán `unknown`, abstención, dataset card, model card y validación por entorno. Un sonido compatible con humano o mascota será un indicio, no un hecho.
 
@@ -336,7 +338,7 @@ El job actual se renombrará conceptualmente `bundle-structure`. Cada gate será
 - `compose-build`: todos los contextos y Dockerfiles existen y construyen;
 - `offline-startup`: servicios healthy sin Internet;
 - `replay`: receipt y hash determinístico;
-- `privacy`: no audio crudo, payloads ni identificadores directos;
+- `privacy`: ningún audio crudo fuera de capture authorization/EvidenceVault; sin payloads o identificadores directos no autorizados;
 - `security`: firmas, revocación, replay attacks, claves default y ACL;
 - `secret-scan`;
 - `sbom-license`;

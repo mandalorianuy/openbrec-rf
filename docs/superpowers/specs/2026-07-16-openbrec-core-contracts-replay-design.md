@@ -1,6 +1,6 @@
 # Contratos core y replay determinístico de OpenBREC RF
 
-- Estado: diseño conversacional aprobado; documento pendiente de revisión
+- Estado: especificación aprobada; implementación no autorizada
 - Fecha: 2026-07-16
 - Especificación padre: `2026-07-16-offgrid-energy-lora-beacons-design.md`
 - Alcance: autoridad contractual común de M0 y replay en dos niveles

@@ -2,7 +2,7 @@
 
 ## Executive summary
 
-OpenBREC RF is currently a TRL 2–3 design bundle rather than an operational runtime. Its planned radio addon combines a private LoRaWAN machine plane, a separate human LoRa mesh, local MQTT boundaries and a multi-organization federation with intermittent backhaul. The highest risks are forged distress semantics, stolen endpoint keys, accidental deployment of insecure development configuration, RF denial or harmful interference, and over-trust in a federation hub or transport identity.
+OpenBREC RF is currently a TRL 2–3 design bundle rather than an operational runtime. Its planned addons combine private LoRa communications, acoustic/PIR/thermal beacons, human terminals, local processing and a multi-organization federation with intermittent backhaul. The highest risks are forged distress semantics, sensor spoofing or misleading automation, unauthorized raw capture, stolen endpoint keys, insecure development configuration, RF denial and over-trust in a federation hub or transport identity.
 
 The design mitigates those risks with application-layer signatures and encryption, incident-scoped identity, append-only distress state, local autonomy, outbound-only federation gateways, hub key isolation, explicit RF operating profiles and replayable security gates. Possible distress is preserved even when invalid; it is marked `unverified_distress` and cannot become authenticated or `operator.accepted` without the required signed evidence.
 
@@ -18,11 +18,13 @@ In scope:
 - `IncidentFederation → OperationalArea → ResponseCell → Deployment → Site`;
 - federation gateways, at least two hubs, intermittent backhaul and physical bundles;
 - regulatory override, RF coexistence, commissioning, loss and rekey workflows;
+- acoustic, PIR and low-resolution thermal beacon processing, controlled raw capture, review and operator projections;
+- responder and deliverable-terminal UX for alerts, status, SOS and location;
 - contracts, replay, evidence preservation and audit boundaries.
 
 Out of scope:
 
-- energy and beacon details not needed to explain radio trust boundaries;
+- energy details not needed to explain radio, beacon or human trust boundaries;
 - cloud services not selected by the design;
 - flight control, offensive SDR, jamming, cellular emulation and Wi-Fi attack capabilities, which are prohibited by `AGENTS.md`;
 - guarantees against a sufficiently capable wide-area RF jammer;
@@ -37,10 +39,11 @@ Assumptions:
 - cells may lose time synchronization and all upstream connectivity for at least 24 hours;
 - no central CA, OCSP, DNS, cloud service or hub is available on the local critical path;
 - operators can make mistakes under time pressure, including break-glass activation;
+- an attacker or uncontrolled environment can inject sound, heat, movement, vibration or misleading context near a beacon;
 - cryptographic libraries and primitives are correctly implemented only after vector and misuse tests prove it;
 - the repository currently has schemas and services that are placeholders; planned controls are not implemented.
 
-Repository evidence: `AGENTS.md`, `SECURITY.md`, `docker-compose.yml`, `services/README.md`, `scripts/validate_bundle.py`, `docs/superpowers/specs/2026-07-16-offgrid-energy-lora-beacons-design.md`, `docs/superpowers/specs/2026-07-16-openbrec-core-contracts-replay-design.md`, and `docs/superpowers/specs/2026-07-17-openbrec-radio-security-regulation-design.md`.
+Repository evidence: `AGENTS.md`, `SECURITY.md`, `docker-compose.yml`, `services/README.md`, `scripts/validate_bundle.py`, `docs/superpowers/specs/2026-07-16-offgrid-energy-lora-beacons-design.md`, `docs/superpowers/specs/2026-07-16-openbrec-core-contracts-replay-design.md`, `docs/superpowers/specs/2026-07-17-openbrec-radio-security-regulation-design.md`, and `docs/superpowers/specs/2026-07-17-openbrec-beacons-human-ux-design.md`.
 
 Open questions before implementation:
 
@@ -50,18 +53,23 @@ Open questions before implementation:
 - measured antenna isolation, filter needs and capacity bounds;
 - responsible security, RF, privacy and incident-operation owners;
 - jurisdiction-specific evidence and review cadence for each deployment.
+- sensor reference profiles, operational detection thresholds and acceptable alert rates by environment;
+- authorized raw-capture roles, review capacity and retention periods by incident profile.
 
 ## System model
 
 ### Primary components
 
 - Radio nodes and terminals: sensors, component nodes, human terminals and relays exposed to physical capture and hostile RF.
+- Beacon sensor boundary: microphones, PIR and low-resolution thermal arrays exposed to physical tampering, adversarial stimuli and environmental interference.
+- Local feature/model pipeline: turns raw windows into typed observations and must abstain outside validated conditions.
 - LoRaWAN network server: local machine-plane session and routing authority for a `ResponseCell`.
 - Meshtastic or alternative mesh: untrusted transport for short human messages.
 - Raw transport boundary: contains protobufs, manufacturer IDs and transport metadata.
 - MQTT brokers: a raw bridge broker/listener and a distinct core event bus; the current Compose file shows only a development placeholder.
 - Identity authority and trust store: cell-local incident root, actor-device bindings, cached revocations and policy.
 - Distress ledger and evidence stores: append-only authenticated SOS state plus quarantined or sealed unverified material.
+- Operator UX and review queue: derived alert projections, coverage, confidence, missing sensors and signed human annotations.
 - Regulatory and coexistence controllers: local RF mode, authorization, expiry, scan, limits and kill switch.
 - Federation gateway: outbound-only producer/consumer of approved federation events.
 - Federation hubs: replicated coordination stores that know public bindings and federation sessions, not cell content or radio root keys.
@@ -73,12 +81,14 @@ Open questions before implementation:
 2. A local adapter parses bytes inside `RawTransportBoundary`; transport identity is not trusted.
 3. Application signatures, AEAD, incident binding, TTL, sequence and authorization are verified before an authenticated `HumanMessage` reaches the core boundary.
 4. Possible distress that fails validation crosses only into the restricted preservation boundary as `unverified_distress`.
-5. LoRaWAN observations cross through a separate adapter after session, counter and provenance checks.
-6. Core events enter append-only local logs and derived state; plugins cannot write consolidated facts directly.
-7. `FederationGateway` selects and minimizes allowed summaries, signs them and initiates an authenticated outbound connection.
-8. Hubs replicate signed events across an untrusted or partially trusted backhaul. Receiving cells revalidate every event and may reject superior intent.
-9. During partition, signed encrypted bundles may cross a physical custody boundary and reconcile by append-only union.
-10. Operators cross privileged boundaries when enrolling peers, accepting SOS, changing trust or enabling RF modes.
+5. Beacon raw windows cross into a local processing boundary; only typed observations reach the core, while authorized snippets/grids enter the restricted evidence vault by hash.
+6. LoRaWAN observations cross through a separate adapter after session, counter and provenance checks.
+7. Core events enter append-only local logs and derived state; plugins cannot write consolidated facts directly.
+8. Derived alert projections cross a human decision boundary; an operator can annotate or assign work but cannot rewrite sensor history.
+9. `FederationGateway` selects and minimizes allowed summaries, signs them and initiates an authenticated outbound connection.
+10. Hubs replicate signed events across an untrusted or partially trusted backhaul. Receiving cells revalidate every event and may reject superior intent.
+11. During partition, signed encrypted bundles may cross a physical custody boundary and reconcile by append-only union.
+12. Operators cross privileged boundaries when enrolling peers, accepting SOS, authorizing raw capture, changing trust or enabling RF modes.
 
 Current runtime and CI distinction: `scripts/validate_bundle.py` performs structural file/JSON/name checks and an offensive-term scan. It does not validate schemas, crypto, Compose startup, replay, privacy or security. `docker-compose.yml` currently exposes Mosquitto port 1883 without a mounted authentication policy and contains a placeholder PostgreSQL password; `services/README.md` states that service implementations are placeholders. These are development artifacts and must not be treated as field controls.
 
@@ -99,6 +109,9 @@ flowchart LR
   Operators --> Local
   Operators --> RFControl["Regulatory + coexistence controller and kill switch"]
   RFControl --> Nodes
+  Sensors["Hostile physical environment and beacon sensors"] --> Process["Local feature/model boundary"]
+  Process -->|"typed observation"| Local
+  Process -->|"authorized raw by hash"| Vault
 ```
 
 ## Assets and security objectives
@@ -114,6 +127,9 @@ flowchart LR
 | Federation summaries and topology | Authenticity, minimal disclosure, eventual reconciliation and resistance to a malicious hub. |
 | Firmware, schemas and configuration | Version pinning, provenance, SBOM, signed release inputs and reproducible gates. |
 | Raw transport identifiers and payloads | Containment, short retention, incident-scoped pseudonymization and no promotion to facts. |
+| Beacon raw audio, thermal grids and placement | Local containment, encryption, authorized capture, review before disposition and no biometric derivation. |
+| Sensor observations and model outputs | Provenance, uncertainty, abstention, adversarial/environmental testing and no automatic presence/absence claim. |
+| Operator alert semantics | Separate urgency from confidence; prevent false confirmation, false absence and misleading SOS expectations. |
 | Regulatory decisions | Explicit mode, evidence, actors, scope, expiry, stop conditions and non-claim of legality. |
 
 ## Attacker model
@@ -129,6 +145,8 @@ flowchart LR
 - Supply-chain compromise of firmware, adapter dependencies, images or generated contracts.
 - Social engineering of operators during enrolment, SOS acceptance or break-glass RF activation.
 - Clock disruption, brownout and rollback attempts against counters, nonces and revocation state.
+- Acoustic, thermal, motion or placement manipulation intended to trigger, suppress or mislocalize a candidate.
+- Attempts to activate, export or retain raw sensor material outside approved roles and scope.
 
 ### Non-capabilities
 
@@ -154,6 +172,9 @@ These non-capabilities are design assumptions to be challenged by implementation
 - Schema catalogs, fixtures, generated models, firmware and container supply chain.
 - Local stores, backup/export, evidence vault and closure/deletion workflows.
 - Antennas, RF connectors, shared power and co-site receivers.
+- Microphones, PIR/thermal fields of view, placement records, calibration, baselines and physical controls.
+- Model/configuration updates, thresholds, raw-capture authorization and review/disposition actions.
+- Operator and deliverable-terminal wording, offline state, alerts and accessibility channels.
 
 ## Top abuse paths
 
@@ -167,6 +188,9 @@ These non-capabilities are design assumptions to be challenged by implementation
 8. A compromised firmware or adapter release bypasses signature checks, leaks manufacturer IDs or converts invalid observations directly into evidence.
 9. Encrypted traffic patterns and fine-grained location summaries expose victim, responder or site locations to a passive observer or over-privileged federation operator.
 10. Two isolated cells assign the same resource or complete conflicting handoffs; last-write-wins reconciliation silently removes one safety-relevant history.
+11. An attacker or ordinary rescue equipment emits sound, heat or movement crafted to look like a victim signal; naive fusion creates a high-confidence candidate and diverts resources.
+12. A compromised operator account enables snippets or thermal-grid retention broadly, exports raw material and exposes victims, responders or private locations.
+13. Alert copy, color or automation presents silence as absence or a candidate as confirmed; responders deprioritize a real search area or over-trust a false signal.
 
 ## Threat model table
 
@@ -182,10 +206,13 @@ These non-capabilities are design assumptions to be challenged by implementation
 | TM-008 | Compromised firmware, adapter or schema supply chain bypasses boundaries. | Unpinned dependency, unsigned build, malicious generator or stale SBOM. | Key leakage, hidden TX, invalid facts and fleet-wide compromise. | Version pinning, SBOM, license and secret scans, signed artifacts, contract fixtures, adapter-only observations and reproducible builds where practical. | Provenance/SBOM gate and malicious-fixture test; owners: release + security. | Hardware vendor and compiler trust cannot be eliminated. | High |
 | TM-009 | Traffic analysis or excess federation disclosure reveals sensitive locations and relationships. | Passive RF observer or authorized hub with broad summaries. | Targeting, victim privacy harm and operational exposure. | Incident HMAC IDs, encrypted content, summary minimization, explicit disclosure basis, retention/access logs and life-safety exception review. | Privacy fixtures, field log inspection and disclosure audit; owners: privacy + operations. | RF timing and topology metadata cannot be fully hidden. | Medium |
 | TM-010 | Split-brain reconciliation silently overwrites handoff, topology or resource history. | Long partition, concurrent decisions and last-write-wins implementation. | Lost task ownership, duplicated deployment or missed response. | Append-only union, signed causal events, monotonic safety states, visible conflict events and authorized resolution. | 24-hour partition/50k-site replay with conflict assertions; owners: federation + core. | Human resolution may be slow and local views may temporarily diverge. | High |
+| TM-011 | Adversarial or environmental sound, heat, motion or placement creates or suppresses a beacon candidate. | Physical/RF proximity, unmodeled environment, stale baseline or overconfident model/fusion. | Resource diversion, missed distress, false location and alert fatigue. | Typed observations, health/placement invalidation, deterministic baseline, OOD/abstention, non-independent fusion and mandatory human review. | Adversarial fixtures, 20+ background beacon-hours per environment and relocation drills; owners: sensing + search operations. | Real incidents exceed test coverage and multiple sensors may share one false cause. | High |
+| TM-012 | Raw audio, thermal grids or fine placement data are captured, retained or exported without justified scope. | Compromised operator, broad role, weak retention worker or exposed vault. | Victim/responder privacy harm, surveillance, legal risk and loss of trust. | Features-only default, dual-role authorization, bounded break-glass, encryption, hash references, vault ACL, hold/review and deletion receipts. | Negative authorization/export tests and retention fault injection; owners: privacy + security. | Life-safety preservation intentionally retains some sensitive material longer. | High |
+| TM-013 | UX or automation communicates a false presence, false absence or rescue guarantee. | Ambiguous copy, color-only state, hidden missing sensor, alert pressure or derived score treated as fact. | Unsafe prioritization, abandoned search area, false expectation and operational error. | Prohibited labels, separate priority/confidence, visible coverage/missing sensors, signed external confirmation and comprehension gates. | Contract copy scan and usability tests with responders/non-prepared users; owners: product safety + operations. | Stress, language and accessibility conditions can still produce misinterpretation. | High |
 
 ## Criticality calibration
 
-No current vulnerability is rated Critical because the repository does not contain an operational radio, identity, federation or SOS runtime. A future finding becomes Critical when a plausible path can create a false authenticated `operator.accepted`, expose incident-wide keys across many cells, disable local kill switches, or cause broad harmful transmission with no effective containment.
+No current vulnerability is rated Critical because the repository does not contain an operational radio, beacon, identity, federation, SOS or human-terminal runtime. A future finding becomes Critical when a plausible path can create a false authenticated `operator.accepted`, systematically suppress or falsely confirm life-safety candidates, expose incident-wide keys across many cells, disable local kill switches, or cause broad harmful transmission with no effective containment.
 
 High means a plausible compromise can misroute rescue activity, expose a cell, deny critical communication, cross an important trust boundary or create unsafe RF behavior. Medium means meaningful harm requires additional position, timing, physical access or human error and is substantially contained to metadata, temporary inconsistency or one degraded component. Low is reserved for limited issues with no credible life-safety, trust-boundary or sensitive-data consequence.
 
@@ -205,3 +232,6 @@ Ratings must be recalibrated when runtime, deployment topology and hardware evid
 10. Regulatory override state machine, break-glass TTL, persistent alerts, harmful-interference stop and local kill switch.
 11. Firmware/schema/container provenance, SBOM, version pinning and adapter boundary enforcement.
 12. Co-site radio measurements, airtime budgets, SOS capacity and detected-jamming degradation without offensive response.
+13. Beacon raw boundary, capture authorization, vault access, review hold and deletion receipts.
+14. Sensor spoofing, placement invalidation, OOD/abstention and proof that fusion cannot emit presence or absence.
+15. Operator/terminal copy, priority-confidence separation, missing coverage, SOS semantics and accessibility under offline field conditions.
