@@ -1,0 +1,129 @@
+{
+  "schema_version": "1.0.0",
+  "scenario_id": "p0-energy-three-domains",
+  "logical_start": "2026-07-17T18:00:00.000000Z",
+  "window_s": 14400,
+  "margin_factor": 1.25,
+  "expected_result_sha256": "ab3427bee8d71163cfdbcbe8c900426e63364a333f8ec45a67dd85915fc66833",
+  "limitations": [
+    "simulation only",
+    "no physical autonomy claim",
+    "auxiliary generation is not credited to storage reserve"
+  ],
+  "domains": [
+    {
+      "domain_id": "energy-cell-a",
+      "node_id": "node-a1b2c3d4",
+      "autonomous": true,
+      "measured_capacity_Wh": 220,
+      "capacity_uncertainty_Wh": 5,
+      "allowed_dod": 0.8,
+      "temperature_derating": 0.95,
+      "aging_derating": 0.9,
+      "conversion_efficiency_lower": 0.9,
+      "initial_soc": 0.72,
+      "soc_uncertainty": 0.03,
+      "auxiliary_generation_Wh": 24,
+      "reserves": {
+        "sos_Wh": 10,
+        "transition_Wh": 5,
+        "shutdown_Wh": 5
+      },
+      "sources": [
+        {"source_id": "storage-cell-a", "source_type": "storage"},
+        {"source_id": "solar-model-a", "source_type": "solar"}
+      ],
+      "loads": [
+        {"load_id": "sos-terminal", "class": "L0_LIFE_SAFETY", "power_W": 3, "uncertainty_W": 0.2, "duty_cycle": 1},
+        {"load_id": "local-gateway", "class": "L1_MISSION_CRITICAL", "power_W": 10, "uncertainty_W": 0.5, "duty_cycle": 0.8},
+        {"load_id": "fusion-worker", "class": "L2_MISSION_SUPPORT", "power_W": 8, "uncertainty_W": 0.5, "duty_cycle": 0.5},
+        {"load_id": "extended-observability", "class": "L3_DEFERRABLE", "power_W": 5, "uncertainty_W": 0.3, "duty_cycle": 0.5}
+      ],
+      "initial_boot_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "initial_sequence": 40,
+      "initial_accepted_log_count": 20,
+      "events": [
+        {"event_id": "cell-001", "at_s": 0, "kind": "sample", "soc": 0.72},
+        {"event_id": "cell-002", "at_s": 900, "kind": "source_loss", "source_id": "solar-model-a", "soc": 0.69},
+        {"event_id": "cell-003", "at_s": 1800, "kind": "sos_active", "soc": 0.48},
+        {"event_id": "cell-004", "at_s": 2700, "kind": "brownout", "soc": 0.28},
+        {"event_id": "cell-005", "at_s": 3600, "kind": "sample", "soc": 0.36}
+      ]
+    },
+    {
+      "domain_id": "energy-relay-a",
+      "node_id": "node-a1b2c3d5",
+      "autonomous": true,
+      "measured_capacity_Wh": 96,
+      "capacity_uncertainty_Wh": 4,
+      "allowed_dod": 0.85,
+      "temperature_derating": 0.9,
+      "aging_derating": 0.9,
+      "conversion_efficiency_lower": 0.88,
+      "initial_soc": 0.54,
+      "soc_uncertainty": 0.04,
+      "auxiliary_generation_Wh": 8,
+      "reserves": {
+        "sos_Wh": 4,
+        "transition_Wh": 2,
+        "shutdown_Wh": 2
+      },
+      "sources": [
+        {"source_id": "storage-relay-a", "source_type": "storage"},
+        {"source_id": "solar-model-relay", "source_type": "solar"}
+      ],
+      "loads": [
+        {"load_id": "distress-relay", "class": "L0_LIFE_SAFETY", "power_W": 1.5, "uncertainty_W": 0.1, "duty_cycle": 1},
+        {"load_id": "store-forward", "class": "L1_MISSION_CRITICAL", "power_W": 3.5, "uncertainty_W": 0.2, "duty_cycle": 0.7},
+        {"load_id": "telemetry", "class": "L2_MISSION_SUPPORT", "power_W": 2, "uncertainty_W": 0.2, "duty_cycle": 0.5},
+        {"load_id": "diagnostics", "class": "L3_DEFERRABLE", "power_W": 1, "uncertainty_W": 0.1, "duty_cycle": 0.5}
+      ],
+      "initial_boot_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "initial_sequence": 10,
+      "initial_accepted_log_count": 8,
+      "events": [
+        {"event_id": "relay-001", "at_s": 0, "kind": "sample", "soc": 0.54},
+        {"event_id": "relay-002", "at_s": 900, "kind": "sample", "soc": 0.49},
+        {"event_id": "relay-003", "at_s": 1800, "kind": "sample", "soc": 0.53},
+        {"event_id": "relay-004", "at_s": 2700, "kind": "sample", "soc": 0.56},
+        {"event_id": "relay-005", "at_s": 3600, "kind": "source_restore", "source_id": "solar-model-relay", "soc": 0.58}
+      ]
+    },
+    {
+      "domain_id": "energy-beacon-a",
+      "node_id": "node-a1b2c3d6",
+      "autonomous": true,
+      "measured_capacity_Wh": 28,
+      "capacity_uncertainty_Wh": 3,
+      "allowed_dod": 0.8,
+      "temperature_derating": 0.85,
+      "aging_derating": 0.85,
+      "conversion_efficiency_lower": 0.85,
+      "initial_soc": null,
+      "soc_uncertainty": null,
+      "auxiliary_generation_Wh": 0,
+      "reserves": {
+        "sos_Wh": 2,
+        "transition_Wh": 1,
+        "shutdown_Wh": 1
+      },
+      "sources": [
+        {"source_id": "battery-beacon-a", "source_type": "replaceable_battery"}
+      ],
+      "loads": [
+        {"load_id": "distress-store", "class": "L0_LIFE_SAFETY", "power_W": 0.5, "uncertainty_W": 0.05, "duty_cycle": 1},
+        {"load_id": "health-beacon", "class": "L1_MISSION_CRITICAL", "power_W": 0.4, "uncertainty_W": 0.05, "duty_cycle": 0.5},
+        {"load_id": "acoustic-features", "class": "L2_MISSION_SUPPORT", "power_W": 1.2, "uncertainty_W": 0.1, "duty_cycle": 0.25},
+        {"load_id": "high-rate-debug", "class": "L3_DEFERRABLE", "power_W": 0.8, "uncertainty_W": 0.1, "duty_cycle": 0.1}
+      ],
+      "initial_boot_id": "cccccccccccccccccccccccccccccccc",
+      "initial_sequence": 4,
+      "initial_accepted_log_count": 3,
+      "events": [
+        {"event_id": "beacon-001", "at_s": 0, "kind": "sample", "soc": null},
+        {"event_id": "beacon-002", "at_s": 900, "kind": "source_loss", "source_id": "battery-beacon-a", "soc": null},
+        {"event_id": "beacon-003", "at_s": 1800, "kind": "restart", "soc": null}
+      ]
+    }
+  ]
+}

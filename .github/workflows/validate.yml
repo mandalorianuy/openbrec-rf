@@ -82,11 +82,18 @@ jobs:
       - run: uv run --offline python -m openbrec.verify adapter-replay --receipt evidence/m0/adapter-replay/m0-06-receipt.json
       - run: uv run --offline python -m openbrec.verify core-replay --receipt evidence/m0/core-replay/m0-06-receipt.json
       - run: uv run --offline python -m openbrec.verify determinism --runs 10 --receipt evidence/m0/determinism/m0-06-receipt.json
+      - run: uv run --offline python -m openbrec.verify energy-replay --scenario fixtures/p0/energy/three-domains.json --receipt evidence/p0/p0-02/energy-replay/p0-02-receipt.json
       - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: m0-replay-receipts
           path: evidence/m0
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: p0-energy-receipt
+          path: evidence/p0/p0-02
           if-no-files-found: error
 
   privacy-security:
