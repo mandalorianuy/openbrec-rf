@@ -1,0 +1,27 @@
+{
+  "abstained": true,
+  "abstention_reasons": [
+    "insufficient independent evidence"
+  ],
+  "capabilities_absent": [
+    "thermal"
+  ],
+  "confidence": 0.0,
+  "configuration_sha256": "7777777777777777777777777777777777777777777777777777777777777777",
+  "conflict_score": 0.0,
+  "contradicting_evidence_ids": [],
+  "coverage": "insufficient",
+  "engine_name": "openbrec-fusion",
+  "engine_version": "1.0.0",
+  "explanation": "no consolidated claim",
+  "limitations": [
+    "synthetic only"
+  ],
+  "result_id": "77777777-7777-4777-8777-777777777777",
+  "schema_version": "1.0.0",
+  "state": "abstained",
+  "supporting_evidence_ids": [],
+  "valid_until": "2026-07-17T12:16:00.000000Z",
+  "window_end": "2026-07-17T12:11:02.000000Z",
+  "window_start": "2026-07-17T12:10:00.000000Z"
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openbrec.org/schemas/core/deployment-event/1.0.0",
+  "title": "DeploymentEvent",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "deployment_id", "incident_id", "action", "occurred_at", "reason"],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "deployment_id": {"type": "string", "format": "uuid"},
+    "incident_id": {"type": "string", "format": "uuid"},
+    "action": {"enum": ["created", "activated", "degraded", "closed"]},
+    "occurred_at": {"type": "string", "format": "date-time", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{6}Z$"},
+    "reason": {"type": "string", "minLength": 1},
+    "missing_capabilities": {"type": "array", "items": {"type": "string"}, "uniqueItems": true}
+  },
+  "examples": [
+    {"schema_version": "1.0.0", "deployment_id": "22222222-2222-4222-8222-222222222222", "incident_id": "11111111-1111-4111-8111-111111111111", "action": "created", "occurred_at": "2026-07-17T12:02:00.000000Z", "reason": "create lab deployment"},
+    {"schema_version": "1.0.0", "deployment_id": "22222222-2222-4222-8222-222222222222", "incident_id": "11111111-1111-4111-8111-111111111111", "action": "degraded", "occurred_at": "2026-07-17T12:03:00.000000Z", "reason": "one synthetic node missing", "missing_capabilities": ["thermal"]}
+  ]
+}

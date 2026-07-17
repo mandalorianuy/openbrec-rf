@@ -1,0 +1,10 @@
+{
+  "accepted_at": "2026-07-17T12:00:00.000000Z",
+  "audit_required": true,
+  "mode": "routine_minimized",
+  "policy_id": "urn:openbrec:handling:routine:1.0.0",
+  "purpose": "synthetic laboratory replay",
+  "retention_until": "2026-07-18T12:00:00.000000Z",
+  "schema_version": "1.0.0",
+  "unexpected_field": true
+}

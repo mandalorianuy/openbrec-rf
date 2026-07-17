@@ -1,0 +1,22 @@
+{
+  "calibration_ref": "urn:sha256:6666666666666666666666666666666666666666666666666666666666666666",
+  "capabilities_absent": [
+    "thermal",
+    "acoustic"
+  ],
+  "coverage": "limited synthetic window",
+  "limitations": [
+    "no_event_detected is not absence"
+  ],
+  "measurements": [],
+  "observation_id": "55555555-5555-4555-8555-555555555556",
+  "observation_kind": "no_event_detected",
+  "quality": 0.5,
+  "schema_version": "1.0.0",
+  "sensor_id": "synthetic-2",
+  "sensor_type": "synthetic",
+  "uncertainty": 0.5,
+  "window_end": "2026-07-17T12:11:02.000000Z",
+  "window_start": "2026-07-17T12:11:00.000000Z",
+  "zone_id": "zone-a"
+}

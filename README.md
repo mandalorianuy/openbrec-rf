@@ -17,6 +17,9 @@ OpenBREC RF es una plataforma open source, modular y offline-first para investig
 > [!IMPORTANT]
 > El sistema produce **indicios**, no diagnósticos ni certezas de víctima. La ausencia de RF nunca descarta una persona atrapada.
 
+> [!NOTE]
+> Estado actual: M0 parcial. Los contratos core y sus consumidores son verificables, pero API, worker, PWA y Compose offline siguen sin implementar. El repositorio todavía no es una plataforma operacional.
+
 ## Documentos principales
 
 - [`OPENBREC_RF_TECHNICAL_DESIGN.md`](OPENBREC_RF_TECHNICAL_DESIGN.md) — diseño técnico completo.
@@ -43,9 +46,22 @@ OpenBREC RF es una plataforma open source, modular y offline-first para investig
 
 ## Validación local
 
+El comando histórico sólo comprueba estructura:
+
 ```bash
 python3 scripts/validate_bundle.py
 ```
+
+Los gates contractuales M0-02 se ejecutan con el entorno bloqueado y sin resolver dependencias por red:
+
+```bash
+uv run --offline python -m openbrec.verify schema
+uv run --offline python -m openbrec.verify fixtures
+uv run --offline python -m openbrec.verify schema-compat
+uv run --offline python -m openbrec.verify contracts-gen --check
+```
+
+Los residuales aceptados, resueltos o planificados están en [`docs/governance/M0_RESIDUAL_REGISTER.md`](docs/governance/M0_RESIDUAL_REGISTER.md).
 
 ## Licencias
 

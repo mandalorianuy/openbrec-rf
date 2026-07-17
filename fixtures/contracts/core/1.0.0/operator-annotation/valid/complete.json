@@ -1,0 +1,14 @@
+{
+  "action": "accept_for_review",
+  "actor_id": "commander-1",
+  "actor_role": "incident_commander",
+  "annotated_at": "2026-07-17T12:18:00.000000Z",
+  "annotation_id": "88888888-8888-4888-8888-888888888889",
+  "authentication_ref": "urn:sha256:9999999999999999999999999999999999999999999999999999999999999999",
+  "reason": "prioritize verification without confirming presence",
+  "schema_version": "1.0.0",
+  "target_event_ids": [
+    "77777777-7777-4777-8777-777777777778"
+  ],
+  "zone_id": "zone-a"
+}

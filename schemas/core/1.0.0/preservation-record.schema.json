@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openbrec.org/schemas/core/preservation-record/1.0.0",
+  "title": "PreservationRecord",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "record_id", "recorded_at", "incident_id", "material_sha256", "size_bytes", "classification", "purpose", "sealed", "retention_until", "trigger_type", "custody_events"],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "record_id": {"type": "string", "format": "uuid"},
+    "recorded_at": {"type": "string", "format": "date-time", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{6}Z$"},
+    "incident_id": {"type": "string", "format": "uuid"},
+    "material_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "size_bytes": {"type": "integer", "minimum": 0},
+    "classification": {"enum": ["potentially_life_saving", "operational_evidence"]},
+    "purpose": {"type": "string", "minLength": 1},
+    "sealed": {"const": true},
+    "retention_until": {"type": "string", "format": "date-time", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{6}Z$"},
+    "trigger_type": {"enum": ["policy", "authorized_actor", "break_glass"]},
+    "trigger_ref": {"type": "string", "minLength": 1},
+    "custody_events": {"type": "array", "items": {"type": "string", "format": "uuid"}, "uniqueItems": true},
+    "deletion_receipt_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  },
+  "examples": [
+    {"schema_version": "1.0.0", "record_id": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb", "recorded_at": "2026-07-17T12:23:00.000000Z", "incident_id": "11111111-1111-4111-8111-111111111111", "material_sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc", "size_bytes": 128, "classification": "potentially_life_saving", "purpose": "review possible life-safety relevance", "sealed": true, "retention_until": "2026-07-24T12:23:00.000000Z", "trigger_type": "policy", "custody_events": []},
+    {"schema_version": "1.0.0", "record_id": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbc", "recorded_at": "2026-07-17T12:24:00.000000Z", "incident_id": "11111111-1111-4111-8111-111111111111", "material_sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd", "size_bytes": 256, "classification": "operational_evidence", "purpose": "preserve source for authorized review", "sealed": true, "retention_until": "2026-07-24T12:24:00.000000Z", "trigger_type": "authorized_actor", "trigger_ref": "reviewer-1", "custody_events": ["99999999-9999-4999-8999-999999999999"]}
+  ]
+}

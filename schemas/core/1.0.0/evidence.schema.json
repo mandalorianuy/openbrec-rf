@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openbrec.org/schemas/core/evidence/1.0.0",
+  "title": "Evidence",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "evidence_id", "engine_name", "engine_version", "hypothesis", "unsupported_claims", "source_observation_ids", "window_start", "window_end", "coverage", "confidence", "uncertainty", "valid_until", "limitations", "explanation"],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "evidence_id": {"type": "string", "format": "uuid"},
+    "engine_name": {"type": "string", "minLength": 1},
+    "engine_version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+    "hypothesis": {"enum": ["possible_signal_of_interest", "operational_condition"]},
+    "unsupported_claims": {"type": "array", "items": {"enum": ["person_present", "person_absent", "identity", "diagnosis"]}, "minItems": 1, "uniqueItems": true},
+    "source_observation_ids": {"type": "array", "items": {"type": "string", "format": "uuid"}, "minItems": 1, "uniqueItems": true},
+    "zone_id": {"type": "string", "pattern": "^[a-z][a-z0-9._-]{2,63}$"},
+    "window_start": {"type": "string", "format": "date-time", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{6}Z$"},
+    "window_end": {"type": "string", "format": "date-time", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{6}Z$"},
+    "coverage": {"type": "string", "minLength": 1},
+    "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+    "uncertainty": {"type": "number", "minimum": 0, "maximum": 1},
+    "valid_until": {"type": "string", "format": "date-time", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{6}Z$"},
+    "limitations": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+    "explanation": {"type": "string", "minLength": 1}
+  },
+  "examples": [
+    {"schema_version": "1.0.0", "evidence_id": "66666666-6666-4666-8666-666666666666", "engine_name": "openbrec-rules", "engine_version": "1.0.0", "hypothesis": "possible_signal_of_interest", "unsupported_claims": ["person_present", "person_absent"], "source_observation_ids": ["55555555-5555-4555-8555-555555555555"], "window_start": "2026-07-17T12:10:00.000000Z", "window_end": "2026-07-17T12:10:01.000000Z", "coverage": "synthetic", "confidence": 0.4, "uncertainty": 0.6, "valid_until": "2026-07-17T12:15:00.000000Z", "limitations": ["single synthetic source"], "explanation": "rule synthetic.level above threshold"},
+    {"schema_version": "1.0.0", "evidence_id": "66666666-6666-4666-8666-666666666667", "engine_name": "openbrec-rules", "engine_version": "1.0.0", "hypothesis": "operational_condition", "unsupported_claims": ["person_present", "person_absent", "identity"], "source_observation_ids": ["55555555-5555-4555-8555-555555555555", "55555555-5555-4555-8555-555555555556"], "zone_id": "zone-a", "window_start": "2026-07-17T12:10:00.000000Z", "window_end": "2026-07-17T12:11:02.000000Z", "coverage": "partial zone", "confidence": 0.3, "uncertainty": 0.7, "valid_until": "2026-07-17T12:16:00.000000Z", "limitations": ["missing thermal", "synthetic only"], "explanation": "conflicting limited observations"}
+  ]
+}

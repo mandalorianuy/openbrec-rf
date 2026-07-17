@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openbrec.org/schemas/core/health-status/1.0.0",
+  "title": "HealthStatus",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "node_id", "observed_at", "state", "clock_state", "energy_state", "capabilities_absent", "limitations"],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "node_id": {"type": "string", "pattern": "^node-[0-9a-f]{8}$"},
+    "observed_at": {"type": "string", "format": "date-time", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{6}Z$"},
+    "state": {"enum": ["ok", "degraded", "fault", "offline", "unknown"]},
+    "clock_state": {"enum": ["synchronized", "uncertain", "unknown"]},
+    "energy_state": {"enum": ["normal", "conserve", "critical", "unknown"]},
+    "clock_uncertainty_ms": {"type": "integer", "minimum": 0},
+    "capabilities_absent": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "limitations": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true}
+  },
+  "examples": [
+    {"schema_version": "1.0.0", "node_id": "node-a1b2c3d4", "observed_at": "2026-07-17T12:09:00.000000Z", "state": "ok", "clock_state": "synchronized", "energy_state": "normal", "capabilities_absent": [], "limitations": ["synthetic health"]},
+    {"schema_version": "1.0.0", "node_id": "node-a1b2c3d4", "observed_at": "2026-07-17T12:10:00.000000Z", "state": "degraded", "clock_state": "uncertain", "energy_state": "unknown", "clock_uncertainty_ms": 2500, "capabilities_absent": ["thermal"], "limitations": ["energy telemetry unavailable"]}
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "capabilities_absent": [
+    "thermal"
+  ],
+  "clock_state": "uncertain",
+  "clock_uncertainty_ms": 2500,
+  "energy_state": "unknown",
+  "limitations": [
+    "energy telemetry unavailable"
+  ],
+  "node_id": "node-a1b2c3d4",
+  "observed_at": "2026-07-17T12:10:00.000000Z",
+  "schema_version": "1.0.0",
+  "state": "degraded"
+}

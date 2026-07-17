@@ -9,6 +9,8 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any, Sequence
 
+from openbrec.contracts import (sync_generated_assets, validate_compatibility,
+                                validate_core_schemas, validate_fixtures)
 
 DRAFT_2020_12 = "https://json-schema.org/draft/2020-12/schema"
 VERIFY_VERSION = "0.1.0"
@@ -59,9 +61,14 @@ def _resolve_inside(root: Path, value: str, *, label: str) -> Path:
     return resolved
 
 
-def _validate_catalog(root: Path, catalog_path: Path) -> tuple[list[str], dict[str, Any]]:
+def _validate_catalog(
+    root: Path, catalog_path: Path
+) -> tuple[list[str], dict[str, Any]]:
     errors: list[str] = []
-    summary: dict[str, Any] = {"catalog": str(catalog_path.relative_to(root)), "catalog_entries": 0}
+    summary: dict[str, Any] = {
+        "catalog": str(catalog_path.relative_to(root)),
+        "catalog_entries": 0,
+    }
     try:
         catalog = json.loads(catalog_path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as exc:
@@ -103,12 +110,16 @@ def _validate_catalog(root: Path, catalog_path: Path) -> tuple[list[str], dict[s
             or len(expected_hash) != 64
             or expected_hash != expected_hash.lower()
         ):
-            errors.append(f"{prefix}.sha256 must be 64 lowercase hexadecimal characters")
+            errors.append(
+                f"{prefix}.sha256 must be 64 lowercase hexadecimal characters"
+            )
             continue
         try:
             int(expected_hash, 16)
         except ValueError:
-            errors.append(f"{prefix}.sha256 must be 64 lowercase hexadecimal characters")
+            errors.append(
+                f"{prefix}.sha256 must be 64 lowercase hexadecimal characters"
+            )
             continue
         try:
             schema_path = _resolve_inside(root, path_value, label=f"{prefix}.path")
@@ -120,7 +131,9 @@ def _validate_catalog(root: Path, catalog_path: Path) -> tuple[list[str], dict[s
             continue
         actual_hash = _sha256(schema_path)
         if actual_hash != expected_hash:
-            errors.append(f"sha256 mismatch for {path_value}: expected {expected_hash}, got {actual_hash}")
+            errors.append(
+                f"sha256 mismatch for {path_value}: expected {expected_hash}, got {actual_hash}"
+            )
         try:
             schema = json.loads(schema_path.read_text(encoding="utf-8"))
         except (OSError, json.JSONDecodeError) as exc:
@@ -155,7 +168,9 @@ def _run_bundle_structure(root: Path) -> tuple[list[str], list[str], dict[str, A
         "stderr": result.stderr.strip(),
     }
     errors = [] if result.returncode == 0 else ["legacy structural validator failed"]
-    warnings = [line[2:] for line in result.stdout.splitlines() if line.startswith("- ")]
+    warnings = [
+        line[2:] for line in result.stdout.splitlines() if line.startswith("- ")
+    ]
     return errors, warnings, summary
 
 
@@ -199,18 +214,28 @@ def _write_receipt(
         "finished_at": datetime.now(UTC).isoformat().replace("+00:00", "Z"),
         "responsible_role": "contract-maintainer",
     }
-    receipt_path.write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    receipt_path.write_text(
+        json.dumps(receipt, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+    )
 
 
 def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="python -m openbrec.verify")
     subparsers = parser.add_subparsers(dest="gate", required=True)
-    for gate in ("bundle-structure", "schema"):
+    for gate in (
+        "bundle-structure",
+        "schema",
+        "fixtures",
+        "schema-compat",
+        "contracts-gen",
+    ):
         subparser = subparsers.add_parser(gate)
         subparser.add_argument("--root", default=".")
         subparser.add_argument("--receipt")
         if gate == "schema":
-            subparser.add_argument("--catalog", required=True)
+            subparser.add_argument("--catalog")
+        if gate == "contracts-gen":
+            subparser.add_argument("--check", action="store_true")
     return parser
 
 
@@ -223,15 +248,43 @@ def main(argv: Sequence[str] | None = None) -> int:
         errors, warnings, summary = _run_bundle_structure(root)
         inputs.append(root / "scripts/validate_bundle.py")
         scope = "structural_only"
-    else:
+    elif args.gate == "schema" and args.catalog:
         try:
             catalog_path = _resolve_inside(root, args.catalog, label="catalog")
             inputs.append(catalog_path)
             errors, summary = _validate_catalog(root, catalog_path)
         except ValueError as exc:
-            errors, summary = [str(exc)], {"catalog": args.catalog, "catalog_entries": 0}
+            errors, summary = [str(exc)], {
+                "catalog": args.catalog,
+                "catalog_entries": 0,
+            }
         warnings = []
         scope = "catalog_integrity_only"
+    elif args.gate == "schema":
+        catalog_errors, catalog_summary = _validate_catalog(
+            root, root / "schemas/core/catalog.json"
+        )
+        errors, summary = validate_core_schemas(root)
+        errors = [*catalog_errors, *errors]
+        summary = {**catalog_summary, **summary}
+        warnings = []
+        scope = "metaschema_and_catalog"
+        inputs.append(root / "schemas/core/catalog.json")
+    elif args.gate == "fixtures":
+        errors, summary = validate_fixtures(root)
+        warnings = []
+        scope = "schema_fixture_matrix"
+        inputs.append(root / "schemas/core/catalog.json")
+    elif args.gate == "schema-compat":
+        errors, summary = validate_compatibility(root)
+        warnings = []
+        scope = "immutable_baseline"
+        inputs.append(root / "schemas/core/compatibility-baseline.json")
+    else:
+        errors, summary = sync_generated_assets(root, check=args.check)
+        warnings = []
+        scope = "generated_consumers"
+        inputs.append(root / "schemas/core/catalog.json")
 
     if args.receipt:
         _write_receipt(
@@ -239,7 +292,12 @@ def main(argv: Sequence[str] | None = None) -> int:
             receipt_value=args.receipt,
             gate=args.gate,
             scope=scope,
-            command=["python", "-m", "openbrec.verify", *(argv if argv is not None else sys.argv[1:])],
+            command=[
+                "python",
+                "-m",
+                "openbrec.verify",
+                *(argv if argv is not None else sys.argv[1:]),
+            ],
             started_at=started_at,
             errors=errors,
             warnings=warnings,
@@ -250,5 +308,10 @@ def main(argv: Sequence[str] | None = None) -> int:
         for error in errors:
             print(error, file=sys.stderr)
         return 1
-    print(json.dumps({"gate": args.gate, "result": "passed", "scope": scope}, sort_keys=True))
+    print(
+        json.dumps(
+            {"gate": args.gate, "result": "passed", "scope": scope, "summary": summary},
+            sort_keys=True,
+        )
+    )
     return 0

@@ -8,12 +8,13 @@ import tempfile
 import unittest
 from pathlib import Path
 
-
 REPO_ROOT = Path(__file__).resolve().parents[1]
 
 
 class VerifyCliTests(unittest.TestCase):
-    def run_verify(self, *args: str, cwd: Path = REPO_ROOT) -> subprocess.CompletedProcess[str]:
+    def run_verify(
+        self, *args: str, cwd: Path = REPO_ROOT
+    ) -> subprocess.CompletedProcess[str]:
         return subprocess.run(
             [sys.executable, "-m", "openbrec.verify", *args],
             cwd=cwd,
@@ -22,7 +23,13 @@ class VerifyCliTests(unittest.TestCase):
             check=False,
         )
 
-    def make_catalog(self, root: Path, *, sha256: str | None = None, path: str = "schemas/item.schema.json") -> Path:
+    def make_catalog(
+        self,
+        root: Path,
+        *,
+        sha256: str | None = None,
+        path: str = "schemas/item.schema.json",
+    ) -> Path:
         schema_path = root / path
         schema_path.parent.mkdir(parents=True, exist_ok=True)
         schema = {
@@ -51,7 +58,9 @@ class VerifyCliTests(unittest.TestCase):
         catalog_path.write_text(json.dumps(catalog), encoding="utf-8")
         return catalog_path
 
-    def test_schema_gate_accepts_matching_local_catalog_and_writes_receipt(self) -> None:
+    def test_schema_gate_accepts_matching_local_catalog_and_writes_receipt(
+        self,
+    ) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             catalog = self.make_catalog(root)
@@ -76,7 +85,12 @@ class VerifyCliTests(unittest.TestCase):
             self.assertEqual(data["summary"]["catalog_entries"], 1)
             self.assertEqual(
                 data["lockfiles"],
-                [{"path": "uv.lock", "sha256": hashlib.sha256(lockfile.read_bytes()).hexdigest()}],
+                [
+                    {
+                        "path": "uv.lock",
+                        "sha256": hashlib.sha256(lockfile.read_bytes()).hexdigest(),
+                    }
+                ],
             )
 
     def test_schema_gate_rejects_hash_mismatch(self) -> None:

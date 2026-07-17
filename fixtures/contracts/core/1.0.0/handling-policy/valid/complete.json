@@ -1,0 +1,10 @@
+{
+  "accepted_at": "2026-07-17T12:00:00.000000Z",
+  "audit_required": true,
+  "break_glass": false,
+  "mode": "life_safety_preservation",
+  "policy_id": "urn:openbrec:handling:life-safety:1.0.0",
+  "purpose": "preserve potentially life-saving evidence",
+  "retention_until": "2026-07-24T12:00:00.000000Z",
+  "schema_version": "1.0.0"
+}

@@ -1,6 +1,6 @@
 # Contratos core y replay determinístico de OpenBREC RF
 
-- Estado: especificación aprobada; implementación no autorizada
+- Estado: especificación aprobada; M0-01 completado; M0-02 en validación; replay no implementado
 - Fecha: 2026-07-16
 - Especificación padre: `2026-07-16-offgrid-energy-lora-beacons-design.md`
 - Alcance: autoridad contractual común de M0 y replay en dos niveles
@@ -19,7 +19,7 @@ Esta especificación convierte los principios actuales de OpenBREC RF en contrat
 - cuarentena, preservación life-safety-first y recibos de rechazo;
 - gates, responsables y artefactos de evidencia.
 
-Este documento no autoriza todavía implementación ni un plan P0 off-grid. Después de su aprobación se continuará con las otras tres especificaciones hijas definidas por la especificación padre. El plan conjunto permanece bloqueado hasta aprobarlas y completar M0.
+La implementación M0 fue autorizada mediante el plan aprobado y `DELIVERY_BOARD.md`. La autorización es secuencial: no habilita P0 off-grid ni addons. M0-01 está cerrado y M0-02 permanece en validación; replay, runtime y preservación operacional todavía no existen.
 
 ## 2. Autoridad y precedencia
 
@@ -644,6 +644,6 @@ Pasar `python3 scripts/validate_bundle.py` no satisface estos criterios; sólo a
 - datamodel-code-generator: https://github.com/koxudaxi/datamodel-code-generator
 - json-schema-to-typescript: https://github.com/bcherny/json-schema-to-typescript
 
-## 22. Siguiente gate documental
+## 22. Estado de implementación y siguiente gate
 
-Tras aprobar este documento no se escribirá todavía el plan conjunto. Se continuará con `openbrec-radio-security-regulation-design`, manteniendo esta especificación como autoridad para envelopes, catálogo, receipts y replay.
+M0-02 materializa la familia core `1.0.0`, fixtures, baseline de compatibilidad y proyecciones Pydantic/TypeScript. Los límites semánticos que JSON Schema no puede demostrar están gobernados en `docs/governance/M0_RESIDUAL_REGISTER.md` y asignados principalmente a M0-04. El siguiente frente no se inicia hasta cerrar receipts M0-02 sobre un SHA limpio; P0 continúa bloqueado hasta el M0 exit completo.

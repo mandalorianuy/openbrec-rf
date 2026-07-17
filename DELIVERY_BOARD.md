@@ -2,7 +2,7 @@
 
 - Autoridad de secuencia: este board
 - Plan activo aprobado: `docs/superpowers/plans/2026-07-17-openbrec-m0-executable-plan.md`
-- Estado real: bundle de diseño estructuralmente válido; M0 no implementado
+- Estado real: M0 parcial; M0-01 cerrado y M0-02 en validación; runtime M0 inexistente
 - Regla de avance: una sola task M0 a la vez, con gate y receipt; no iniciar addons antes del M0 exit
 
 ## Decisiones de gobernanza cerradas
@@ -17,7 +17,7 @@
 Los checks permanecen abiertos hasta producir la evidencia exigida por el plan. El orden es obligatorio.
 
 - [x] `M0-01` / F-01: aceptar ADR-0001, catálogo core y registro inmutable de schemas legacy.
-- [ ] `M0-02` / F-01: implementar schemas, fixtures, modelos Pydantic/TypeScript y compatibilidad SemVer.
+- [ ] `M0-02` / F-01: implementar schemas, fixtures, modelos Pydantic/TypeScript y compatibilidad SemVer. **En validación.**
 - [ ] `M0-03` / F-02: crear API, worker y PWA mínimos; construir y arrancar `lab-sim` sin Internet.
 - [ ] `M0-04` / F-03–F-04: implementar accepted log, vault/quarantine/ledger y replay determinístico en dos niveles.
 - [ ] `M0-05` / F-05: simular seis nodos, dos tracks y tres zonas; mostrar capacidades, mapa, timeline y explicación.
@@ -30,7 +30,9 @@ Los checks permanecen abiertos hasta producir la evidencia exigida por el plan. 
 - Catálogo core: reservado y vacío hasta M0-02; no afirma contratos inexistentes.
 - Gates mínimos: `bundle-structure` con alcance `structural_only` y `schema` con alcance `catalog_integrity_only`.
 - Receipts: `evidence/m0/bundle-structure/receipt.json` y `evidence/m0/schema/*-catalog-receipt.json`, evaluados sobre `b10c2c587cec746a5fbfd91a81ce8bedebb173ea` con `dirty: false`.
-- Residual conocido: el receipt estructural conserva la advertencia de que PyYAML no está en el entorno Python 3.12 mínimo; no se interpreta como validación de perfiles YAML.
+- Residual M0-01 `M0-R001`: resuelto en M0-02 al fijar PyYAML; el nuevo receipt debe demostrar `warnings: []`.
+
+Registro obligatorio: `docs/governance/M0_RESIDUAL_REGISTER.md`.
 
 ## Gate de salida M0
 

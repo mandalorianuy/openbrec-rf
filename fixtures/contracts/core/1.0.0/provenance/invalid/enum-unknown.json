@@ -1,0 +1,15 @@
+{
+  "artifact_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+  "artifact_type": "unknown-enum-value",
+  "capabilities_absent": [
+    "hardware"
+  ],
+  "capabilities_present": [],
+  "limitations": [
+    "synthetic only"
+  ],
+  "name": "synthetic",
+  "recorded_at": "2026-07-17T12:00:00.000000Z",
+  "schema_version": "1.0.0",
+  "version": "1.0.0"
+}

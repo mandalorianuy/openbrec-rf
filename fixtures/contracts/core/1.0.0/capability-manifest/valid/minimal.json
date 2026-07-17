@@ -1,0 +1,12 @@
+{
+  "capabilities": [
+    "synthetic.observation"
+  ],
+  "capabilities_absent": [
+    "hardware"
+  ],
+  "declared_at": "2026-07-17T12:08:00.000000Z",
+  "node_id": "node-a1b2c3d4",
+  "schema_version": "1.0.0",
+  "support_level": "unverified"
+}

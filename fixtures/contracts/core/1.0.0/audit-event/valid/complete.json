@@ -1,0 +1,12 @@
+{
+  "action": "unseal",
+  "actor_id": "reviewer-1",
+  "actor_type": "human",
+  "audit_id": "99999999-9999-4999-8999-999999999998",
+  "object_ref": "urn:sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+  "occurred_at": "2026-07-17T12:20:00.000000Z",
+  "policy_ref": "urn:openbrec:handling:life-safety:1.0.0",
+  "reason": "dual authorization missing",
+  "result": "denied",
+  "schema_version": "1.0.0"
+}
