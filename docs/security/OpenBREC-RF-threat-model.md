@@ -43,13 +43,15 @@ Assumptions:
 - an attacker or uncontrolled environment can inject sound, heat, movement, vibration or misleading context near a beacon;
 - cryptographic libraries and primitives are correctly implemented only after vector and misuse tests prove it;
 - the repository has executable M0 contracts/services/replay plus P0 simulated
-  energy and incident-scoped messaging/SOS controls; bearer-specific adapters,
-  physical radio, beacon, federation and field controls remain unimplemented.
+  energy, incident-scoped messaging/SOS and version-pinned opaque bearer models;
+  wire adapters, physical radio, beacon, federation and field controls remain
+  unimplemented.
 
 Repository evidence: `AGENTS.md`, `SECURITY.md`, `docker-compose.yml`,
 `openbrec/replay.py`, `openbrec/disposition.py`,
 `openbrec/postgres_disposition.py`, `openbrec/keyring.py`,
-`openbrec/simulator.py`, `openbrec/messaging.py`, `apps/web/src/main.tsx`, both
+`openbrec/simulator.py`, `openbrec/messaging.py`, `openbrec/transports.py`,
+`apps/web/src/main.tsx`, both
 versioned disposition migrations, the dated reviews under `docs/security/`, the
 M0 key lifecycle SOP and the approved design specifications under
 `docs/superpowers/specs/`.

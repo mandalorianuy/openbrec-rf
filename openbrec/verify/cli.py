@@ -48,6 +48,8 @@ from openbrec.canonical import canonical_hash
 from openbrec.energy import run_energy_replay_gate
 from openbrec.messaging import SCENARIO_PATH as MESSAGE_SCENARIO_PATH
 from openbrec.messaging import run_p0_message_gate
+from openbrec.transports import WORKLOAD_PATH as TRANSPORT_WORKLOAD_PATH
+from openbrec.transports import run_transport_gate
 
 DRAFT_2020_12 = "https://json-schema.org/draft/2020-12/schema"
 VERIFY_VERSION = "0.1.0"
@@ -59,6 +61,7 @@ P0_MESSAGE_GATES = {
     "sos-state-replay",
     "transport-policy",
 }
+P0_TRANSPORT_GATES = {"transport-comparison", "malicious-transport"}
 PRIVACY_SAFETY_GATES = {
     "review-quarantine",
     "life-safety-preservation",
@@ -158,6 +161,8 @@ def _responsible_role(gate: str) -> str:
         return "core-replay-maintainer"
     if gate in ENERGY_GATES:
         return "energy-maintainer"
+    if gate in P0_TRANSPORT_GATES:
+        return "radio-transport-maintainer"
     if gate in PRIVACY_SAFETY_GATES:
         return "privacy-safety-reviewer"
     return "contract-maintainer"
@@ -635,6 +640,8 @@ def _parser() -> argparse.ArgumentParser:
         "human-message-security",
         "sos-state-replay",
         "transport-policy",
+        "transport-comparison",
+        "malicious-transport",
         "review-quarantine",
         "life-safety-preservation",
         "privacy",
@@ -662,6 +669,8 @@ def _parser() -> argparse.ArgumentParser:
             subparser.add_argument("--scenario", required=True)
         if gate == "energy-replay":
             subparser.add_argument("--scenario", required=True)
+        if gate == "transport-comparison":
+            subparser.add_argument("--workload", required=True)
         if gate == "core-replay":
             subparser.add_argument("--bundle")
         if gate == "sbom":
@@ -910,6 +919,33 @@ def main(argv: Sequence[str] | None = None) -> int:
                 root / "schemas/addons/1.0.0/transport-policy-decision.schema.json",
             ]
         )
+    elif args.gate in P0_TRANSPORT_GATES:
+        try:
+            workload_path = (
+                _resolve_inside(root, args.workload, label="workload")
+                if args.gate == "transport-comparison"
+                else root / TRANSPORT_WORKLOAD_PATH
+            )
+            errors, warnings, summary = run_transport_gate(
+                root, args.gate, workload_path
+            )
+            inputs.extend(
+                [
+                    workload_path,
+                    root / "openbrec/transports.py",
+                    root / "openbrec/messaging.py",
+                    root / "schemas/addons/1.0.0/transport-profile.schema.json",
+                    root / "schemas/addons/1.0.0/transport-envelope.schema.json",
+                ]
+            )
+        except (OSError, ValueError) as exc:
+            errors, warnings, summary = [str(exc)], [], {
+                "workload": str(getattr(args, "workload", TRANSPORT_WORKLOAD_PATH))
+            }
+        scope = {
+            "transport-comparison": "versioned_common_envelope_transport_models",
+            "malicious-transport": "hostile_transport_disposition_and_safety_boundary",
+        }[args.gate]
     elif args.gate == "review-quarantine":
         errors, warnings, summary = run_review_quarantine(root)
         scope = "exactly_one_primary_disposition"

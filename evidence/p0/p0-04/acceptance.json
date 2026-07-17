@@ -1,0 +1,18 @@
+{
+  "acceptance_version": "1.0.0",
+  "accepted_at": "2026-07-17",
+  "implementation_role": "radio-transport-maintainer",
+  "implementation_sha": "7e01320ec9520316add7a7d2915fbb1426106bc1",
+  "progress": {
+    "accepted_tasks": 4,
+    "percent": 44.4,
+    "total_tasks": 9
+  },
+  "receipt_sha256": {
+    "malicious-transport": "6382b9498ba0cc4687db1bb513f06635f9253750b8bc7f5b409ce863bb4a2913",
+    "transport-comparison": "92d179116235d9ef84d5b44a1e13cfc78f040542b1ad69ac647032809c680064"
+  },
+  "review_role": "privacy-safety-reviewer",
+  "status": "accepted",
+  "task": "P0-04"
+}
