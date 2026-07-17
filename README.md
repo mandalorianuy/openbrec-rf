@@ -18,7 +18,7 @@ OpenBREC RF es una plataforma open source, modular y offline-first para investig
 > El sistema produce **indicios**, no diagnósticos ni certezas de víctima. La ausencia de RF nunca descarta una persona atrapada.
 
 > [!NOTE]
-> Estado actual: M0 parcial con M0-01–M0-05 validados. Existen contratos, API, worker, `lab-sim`, replay determinístico, disposición portable, un simulador sintético de seis nodos y una PWA explicable con recarga offline real; todavía faltan la integración durable del runtime con PostgreSQL y los gates finales de salida M0-06. No es una plataforma operacional ni un perfil de campo.
+> Estado actual: M0 completo como referencia de laboratorio sobre el SHA `fb82384`. Existen contratos core `supported`, API, worker con commit PostgreSQL previo al ACK, replay determinístico, disposición portable/PostgreSQL, simulador de seis nodos y PWA explicable offline. Los 22 gates y sus receipts están en `evidence/m0/`. No es una plataforma operacional ni un perfil de campo; radio, energía, beacons, identidad y federación siguen sin implementar.
 
 ## Documentos principales
 
@@ -96,6 +96,22 @@ uv run --offline python -m openbrec.verify ui-smoke
 ```
 
 El gate de UI construye la PWA, la sirve sólo en loopback y conduce Chromium para comprobar capas semánticas, selección de zona y recarga sin red. Los receipts limpios están en `evidence/m0/<gate>/m0-05-receipt.json`. La campaña es sintética y todos los resultados se abstienen; no acredita detección ni operación de campo.
+
+M0-06 cierra la frontera durable y la salida reproducible:
+
+```bash
+uv run --offline python -m openbrec.verify compose-build
+uv run --offline python -m openbrec.verify offline-startup
+uv run --offline python -m openbrec.verify postgres-disposition
+uv run --offline python -m openbrec.verify key-lifecycle
+uv run --offline python -m openbrec.verify secret-scan
+uv run --offline python -m openbrec.verify sbom --output /tmp/openbrec-m0.cdx.json
+uv run --offline python -m openbrec.verify licenses
+uv run python -m openbrec.verify vulnerability-scan
+uv run python -m openbrec.verify all --evidence-dir /tmp/openbrec-m0-evidence
+```
+
+El último comando orquesta los mismos gates independientes y exige SHA limpio e integridad canónica de cada receipt. `vulnerability-scan` necesita acceso a los servicios de advisories; `offline-startup` continúa sin build, pull ni egress. El cierre, sus límites y las aprobaciones lógicas están en [`docs/security/2026-07-17-m0-06-exit-review.md`](docs/security/2026-07-17-m0-06-exit-review.md).
 
 Los residuales aceptados, resueltos o planificados están en [`docs/governance/M0_RESIDUAL_REGISTER.md`](docs/governance/M0_RESIDUAL_REGISTER.md).
 

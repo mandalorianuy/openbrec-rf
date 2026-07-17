@@ -1,0 +1,2444 @@
+{
+  "bomFormat": "CycloneDX",
+  "components": [
+    {
+      "bom-ref": "pkg:generic/openbrec-rf@0.0.0",
+      "licenses": [
+        {
+          "expression": "Apache-2.0"
+        }
+      ],
+      "name": "openbrec-rf",
+      "properties": [
+        {
+          "name": "openbrec:profile",
+          "value": "lab-sim"
+        }
+      ],
+      "purl": "pkg:generic/openbrec-rf@0.0.0",
+      "scope": "required",
+      "type": "application",
+      "version": "0.0.0"
+    },
+    {
+      "bom-ref": "pkg:npm/%40apidevtools/json-schema-ref-parser@11.9.3",
+      "licenses": [
+        {
+          "expression": "MIT"
+        }
+      ],
+      "name": "@apidevtools/json-schema-ref-parser",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "npm"
+        }
+      ],
+      "purl": "pkg:npm/%40apidevtools/json-schema-ref-parser@11.9.3",
+      "scope": "excluded",
+      "type": "library",
+      "version": "11.9.3"
+    },
+    {
+      "bom-ref": "pkg:npm/%40jsdevtools/ono@7.1.3",
+      "licenses": [
+        {
+          "expression": "MIT"
+        }
+      ],
+      "name": "@jsdevtools/ono",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "npm"
+        }
+      ],
+      "purl": "pkg:npm/%40jsdevtools/ono@7.1.3",
+      "scope": "excluded",
+      "type": "library",
+      "version": "7.1.3"
+    },
+    {
+      "bom-ref": "pkg:npm/%40oxc-project/types@0.139.0",
+      "licenses": [
+        {
+          "expression": "MIT"
+        }
+      ],
+      "name": "@oxc-project/types",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "npm"
+        }
+      ],
+      "purl": "pkg:npm/%40oxc-project/types@0.139.0",
+      "scope": "required",
+      "type": "library",
+      "version": "0.139.0"
+    },
+    {
+      "bom-ref": "pkg:npm/%40rolldown/binding-darwin-arm64@1.1.5",
+      "licenses": [
+        {
+          "expression": "MIT"
+        }
+      ],
+      "name": "@rolldown/binding-darwin-arm64",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "npm"
+        }
+      ],
+      "purl": "pkg:npm/%40rolldown/binding-darwin-arm64@1.1.5",
+      "scope": "required",
+      "type": "library",
+      "version": "1.1.5"
+    },
+    {
+      "bom-ref": "pkg:npm/%40rolldown/pluginutils@1.0.1",
+      "licenses": [
+        {
+          "expression": "MIT"
+        }
+      ],
+      "name": "@rolldown/pluginutils",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "npm"
+        }
+      ],
+      "purl": "pkg:npm/%40rolldown/pluginutils@1.0.1",
+      "scope": "required",
+      "type": "library",
+      "version": "1.0.1"
+    },
+    {
+      "bom-ref": "pkg:npm/%40types/json-schema@7.0.15",
+      "licenses": [
+        {
+          "expression": "MIT"
+        }
+      ],
+      "name": "@types/json-schema",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "npm"
+        }
+      ],
+      "purl": "pkg:npm/%40types/json-schema@7.0.15",
+      "scope": "excluded",
+      "type": "library",
+      "version": "7.0.15"
+    },
+    {
+      "bom-ref": "pkg:npm/%40types/lodash@4.17.24",
+      "licenses": [
+        {
+          "expression": "MIT"
+        }
+      ],
+      "name": "@types/lodash",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "npm"
+        }
+      ],
+      "purl": "pkg:npm/%40types/lodash@4.17.24",
+      "scope": "excluded",
+      "type": "library",
+      "version": "4.17.24"
+    },
+    {
+      "bom-ref": "pkg:npm/%40types/react-dom@19.2.3",
+      "licenses": [
+        {
+          "expression": "MIT"
+        }
+      ],
+      "name": "@types/react-dom",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "npm"
+        }
+      ],
+      "purl": "pkg:npm/%40types/react-dom@19.2.3",
+      "scope": "required",
+      "type": "library",
+      "version": "19.2.3"
+    },
+    {
+      "bom-ref": "pkg:npm/%40types/react@19.2.17",
+      "licenses": [
+        {
+          "expression": "MIT"
+        }
+      ],
+      "name": "@types/react",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "npm"
+        }
+      ],
+      "purl": "pkg:npm/%40types/react@19.2.17",
+      "scope": "required",
+      "type": "library",
+      "version": "19.2.17"
+    },
+    {
+      "bom-ref": "pkg:npm/%40typescript/typescript-darwin-arm64@7.0.2",
+      "licenses": [
+        {
+          "expression": "Apache-2.0"
+        }
+      ],
+      "name": "@typescript/typescript-darwin-arm64",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "npm"
+        }
+      ],
+      "purl": "pkg:npm/%40typescript/typescript-darwin-arm64@7.0.2",
+      "scope": "required",
+      "type": "library",
+      "version": "7.0.2"
+    },
+    {
+      "bom-ref": "pkg:npm/%40vitejs/plugin-react@6.0.3",
+      "licenses": [
+        {
+          "expression": "MIT"
+        }
+      ],
+      "name": "@vitejs/plugin-react",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "npm"
+        }
+      ],
+      "purl": "pkg:npm/%40vitejs/plugin-react@6.0.3",
+      "scope": "required",
+      "type": "library",
+      "version": "6.0.3"
+    },
+    {
+      "bom-ref": "pkg:npm/argparse@2.0.1",
+      "licenses": [
+        {
+          "expression": "Python-2.0"
+        }
+      ],
+      "name": "argparse",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "npm"
+        }
+      ],
+      "purl": "pkg:npm/argparse@2.0.1",
+      "scope": "excluded",
+      "type": "library",
+      "version": "2.0.1"
+    },
+    {
+      "bom-ref": "pkg:npm/csstype@3.2.3",
+      "licenses": [
+        {
+          "expression": "MIT"
+        }
+      ],
+      "name": "csstype",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "npm"
+        }
+      ],
+      "purl": "pkg:npm/csstype@3.2.3",
+      "scope": "required",
+      "type": "library",
+      "version": "3.2.3"
+    },
+    {
+      "bom-ref": "pkg:npm/detect-libc@2.1.2",
+      "licenses": [
+        {
+          "expression": "Apache-2.0"
+        }
+      ],
+      "name": "detect-libc",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "npm"
+        }
+      ],
+      "purl": "pkg:npm/detect-libc@2.1.2",
+      "scope": "required",
+      "type": "library",
+      "version": "2.1.2"
+    },
+    {
+      "bom-ref": "pkg:npm/fdir@6.5.0",
+      "licenses": [
+        {
+          "expression": "MIT"
+        }
+      ],
+      "name": "fdir",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "npm"
+        }
+      ],
+      "purl": "pkg:npm/fdir@6.5.0",
+      "scope": "required",
+      "type": "library",
+      "version": "6.5.0"
+    },
+    {
+      "bom-ref": "pkg:npm/fsevents@2.3.2",
+      "licenses": [
+        {
+          "expression": "MIT"
+        }
+      ],
+      "name": "fsevents",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "npm"
+        }
+      ],
+      "purl": "pkg:npm/fsevents@2.3.2",
+      "scope": "required",
+      "type": "library",
+      "version": "2.3.2"
+    },
+    {
+      "bom-ref": "pkg:npm/fsevents@2.3.3",
+      "licenses": [
+        {
+          "expression": "MIT"
+        }
+      ],
+      "name": "fsevents",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "npm"
+        }
+      ],
+      "purl": "pkg:npm/fsevents@2.3.3",
+      "scope": "required",
+      "type": "library",
+      "version": "2.3.3"
+    },
+    {
+      "bom-ref": "pkg:npm/is-extglob@2.1.1",
+      "licenses": [
+        {
+          "expression": "MIT"
+        }
+      ],
+      "name": "is-extglob",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "npm"
+        }
+      ],
+      "purl": "pkg:npm/is-extglob@2.1.1",
+      "scope": "excluded",
+      "type": "library",
+      "version": "2.1.1"
+    },
+    {
+      "bom-ref": "pkg:npm/is-glob@4.0.3",
+      "licenses": [
+        {
+          "expression": "MIT"
+        }
+      ],
+      "name": "is-glob",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "npm"
+        }
+      ],
+      "purl": "pkg:npm/is-glob@4.0.3",
+      "scope": "excluded",
+      "type": "library",
+      "version": "4.0.3"
+    },
+    {
+      "bom-ref": "pkg:npm/js-yaml@4.3.0",
+      "licenses": [
+        {
+          "expression": "MIT"
+        }
+      ],
+      "name": "js-yaml",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "npm"
+        }
+      ],
+      "purl": "pkg:npm/js-yaml@4.3.0",
+      "scope": "excluded",
+      "type": "library",
+      "version": "4.3.0"
+    },
+    {
+      "bom-ref": "pkg:npm/json-schema-to-typescript@15.0.4",
+      "licenses": [
+        {
+          "expression": "MIT"
+        }
+      ],
+      "name": "json-schema-to-typescript",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "npm"
+        }
+      ],
+      "purl": "pkg:npm/json-schema-to-typescript@15.0.4",
+      "scope": "excluded",
+      "type": "library",
+      "version": "15.0.4"
+    },
+    {
+      "bom-ref": "pkg:npm/lightningcss-darwin-arm64@1.32.0",
+      "licenses": [
+        {
+          "expression": "MPL-2.0"
+        }
+      ],
+      "name": "lightningcss-darwin-arm64",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "npm"
+        }
+      ],
+      "purl": "pkg:npm/lightningcss-darwin-arm64@1.32.0",
+      "scope": "required",
+      "type": "library",
+      "version": "1.32.0"
+    },
+    {
+      "bom-ref": "pkg:npm/lightningcss@1.32.0",
+      "licenses": [
+        {
+          "expression": "MPL-2.0"
+        }
+      ],
+      "name": "lightningcss",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "npm"
+        }
+      ],
+      "purl": "pkg:npm/lightningcss@1.32.0",
+      "scope": "required",
+      "type": "library",
+      "version": "1.32.0"
+    },
+    {
+      "bom-ref": "pkg:npm/lodash@4.18.1",
+      "licenses": [
+        {
+          "expression": "MIT"
+        }
+      ],
+      "name": "lodash",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "npm"
+        }
+      ],
+      "purl": "pkg:npm/lodash@4.18.1",
+      "scope": "excluded",
+      "type": "library",
+      "version": "4.18.1"
+    },
+    {
+      "bom-ref": "pkg:npm/minimist@1.2.8",
+      "licenses": [
+        {
+          "expression": "MIT"
+        }
+      ],
+      "name": "minimist",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "npm"
+        }
+      ],
+      "purl": "pkg:npm/minimist@1.2.8",
+      "scope": "excluded",
+      "type": "library",
+      "version": "1.2.8"
+    },
+    {
+      "bom-ref": "pkg:npm/nanoid@3.3.16",
+      "licenses": [
+        {
+          "expression": "MIT"
+        }
+      ],
+      "name": "nanoid",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "npm"
+        }
+      ],
+      "purl": "pkg:npm/nanoid@3.3.16",
+      "scope": "required",
+      "type": "library",
+      "version": "3.3.16"
+    },
+    {
+      "bom-ref": "pkg:npm/picocolors@1.1.1",
+      "licenses": [
+        {
+          "expression": "ISC"
+        }
+      ],
+      "name": "picocolors",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "npm"
+        }
+      ],
+      "purl": "pkg:npm/picocolors@1.1.1",
+      "scope": "required",
+      "type": "library",
+      "version": "1.1.1"
+    },
+    {
+      "bom-ref": "pkg:npm/picomatch@4.0.5",
+      "licenses": [
+        {
+          "expression": "MIT"
+        }
+      ],
+      "name": "picomatch",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "npm"
+        }
+      ],
+      "purl": "pkg:npm/picomatch@4.0.5",
+      "scope": "required",
+      "type": "library",
+      "version": "4.0.5"
+    },
+    {
+      "bom-ref": "pkg:npm/playwright-core@1.61.1",
+      "licenses": [
+        {
+          "expression": "Apache-2.0"
+        }
+      ],
+      "name": "playwright-core",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "npm"
+        }
+      ],
+      "purl": "pkg:npm/playwright-core@1.61.1",
+      "scope": "required",
+      "type": "library",
+      "version": "1.61.1"
+    },
+    {
+      "bom-ref": "pkg:npm/playwright@1.61.1",
+      "licenses": [
+        {
+          "expression": "Apache-2.0"
+        }
+      ],
+      "name": "playwright",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "npm"
+        }
+      ],
+      "purl": "pkg:npm/playwright@1.61.1",
+      "scope": "required",
+      "type": "library",
+      "version": "1.61.1"
+    },
+    {
+      "bom-ref": "pkg:npm/postcss@8.5.19",
+      "licenses": [
+        {
+          "expression": "MIT"
+        }
+      ],
+      "name": "postcss",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "npm"
+        }
+      ],
+      "purl": "pkg:npm/postcss@8.5.19",
+      "scope": "required",
+      "type": "library",
+      "version": "8.5.19"
+    },
+    {
+      "bom-ref": "pkg:npm/prettier@3.9.5",
+      "licenses": [
+        {
+          "expression": "MIT"
+        }
+      ],
+      "name": "prettier",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "npm"
+        }
+      ],
+      "purl": "pkg:npm/prettier@3.9.5",
+      "scope": "excluded",
+      "type": "library",
+      "version": "3.9.5"
+    },
+    {
+      "bom-ref": "pkg:npm/react-dom@19.2.7",
+      "licenses": [
+        {
+          "expression": "MIT"
+        }
+      ],
+      "name": "react-dom",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "npm"
+        }
+      ],
+      "purl": "pkg:npm/react-dom@19.2.7",
+      "scope": "required",
+      "type": "library",
+      "version": "19.2.7"
+    },
+    {
+      "bom-ref": "pkg:npm/react@19.2.7",
+      "licenses": [
+        {
+          "expression": "MIT"
+        }
+      ],
+      "name": "react",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "npm"
+        }
+      ],
+      "purl": "pkg:npm/react@19.2.7",
+      "scope": "required",
+      "type": "library",
+      "version": "19.2.7"
+    },
+    {
+      "bom-ref": "pkg:npm/rolldown@1.1.5",
+      "licenses": [
+        {
+          "expression": "MIT"
+        }
+      ],
+      "name": "rolldown",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "npm"
+        }
+      ],
+      "purl": "pkg:npm/rolldown@1.1.5",
+      "scope": "required",
+      "type": "library",
+      "version": "1.1.5"
+    },
+    {
+      "bom-ref": "pkg:npm/scheduler@0.27.0",
+      "licenses": [
+        {
+          "expression": "MIT"
+        }
+      ],
+      "name": "scheduler",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "npm"
+        }
+      ],
+      "purl": "pkg:npm/scheduler@0.27.0",
+      "scope": "required",
+      "type": "library",
+      "version": "0.27.0"
+    },
+    {
+      "bom-ref": "pkg:npm/source-map-js@1.2.1",
+      "licenses": [
+        {
+          "expression": "BSD-3-Clause"
+        }
+      ],
+      "name": "source-map-js",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "npm"
+        }
+      ],
+      "purl": "pkg:npm/source-map-js@1.2.1",
+      "scope": "required",
+      "type": "library",
+      "version": "1.2.1"
+    },
+    {
+      "bom-ref": "pkg:npm/tinyglobby@0.2.17",
+      "licenses": [
+        {
+          "expression": "MIT"
+        }
+      ],
+      "name": "tinyglobby",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "npm"
+        }
+      ],
+      "purl": "pkg:npm/tinyglobby@0.2.17",
+      "scope": "required",
+      "type": "library",
+      "version": "0.2.17"
+    },
+    {
+      "bom-ref": "pkg:npm/typescript@7.0.2",
+      "licenses": [
+        {
+          "expression": "Apache-2.0"
+        }
+      ],
+      "name": "typescript",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "npm"
+        }
+      ],
+      "purl": "pkg:npm/typescript@7.0.2",
+      "scope": "required",
+      "type": "library",
+      "version": "7.0.2"
+    },
+    {
+      "bom-ref": "pkg:npm/vite@8.1.5",
+      "licenses": [
+        {
+          "expression": "MIT"
+        }
+      ],
+      "name": "vite",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "npm"
+        }
+      ],
+      "purl": "pkg:npm/vite@8.1.5",
+      "scope": "required",
+      "type": "library",
+      "version": "8.1.5"
+    },
+    {
+      "bom-ref": "pkg:oci/eclipse-mosquitto@sha256:6f8d8a947c506f8a2290ec65cd4bd2bc7cb4d43fb5f6271f861cb013e2ef9797",
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "6f8d8a947c506f8a2290ec65cd4bd2bc7cb4d43fb5f6271f861cb013e2ef9797"
+        }
+      ],
+      "licenses": [
+        {
+          "expression": "EPL-2.0 OR BSD-3-Clause"
+        }
+      ],
+      "name": "eclipse-mosquitto",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "oci"
+        },
+        {
+          "name": "openbrec:declared-reference",
+          "value": "eclipse-mosquitto:2@sha256:6f8d8a947c506f8a2290ec65cd4bd2bc7cb4d43fb5f6271f861cb013e2ef9797"
+        }
+      ],
+      "purl": "pkg:oci/eclipse-mosquitto@sha256:6f8d8a947c506f8a2290ec65cd4bd2bc7cb4d43fb5f6271f861cb013e2ef9797",
+      "scope": "required",
+      "type": "container",
+      "version": "2"
+    },
+    {
+      "bom-ref": "pkg:oci/nginx@sha256:5616878291a2eed594aee8db4dade5878cf7edcb475e59193904b198d9b830de",
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "5616878291a2eed594aee8db4dade5878cf7edcb475e59193904b198d9b830de"
+        }
+      ],
+      "licenses": [
+        {
+          "expression": "BSD-2-Clause"
+        }
+      ],
+      "name": "nginx",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "oci"
+        },
+        {
+          "name": "openbrec:declared-reference",
+          "value": "nginx:1.29-alpine@sha256:5616878291a2eed594aee8db4dade5878cf7edcb475e59193904b198d9b830de"
+        }
+      ],
+      "purl": "pkg:oci/nginx@sha256:5616878291a2eed594aee8db4dade5878cf7edcb475e59193904b198d9b830de",
+      "scope": "required",
+      "type": "container",
+      "version": "1.29-alpine"
+    },
+    {
+      "bom-ref": "pkg:oci/node@sha256:a0b9bf06e4e6193cf7a0f58816cc935ff8c2a908f81e6f1a95432d679c54fbfd",
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "a0b9bf06e4e6193cf7a0f58816cc935ff8c2a908f81e6f1a95432d679c54fbfd"
+        }
+      ],
+      "licenses": [
+        {
+          "expression": "MIT"
+        }
+      ],
+      "name": "node",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "oci"
+        },
+        {
+          "name": "openbrec:declared-reference",
+          "value": "node:24-alpine@sha256:a0b9bf06e4e6193cf7a0f58816cc935ff8c2a908f81e6f1a95432d679c54fbfd"
+        }
+      ],
+      "purl": "pkg:oci/node@sha256:a0b9bf06e4e6193cf7a0f58816cc935ff8c2a908f81e6f1a95432d679c54fbfd",
+      "scope": "required",
+      "type": "container",
+      "version": "24-alpine"
+    },
+    {
+      "bom-ref": "pkg:oci/postgres@sha256:742f40ea20b9ff2ff31db5458d127452988a2164df9e17441e191f3b72252193",
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "742f40ea20b9ff2ff31db5458d127452988a2164df9e17441e191f3b72252193"
+        }
+      ],
+      "licenses": [
+        {
+          "expression": "PostgreSQL"
+        }
+      ],
+      "name": "postgres",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "oci"
+        },
+        {
+          "name": "openbrec:declared-reference",
+          "value": "postgres:17-alpine@sha256:742f40ea20b9ff2ff31db5458d127452988a2164df9e17441e191f3b72252193"
+        }
+      ],
+      "purl": "pkg:oci/postgres@sha256:742f40ea20b9ff2ff31db5458d127452988a2164df9e17441e191f3b72252193",
+      "scope": "required",
+      "type": "container",
+      "version": "17-alpine"
+    },
+    {
+      "bom-ref": "pkg:oci/python@sha256:d50fb7611f86d04a3b0471b46d7557818d88983fc3136726336b2a4c657aa30b",
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "d50fb7611f86d04a3b0471b46d7557818d88983fc3136726336b2a4c657aa30b"
+        }
+      ],
+      "licenses": [
+        {
+          "expression": "PSF-2.0"
+        }
+      ],
+      "name": "python",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "oci"
+        },
+        {
+          "name": "openbrec:declared-reference",
+          "value": "python:3.12-slim-bookworm@sha256:d50fb7611f86d04a3b0471b46d7557818d88983fc3136726336b2a4c657aa30b"
+        }
+      ],
+      "purl": "pkg:oci/python@sha256:d50fb7611f86d04a3b0471b46d7557818d88983fc3136726336b2a4c657aa30b",
+      "scope": "required",
+      "type": "container",
+      "version": "3.12-slim-bookworm"
+    },
+    {
+      "bom-ref": "pkg:pypi/annotated-doc@0.0.4",
+      "licenses": [
+        {
+          "expression": "MIT"
+        }
+      ],
+      "name": "annotated-doc",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/annotated-doc@0.0.4",
+      "scope": "required",
+      "type": "library",
+      "version": "0.0.4"
+    },
+    {
+      "bom-ref": "pkg:pypi/annotated-types@0.7.0",
+      "licenses": [
+        {
+          "expression": "MIT"
+        }
+      ],
+      "name": "annotated-types",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/annotated-types@0.7.0",
+      "scope": "required",
+      "type": "library",
+      "version": "0.7.0"
+    },
+    {
+      "bom-ref": "pkg:pypi/anyio@4.14.2",
+      "licenses": [
+        {
+          "expression": "MIT"
+        }
+      ],
+      "name": "anyio",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/anyio@4.14.2",
+      "scope": "required",
+      "type": "library",
+      "version": "4.14.2"
+    },
+    {
+      "bom-ref": "pkg:pypi/argcomplete@3.7.0",
+      "licenses": [
+        {
+          "expression": "Apache-2.0"
+        }
+      ],
+      "name": "argcomplete",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/argcomplete@3.7.0",
+      "scope": "excluded",
+      "type": "library",
+      "version": "3.7.0"
+    },
+    {
+      "bom-ref": "pkg:pypi/arrow@1.4.0",
+      "licenses": [
+        {
+          "expression": "Apache-2.0"
+        }
+      ],
+      "name": "arrow",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/arrow@1.4.0",
+      "scope": "excluded",
+      "type": "library",
+      "version": "1.4.0"
+    },
+    {
+      "bom-ref": "pkg:pypi/attrs@26.1.0",
+      "licenses": [
+        {
+          "expression": "MIT"
+        }
+      ],
+      "name": "attrs",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/attrs@26.1.0",
+      "scope": "required",
+      "type": "library",
+      "version": "26.1.0"
+    },
+    {
+      "bom-ref": "pkg:pypi/black@26.5.1",
+      "licenses": [
+        {
+          "expression": "MIT"
+        }
+      ],
+      "name": "black",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/black@26.5.1",
+      "scope": "excluded",
+      "type": "library",
+      "version": "26.5.1"
+    },
+    {
+      "bom-ref": "pkg:pypi/cachecontrol@0.14.4",
+      "licenses": [
+        {
+          "expression": "Apache-2.0"
+        }
+      ],
+      "name": "cachecontrol",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/cachecontrol@0.14.4",
+      "scope": "excluded",
+      "type": "library",
+      "version": "0.14.4"
+    },
+    {
+      "bom-ref": "pkg:pypi/certifi@2026.6.17",
+      "licenses": [
+        {
+          "expression": "MPL-2.0"
+        }
+      ],
+      "name": "certifi",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/certifi@2026.6.17",
+      "scope": "required",
+      "type": "library",
+      "version": "2026.6.17"
+    },
+    {
+      "bom-ref": "pkg:pypi/cffi@2.1.0",
+      "licenses": [
+        {
+          "expression": "MIT-0"
+        }
+      ],
+      "name": "cffi",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/cffi@2.1.0",
+      "scope": "required",
+      "type": "library",
+      "version": "2.1.0"
+    },
+    {
+      "bom-ref": "pkg:pypi/charset-normalizer@3.4.9",
+      "licenses": [
+        {
+          "expression": "MIT"
+        }
+      ],
+      "name": "charset-normalizer",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/charset-normalizer@3.4.9",
+      "scope": "excluded",
+      "type": "library",
+      "version": "3.4.9"
+    },
+    {
+      "bom-ref": "pkg:pypi/click@8.4.2",
+      "licenses": [
+        {
+          "expression": "BSD-3-Clause"
+        }
+      ],
+      "name": "click",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/click@8.4.2",
+      "scope": "required",
+      "type": "library",
+      "version": "8.4.2"
+    },
+    {
+      "bom-ref": "pkg:pypi/cryptography@49.0.0",
+      "licenses": [
+        {
+          "expression": "Apache-2.0 OR BSD-3-Clause"
+        }
+      ],
+      "name": "cryptography",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/cryptography@49.0.0",
+      "scope": "required",
+      "type": "library",
+      "version": "49.0.0"
+    },
+    {
+      "bom-ref": "pkg:pypi/cyclonedx-python-lib@11.11.0",
+      "licenses": [
+        {
+          "expression": "Apache-2.0"
+        }
+      ],
+      "name": "cyclonedx-python-lib",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/cyclonedx-python-lib@11.11.0",
+      "scope": "excluded",
+      "type": "library",
+      "version": "11.11.0"
+    },
+    {
+      "bom-ref": "pkg:pypi/datamodel-code-generator@0.37.0",
+      "licenses": [
+        {
+          "expression": "MIT"
+        }
+      ],
+      "name": "datamodel-code-generator",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/datamodel-code-generator@0.37.0",
+      "scope": "excluded",
+      "type": "library",
+      "version": "0.37.0"
+    },
+    {
+      "bom-ref": "pkg:pypi/defusedxml@0.7.1",
+      "licenses": [
+        {
+          "expression": "PSFL"
+        }
+      ],
+      "name": "defusedxml",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/defusedxml@0.7.1",
+      "scope": "excluded",
+      "type": "library",
+      "version": "0.7.1"
+    },
+    {
+      "bom-ref": "pkg:pypi/fastapi@0.139.2",
+      "licenses": [
+        {
+          "expression": "MIT"
+        }
+      ],
+      "name": "fastapi",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/fastapi@0.139.2",
+      "scope": "required",
+      "type": "library",
+      "version": "0.139.2"
+    },
+    {
+      "bom-ref": "pkg:pypi/filelock@3.30.3",
+      "licenses": [
+        {
+          "expression": "MIT"
+        }
+      ],
+      "name": "filelock",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/filelock@3.30.3",
+      "scope": "excluded",
+      "type": "library",
+      "version": "3.30.3"
+    },
+    {
+      "bom-ref": "pkg:pypi/fqdn@1.5.1",
+      "licenses": [
+        {
+          "expression": "MPL-2.0"
+        }
+      ],
+      "name": "fqdn",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/fqdn@1.5.1",
+      "scope": "excluded",
+      "type": "library",
+      "version": "1.5.1"
+    },
+    {
+      "bom-ref": "pkg:pypi/genson@1.4.0",
+      "licenses": [
+        {
+          "expression": "MIT"
+        }
+      ],
+      "name": "genson",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/genson@1.4.0",
+      "scope": "excluded",
+      "type": "library",
+      "version": "1.4.0"
+    },
+    {
+      "bom-ref": "pkg:pypi/h11@0.16.0",
+      "licenses": [
+        {
+          "expression": "MIT"
+        }
+      ],
+      "name": "h11",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/h11@0.16.0",
+      "scope": "required",
+      "type": "library",
+      "version": "0.16.0"
+    },
+    {
+      "bom-ref": "pkg:pypi/httpcore@1.0.9",
+      "licenses": [
+        {
+          "expression": "BSD-3-Clause"
+        }
+      ],
+      "name": "httpcore",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/httpcore@1.0.9",
+      "scope": "required",
+      "type": "library",
+      "version": "1.0.9"
+    },
+    {
+      "bom-ref": "pkg:pypi/httpx@0.28.1",
+      "licenses": [
+        {
+          "expression": "BSD-3-Clause"
+        }
+      ],
+      "name": "httpx",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/httpx@0.28.1",
+      "scope": "required",
+      "type": "library",
+      "version": "0.28.1"
+    },
+    {
+      "bom-ref": "pkg:pypi/idna@3.18",
+      "licenses": [
+        {
+          "expression": "BSD-3-Clause"
+        }
+      ],
+      "name": "idna",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/idna@3.18",
+      "scope": "required",
+      "type": "library",
+      "version": "3.18"
+    },
+    {
+      "bom-ref": "pkg:pypi/inflect@7.5.0",
+      "licenses": [
+        {
+          "expression": "MIT"
+        }
+      ],
+      "name": "inflect",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/inflect@7.5.0",
+      "scope": "excluded",
+      "type": "library",
+      "version": "7.5.0"
+    },
+    {
+      "bom-ref": "pkg:pypi/isoduration@20.11.0",
+      "licenses": [
+        {
+          "expression": "ISC"
+        }
+      ],
+      "name": "isoduration",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/isoduration@20.11.0",
+      "scope": "excluded",
+      "type": "library",
+      "version": "20.11.0"
+    },
+    {
+      "bom-ref": "pkg:pypi/isort@7.0.0",
+      "licenses": [
+        {
+          "expression": "MIT"
+        }
+      ],
+      "name": "isort",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/isort@7.0.0",
+      "scope": "excluded",
+      "type": "library",
+      "version": "7.0.0"
+    },
+    {
+      "bom-ref": "pkg:pypi/jinja2@3.1.6",
+      "licenses": [
+        {
+          "expression": "BSD-3-Clause"
+        }
+      ],
+      "name": "jinja2",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/jinja2@3.1.6",
+      "scope": "excluded",
+      "type": "library",
+      "version": "3.1.6"
+    },
+    {
+      "bom-ref": "pkg:pypi/jsonpointer@3.1.1",
+      "licenses": [
+        {
+          "expression": "BSD-3-Clause"
+        }
+      ],
+      "name": "jsonpointer",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/jsonpointer@3.1.1",
+      "scope": "excluded",
+      "type": "library",
+      "version": "3.1.1"
+    },
+    {
+      "bom-ref": "pkg:pypi/jsonschema-specifications@2025.9.1",
+      "licenses": [
+        {
+          "expression": "MIT"
+        }
+      ],
+      "name": "jsonschema-specifications",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/jsonschema-specifications@2025.9.1",
+      "scope": "required",
+      "type": "library",
+      "version": "2025.9.1"
+    },
+    {
+      "bom-ref": "pkg:pypi/jsonschema@4.26.0",
+      "licenses": [
+        {
+          "expression": "MIT"
+        }
+      ],
+      "name": "jsonschema",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/jsonschema@4.26.0",
+      "scope": "required",
+      "type": "library",
+      "version": "4.26.0"
+    },
+    {
+      "bom-ref": "pkg:pypi/license-expression@30.4.4",
+      "licenses": [
+        {
+          "expression": "Apache-2.0"
+        }
+      ],
+      "name": "license-expression",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/license-expression@30.4.4",
+      "scope": "excluded",
+      "type": "library",
+      "version": "30.4.4"
+    },
+    {
+      "bom-ref": "pkg:pypi/markdown-it-py@4.2.0",
+      "licenses": [
+        {
+          "expression": "MIT"
+        }
+      ],
+      "name": "markdown-it-py",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/markdown-it-py@4.2.0",
+      "scope": "excluded",
+      "type": "library",
+      "version": "4.2.0"
+    },
+    {
+      "bom-ref": "pkg:pypi/markupsafe@3.0.3",
+      "licenses": [
+        {
+          "expression": "BSD-3-Clause"
+        }
+      ],
+      "name": "markupsafe",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/markupsafe@3.0.3",
+      "scope": "excluded",
+      "type": "library",
+      "version": "3.0.3"
+    },
+    {
+      "bom-ref": "pkg:pypi/mdurl@0.1.2",
+      "licenses": [
+        {
+          "expression": "MIT"
+        }
+      ],
+      "name": "mdurl",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/mdurl@0.1.2",
+      "scope": "excluded",
+      "type": "library",
+      "version": "0.1.2"
+    },
+    {
+      "bom-ref": "pkg:pypi/more-itertools@11.1.0",
+      "licenses": [
+        {
+          "expression": "MIT"
+        }
+      ],
+      "name": "more-itertools",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/more-itertools@11.1.0",
+      "scope": "excluded",
+      "type": "library",
+      "version": "11.1.0"
+    },
+    {
+      "bom-ref": "pkg:pypi/msgpack@1.2.1",
+      "licenses": [
+        {
+          "expression": "Apache-2.0"
+        }
+      ],
+      "name": "msgpack",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/msgpack@1.2.1",
+      "scope": "excluded",
+      "type": "library",
+      "version": "1.2.1"
+    },
+    {
+      "bom-ref": "pkg:pypi/mypy-extensions@1.1.0",
+      "licenses": [
+        {
+          "expression": "MIT"
+        }
+      ],
+      "name": "mypy-extensions",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/mypy-extensions@1.1.0",
+      "scope": "excluded",
+      "type": "library",
+      "version": "1.1.0"
+    },
+    {
+      "bom-ref": "pkg:pypi/packageurl-python@0.17.6",
+      "licenses": [
+        {
+          "expression": "MIT"
+        }
+      ],
+      "name": "packageurl-python",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/packageurl-python@0.17.6",
+      "scope": "excluded",
+      "type": "library",
+      "version": "0.17.6"
+    },
+    {
+      "bom-ref": "pkg:pypi/packaging@26.2",
+      "licenses": [
+        {
+          "expression": "Apache-2.0 OR BSD-2-Clause"
+        }
+      ],
+      "name": "packaging",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/packaging@26.2",
+      "scope": "excluded",
+      "type": "library",
+      "version": "26.2"
+    },
+    {
+      "bom-ref": "pkg:pypi/paho-mqtt@2.1.0",
+      "licenses": [
+        {
+          "expression": "EPL-2.0 OR BSD-3-Clause"
+        }
+      ],
+      "name": "paho-mqtt",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/paho-mqtt@2.1.0",
+      "scope": "required",
+      "type": "library",
+      "version": "2.1.0"
+    },
+    {
+      "bom-ref": "pkg:pypi/pathspec@1.1.1",
+      "licenses": [
+        {
+          "expression": "MPL-2.0"
+        }
+      ],
+      "name": "pathspec",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/pathspec@1.1.1",
+      "scope": "excluded",
+      "type": "library",
+      "version": "1.1.1"
+    },
+    {
+      "bom-ref": "pkg:pypi/pip-api@0.0.34",
+      "licenses": [
+        {
+          "expression": "Apache-2.0"
+        }
+      ],
+      "name": "pip-api",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/pip-api@0.0.34",
+      "scope": "excluded",
+      "type": "library",
+      "version": "0.0.34"
+    },
+    {
+      "bom-ref": "pkg:pypi/pip-audit@2.10.1",
+      "licenses": [
+        {
+          "expression": "Apache-2.0"
+        }
+      ],
+      "name": "pip-audit",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/pip-audit@2.10.1",
+      "scope": "excluded",
+      "type": "library",
+      "version": "2.10.1"
+    },
+    {
+      "bom-ref": "pkg:pypi/pip-requirements-parser@32.0.1",
+      "licenses": [
+        {
+          "expression": "MIT"
+        }
+      ],
+      "name": "pip-requirements-parser",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/pip-requirements-parser@32.0.1",
+      "scope": "excluded",
+      "type": "library",
+      "version": "32.0.1"
+    },
+    {
+      "bom-ref": "pkg:pypi/pip@26.1.2",
+      "licenses": [
+        {
+          "expression": "MIT"
+        }
+      ],
+      "name": "pip",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/pip@26.1.2",
+      "scope": "excluded",
+      "type": "library",
+      "version": "26.1.2"
+    },
+    {
+      "bom-ref": "pkg:pypi/platformdirs@4.10.0",
+      "licenses": [
+        {
+          "expression": "MIT"
+        }
+      ],
+      "name": "platformdirs",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/platformdirs@4.10.0",
+      "scope": "excluded",
+      "type": "library",
+      "version": "4.10.0"
+    },
+    {
+      "bom-ref": "pkg:pypi/psycopg-binary@3.3.4",
+      "licenses": [
+        {
+          "expression": "LGPL-3.0-only"
+        }
+      ],
+      "name": "psycopg-binary",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/psycopg-binary@3.3.4",
+      "scope": "excluded",
+      "type": "library",
+      "version": "3.3.4"
+    },
+    {
+      "bom-ref": "pkg:pypi/psycopg@3.3.4",
+      "licenses": [
+        {
+          "expression": "LGPL-3.0-only"
+        }
+      ],
+      "name": "psycopg",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/psycopg@3.3.4",
+      "scope": "required",
+      "type": "library",
+      "version": "3.3.4"
+    },
+    {
+      "bom-ref": "pkg:pypi/py-serializable@2.1.0",
+      "licenses": [
+        {
+          "expression": "Apache-2.0"
+        }
+      ],
+      "name": "py-serializable",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/py-serializable@2.1.0",
+      "scope": "excluded",
+      "type": "library",
+      "version": "2.1.0"
+    },
+    {
+      "bom-ref": "pkg:pypi/pycparser@3.0",
+      "licenses": [
+        {
+          "expression": "BSD-3-Clause"
+        }
+      ],
+      "name": "pycparser",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/pycparser@3.0",
+      "scope": "required",
+      "type": "library",
+      "version": "3.0"
+    },
+    {
+      "bom-ref": "pkg:pypi/pydantic-core@2.46.4",
+      "licenses": [
+        {
+          "expression": "MIT"
+        }
+      ],
+      "name": "pydantic-core",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/pydantic-core@2.46.4",
+      "scope": "required",
+      "type": "library",
+      "version": "2.46.4"
+    },
+    {
+      "bom-ref": "pkg:pypi/pydantic@2.13.4",
+      "licenses": [
+        {
+          "expression": "MIT"
+        }
+      ],
+      "name": "pydantic",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/pydantic@2.13.4",
+      "scope": "required",
+      "type": "library",
+      "version": "2.13.4"
+    },
+    {
+      "bom-ref": "pkg:pypi/pygments@2.20.0",
+      "licenses": [
+        {
+          "expression": "BSD-2-Clause"
+        }
+      ],
+      "name": "pygments",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/pygments@2.20.0",
+      "scope": "excluded",
+      "type": "library",
+      "version": "2.20.0"
+    },
+    {
+      "bom-ref": "pkg:pypi/pyparsing@3.3.2",
+      "licenses": [
+        {
+          "expression": "MIT"
+        }
+      ],
+      "name": "pyparsing",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/pyparsing@3.3.2",
+      "scope": "excluded",
+      "type": "library",
+      "version": "3.3.2"
+    },
+    {
+      "bom-ref": "pkg:pypi/python-dateutil@2.9.0.post0",
+      "licenses": [
+        {
+          "expression": "Apache-2.0 OR BSD-3-Clause"
+        }
+      ],
+      "name": "python-dateutil",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/python-dateutil@2.9.0.post0",
+      "scope": "excluded",
+      "type": "library",
+      "version": "2.9.0.post0"
+    },
+    {
+      "bom-ref": "pkg:pypi/pytokens@0.4.1",
+      "licenses": [
+        {
+          "expression": "MIT"
+        }
+      ],
+      "name": "pytokens",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/pytokens@0.4.1",
+      "scope": "excluded",
+      "type": "library",
+      "version": "0.4.1"
+    },
+    {
+      "bom-ref": "pkg:pypi/pyyaml@6.0.3",
+      "licenses": [
+        {
+          "expression": "MIT"
+        }
+      ],
+      "name": "pyyaml",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/pyyaml@6.0.3",
+      "scope": "required",
+      "type": "library",
+      "version": "6.0.3"
+    },
+    {
+      "bom-ref": "pkg:pypi/referencing@0.37.0",
+      "licenses": [
+        {
+          "expression": "MIT"
+        }
+      ],
+      "name": "referencing",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/referencing@0.37.0",
+      "scope": "required",
+      "type": "library",
+      "version": "0.37.0"
+    },
+    {
+      "bom-ref": "pkg:pypi/requests@2.34.2",
+      "licenses": [
+        {
+          "expression": "Apache-2.0"
+        }
+      ],
+      "name": "requests",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/requests@2.34.2",
+      "scope": "excluded",
+      "type": "library",
+      "version": "2.34.2"
+    },
+    {
+      "bom-ref": "pkg:pypi/rfc3339-validator@0.1.4",
+      "licenses": [
+        {
+          "expression": "MIT"
+        }
+      ],
+      "name": "rfc3339-validator",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/rfc3339-validator@0.1.4",
+      "scope": "excluded",
+      "type": "library",
+      "version": "0.1.4"
+    },
+    {
+      "bom-ref": "pkg:pypi/rfc3987@1.3.8",
+      "licenses": [
+        {
+          "expression": "GPL-3.0-or-later"
+        }
+      ],
+      "name": "rfc3987",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/rfc3987@1.3.8",
+      "scope": "excluded",
+      "type": "library",
+      "version": "1.3.8"
+    },
+    {
+      "bom-ref": "pkg:pypi/rfc8785@0.1.4",
+      "licenses": [
+        {
+          "expression": "Apache-2.0"
+        }
+      ],
+      "name": "rfc8785",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/rfc8785@0.1.4",
+      "scope": "required",
+      "type": "library",
+      "version": "0.1.4"
+    },
+    {
+      "bom-ref": "pkg:pypi/rich@15.0.0",
+      "licenses": [
+        {
+          "expression": "MIT"
+        }
+      ],
+      "name": "rich",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/rich@15.0.0",
+      "scope": "excluded",
+      "type": "library",
+      "version": "15.0.0"
+    },
+    {
+      "bom-ref": "pkg:pypi/rpds-py@2026.6.3",
+      "licenses": [
+        {
+          "expression": "MIT"
+        }
+      ],
+      "name": "rpds-py",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/rpds-py@2026.6.3",
+      "scope": "required",
+      "type": "library",
+      "version": "2026.6.3"
+    },
+    {
+      "bom-ref": "pkg:pypi/six@1.17.0",
+      "licenses": [
+        {
+          "expression": "MIT"
+        }
+      ],
+      "name": "six",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/six@1.17.0",
+      "scope": "excluded",
+      "type": "library",
+      "version": "1.17.0"
+    },
+    {
+      "bom-ref": "pkg:pypi/sortedcontainers@2.4.0",
+      "licenses": [
+        {
+          "expression": "Apache 2.0"
+        }
+      ],
+      "name": "sortedcontainers",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/sortedcontainers@2.4.0",
+      "scope": "excluded",
+      "type": "library",
+      "version": "2.4.0"
+    },
+    {
+      "bom-ref": "pkg:pypi/starlette@1.3.1",
+      "licenses": [
+        {
+          "expression": "BSD-3-Clause"
+        }
+      ],
+      "name": "starlette",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/starlette@1.3.1",
+      "scope": "required",
+      "type": "library",
+      "version": "1.3.1"
+    },
+    {
+      "bom-ref": "pkg:pypi/tomli-w@1.2.0",
+      "licenses": [
+        {
+          "expression": "MIT"
+        }
+      ],
+      "name": "tomli-w",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/tomli-w@1.2.0",
+      "scope": "excluded",
+      "type": "library",
+      "version": "1.2.0"
+    },
+    {
+      "bom-ref": "pkg:pypi/tomli@2.4.1",
+      "licenses": [
+        {
+          "expression": "MIT"
+        }
+      ],
+      "name": "tomli",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/tomli@2.4.1",
+      "scope": "excluded",
+      "type": "library",
+      "version": "2.4.1"
+    },
+    {
+      "bom-ref": "pkg:pypi/typeguard@4.5.2",
+      "licenses": [
+        {
+          "expression": "MIT"
+        }
+      ],
+      "name": "typeguard",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/typeguard@4.5.2",
+      "scope": "excluded",
+      "type": "library",
+      "version": "4.5.2"
+    },
+    {
+      "bom-ref": "pkg:pypi/typing-extensions@4.16.0",
+      "licenses": [
+        {
+          "expression": "PSF-2.0"
+        }
+      ],
+      "name": "typing-extensions",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/typing-extensions@4.16.0",
+      "scope": "required",
+      "type": "library",
+      "version": "4.16.0"
+    },
+    {
+      "bom-ref": "pkg:pypi/typing-inspection@0.4.2",
+      "licenses": [
+        {
+          "expression": "MIT"
+        }
+      ],
+      "name": "typing-inspection",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/typing-inspection@0.4.2",
+      "scope": "required",
+      "type": "library",
+      "version": "0.4.2"
+    },
+    {
+      "bom-ref": "pkg:pypi/tzdata@2026.3",
+      "licenses": [
+        {
+          "expression": "Apache-2.0"
+        }
+      ],
+      "name": "tzdata",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/tzdata@2026.3",
+      "scope": "required",
+      "type": "library",
+      "version": "2026.3"
+    },
+    {
+      "bom-ref": "pkg:pypi/uri-template@1.3.0",
+      "licenses": [
+        {
+          "expression": "MIT"
+        }
+      ],
+      "name": "uri-template",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/uri-template@1.3.0",
+      "scope": "excluded",
+      "type": "library",
+      "version": "1.3.0"
+    },
+    {
+      "bom-ref": "pkg:pypi/urllib3@2.7.0",
+      "licenses": [
+        {
+          "expression": "MIT"
+        }
+      ],
+      "name": "urllib3",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/urllib3@2.7.0",
+      "scope": "excluded",
+      "type": "library",
+      "version": "2.7.0"
+    },
+    {
+      "bom-ref": "pkg:pypi/uvicorn@0.51.0",
+      "licenses": [
+        {
+          "expression": "BSD-3-Clause"
+        }
+      ],
+      "name": "uvicorn",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/uvicorn@0.51.0",
+      "scope": "required",
+      "type": "library",
+      "version": "0.51.0"
+    },
+    {
+      "bom-ref": "pkg:pypi/webcolors@25.10.0",
+      "licenses": [
+        {
+          "expression": "BSD-3-Clause"
+        }
+      ],
+      "name": "webcolors",
+      "properties": [
+        {
+          "name": "openbrec:ecosystem",
+          "value": "python"
+        }
+      ],
+      "purl": "pkg:pypi/webcolors@25.10.0",
+      "scope": "excluded",
+      "type": "library",
+      "version": "25.10.0"
+    }
+  ],
+  "metadata": {
+    "component": {
+      "bom-ref": "pkg:generic/openbrec-rf@0.0.0",
+      "licenses": [
+        {
+          "expression": "Apache-2.0"
+        }
+      ],
+      "name": "openbrec-rf",
+      "properties": [
+        {
+          "name": "openbrec:profile",
+          "value": "lab-sim"
+        }
+      ],
+      "purl": "pkg:generic/openbrec-rf@0.0.0",
+      "scope": "required",
+      "type": "application",
+      "version": "0.0.0"
+    }
+  },
+  "properties": [
+    {
+      "name": "openbrec:deterministic",
+      "value": "true"
+    },
+    {
+      "name": "openbrec:component-count",
+      "value": "124"
+    }
+  ],
+  "specVersion": "1.7",
+  "version": 1
+}

@@ -1,0 +1,120 @@
+{
+  "command": [
+    "python",
+    "-m",
+    "openbrec.verify",
+    "determinism",
+    "--root",
+    "/Users/facundo/desarrollo/OpenBREC-RF",
+    "--runs",
+    "10",
+    "--receipt",
+    "/var/folders/sx/4wqgpxv140j57cllvyb23h100000gn/T/openbrec-m0-exit-psh7322l/determinism/m0-06-receipt.json"
+  ],
+  "dirty": false,
+  "errors": [],
+  "finished_at": "2026-07-17T18:26:09.835481Z",
+  "gate": "determinism",
+  "gate_version": "0.1.0",
+  "git_sha": "fb82384d08dbcc1618e080f542a5b0dbfaee9450",
+  "inputs": [
+    {
+      "path": "fixtures/replay/adapter/synthetic-observation.bundle.json",
+      "sha256": "94d515107056cdc109a5cbf43f82128dfcb0d60f2800d2759717993fc6db5b57"
+    },
+    {
+      "path": "openbrec/canonical.py",
+      "sha256": "39aa6a9cf0ec575f82070f194cf290e2d61ae4b55b9f5b51a42b508973820958"
+    },
+    {
+      "path": "openbrec/replay.py",
+      "sha256": "6a62f49e2b75e948551857dcbbe53af7759b4dc326423a8678b798746ae624fc"
+    }
+  ],
+  "lockfiles": [
+    {
+      "path": "uv.lock",
+      "sha256": "2d1b79df4cd5878ec7f4674a133c54ca7b16dfa559560ba3a93911e620f435d5"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "sha256": "ed7659f050b279f37e5cf84fb065fc528e15b3204d374681f3a70ad081d1c25a"
+    },
+    {
+      "path": "apps/web/pnpm-lock.yaml",
+      "sha256": "12a1ed34e601b49a319846ef8d87c316708bb695853661ec3b3b95208701d278"
+    }
+  ],
+  "output_sha256": "998370f47a1f081171b48a4240401d8f008a039d9f44766db70a19d2bf320775",
+  "receipt_version": "1.0.0",
+  "responsible_role": "core-replay-maintainer",
+  "result": "passed",
+  "runtime": {
+    "docker": "Docker version 29.5.3, build d1c06ef",
+    "node": "v26.5.0",
+    "pnpm": "11.9.0",
+    "python": "3.12.13"
+  },
+  "scope": "replay_result_hash_stability",
+  "started_at": "2026-07-17T18:26:09.523669Z",
+  "summary": {
+    "result_sha256": "bf4ad6c38a7ed8bdcd2e0f0106aec916f9d2a36b55bd104293206cc754a132fe",
+    "runs": 10,
+    "scenarios": [
+      {
+        "locale": "C",
+        "order": "forward",
+        "timezone": "UTC"
+      },
+      {
+        "locale": "C.UTF-8",
+        "order": "reverse",
+        "timezone": "Pacific/Auckland"
+      },
+      {
+        "locale": "C",
+        "order": "forward",
+        "timezone": "UTC"
+      },
+      {
+        "locale": "C.UTF-8",
+        "order": "reverse",
+        "timezone": "Pacific/Auckland"
+      },
+      {
+        "locale": "C",
+        "order": "forward",
+        "timezone": "UTC"
+      },
+      {
+        "locale": "C.UTF-8",
+        "order": "reverse",
+        "timezone": "Pacific/Auckland"
+      },
+      {
+        "locale": "C",
+        "order": "forward",
+        "timezone": "UTC"
+      },
+      {
+        "locale": "C.UTF-8",
+        "order": "reverse",
+        "timezone": "Pacific/Auckland"
+      },
+      {
+        "locale": "C",
+        "order": "forward",
+        "timezone": "UTC"
+      },
+      {
+        "locale": "C.UTF-8",
+        "order": "reverse",
+        "timezone": "Pacific/Auckland"
+      }
+    ],
+    "unique_result_hashes": [
+      "bf4ad6c38a7ed8bdcd2e0f0106aec916f9d2a36b55bd104293206cc754a132fe"
+    ]
+  },
+  "warnings": []
+}

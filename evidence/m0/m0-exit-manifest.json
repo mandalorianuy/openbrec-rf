@@ -1,0 +1,160 @@
+{
+  "gates": [
+    {
+      "exit_code": 0,
+      "gate": "bundle-structure",
+      "integrity_errors": [],
+      "receipt": "bundle-structure/m0-06-receipt.json",
+      "receipt_integrity": "passed"
+    },
+    {
+      "exit_code": 0,
+      "gate": "schema",
+      "integrity_errors": [],
+      "receipt": "schema/m0-06-receipt.json",
+      "receipt_integrity": "passed"
+    },
+    {
+      "exit_code": 0,
+      "gate": "fixtures",
+      "integrity_errors": [],
+      "receipt": "fixtures/m0-06-receipt.json",
+      "receipt_integrity": "passed"
+    },
+    {
+      "exit_code": 0,
+      "gate": "schema-compat",
+      "integrity_errors": [],
+      "receipt": "schema-compat/m0-06-receipt.json",
+      "receipt_integrity": "passed"
+    },
+    {
+      "exit_code": 0,
+      "gate": "contracts-gen",
+      "integrity_errors": [],
+      "receipt": "contracts-gen/m0-06-receipt.json",
+      "receipt_integrity": "passed"
+    },
+    {
+      "exit_code": 0,
+      "gate": "compose-build",
+      "integrity_errors": [],
+      "receipt": "compose-build/m0-06-receipt.json",
+      "receipt_integrity": "passed"
+    },
+    {
+      "exit_code": 0,
+      "gate": "offline-startup",
+      "integrity_errors": [],
+      "receipt": "offline-startup/m0-06-receipt.json",
+      "receipt_integrity": "passed"
+    },
+    {
+      "exit_code": 0,
+      "gate": "adapter-replay",
+      "integrity_errors": [],
+      "receipt": "adapter-replay/m0-06-receipt.json",
+      "receipt_integrity": "passed"
+    },
+    {
+      "exit_code": 0,
+      "gate": "core-replay",
+      "integrity_errors": [],
+      "receipt": "core-replay/m0-06-receipt.json",
+      "receipt_integrity": "passed"
+    },
+    {
+      "exit_code": 0,
+      "gate": "determinism",
+      "integrity_errors": [],
+      "receipt": "determinism/m0-06-receipt.json",
+      "receipt_integrity": "passed"
+    },
+    {
+      "exit_code": 0,
+      "gate": "review-quarantine",
+      "integrity_errors": [],
+      "receipt": "review-quarantine/m0-06-receipt.json",
+      "receipt_integrity": "passed"
+    },
+    {
+      "exit_code": 0,
+      "gate": "life-safety-preservation",
+      "integrity_errors": [],
+      "receipt": "life-safety-preservation/m0-06-receipt.json",
+      "receipt_integrity": "passed"
+    },
+    {
+      "exit_code": 0,
+      "gate": "privacy",
+      "integrity_errors": [],
+      "receipt": "privacy/m0-06-receipt.json",
+      "receipt_integrity": "passed"
+    },
+    {
+      "exit_code": 0,
+      "gate": "security",
+      "integrity_errors": [],
+      "receipt": "security/m0-06-receipt.json",
+      "receipt_integrity": "passed"
+    },
+    {
+      "exit_code": 0,
+      "gate": "simulator",
+      "integrity_errors": [],
+      "receipt": "simulator/m0-06-receipt.json",
+      "receipt_integrity": "passed"
+    },
+    {
+      "exit_code": 0,
+      "gate": "ui-smoke",
+      "integrity_errors": [],
+      "receipt": "ui-smoke/m0-06-receipt.json",
+      "receipt_integrity": "passed"
+    },
+    {
+      "exit_code": 0,
+      "gate": "key-lifecycle",
+      "integrity_errors": [],
+      "receipt": "key-lifecycle/m0-06-receipt.json",
+      "receipt_integrity": "passed"
+    },
+    {
+      "exit_code": 0,
+      "gate": "postgres-disposition",
+      "integrity_errors": [],
+      "receipt": "postgres-disposition/m0-06-receipt.json",
+      "receipt_integrity": "passed"
+    },
+    {
+      "exit_code": 0,
+      "gate": "secret-scan",
+      "integrity_errors": [],
+      "receipt": "secret-scan/m0-06-receipt.json",
+      "receipt_integrity": "passed"
+    },
+    {
+      "exit_code": 0,
+      "gate": "sbom",
+      "integrity_errors": [],
+      "receipt": "sbom/m0-06-receipt.json",
+      "receipt_integrity": "passed"
+    },
+    {
+      "exit_code": 0,
+      "gate": "licenses",
+      "integrity_errors": [],
+      "receipt": "licenses/m0-06-receipt.json",
+      "receipt_integrity": "passed"
+    },
+    {
+      "exit_code": 0,
+      "gate": "vulnerability-scan",
+      "integrity_errors": [],
+      "receipt": "vulnerability-scan/m0-06-receipt.json",
+      "receipt_integrity": "passed"
+    }
+  ],
+  "manifest_version": "1.0.0",
+  "result": "passed"
+}

@@ -2,8 +2,8 @@
 
 - Autoridad de secuencia: este board
 - Plan activo aprobado: `docs/superpowers/plans/2026-07-17-openbrec-m0-executable-plan.md`
-- Estado real: M0 parcial; M0-01–M0-05 cerrados; M0-06 no iniciado
-- Regla de avance: una sola task M0 a la vez, con gate y receipt; no iniciar addons antes del M0 exit
+- Estado real: M0 completo; M0-01–M0-06 cerrados sobre evidencia limpia
+- Regla de avance: addons P0 sólo mediante plan explícito posterior; el cierre M0 no los inicia automáticamente
 
 ## Decisiones de gobernanza cerradas
 
@@ -21,7 +21,7 @@ Los checks permanecen abiertos hasta producir la evidencia exigida por el plan. 
 - [x] `M0-03` / F-02: crear API, worker y PWA mínimos; construir y arrancar `lab-sim` sin Internet.
 - [x] `M0-04` / F-03–F-04: implementar accepted log, vault/quarantine/ledger y replay determinístico en dos niveles.
 - [x] `M0-05` / F-05: simular seis nodos, dos tracks y tres zonas; mostrar capacidades, mapa, timeline y explicación.
-- [ ] `M0-06` / F-06: separar gates CI, generar receipts y demostrar el M0 exit completo.
+- [x] `M0-06` / F-06: separar gates CI, generar receipts y demostrar el M0 exit completo.
 
 ### Evidencia M0-01
 
@@ -72,6 +72,16 @@ Registro obligatorio: `docs/governance/M0_RESIDUAL_REGISTER.md`.
 - Receipts: `evidence/m0/{simulator,core-replay,determinism,ui-smoke,offline-startup}/m0-05-receipt.json`, todos sobre `1a805cca90521d48dd45026ee37f8ef0cfc5ff80`, `dirty: false`, sin errores ni warnings.
 - Residual M0-R013: resuelto para `lab-sim`; Playwright/Chromium y la cadena final de dependencias siguen gobernados por M0-R007/M0-R012 para M0-06. Campo permanece `unverified`.
 
+### Evidencia M0-06
+
+- Runtime durable: API envuelve `Observation` en `DomainEvent`; el worker valida y ejecuta una transacción PostgreSQL antes de publicar `durably_processed`.
+- PostgreSQL: cuatro destinos, migración, duplicado idempotente, rollback inyectado, restart y concurrencia pasan con `unreconciled: 0`; secretos rechazados no persisten en claro.
+- Claves: perfil sustituible de laboratorio con key IDs, epoch monotónico, rotación, recovery, revocación, zeroization best-effort y rollback fail-closed; campo permanece `unverified`.
+- Supply chain: cinco imágenes fijadas por digest, SBOM CycloneDX 1.7 con 124 componentes, cero licencias faltantes/denegadas, cero secretos y cero vulnerabilidades conocidas al 2026-07-17.
+- CI: siete jobs independientes (`contracts`, `runtime`, `replay`, `privacy-security`, `simulation-ui`, `supply-chain`, `m0-exit`) y un receipt por gate.
+- Receipts: 22 gates sobre `fb82384d08dbcc1618e080f542a5b0dbfaee9450`, todos `dirty: false`, exit code cero e integridad canónica aprobada; manifiesto en `evidence/m0/m0-exit-manifest.json`.
+- Review: `docs/security/2026-07-17-m0-06-exit-review.md`; residuales M0-R006/R007/R012/R015/R017 resueltos y M0-R016 controlado para laboratorio.
+
 ## Gate de salida M0
 
 - [x] Todos los servicios referenciados por Compose existen, construyen y arrancan offline.
@@ -79,12 +89,12 @@ Registro obligatorio: `docs/governance/M0_RESIDUAL_REGISTER.md`.
 - [x] Replay adapter/core produce hashes estables en diez ejecuciones y bajo variación de orden, locale y timezone.
 - [x] Cada input termina exactamente en accepted log, quarantine, vault o ledger; no existe descarte silencioso.
 - [x] La UI muestra incertidumbre, fuentes, sensores/capacidades ausentes, degradación y abstención.
-- [ ] Gates de estructura, schema, fixtures, compatibilidad, generación, Compose, offline, replay, privacidad, seguridad y SBOM producen receipts verificables.
-- [ ] Threat model y safety/privacy review reflejan la implementación M0.
+- [x] Gates de estructura, schema, fixtures, compatibilidad, generación, Compose, offline, replay, privacidad, seguridad y supply chain producen receipts verificables.
+- [x] Threat model y safety/privacy review reflejan la implementación M0.
 
-## Blocked — Addons P0
+## Eligible para planificación — Addons P0
 
-La matriz aprobada conserva todas las opciones y resultados para revisión, pero ninguno de estos frentes es ejecutable hasta cerrar y aprobar el gate M0:
+La matriz aprobada conserva todas las opciones y resultados para revisión. El gate M0 está cerrado, pero ninguno de estos frentes se inicia sin seleccionar alcance P0, criterios de aceptación y owners:
 
 - Energía, storage, solar, generadores y autonomía de 72 horas.
 - LoRaWAN, Meshtastic, MeshCore, Reticulum/RNode y selección multi-bearer.

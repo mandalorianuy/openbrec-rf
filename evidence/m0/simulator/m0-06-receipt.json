@@ -1,0 +1,92 @@
+{
+  "command": [
+    "python",
+    "-m",
+    "openbrec.verify",
+    "simulator",
+    "--root",
+    "/Users/facundo/desarrollo/OpenBREC-RF",
+    "--scenario",
+    "fixtures/replay/core/m0-six-node.json",
+    "--receipt",
+    "/var/folders/sx/4wqgpxv140j57cllvyb23h100000gn/T/openbrec-m0-exit-psh7322l/simulator/m0-06-receipt.json"
+  ],
+  "dirty": false,
+  "errors": [],
+  "finished_at": "2026-07-17T18:26:11.944551Z",
+  "gate": "simulator",
+  "gate_version": "0.1.0",
+  "git_sha": "fb82384d08dbcc1618e080f542a5b0dbfaee9450",
+  "inputs": [
+    {
+      "path": "fixtures/replay/core/m0-six-node.json",
+      "sha256": "a7bf52892af0d64311184807b1dee9d7028123ccee8b5b4261eff46406c0e729"
+    },
+    {
+      "path": "openbrec/simulator.py",
+      "sha256": "de23eeadb5b1754ee8cd0c34b872857682ab49ff2f4e5f54cd1762152296b442"
+    },
+    {
+      "path": "openbrec/canonical.py",
+      "sha256": "39aa6a9cf0ec575f82070f194cf290e2d61ae4b55b9f5b51a42b508973820958"
+    }
+  ],
+  "lockfiles": [
+    {
+      "path": "uv.lock",
+      "sha256": "2d1b79df4cd5878ec7f4674a133c54ca7b16dfa559560ba3a93911e620f435d5"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "sha256": "ed7659f050b279f37e5cf84fb065fc528e15b3204d374681f3a70ad081d1c25a"
+    },
+    {
+      "path": "apps/web/pnpm-lock.yaml",
+      "sha256": "12a1ed34e601b49a319846ef8d87c316708bb695853661ec3b3b95208701d278"
+    }
+  ],
+  "output_sha256": "2edbc7b02defcc3a8cb5dd62cf4964f63f3bc1b0a745b15ee09ad10d8a020b78",
+  "receipt_version": "1.0.0",
+  "responsible_role": "core-replay-maintainer",
+  "result": "passed",
+  "runtime": {
+    "docker": "Docker version 29.5.3, build d1c06ef",
+    "node": "v26.5.0",
+    "pnpm": "11.9.0",
+    "python": "3.12.13"
+  },
+  "scope": "six_node_logical_campaign",
+  "started_at": "2026-07-17T18:26:11.689915Z",
+  "summary": {
+    "disposition": {
+      "destinations": {
+        "accepted_event_log": 5,
+        "evidence_vault": 0,
+        "rejection_ledger": 0,
+        "review_quarantine": 1
+      },
+      "ingress_units": 6,
+      "unreconciled": 0
+    },
+    "fault_outcomes": {
+      "brownout": "confidence_degraded",
+      "duplicate": "deduplicated",
+      "loss": "coverage_degraded",
+      "malicious_peer": "quarantined",
+      "partition": "capability_absent",
+      "restart": "new_boot_session_preserved"
+    },
+    "nodes": 6,
+    "projection_sha256": "8f8dec4f9372cc0e7d7249bbc0f31c5b68e54eabaf376d5d237aed9240d4c557",
+    "result_sha256": "87bf68033121549586c97341370c40ce647b800002584d71cbf87e1d632f844f",
+    "runs": 10,
+    "scenario": "fixtures/replay/core/m0-six-node.json",
+    "scenario_sha256": "53041f83ff39abd3a9608afa4053b7a8c6d081ef13e13c4c659e775091f6bd56",
+    "tracks": 2,
+    "unique_result_hashes": [
+      "87bf68033121549586c97341370c40ce647b800002584d71cbf87e1d632f844f"
+    ],
+    "zones": 3
+  },
+  "warnings": []
+}
