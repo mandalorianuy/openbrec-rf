@@ -378,7 +378,16 @@ def _run_offline_startup(root: Path) -> tuple[list[str], list[str], dict[str, An
             line for line in startup.stderr.splitlines() if "warning" in line.lower()
         )
         if startup.returncode != 0:
-            errors.append(f"offline compose startup failed: {startup.stderr.strip()}")
+            logs = _compose_command(
+                root,
+                [*base, "logs", "--no-color", "fusion-worker", "postgres"],
+                environment=environment,
+            )
+            summary["failure_logs"] = logs.stdout.splitlines()[-100:]
+            errors.append(
+                "offline compose startup failed: "
+                f"{startup.stderr.strip()}\nservice logs:\n{logs.stdout.strip()}"
+            )
             return errors, warnings, summary
 
         smoke = _compose_command(
