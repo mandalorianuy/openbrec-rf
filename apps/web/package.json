@@ -3,7 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "scripts": {"build": "tsc --noEmit && vite build"},
+  "scripts": {
+    "build": "tsc --noEmit && vite build"
+  },
   "dependencies": {
     "@vitejs/plugin-react": "latest",
     "react": "latest",
@@ -13,6 +15,7 @@
   "devDependencies": {
     "@types/react": "latest",
     "@types/react-dom": "latest",
+    "playwright": "1.61.1",
     "typescript": "latest"
   }
 }

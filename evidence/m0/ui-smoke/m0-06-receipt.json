@@ -1,0 +1,105 @@
+{
+  "command": [
+    "python",
+    "-m",
+    "openbrec.verify",
+    "ui-smoke",
+    "--root",
+    "/Users/facundo/desarrollo/OpenBREC-RF",
+    "--receipt",
+    "/var/folders/sx/4wqgpxv140j57cllvyb23h100000gn/T/openbrec-m0-exit-jlo5ka7d/ui-smoke/m0-06-receipt.json"
+  ],
+  "dirty": false,
+  "errors": [],
+  "finished_at": "2026-07-17T18:57:11.033658Z",
+  "gate": "ui-smoke",
+  "gate_version": "0.1.0",
+  "git_sha": "2648f38bbddac755f2064e59148bb6fb26bcffd0",
+  "inputs": [
+    {
+      "path": "apps/web/src/main.tsx",
+      "sha256": "29055e3054f7ce6b1c2f912df9296c613ecb314214562aa70dff9492c4c9a541"
+    },
+    {
+      "path": "apps/web/src/style.css",
+      "sha256": "3882cbb03aa53af68658acdc79807ae036f1f921966c27939b7c9efe6c614d7e"
+    },
+    {
+      "path": "apps/web/index.html",
+      "sha256": "26b45d9eb317a5b44504e2a265a7a54afad4a052dd65a5bff7406a1db82a41f7"
+    },
+    {
+      "path": "apps/web/package.json",
+      "sha256": "356bd0afb3581051f7c66399090ace1a13e0050fa40d67d649c5187ae279140b"
+    },
+    {
+      "path": "apps/web/pnpm-lock.yaml",
+      "sha256": "12a1ed34e601b49a319846ef8d87c316708bb695853661ec3b3b95208701d278"
+    },
+    {
+      "path": "apps/web/public/favicon.svg",
+      "sha256": "db9f7ae64886265c1f91ef1c137cbc2e072ae642979a02e6500b62db66a3970b"
+    },
+    {
+      "path": "apps/web/public/m0-projection.json",
+      "sha256": "96115b7bd0664fef7cb2eafbe7fcb2619b0c67d39af9fd0adf3be0c0ba710c02"
+    },
+    {
+      "path": "apps/web/public/sw.js",
+      "sha256": "2b8be38c99a39bea34b3336b6ec1e4c87406e98f1fee9c8ebc50c619ea9ba1a0"
+    },
+    {
+      "path": "apps/web/scripts/ui-smoke.mjs",
+      "sha256": "6f41af2440dbfb6297e2823698e8aecc56b744a13456fd4422f28bf306aba4c7"
+    },
+    {
+      "path": "docker-compose.yml",
+      "sha256": "a5ceaa5f210a26f45ec71d08e592667c6c78be58cf05fcd5591ad0035218eda7"
+    },
+    {
+      "path": "fixtures/replay/core/m0-six-node.json",
+      "sha256": "a7bf52892af0d64311184807b1dee9d7028123ccee8b5b4261eff46406c0e729"
+    }
+  ],
+  "lockfiles": [
+    {
+      "path": "uv.lock",
+      "sha256": "2d1b79df4cd5878ec7f4674a133c54ca7b16dfa559560ba3a93911e620f435d5"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "sha256": "ed7659f050b279f37e5cf84fb065fc528e15b3204d374681f3a70ad081d1c25a"
+    },
+    {
+      "path": "apps/web/pnpm-lock.yaml",
+      "sha256": "12a1ed34e601b49a319846ef8d87c316708bb695853661ec3b3b95208701d278"
+    }
+  ],
+  "output_sha256": "2ca53dee39ef1ef1463f70dfe3b1602cdb7360d67adb7bc8da8bc5623ae89592",
+  "receipt_version": "1.0.0",
+  "responsible_role": "runtime-maintainer",
+  "result": "passed",
+  "runtime": {
+    "docker": "Docker version 29.5.3, build d1c06ef",
+    "node": "v26.5.0",
+    "pnpm": "11.9.0",
+    "python": "3.12.13"
+  },
+  "scope": "explainable_offline_pwa",
+  "started_at": "2026-07-17T18:57:07.816369Z",
+  "summary": {
+    "browser": "chromium",
+    "build_exit_code": 0,
+    "console_errors": 0,
+    "inference_events": 3,
+    "ingress_bind": "127.0.0.1",
+    "nodes_visible": 6,
+    "offline_reload": "passed",
+    "projection": "apps/web/public/m0-projection.json",
+    "projection_sha256": "8f8dec4f9372cc0e7d7249bbc0f31c5b68e54eabaf376d5d237aed9240d4c557",
+    "selected_zone_after_reload": "zone-bravo",
+    "selected_zone_before_reload": "zone-alpha",
+    "semantic_layers": 3
+  },
+  "warnings": []
+}

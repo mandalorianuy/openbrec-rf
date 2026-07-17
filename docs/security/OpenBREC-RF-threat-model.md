@@ -2,11 +2,11 @@
 
 ## Executive summary
 
-OpenBREC RF is currently a TRL 2–3 laboratory reference with executable core contracts, a contained `lab-sim`, deterministic replay and a portable disposition store; it is not an operational or field runtime. Its planned addons combine private LoRa communications, acoustic/PIR/thermal beacons, human terminals, local processing and a multi-organization federation with intermittent backhaul. The highest risks are forged distress semantics, sensor spoofing or misleading automation, unauthorized raw capture, stolen endpoint keys, insecure development configuration, RF denial and over-trust in a federation hub or transport identity.
+OpenBREC RF is currently a TRL 2–3 laboratory reference with supported core contracts, a contained `lab-sim`, deterministic replay and portable plus PostgreSQL disposition stores; it is not an operational or field runtime. Its planned addons combine private LoRa communications, acoustic/PIR/thermal beacons, human terminals, local processing and a multi-organization federation with intermittent backhaul. The highest risks are forged distress semantics, sensor spoofing or misleading automation, unauthorized raw capture, stolen endpoint keys, insecure development configuration, RF denial and over-trust in a federation hub or transport identity.
 
 The design mitigates those risks with application-layer signatures and encryption, incident-scoped identity, append-only distress state, local autonomy, outbound-only federation gateways, hub key isolation, explicit RF operating profiles and replayable security gates. Possible distress is preserved even when invalid; it is marked `unverified_distress` and cannot become authenticated or `operator.accepted` without the required signed evidence.
 
-There is no deployed field application to assess. M0-03 and M0-04 now provide executable laboratory evidence, but addon threat ratings still describe proposed architecture and conditional risk. Before field implementation, every high-risk path needs schemas, fixtures, negative tests, owners and evidence receipts. The implemented M0-04 delta and remaining limits are reviewed in `docs/security/2026-07-17-m0-04-replay-storage-review.md`.
+There is no deployed field application to assess. M0 now provides executable laboratory evidence, including a worker that commits to PostgreSQL before acknowledging, but addon threat ratings still describe proposed architecture and conditional risk. Before field implementation, every high-risk path needs schemas, fixtures, negative tests, owners and evidence receipts. Implemented deltas and limits are reviewed in the dated M0 security reviews under `docs/security/`.
 
 ## Scope and assumptions
 
@@ -44,7 +44,7 @@ Assumptions:
 - cryptographic libraries and primitives are correctly implemented only after vector and misuse tests prove it;
 - the repository has executable M0 contracts/services/replay, while radio, identity, beacon, federation and field controls remain unimplemented.
 
-Repository evidence: `AGENTS.md`, `SECURITY.md`, `docker-compose.yml`, `openbrec/replay.py`, `openbrec/disposition.py`, `migrations/0001_m0_disposition.sql`, `docs/security/2026-07-17-m0-04-replay-storage-review.md`, `docs/superpowers/specs/2026-07-16-offgrid-energy-lora-beacons-design.md`, `docs/superpowers/specs/2026-07-16-openbrec-core-contracts-replay-design.md`, `docs/superpowers/specs/2026-07-17-openbrec-radio-security-regulation-design.md`, and `docs/superpowers/specs/2026-07-17-openbrec-beacons-human-ux-design.md`.
+Repository evidence: `AGENTS.md`, `SECURITY.md`, `docker-compose.yml`, `openbrec/replay.py`, `openbrec/disposition.py`, `openbrec/postgres_disposition.py`, `openbrec/keyring.py`, `openbrec/simulator.py`, `apps/web/src/main.tsx`, both versioned disposition migrations, the dated reviews under `docs/security/`, the M0 key lifecycle SOP and the approved design specifications under `docs/superpowers/specs/`.
 
 Open questions before field implementation:
 
@@ -68,7 +68,7 @@ Open questions before field implementation:
 - Meshtastic, MeshCore, Reticulum/RNode or alternative bearer: untrusted transport selected per human/gateway profile.
 - Transport policy controller: chooses authorized primary/fallback/carry bearers and must prevent loops and duplicate semantics.
 - Raw transport boundary: contains protobufs, manufacturer IDs and transport metadata.
-- MQTT brokers: a raw bridge broker/listener and a distinct core event bus; the current Compose file shows only a development placeholder.
+- MQTT brokers: a raw bridge broker/listener and a distinct core event bus are planned for addons; current Compose provides only the contained `lab-sim` core broker.
 - Identity authority and trust store: cell-local incident root, actor-device bindings, cached revocations and policy.
 - Distress ledger and evidence stores: append-only authenticated SOS state plus quarantined or sealed unverified material.
 - Operator UX and review queue: derived alert projections, coverage, confidence, missing sensors and signed human annotations.
@@ -92,7 +92,7 @@ Open questions before field implementation:
 11. During partition, signed encrypted bundles may cross a physical custody boundary and reconcile by append-only union.
 12. Operators cross privileged boundaries when enrolling peers, accepting SOS, authorizing raw capture, changing trust or enabling RF modes.
 
-Current runtime and CI distinction: `scripts/validate_bundle.py` still performs only structural file/JSON/name checks and an offensive-term scan. Separate M0 gates now validate schemas, Compose startup, replay, privacy and the implemented storage security boundary. In `lab-sim`, Mosquitto and PostgreSQL publish no host ports, the network is internal and the PostgreSQL password is injected as a Compose secret. MQTT remains anonymous inside that contained network, and the worker does not yet write the portable disposition boundary to PostgreSQL. These are laboratory controls and must not be treated as field controls.
+Current runtime and CI distinction: `scripts/validate_bundle.py` still performs only structural file/JSON/name checks and an offensive-term scan. Independent M0 jobs validate contracts, Compose, replay, privacy/security, simulation/UI and supply chain. In `lab-sim`, Mosquitto and PostgreSQL publish no host ports, the network is internal, and PostgreSQL/key material arrives through ephemeral file secrets. The worker semantically validates a `DomainEvent`, executes one PostgreSQL disposition transaction and only then emits an ephemeral durable-processing notification. The PWA alone binds to host loopback. MQTT remains anonymous inside the contained network. Key custody is an in-memory/secret-file laboratory profile: Python zeroization is best-effort, recovery wrapping key custody is external, and field storage remains `unverified`. These controls must not be treated as field controls.
 
 ### Diagram
 

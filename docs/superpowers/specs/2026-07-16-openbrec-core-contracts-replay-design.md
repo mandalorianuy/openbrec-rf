@@ -1,6 +1,6 @@
 # Contratos core y replay determinístico de OpenBREC RF
 
-- Estado: especificación aprobada; M0-01–M0-04 validados; replay y disposición portable implementados
+- Estado: especificación aprobada; M0-01–M0-05 validados; replay, simulación y PWA explicable implementados para laboratorio
 - Fecha: 2026-07-16
 - Especificación padre: `2026-07-16-offgrid-energy-lora-beacons-design.md`
 - Alcance: autoridad contractual común de M0 y replay en dos niveles
@@ -646,4 +646,4 @@ Pasar `python3 scripts/validate_bundle.py` no satisface estos criterios; sólo a
 
 ## 22. Estado de implementación y siguiente gate
 
-M0-02 materializa y valida la familia core `1.0.0`, fixtures, baseline de compatibilidad y proyecciones Pydantic/TypeScript. M0-03 demuestra que API y worker aplican esa autoridad en un runtime `lab-sim` contenido y que una observación válida o inválida toma el camino esperado sin Internet. M0-04 implementa relaciones semánticas, replay adapter/core determinístico y la disposición portable reconciliada con preservación life-safety-first. La integración durable del runtime con PostgreSQL, la custodia de claves y los gates de salida permanecen gobernados en M0-R016/M0-R017; los límites completos están en `docs/governance/M0_RESIDUAL_REGISTER.md`. P0 continúa bloqueado hasta el M0 exit completo.
+M0-02 materializa y valida la familia core `1.0.0`, fixtures, baseline de compatibilidad y proyecciones Pydantic/TypeScript. M0-03 demuestra que API y worker aplican esa autoridad en un runtime `lab-sim` contenido. M0-04 implementa relaciones semánticas, replay adapter/core determinístico y disposición portable reconciliada con preservación life-safety-first. M0-05 agrega la campaña sintética común de seis nodos y una PWA que hace visibles capas semánticas, fuentes, incertidumbre, capacidades ausentes y abstención, con recarga offline real. La integración durable del runtime con PostgreSQL, la custodia de claves y los gates de salida permanecen gobernados en M0-R016/M0-R017; los límites completos están en `docs/governance/M0_RESIDUAL_REGISTER.md`. P0 continúa bloqueado hasta el M0 exit completo.

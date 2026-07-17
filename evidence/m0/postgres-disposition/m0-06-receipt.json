@@ -1,0 +1,85 @@
+{
+  "command": [
+    "python",
+    "-m",
+    "openbrec.verify",
+    "postgres-disposition",
+    "--root",
+    "/Users/facundo/desarrollo/OpenBREC-RF",
+    "--receipt",
+    "/var/folders/sx/4wqgpxv140j57cllvyb23h100000gn/T/openbrec-m0-exit-jlo5ka7d/postgres-disposition/m0-06-receipt.json"
+  ],
+  "dirty": false,
+  "errors": [],
+  "finished_at": "2026-07-17T18:57:18.874058Z",
+  "gate": "postgres-disposition",
+  "gate_version": "0.1.0",
+  "git_sha": "2648f38bbddac755f2064e59148bb6fb26bcffd0",
+  "inputs": [
+    {
+      "path": "docker-compose.yml",
+      "sha256": "a5ceaa5f210a26f45ec71d08e592667c6c78be58cf05fcd5591ad0035218eda7"
+    },
+    {
+      "path": "openbrec/postgres_disposition.py",
+      "sha256": "bdf2864974360fa850dff0b5fc4729fd29ce7edc760416804d97d0d21e95f130"
+    },
+    {
+      "path": "migrations/postgresql/0001_m0_disposition.sql",
+      "sha256": "6cf57130601e4784c61b67221393342006948213feca947f96c7a0b41afff7be"
+    },
+    {
+      "path": "apps/fusion-worker/openbrec_worker/worker.py",
+      "sha256": "a55c731819806c7c93e86353f749b3c0f91e01f08ee6497029fe4c6e47dd43b4"
+    }
+  ],
+  "lockfiles": [
+    {
+      "path": "uv.lock",
+      "sha256": "2d1b79df4cd5878ec7f4674a133c54ca7b16dfa559560ba3a93911e620f435d5"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "sha256": "ed7659f050b279f37e5cf84fb065fc528e15b3204d374681f3a70ad081d1c25a"
+    },
+    {
+      "path": "apps/web/pnpm-lock.yaml",
+      "sha256": "12a1ed34e601b49a319846ef8d87c316708bb695853661ec3b3b95208701d278"
+    }
+  ],
+  "output_sha256": "6948f2825874f01011e302c5446d228f636d23e0263c04588056eb4393f02e34",
+  "receipt_version": "1.0.0",
+  "responsible_role": "runtime-maintainer",
+  "result": "passed",
+  "runtime": {
+    "docker": "Docker version 29.5.3, build d1c06ef",
+    "node": "v26.5.0",
+    "pnpm": "11.9.0",
+    "python": "3.12.13"
+  },
+  "scope": "postgres_four_destination_runtime_boundary",
+  "started_at": "2026-07-17T18:57:11.646322Z",
+  "summary": {
+    "baseline": {
+      "destinations": {
+        "accepted_event_log": 1,
+        "evidence_vault": 1,
+        "rejection_ledger": 1,
+        "review_quarantine": 1
+      },
+      "ingress_units": 4,
+      "unreconciled": 0
+    },
+    "concurrent_ingress_units": 6,
+    "concurrent_unreconciled": 0,
+    "duplicate": "idempotent",
+    "gate_exit_code": 0,
+    "migration": "passed",
+    "restart": "passed",
+    "rollback": "passed",
+    "secret_cleartext_persisted": false,
+    "shutdown_exit_code": 0,
+    "startup_exit_code": 0
+  },
+  "warnings": []
+}

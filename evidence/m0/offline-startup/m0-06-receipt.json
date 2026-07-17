@@ -1,0 +1,71 @@
+{
+  "command": [
+    "python",
+    "-m",
+    "openbrec.verify",
+    "offline-startup",
+    "--root",
+    "/Users/facundo/desarrollo/OpenBREC-RF",
+    "--receipt",
+    "/var/folders/sx/4wqgpxv140j57cllvyb23h100000gn/T/openbrec-m0-exit-jlo5ka7d/offline-startup/m0-06-receipt.json"
+  ],
+  "dirty": false,
+  "errors": [],
+  "finished_at": "2026-07-17T18:57:03.854043Z",
+  "gate": "offline-startup",
+  "gate_version": "0.1.0",
+  "git_sha": "2648f38bbddac755f2064e59148bb6fb26bcffd0",
+  "inputs": [
+    {
+      "path": "docker-compose.yml",
+      "sha256": "a5ceaa5f210a26f45ec71d08e592667c6c78be58cf05fcd5591ad0035218eda7"
+    },
+    {
+      "path": "config/mosquitto/lab-sim.conf",
+      "sha256": "bd7859cb44ae51eae18f2fa6afe26f36fc4dec2b50027eb8135668d650dec4f8"
+    },
+    {
+      "path": "schemas/core/catalog.json",
+      "sha256": "05f0c63d90a0d38ce25075274b8513ca9a4b38b976b29c2f8c5b55070b1b65d8"
+    }
+  ],
+  "lockfiles": [
+    {
+      "path": "uv.lock",
+      "sha256": "2d1b79df4cd5878ec7f4674a133c54ca7b16dfa559560ba3a93911e620f435d5"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "sha256": "ed7659f050b279f37e5cf84fb065fc528e15b3204d374681f3a70ad081d1c25a"
+    },
+    {
+      "path": "apps/web/pnpm-lock.yaml",
+      "sha256": "12a1ed34e601b49a319846ef8d87c316708bb695853661ec3b3b95208701d278"
+    }
+  ],
+  "output_sha256": "70c536843a18eb28b82823b5c0413c4712e42e7e95b569335fb53a086bd8d29e",
+  "receipt_version": "1.0.0",
+  "responsible_role": "runtime-maintainer",
+  "result": "passed",
+  "runtime": {
+    "docker": "Docker version 29.5.3, build d1c06ef",
+    "node": "v26.5.0",
+    "pnpm": "11.9.0",
+    "python": "3.12.13"
+  },
+  "scope": "contained_lab_sim_runtime",
+  "started_at": "2026-07-17T18:56:39.461218Z",
+  "summary": {
+    "external_network": "denied",
+    "invalid_observation": "rejected",
+    "postgres_durable": "passed",
+    "pwa_shell": "available",
+    "shutdown_exit_code": 0,
+    "smoke_exit_code": 0,
+    "smoke_output": "{\"external_network\": \"denied\", \"invalid_observation\": \"rejected\", \"postgres_durable\": \"passed\", \"pwa_shell\": \"available\", \"unreconciled\": 0, \"valid_observation\": \"processed\"}",
+    "startup_exit_code": 0,
+    "unreconciled": 0,
+    "valid_observation": "processed"
+  },
+  "warnings": []
+}

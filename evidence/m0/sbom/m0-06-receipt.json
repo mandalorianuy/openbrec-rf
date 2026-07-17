@@ -1,0 +1,68 @@
+{
+  "command": [
+    "python",
+    "-m",
+    "openbrec.verify",
+    "sbom",
+    "--root",
+    "/Users/facundo/desarrollo/OpenBREC-RF",
+    "--output",
+    "/var/folders/sx/4wqgpxv140j57cllvyb23h100000gn/T/openbrec-m0-exit-jlo5ka7d/sbom/openbrec-m0.cdx.json",
+    "--receipt",
+    "/var/folders/sx/4wqgpxv140j57cllvyb23h100000gn/T/openbrec-m0-exit-jlo5ka7d/sbom/m0-06-receipt.json"
+  ],
+  "dirty": false,
+  "errors": [],
+  "finished_at": "2026-07-17T18:57:20.124787Z",
+  "gate": "sbom",
+  "gate_version": "0.1.0",
+  "git_sha": "2648f38bbddac755f2064e59148bb6fb26bcffd0",
+  "inputs": [
+    {
+      "path": "uv.lock",
+      "sha256": "2d1b79df4cd5878ec7f4674a133c54ca7b16dfa559560ba3a93911e620f435d5"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "sha256": "ed7659f050b279f37e5cf84fb065fc528e15b3204d374681f3a70ad081d1c25a"
+    },
+    {
+      "path": "apps/web/pnpm-lock.yaml",
+      "sha256": "12a1ed34e601b49a319846ef8d87c316708bb695853661ec3b3b95208701d278"
+    }
+  ],
+  "lockfiles": [
+    {
+      "path": "uv.lock",
+      "sha256": "2d1b79df4cd5878ec7f4674a133c54ca7b16dfa559560ba3a93911e620f435d5"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "sha256": "ed7659f050b279f37e5cf84fb065fc528e15b3204d374681f3a70ad081d1c25a"
+    },
+    {
+      "path": "apps/web/pnpm-lock.yaml",
+      "sha256": "12a1ed34e601b49a319846ef8d87c316708bb695853661ec3b3b95208701d278"
+    }
+  ],
+  "output_sha256": "c7e02ff70e5a2541dbf276491eb879dc0ae3bffc13f70ca2c008082b689f5dda",
+  "receipt_version": "1.0.0",
+  "responsible_role": "contract-maintainer",
+  "result": "passed",
+  "runtime": {
+    "docker": "Docker version 29.5.3, build d1c06ef",
+    "node": "v26.5.0",
+    "pnpm": "11.9.0",
+    "python": "3.12.13"
+  },
+  "scope": "installed_locked_component_inventory",
+  "started_at": "2026-07-17T18:57:19.635178Z",
+  "summary": {
+    "components": 124,
+    "format": "CycloneDX",
+    "output": "/var/folders/sx/4wqgpxv140j57cllvyb23h100000gn/T/openbrec-m0-exit-jlo5ka7d/sbom/openbrec-m0.cdx.json",
+    "sbom_sha256": "75adc57c137e97c6543f5e69e419fa32b95f418ac4bbf1739a1101a6b25e8bfd",
+    "spec_version": "1.7"
+  },
+  "warnings": []
+}

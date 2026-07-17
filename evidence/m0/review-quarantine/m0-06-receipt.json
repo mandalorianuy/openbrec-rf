@@ -1,0 +1,69 @@
+{
+  "command": [
+    "python",
+    "-m",
+    "openbrec.verify",
+    "review-quarantine",
+    "--root",
+    "/Users/facundo/desarrollo/OpenBREC-RF",
+    "--receipt",
+    "/var/folders/sx/4wqgpxv140j57cllvyb23h100000gn/T/openbrec-m0-exit-jlo5ka7d/review-quarantine/m0-06-receipt.json"
+  ],
+  "dirty": false,
+  "errors": [],
+  "finished_at": "2026-07-17T18:57:05.825003Z",
+  "gate": "review-quarantine",
+  "gate_version": "0.1.0",
+  "git_sha": "2648f38bbddac755f2064e59148bb6fb26bcffd0",
+  "inputs": [
+    {
+      "path": "fixtures/replay/core/synthetic-observation.events.json",
+      "sha256": "f77a9238d9a6e8ff2db73298a9644d09a10be82d808944bd18eb0196c76880c4"
+    },
+    {
+      "path": "openbrec/disposition.py",
+      "sha256": "0b8e448f367f7c045c8f4a6316553550b0e32e3b061dd3f8d356a96dca08f8e9"
+    },
+    {
+      "path": "migrations/0001_m0_disposition.sql",
+      "sha256": "5c0bd146545d0983b1eb055612d46405d1daf8035b95928ea14f9e50f87fae3b"
+    }
+  ],
+  "lockfiles": [
+    {
+      "path": "uv.lock",
+      "sha256": "2d1b79df4cd5878ec7f4674a133c54ca7b16dfa559560ba3a93911e620f435d5"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "sha256": "ed7659f050b279f37e5cf84fb065fc528e15b3204d374681f3a70ad081d1c25a"
+    },
+    {
+      "path": "apps/web/pnpm-lock.yaml",
+      "sha256": "12a1ed34e601b49a319846ef8d87c316708bb695853661ec3b3b95208701d278"
+    }
+  ],
+  "output_sha256": "0d7701f29c4ef5902df4fa009ff9fbd89da65168f16c75552715a31526d4d387",
+  "receipt_version": "1.0.0",
+  "responsible_role": "privacy-safety-reviewer",
+  "result": "passed",
+  "runtime": {
+    "docker": "Docker version 29.5.3, build d1c06ef",
+    "node": "v26.5.0",
+    "pnpm": "11.9.0",
+    "python": "3.12.13"
+  },
+  "scope": "exactly_one_primary_disposition",
+  "started_at": "2026-07-17T18:57:05.557765Z",
+  "summary": {
+    "destinations": {
+      "accepted_event_log": 1,
+      "evidence_vault": 1,
+      "rejection_ledger": 1,
+      "review_quarantine": 1
+    },
+    "ingress_units": 4,
+    "unreconciled": 0
+  },
+  "warnings": []
+}

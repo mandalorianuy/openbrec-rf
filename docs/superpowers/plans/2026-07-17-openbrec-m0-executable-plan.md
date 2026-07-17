@@ -1,6 +1,6 @@
 # Plan ejecutable M0 de OpenBREC RF
 
-- Estado: aprobado el 2026-07-17; M0-01, M0-02, M0-03 y M0-04 completados; M0-05 no iniciado
+- Estado: completado el 2026-07-17; M0-01–M0-06 cerrados con receipts sobre SHAs limpios
 - Fecha: 2026-07-17
 - Alcance: cierre exclusivo de F-01–F-06
 - Autoridad de secuencia: `DELIVERY_BOARD.md`
@@ -256,6 +256,8 @@ Stop conditions:
 
 ### M0-05 — Simulador común y PWA explicable
 
+Estado de task: completada el 2026-07-17 sobre `1a805cca90521d48dd45026ee37f8ef0cfc5ff80`; receipts limpios en `evidence/m0/*/m0-05-receipt.json`.
+
 Mapeo: F-05.
 
 Dependencia: M0-04 cerrado.
@@ -362,4 +364,4 @@ No se hace squash entre una evidencia aprobada y su material sin regenerar los r
 
 ## 9. Gate de aprobación y primera acción
 
-El plan fue aprobado el 2026-07-17 y el check correspondiente quedó registrado en `DELIVERY_BOARD.md`. M0-01–M0-04 quedaron completados con receipts evaluados sobre SHAs limpios. M0-03 demuestra runtime contenido, startup sin pulls/builds y smoke contractual. M0-04 demuestra replay determinístico, fallo sin evidencia parcial y disposición portable reconciliada; no afirma integración durable del worker con PostgreSQL, custodia de claves ni operación de campo. La próxima candidata es M0-05, que no se inicia en este slice. Todo P0 permanece bloqueado hasta el M0 exit completo.
+El plan fue completado el 2026-07-17 y el cierre quedó registrado en `DELIVERY_BOARD.md`. M0-01–M0-05 conservaron sus receipts históricos; M0-06 acreditó 22 gates sobre `2648f38bbddac755f2064e59148bb6fb26bcffd0`, con checkout limpio e integridad canónica. El worker escribe PostgreSQL antes del ACK y el perfil sustituible de claves cubre la frontera de laboratorio. Nada de esto acredita radio, hardware, detección, custodia de campo ni operación real. P0 queda elegible para planificación explícita, no iniciado automáticamente.

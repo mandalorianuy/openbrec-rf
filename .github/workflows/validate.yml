@@ -1,14 +1,196 @@
 name: validate
+
 on:
   push:
   pull_request:
+
+permissions:
+  contents: read
+
+env:
+  UV_FROZEN: "true"
+  UV_NO_PROGRESS: "true"
+
 jobs:
-  bundle:
+  contracts:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
-      - run: pip install pyyaml jsonschema
-      - run: python scripts/validate_bundle.py
+      - uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
+        with:
+          version: "0.11.1"
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+          package-manager-cache: false
+      - run: corepack enable && corepack install --global pnpm@11.9.0
+      - run: uv sync --frozen
+      - run: pnpm install --frozen-lockfile
+      - run: uv run --offline python -m openbrec.verify bundle-structure --receipt evidence/m0/bundle-structure/m0-06-receipt.json
+      - run: uv run --offline python -m openbrec.verify schema --receipt evidence/m0/schema/m0-06-receipt.json
+      - run: uv run --offline python -m openbrec.verify fixtures --receipt evidence/m0/fixtures/m0-06-receipt.json
+      - run: uv run --offline python -m openbrec.verify schema-compat --receipt evidence/m0/schema-compat/m0-06-receipt.json
+      - run: uv run --offline python -m openbrec.verify contracts-gen --check --receipt evidence/m0/contracts-gen/m0-06-receipt.json
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: m0-contract-receipts
+          path: evidence/m0
+          if-no-files-found: error
+  runtime:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
+        with:
+          version: "0.11.1"
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+          package-manager-cache: false
+      - run: corepack enable && corepack install --global pnpm@11.9.0
+      - run: uv sync --frozen
+      - run: uv run --offline python -m openbrec.verify compose-build --receipt evidence/m0/compose-build/m0-06-receipt.json
+      - run: uv run --offline python -m openbrec.verify offline-startup --receipt evidence/m0/offline-startup/m0-06-receipt.json
+      - run: uv run --offline python -m openbrec.verify postgres-disposition --receipt evidence/m0/postgres-disposition/m0-06-receipt.json
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: m0-runtime-receipts
+          path: evidence/m0
+          if-no-files-found: error
+
+  replay:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
+        with:
+          version: "0.11.1"
+      - run: uv sync --frozen
+      - run: uv run --offline python -m openbrec.verify adapter-replay --receipt evidence/m0/adapter-replay/m0-06-receipt.json
+      - run: uv run --offline python -m openbrec.verify core-replay --receipt evidence/m0/core-replay/m0-06-receipt.json
+      - run: uv run --offline python -m openbrec.verify determinism --runs 10 --receipt evidence/m0/determinism/m0-06-receipt.json
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: m0-replay-receipts
+          path: evidence/m0
+          if-no-files-found: error
+
+  privacy-security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
+        with:
+          version: "0.11.1"
+      - run: uv sync --frozen
+      - run: uv run --offline python -m openbrec.verify review-quarantine --receipt evidence/m0/review-quarantine/m0-06-receipt.json
+      - run: uv run --offline python -m openbrec.verify life-safety-preservation --receipt evidence/m0/life-safety-preservation/m0-06-receipt.json
+      - run: uv run --offline python -m openbrec.verify privacy --receipt evidence/m0/privacy/m0-06-receipt.json
+      - run: uv run --offline python -m openbrec.verify security --receipt evidence/m0/security/m0-06-receipt.json
+      - run: uv run --offline python -m openbrec.verify key-lifecycle --receipt evidence/m0/key-lifecycle/m0-06-receipt.json
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: m0-privacy-security-receipts
+          path: evidence/m0
+          if-no-files-found: error
+
+  simulation-ui:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
+        with:
+          version: "0.11.1"
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+          package-manager-cache: false
+      - run: corepack enable && corepack install --global pnpm@11.9.0
+      - run: uv sync --frozen
+      - run: pnpm --dir apps/web install --frozen-lockfile
+      - run: pnpm --dir apps/web exec playwright install --with-deps chromium
+      - run: uv run --offline python -m openbrec.verify simulator --scenario fixtures/replay/core/m0-six-node.json --receipt evidence/m0/simulator/m0-06-receipt.json
+      - run: uv run --offline python -m openbrec.verify ui-smoke --receipt evidence/m0/ui-smoke/m0-06-receipt.json
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: m0-simulation-ui-receipts
+          path: evidence/m0
+          if-no-files-found: error
+
+  supply-chain:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
+        with:
+          version: "0.11.1"
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+          package-manager-cache: false
+      - run: corepack enable && corepack install --global pnpm@11.9.0
+      - run: uv sync --frozen
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --dir apps/web install --frozen-lockfile
+      - run: uv run --offline python -m openbrec.verify secret-scan --receipt evidence/m0/secret-scan/m0-06-receipt.json
+      - run: uv run --offline python -m openbrec.verify sbom --output evidence/m0/sbom/openbrec-m0.cdx.json --receipt evidence/m0/sbom/m0-06-receipt.json
+      - run: uv run --offline python -m openbrec.verify licenses --receipt evidence/m0/licenses/m0-06-receipt.json
+      - run: uv run python -m openbrec.verify vulnerability-scan --receipt evidence/m0/vulnerability-scan/m0-06-receipt.json
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: m0-supply-chain-receipts
+          path: evidence/m0
+          if-no-files-found: error
+
+  m0-exit:
+    needs: [contracts, runtime, replay, privacy-security, simulation-ui, supply-chain]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
+        with:
+          version: "0.11.1"
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+          package-manager-cache: false
+      - run: corepack enable && corepack install --global pnpm@11.9.0
+      - run: uv sync --frozen
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --dir apps/web install --frozen-lockfile
+      - run: pnpm --dir apps/web exec playwright install --with-deps chromium
+      - run: uv run python -m openbrec.verify all --evidence-dir "${{ runner.temp }}/evidence/m0"
+      - run: git diff --exit-code
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: m0-exit-receipts
+          path: ${{ runner.temp }}/evidence/m0
+          if-no-files-found: error

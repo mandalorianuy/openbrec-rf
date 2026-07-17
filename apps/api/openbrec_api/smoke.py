@@ -2,11 +2,14 @@ from __future__ import annotations
 
 import http.client
 import json
+import os
 import queue
 import socket
 import threading
+from pathlib import Path
 
 import paho.mqtt.client as mqtt
+import psycopg
 
 from openbrec.runtime import PROCESSED_OBSERVATION_TOPIC
 
@@ -19,15 +22,17 @@ OBSERVATION = {
     "observation_kind": "measurement",
     "window_start": "2026-07-17T12:10:00.000000Z",
     "window_end": "2026-07-17T12:10:01.000000Z",
-    "measurements": [{
-        "measurement_type": "scalar",
-        "metric": "synthetic.level",
-        "value": 0.25,
-        "unit": "1",
-        "uncertainty": 0.1,
-        "quality": 0.8,
-        "method": "runtime smoke",
-    }],
+    "measurements": [
+        {
+            "measurement_type": "scalar",
+            "metric": "synthetic.level",
+            "value": 0.25,
+            "unit": "1",
+            "uncertainty": 0.1,
+            "quality": 0.8,
+            "method": "runtime smoke",
+        }
+    ],
     "quality": 0.8,
     "uncertainty": 0.2,
     "coverage": "synthetic window",
@@ -47,6 +52,47 @@ def request(
     data = response.read()
     connection.close()
     return response.status, data
+
+
+def verify_postgres_durability() -> None:
+    password_path = Path(
+        os.environ.get(
+            "OPENBREC_POSTGRES_PASSWORD_FILE", "/run/secrets/postgres_password"
+        )
+    )
+    try:
+        password = password_path.read_text(encoding="utf-8").strip()
+    except OSError:
+        password = os.environ.get("OPENBREC_POSTGRES_PASSWORD", "")
+    if not password:
+        raise RuntimeError("PostgreSQL password is unavailable")
+    dsn = (
+        f"host={os.environ.get('OPENBREC_POSTGRES_HOST', 'postgres')} "
+        f"port={os.environ.get('OPENBREC_POSTGRES_PORT', '5432')} "
+        f"dbname={os.environ.get('OPENBREC_POSTGRES_DB', 'openbrec')} "
+        f"user={os.environ.get('OPENBREC_POSTGRES_USER', 'openbrec')} "
+        f"password={password} connect_timeout=5"
+    )
+    with psycopg.connect(dsn) as connection:
+        accepted = connection.execute(
+            "SELECT COUNT(*) FROM accepted_event_log"
+        ).fetchone()[0]
+        ingress = connection.execute("SELECT COUNT(*) FROM ingress_units").fetchone()[0]
+        physical = sum(
+            connection.execute(f"SELECT COUNT(*) FROM {table}").fetchone()[0]
+            for table in (
+                "accepted_event_log",
+                "review_quarantine",
+                "evidence_vault",
+                "rejection_ledger",
+            )
+        )
+    unreconciled = abs(ingress - physical)
+    if accepted != 1 or ingress != 1 or unreconciled != 0:
+        raise RuntimeError(
+            f"PostgreSQL durability mismatch accepted={accepted} ingress={ingress} "
+            f"unreconciled={unreconciled}"
+        )
 
 
 def main() -> int:
@@ -82,6 +128,9 @@ def main() -> int:
     state = processed.get(timeout=10)
     if state.get("observation_id") != OBSERVATION["observation_id"]:
         raise RuntimeError("worker did not process expected observation")
+    if state.get("status") != "durably_processed":
+        raise RuntimeError("worker acknowledged before durable disposition")
+    verify_postgres_durability()
 
     invalid_status, _ = request(
         "api", 8000, "POST", "/v1/observations", {**OBSERVATION, "quality": 2}
@@ -103,12 +152,19 @@ def main() -> int:
 
     client.disconnect()
     client.loop_stop()
-    print(json.dumps({
-        "valid_observation": "processed",
-        "invalid_observation": "rejected",
-        "pwa_shell": "available",
-        "external_network": external_network,
-    }, sort_keys=True))
+    print(
+        json.dumps(
+            {
+                "valid_observation": "processed",
+                "invalid_observation": "rejected",
+                "pwa_shell": "available",
+                "external_network": external_network,
+                "postgres_durable": "passed",
+                "unreconciled": 0,
+            },
+            sort_keys=True,
+        )
+    )
     return 0
 
 

@@ -10,8 +10,7 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 VALID_OBSERVATION = (
-    REPO_ROOT
-    / "fixtures/contracts/core/1.0.0/observation/valid/minimal.json"
+    REPO_ROOT / "fixtures/contracts/core/1.0.0/observation/valid/minimal.json"
 )
 
 
@@ -75,6 +74,31 @@ class RuntimeContractTests(unittest.TestCase):
         with self.assertRaises(worker.ContractValidationError):
             worker.process_observation({**valid, "quality": 2})
 
+    def test_worker_acknowledges_domain_event_only_after_durable_ingest(self) -> None:
+        runtime = load_module(
+            "openbrec_runtime_event_test", REPO_ROOT / "openbrec/runtime.py"
+        )
+        worker = load_module(
+            "openbrec_worker_durable_test",
+            REPO_ROOT / "apps/fusion-worker/openbrec_worker/worker.py",
+        )
+        observation = json.loads(VALID_OBSERVATION.read_text(encoding="utf-8"))
+        event = runtime.observation_to_event(observation)
+
+        class RecordingStore:
+            def __init__(self) -> None:
+                self.calls: list[dict] = []
+
+            def ingest(self, raw: bytes, **kwargs):
+                self.calls.append({"raw": raw, **kwargs})
+
+        store = RecordingStore()
+        processed = worker.process_event(event, store=store, worker_id="worker-test")
+
+        self.assertEqual(len(store.calls), 1)
+        self.assertEqual(processed["status"], "durably_processed")
+        self.assertEqual(processed["observation_id"], observation["observation_id"])
+
 
 class RuntimePackagingTests(unittest.TestCase):
     def test_compose_declares_contained_healthy_lab_sim(self) -> None:
@@ -101,7 +125,9 @@ class RuntimePackagingTests(unittest.TestCase):
             "src/main.tsx",
         )
         for relative in required:
-            self.assertTrue((web / relative).is_file(), f"missing PWA asset: {relative}")
+            self.assertTrue(
+                (web / relative).is_file(), f"missing PWA asset: {relative}"
+            )
         service_worker = (web / "public/sw.js").read_text(encoding="utf-8")
         self.assertIn("caches.open", service_worker)
         self.assertIn("offline", service_worker.lower())
@@ -109,6 +135,14 @@ class RuntimePackagingTests(unittest.TestCase):
         self.assertIn("pid /tmp/nginx.pid", nginx)
         compose = (REPO_ROOT / "docker-compose.yml").read_text(encoding="utf-8")
         self.assertIn("tmpfs: [/tmp, /var/cache/nginx, /var/run]", compose)
+
+    def test_runtime_smoke_requires_postgres_durability_before_success(self) -> None:
+        smoke = (REPO_ROOT / "apps/api/openbrec_api/smoke.py").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn('"postgres_durable": "passed"', smoke)
+        self.assertIn("accepted_event_log", smoke)
+        self.assertIn("unreconciled", smoke)
 
 
 if __name__ == "__main__":

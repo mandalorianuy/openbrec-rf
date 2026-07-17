@@ -7,11 +7,20 @@ from pathlib import Path
 from typing import Any
 
 import paho.mqtt.client as mqtt
+import psycopg
 
 from openbrec.runtime import ACCEPTED_OBSERVATION_TOPIC, ContractValidationError
 from openbrec.runtime import PROCESSED_OBSERVATION_TOPIC, validate_observation
+from openbrec.canonical import canonicalize
+from openbrec.postgres_disposition import PostgresDispositionStore
+from openbrec.semantic import SemanticValidationError, validate_event
 
-__all__ = ["ContractValidationError", "process_observation", "run_worker"]
+__all__ = [
+    "ContractValidationError",
+    "process_event",
+    "process_observation",
+    "run_worker",
+]
 
 
 def process_observation(
@@ -25,11 +34,33 @@ def process_observation(
     }
 
 
+def process_event(
+    payload: Any, *, store: Any, worker_id: str = "fusion-worker-1"
+) -> dict[str, str]:
+    root = Path(__file__).resolve().parents[3]
+    event = validate_event(payload, root)
+    observation = validate_observation(event["payload"])
+    store.ingest(
+        canonicalize(event),
+        policy=event["handling_policy"],
+        source_offset=event["sequence"],
+    )
+    return {
+        "status": "durably_processed",
+        "worker_id": worker_id,
+        "observation_id": str(observation["observation_id"]),
+    }
+
+
 async def run_worker() -> None:
     host = os.environ.get("OPENBREC_MQTT_HOST", "mqtt")
     port = int(os.environ.get("OPENBREC_MQTT_PORT", "1883"))
     worker_id = os.environ.get("OPENBREC_WORKER_ID", "fusion-worker-1")
-    ready_file = Path(os.environ.get("OPENBREC_READY_FILE", "/tmp/openbrec-worker-ready"))
+    ready_file = Path(
+        os.environ.get("OPENBREC_READY_FILE", "/tmp/openbrec-worker-ready")
+    )
+    repository_root = Path(__file__).resolve().parents[3]
+    store = PostgresDispositionStore.from_environment(repository_root=repository_root)
     connected = asyncio.Event()
     loop = asyncio.get_running_loop()
     client = mqtt.Client(
@@ -48,8 +79,15 @@ async def run_worker() -> None:
     def on_message(client, userdata, message) -> None:
         try:
             payload = json.loads(message.payload.decode("utf-8"))
-            processed = process_observation(payload, worker_id=worker_id)
-        except (UnicodeDecodeError, json.JSONDecodeError, ContractValidationError):
+            processed = process_event(payload, store=store, worker_id=worker_id)
+        except (
+            UnicodeDecodeError,
+            json.JSONDecodeError,
+            ContractValidationError,
+            SemanticValidationError,
+            psycopg.Error,
+            ValueError,
+        ):
             return
         client.publish(
             PROCESSED_OBSERVATION_TOPIC,
@@ -67,6 +105,7 @@ async def run_worker() -> None:
         await asyncio.Event().wait()
     finally:
         ready_file.unlink(missing_ok=True)
+        store.close()
         client.disconnect()
         client.loop_stop()
 

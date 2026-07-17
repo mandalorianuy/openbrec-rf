@@ -229,6 +229,18 @@ class VerifyCliTests(unittest.TestCase):
             result = self.run_verify(gate, "--help")
             self.assertEqual(result.returncode, 0, result.stderr)
 
+    def test_m0_05_gates_and_inputs_are_registered(self) -> None:
+        simulator = self.run_verify("simulator", "--help")
+        self.assertEqual(simulator.returncode, 0, simulator.stderr)
+        self.assertIn("--scenario", simulator.stdout)
+
+        core = self.run_verify("core-replay", "--help")
+        self.assertEqual(core.returncode, 0, core.stderr)
+        self.assertIn("--bundle", core.stdout)
+
+        ui = self.run_verify("ui-smoke", "--help")
+        self.assertEqual(ui.returncode, 0, ui.stderr)
+
 
 if __name__ == "__main__":
     unittest.main()

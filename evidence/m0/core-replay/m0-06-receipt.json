@@ -1,0 +1,91 @@
+{
+  "command": [
+    "python",
+    "-m",
+    "openbrec.verify",
+    "core-replay",
+    "--root",
+    "/Users/facundo/desarrollo/OpenBREC-RF",
+    "--receipt",
+    "/var/folders/sx/4wqgpxv140j57cllvyb23h100000gn/T/openbrec-m0-exit-jlo5ka7d/core-replay/m0-06-receipt.json"
+  ],
+  "dirty": false,
+  "errors": [],
+  "finished_at": "2026-07-17T18:57:04.776365Z",
+  "gate": "core-replay",
+  "gate_version": "0.1.0",
+  "git_sha": "2648f38bbddac755f2064e59148bb6fb26bcffd0",
+  "inputs": [
+    {
+      "path": "fixtures/replay/core/synthetic-observation.events.json",
+      "sha256": "f77a9238d9a6e8ff2db73298a9644d09a10be82d808944bd18eb0196c76880c4"
+    },
+    {
+      "path": "fixtures/replay/failure-cases.json",
+      "sha256": "e3b53b1c86dd7b8739e5a80382199edce1062e0e5c6e4017c82d4f6a0d83724a"
+    },
+    {
+      "path": "openbrec/replay.py",
+      "sha256": "6a62f49e2b75e948551857dcbbe53af7759b4dc326423a8678b798746ae624fc"
+    },
+    {
+      "path": "openbrec/semantic.py",
+      "sha256": "161fd77dfd115fde2ae7b51322957cb8562a26f765c15bde6a89a8ac763ba949"
+    }
+  ],
+  "lockfiles": [
+    {
+      "path": "uv.lock",
+      "sha256": "2d1b79df4cd5878ec7f4674a133c54ca7b16dfa559560ba3a93911e620f435d5"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "sha256": "ed7659f050b279f37e5cf84fb065fc528e15b3204d374681f3a70ad081d1c25a"
+    },
+    {
+      "path": "apps/web/pnpm-lock.yaml",
+      "sha256": "12a1ed34e601b49a319846ef8d87c316708bb695853661ec3b3b95208701d278"
+    }
+  ],
+  "output_sha256": "158b8ca644ef3d5c9b18c191142fcc892222070c7c6fb019c1d73a8bd77b1394",
+  "receipt_version": "1.0.0",
+  "responsible_role": "core-replay-maintainer",
+  "result": "passed",
+  "runtime": {
+    "docker": "Docker version 29.5.3, build d1c06ef",
+    "node": "v26.5.0",
+    "pnpm": "11.9.0",
+    "python": "3.12.13"
+  },
+  "scope": "domain_events_to_derived_outputs",
+  "started_at": "2026-07-17T18:57:04.455649Z",
+  "summary": {
+    "core_receipt": {
+      "configuration_sha256": "d45083913da75dcbe093b6add30b6eab5a91b8c1ea01506504936c44ebb4eba1",
+      "contract_set_sha256": "1a8d147e033ecaa0f80df894dbee005c14192b28bfb966d98a4f5b391462f84d",
+      "engine_artifact_sha256": "6a62f49e2b75e948551857dcbbe53af7759b4dc326423a8678b798746ae624fc",
+      "engine_name": "openbrec-core-replay",
+      "engine_version": "1.0.0",
+      "errors": [],
+      "generated_at": "2026-07-17T12:10:02.000000Z",
+      "input_events_sha256": "1b324dc44f41009229e6303eb693c0b5b856bc6ad38b29a22f354bf70ab8b101",
+      "outputs_sha256": "daeb5ffe8e701454c17bac32048f219da666a13369f2ecce4ba0c5cb96c9b734",
+      "receipt_id": "17e47ab3-ad8f-575c-b519-67f67e21ce8c",
+      "result": "passed",
+      "result_sha256": "a524feee7fd66cab6a107d4af78f83bfe4fbd24e33d569120820aac8745a9df5",
+      "schema_version": "1.0.0",
+      "upstream_receipt_sha256": "244576dec10cee5e3ed033bf7deb0c10c936aa3b37d5cb7dd9cd7f0e31262ba2"
+    },
+    "failure_matrix": {
+      "duplicate_identical": "deduplicated",
+      "idempotency_collision": "failed_no_outputs",
+      "late_after_retention": "failed_no_outputs",
+      "sequence_regressive": "failed_no_outputs",
+      "source_absent": "abstained_with_capability_absent",
+      "unknown_schema": "failed_no_outputs"
+    },
+    "fixture": "fixtures/replay/core/synthetic-observation.events.json",
+    "outputs": 2
+  },
+  "warnings": []
+}

@@ -1,0 +1,59 @@
+{
+  "command": [
+    "python",
+    "-m",
+    "openbrec.verify",
+    "offline-startup",
+    "--receipt",
+    "/tmp/openbrec-m005-receipts.RdPafs/offline-startup.json"
+  ],
+  "dirty": false,
+  "errors": [],
+  "finished_at": "2026-07-17T15:18:07.920903Z",
+  "gate": "offline-startup",
+  "gate_version": "0.1.0",
+  "git_sha": "1a805cca90521d48dd45026ee37f8ef0cfc5ff80",
+  "inputs": [
+    {
+      "path": "docker-compose.yml",
+      "sha256": "07cb3286454f5c82d635a4759f85a2ff6ce28b0a60e6db6de9ffafb971e8af33"
+    },
+    {
+      "path": "config/mosquitto/lab-sim.conf",
+      "sha256": "bd7859cb44ae51eae18f2fa6afe26f36fc4dec2b50027eb8135668d650dec4f8"
+    },
+    {
+      "path": "schemas/core/catalog.json",
+      "sha256": "3479f1cc60267ecd36296d60447bd694ab8e3c002b655d51134e23d682506bbd"
+    }
+  ],
+  "lockfiles": [
+    {
+      "path": "uv.lock",
+      "sha256": "3b9c3bc7589554a87f6a2c796160007388d871806add0d874deb29c432b534a1"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "sha256": "ed7659f050b279f37e5cf84fb065fc528e15b3204d374681f3a70ad081d1c25a"
+    }
+  ],
+  "receipt_version": "1.0.0",
+  "responsible_role": "runtime-maintainer",
+  "result": "passed",
+  "runtime": {
+    "python": "3.12.13"
+  },
+  "scope": "contained_lab_sim_runtime",
+  "started_at": "2026-07-17T15:17:44.226760Z",
+  "summary": {
+    "external_network": "denied",
+    "invalid_observation": "rejected",
+    "pwa_shell": "available",
+    "shutdown_exit_code": 0,
+    "smoke_exit_code": 0,
+    "smoke_output": "{\"external_network\": \"denied\", \"invalid_observation\": \"rejected\", \"pwa_shell\": \"available\", \"valid_observation\": \"processed\"}",
+    "startup_exit_code": 0,
+    "valid_observation": "processed"
+  },
+  "warnings": []
+}
