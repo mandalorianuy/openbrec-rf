@@ -1,0 +1,25 @@
+{
+  "capabilities_absent": [
+    "hardware"
+  ],
+  "capability_type": "energy",
+  "declared_at": "2026-07-17T12:00:00Z",
+  "energy_domain_id": "energy-cell-a",
+  "limitations": [
+    "simulation only"
+  ],
+  "node_id": "node-a1b2c3d4",
+  "protections": [
+    "bms",
+    "fuse"
+  ],
+  "schema_version": "1.0.0",
+  "sources": [
+    {
+      "nominal_voltage_V": 12.8,
+      "source_id": "storage-sim",
+      "source_type": "storage"
+    }
+  ],
+  "support_status": "unverified"
+}

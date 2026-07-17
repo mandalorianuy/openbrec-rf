@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openbrec.org/schemas/addons/transport-policy-decision/1.0.0",
+  "title": "TransportPolicyDecision",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "decision_type", "decision_id", "message_id", "profile_id", "decided_at", "allowed_bearers", "prohibited_bearers", "decision_actor", "reason", "expires_at", "limitations"],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "decision_type": {"enum": ["transport_policy"]},
+    "decision_id": {"type": "string", "format": "uuid"},
+    "message_id": {"type": "string", "format": "uuid"},
+    "profile_id": {"type": "string", "pattern": "^transport-[a-z0-9-]{3,64}$"},
+    "decided_at": {"type": "string", "format": "date-time", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{6}Z$"},
+    "allowed_bearers": {"type": "array", "items": {"enum": ["meshtastic", "meshcore", "reticulum", "lorawan", "ip", "carry_bundle", "simulated"]}, "minItems": 1, "uniqueItems": true},
+    "prohibited_bearers": {"type": "array", "items": {"enum": ["meshtastic", "meshcore", "reticulum", "lorawan", "ip", "carry_bundle", "simulated"]}, "uniqueItems": true},
+    "decision_actor": {"type": "string", "minLength": 1},
+    "reason": {"type": "string", "minLength": 1},
+    "expires_at": {"type": "string", "format": "date-time", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{6}Z$"},
+    "limitations": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1, "uniqueItems": true}
+  },
+  "examples": [
+    {"schema_version": "1.0.0", "decision_type": "transport_policy", "decision_id": "24000000-0000-4000-8000-000000000001", "message_id": "20000000-0000-4000-8000-000000000001", "profile_id": "transport-mobile-team", "decided_at": "2026-07-17T14:22:00.000000Z", "allowed_bearers": ["meshtastic", "carry_bundle"], "prohibited_bearers": ["lorawan"], "decision_actor": "role:cell-lead", "reason": "mobile distress profile", "expires_at": "2026-07-17T14:37:00.000000Z", "limitations": ["technical delivery only"]},
+    {"schema_version": "1.0.0", "decision_type": "transport_policy", "decision_id": "24000000-0000-4000-8000-000000000002", "message_id": "20000000-0000-4000-8000-000000000002", "profile_id": "transport-planned-cell", "decided_at": "2026-07-17T14:23:00.000000Z", "allowed_bearers": ["meshcore", "ip"], "prohibited_bearers": [], "decision_actor": "role:communications-lead", "reason": "planned repeater cell", "expires_at": "2026-07-18T14:23:00.000000Z", "limitations": ["simulation decision", "no automatic cross-bearer bridge"]}
+  ]
+}

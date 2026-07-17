@@ -1,0 +1,30 @@
+{
+  "accessibility_features": [
+    "text_labels",
+    "large_targets"
+  ],
+  "capabilities_absent": [
+    "human_usability_evidence"
+  ],
+  "capability_type": "human_terminal",
+  "declared_at": "2026-07-17T15:30:00.000000Z",
+  "input_modes": [
+    "touch"
+  ],
+  "limitations": [
+    "contract fixture only"
+  ],
+  "offline_actions": [
+    "text",
+    "status",
+    "sos",
+    "location"
+  ],
+  "output_modes": [
+    "visual"
+  ],
+  "schema_version": "1.0.0",
+  "support_status": "unverified",
+  "terminal_id": "terminal-a1b2c3d4",
+  "unexpected_field": true
+}

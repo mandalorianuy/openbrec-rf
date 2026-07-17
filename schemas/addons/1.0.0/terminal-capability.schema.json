@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openbrec.org/schemas/addons/terminal-capability/1.0.0",
+  "title": "TerminalCapability",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "capability_type", "terminal_id", "declared_at", "support_status", "offline_actions", "input_modes", "output_modes", "accessibility_features", "capabilities_absent", "limitations"],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "capability_type": {"enum": ["human_terminal"]},
+    "terminal_id": {"type": "string", "pattern": "^terminal-[0-9a-f]{8}$"},
+    "declared_at": {"type": "string", "format": "date-time", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{6}Z$"},
+    "support_status": {"enum": ["experimental", "unverified", "unavailable"]},
+    "offline_actions": {"type": "array", "items": {"enum": ["text", "status", "sos", "location", "cancel_request", "queue_review"]}, "minItems": 1, "uniqueItems": true},
+    "input_modes": {"type": "array", "items": {"enum": ["touch", "physical_button", "keyboard"]}, "uniqueItems": true},
+    "output_modes": {"type": "array", "items": {"enum": ["visual", "audio", "haptic"]}, "minItems": 1, "uniqueItems": true},
+    "accessibility_features": {"type": "array", "items": {"enum": ["text_labels", "high_contrast", "large_targets", "screen_reader", "redundant_cues"]}, "uniqueItems": true},
+    "capabilities_absent": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+    "limitations": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1, "uniqueItems": true}
+  },
+  "examples": [
+    {"schema_version": "1.0.0", "capability_type": "human_terminal", "terminal_id": "terminal-a1b2c3d4", "declared_at": "2026-07-17T15:30:00.000000Z", "support_status": "unverified", "offline_actions": ["text", "status", "sos", "location"], "input_modes": ["touch"], "output_modes": ["visual"], "accessibility_features": ["text_labels", "large_targets"], "capabilities_absent": ["human_usability_evidence"], "limitations": ["contract fixture only"]},
+    {"schema_version": "1.0.0", "capability_type": "human_terminal", "terminal_id": "terminal-a1b2c3d5", "declared_at": "2026-07-17T15:31:00.000000Z", "support_status": "experimental", "offline_actions": ["text", "status", "sos", "location", "cancel_request", "queue_review"], "input_modes": ["touch", "physical_button"], "output_modes": ["visual", "audio", "haptic"], "accessibility_features": ["text_labels", "high_contrast", "large_targets", "screen_reader", "redundant_cues"], "capabilities_absent": ["stress_test"], "limitations": ["automated checks do not prove comprehension"]}
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "actor_id": "role:privacy-reviewer",
+  "authorization_event_type": "granted",
+  "beacon_id": "beacon-a1b2c3d4",
+  "capture_mode": "features_only",
+  "event_id": "32000000-0000-4000-8000-000000000001",
+  "limitations": [
+    "no waveform retained"
+  ],
+  "occurred_at": "2026-07-17T16:30:00.000000Z",
+  "reason": "synthetic feature processing",
+  "retention_policy_id": "urn:openbrec:retention:lab:1.0.0",
+  "schema_version": "1.0.0",
+  "signature": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+  "unexpected_field": true,
+  "valid_until": "2026-07-18T16:30:00.000000Z"
+}

@@ -1,0 +1,37 @@
+{
+  "accessibility_features": [
+    "text_labels",
+    "high_contrast",
+    "large_targets",
+    "screen_reader",
+    "redundant_cues"
+  ],
+  "capabilities_absent": [
+    "stress_test"
+  ],
+  "capability_type": "human_terminal",
+  "declared_at": "2026-07-17T15:31:00.000000Z",
+  "input_modes": [
+    "touch",
+    "physical_button"
+  ],
+  "limitations": [
+    "automated checks do not prove comprehension"
+  ],
+  "offline_actions": [
+    "text",
+    "status",
+    "sos",
+    "location",
+    "cancel_request",
+    "queue_review"
+  ],
+  "output_modes": [
+    "visual",
+    "audio",
+    "haptic"
+  ],
+  "schema_version": "1.0.0",
+  "support_status": "experimental",
+  "terminal_id": "terminal-a1b2c3d5"
+}

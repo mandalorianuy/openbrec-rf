@@ -1,0 +1,39 @@
+{
+  "calibration_ref": "urn:sha256:3333333333333333333333333333333333333333333333333333333333333333",
+  "capabilities_absent": [],
+  "coverage": "modeled overlapping windows",
+  "limitations": [
+    "corroboration is not independent by default",
+    "no confirmation"
+  ],
+  "measurements": [
+    {
+      "measurement_type": "scalar",
+      "method": "pir:synthetic-v1",
+      "metric": "pir.motion_window",
+      "quality": 0.7,
+      "uncertainty": 0.2,
+      "unit": "1",
+      "value": 0.8
+    },
+    {
+      "measurement_type": "scalar",
+      "method": "thermal:synthetic-v1",
+      "metric": "thermal.hot_source_candidate",
+      "quality": 0.6,
+      "uncertainty": 2,
+      "unit": "Cel",
+      "value": 31.2
+    }
+  ],
+  "observation_id": "31000000-0000-4000-8000-000000000002",
+  "observation_kind": "measurement",
+  "quality": 0.65,
+  "schema_version": "1.0.0",
+  "sensor_id": "beacon-a1b2c3d5",
+  "sensor_type": "addon_registered",
+  "uncertainty": 0.35,
+  "window_end": "2026-07-17T16:21:02.000000Z",
+  "window_start": "2026-07-17T16:21:00.000000Z",
+  "zone_id": "zone-b"
+}

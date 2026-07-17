@@ -16,6 +16,8 @@ from typing import Any, Sequence
 
 from openbrec.contracts import (
     sync_generated_assets,
+    validate_addon_fixtures,
+    validate_addon_schemas,
     validate_compatibility,
     validate_core_schemas,
     validate_fixtures,
@@ -610,6 +612,8 @@ def _parser() -> argparse.ArgumentParser:
         "bundle-structure",
         "schema",
         "fixtures",
+        "addon-contracts",
+        "addon-fixtures",
         "schema-compat",
         "contracts-gen",
         "compose-build",
@@ -770,11 +774,27 @@ def main(argv: Sequence[str] | None = None) -> int:
         warnings = []
         scope = "schema_fixture_matrix"
         inputs.append(root / "schemas/core/catalog.json")
+    elif args.gate == "addon-contracts":
+        catalog_errors, catalog_summary = _validate_catalog(
+            root, root / "schemas/addons/catalog.json"
+        )
+        errors, summary = validate_addon_schemas(root)
+        errors = [*catalog_errors, *errors]
+        summary = {**catalog_summary, **summary}
+        warnings = []
+        scope = "addon_metaschema_and_catalog"
+        inputs.append(root / "schemas/addons/catalog.json")
+    elif args.gate == "addon-fixtures":
+        errors, summary = validate_addon_fixtures(root)
+        warnings = []
+        scope = "addon_schema_fixture_matrix"
+        inputs.append(root / "schemas/addons/catalog.json")
     elif args.gate == "schema-compat":
         errors, summary = validate_compatibility(root)
         warnings = []
         scope = "immutable_baseline"
         inputs.append(root / "schemas/core/compatibility-baseline.json")
+        inputs.append(root / "schemas/addons/compatibility-baseline.json")
     elif args.gate == "compose-build":
         errors, warnings, summary = _run_compose_build(root)
         scope = "lab_sim_images"
@@ -981,6 +1001,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         warnings = []
         scope = "generated_consumers"
         inputs.append(root / "schemas/core/catalog.json")
+        inputs.append(root / "schemas/addons/catalog.json")
 
     if args.receipt:
         _write_receipt(

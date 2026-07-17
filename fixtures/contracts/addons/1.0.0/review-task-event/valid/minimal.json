@@ -1,0 +1,15 @@
+{
+  "actor_id": "policy:review-router",
+  "disposition": "pending",
+  "event_id": "33000000-0000-4000-8000-000000000001",
+  "limitations": [
+    "candidate requires human review"
+  ],
+  "occurred_at": "2026-07-17T16:40:00.000000Z",
+  "review_event_type": "created",
+  "review_state": "open",
+  "schema_version": "1.0.0",
+  "signature": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+  "source_observation_id": "31000000-0000-4000-8000-000000000001",
+  "task_id": "33000000-0000-4000-8000-000000000010"
+}

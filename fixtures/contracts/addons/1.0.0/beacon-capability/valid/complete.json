@@ -1,0 +1,24 @@
+{
+  "beacon_id": "beacon-a1b2c3d5",
+  "capabilities_absent": [
+    "triangulation"
+  ],
+  "capability_type": "beacon",
+  "clock_uncertainty_ms": 100,
+  "declared_at": "2026-07-17T16:01:00.000000Z",
+  "limitations": [
+    "no presence confirmation",
+    "no field evidence"
+  ],
+  "modalities": [
+    "acoustic_features",
+    "pir_motion",
+    "thermal_low_resolution",
+    "imu_self_motion"
+  ],
+  "node_id": "node-a1b2c3d5",
+  "schema_version": "1.0.0",
+  "storage_mode": "authorized_snippet_vault",
+  "store_forward": true,
+  "support_status": "experimental"
+}

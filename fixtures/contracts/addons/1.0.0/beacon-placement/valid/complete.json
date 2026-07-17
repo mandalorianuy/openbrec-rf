@@ -1,0 +1,26 @@
+{
+  "actor_id": "actor-simulated",
+  "baseline_ref": "urn:sha256:2222222222222222222222222222222222222222222222222222222222222222",
+  "beacon_id": "beacon-a1b2c3d5",
+  "height_m": 1.5,
+  "known_interferences": [
+    "rescuers",
+    "radio",
+    "wind"
+  ],
+  "limitations": [
+    "previous baseline invalidated",
+    "no localization claim"
+  ],
+  "mounting": "wall",
+  "occlusions": [
+    "modeled rubble"
+  ],
+  "orientation_deg": 90,
+  "placed_at": "2026-07-17T16:06:00.000000Z",
+  "placement_event_type": "relocated",
+  "placement_id": "30000000-0000-4000-8000-000000000002",
+  "position_precision_m": 2,
+  "schema_version": "1.0.0",
+  "zone_id": "zone-b"
+}

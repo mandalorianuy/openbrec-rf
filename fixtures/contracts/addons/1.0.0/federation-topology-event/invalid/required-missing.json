@@ -1,0 +1,18 @@
+{
+  "capability_refs": [],
+  "effective_at": "2026-07-17T15:00:00.000000Z",
+  "entity_id": "area-north",
+  "entity_type": "operational_area",
+  "event_id": "25000000-0000-4000-8000-000000000001",
+  "limitations": [
+    "simulation topology"
+  ],
+  "parent_entity_id": "incident-11111111",
+  "public_identity_ref": "urn:sha256:1111111111111111111111111111111111111111111111111111111111111111",
+  "signature": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+  "status": "active",
+  "topology_event_type": "upsert",
+  "topology_version": 1,
+  "valid_from": "2026-07-17T15:00:00.000000Z",
+  "valid_until": "2026-07-18T15:00:00.000000Z"
+}

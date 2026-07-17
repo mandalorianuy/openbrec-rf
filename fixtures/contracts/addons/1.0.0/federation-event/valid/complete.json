@@ -1,0 +1,29 @@
+{
+  "created_at": "2026-07-17T15:21:00.000000Z",
+  "disclosure_basis": "life_safety_exception",
+  "event_id": "26000000-0000-4000-8000-000000000002",
+  "expires_at": "2026-07-17T15:36:00.000000Z",
+  "federation_event_type": "distress_summary",
+  "handling_policy_ref": "urn:openbrec:handling:life-safety:1.0.0",
+  "limitations": [
+    "summary does not include message content",
+    "hub cannot accept operationally"
+  ],
+  "origin_cell_id": "cell-alpha",
+  "priority": "distress",
+  "schema_version": "1.0.0",
+  "sequence": 2,
+  "signature": "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB",
+  "signing_binding_id": "binding-cell-alpha",
+  "source_event_ids": [
+    "21000000-0000-4000-8000-000000000001"
+  ],
+  "summary": {
+    "summary_type": "distress",
+    "value": "unresolved signed distress in cell-alpha"
+  },
+  "target_entity_ids": [
+    "hub-a",
+    "hub-b"
+  ]
+}

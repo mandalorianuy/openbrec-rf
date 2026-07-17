@@ -1,0 +1,18 @@
+{
+  "actor_id": "actor-4444444444444444",
+  "actor_type": "operator",
+  "causation_event_ids": [
+    "21000000-0000-4000-8000-000000000003",
+    "21000000-0000-4000-8000-000000000004"
+  ],
+  "event_id": "21000000-0000-4000-8000-000000000002",
+  "event_type": "operator.accepted",
+  "limitations": [
+    "acceptance does not guarantee rescue"
+  ],
+  "message_id": "20000000-0000-4000-8000-000000000001",
+  "occurred_at": "2026-07-17T14:04:00.000000Z",
+  "reason": "operator assumed management",
+  "schema_version": "1.0.0",
+  "signature": "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB"
+}

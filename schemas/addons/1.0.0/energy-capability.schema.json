@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openbrec.org/schemas/addons/energy-capability/1.0.0",
+  "title": "EnergyCapability",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "capability_type", "energy_domain_id", "node_id", "support_status", "declared_at", "sources", "protections", "capabilities_absent", "limitations"],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "capability_type": {"enum": ["energy"]},
+    "energy_domain_id": {"type": "string", "pattern": "^energy-[a-z0-9-]{3,48}$"},
+    "node_id": {"type": "string", "pattern": "^node-[0-9a-f]{8}$"},
+    "support_status": {"enum": ["experimental", "unverified", "unavailable"]},
+    "declared_at": {"type": "string", "format": "date-time", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{6}Z$"},
+    "sources": {"type": "array", "items": {"type": "object", "additionalProperties": false, "required": ["source_id", "source_type", "nominal_voltage_V"], "properties": {"source_id": {"type": "string", "minLength": 1}, "source_type": {"enum": ["storage", "portable_station", "solar", "grid", "generator", "replaceable_battery", "unknown"]}, "nominal_voltage_V": {"type": "number", "exclusiveMinimum": 0}, "nominal_capacity_Wh": {"type": "number", "minimum": 0}}}},
+    "protections": {"type": "array", "items": {"enum": ["bms", "fuse", "disconnect", "reverse_polarity", "backfeed", "grounding"]}, "uniqueItems": true},
+    "capabilities_absent": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+    "limitations": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1, "uniqueItems": true}
+  },
+  "examples": [
+    {"schema_version": "1.0.0", "capability_type": "energy", "energy_domain_id": "energy-cell-a", "node_id": "node-a1b2c3d4", "support_status": "unverified", "declared_at": "2026-07-17T13:00:00.000000Z", "sources": [{"source_id": "storage-sim", "source_type": "storage", "nominal_voltage_V": 12.8}], "protections": ["bms", "fuse"], "capabilities_absent": ["hardware"], "limitations": ["simulation only"]},
+    {"schema_version": "1.0.0", "capability_type": "energy", "energy_domain_id": "energy-beacon-a", "node_id": "node-a1b2c3d5", "support_status": "experimental", "declared_at": "2026-07-17T13:01:00.000000Z", "sources": [{"source_id": "battery-model", "source_type": "replaceable_battery", "nominal_voltage_V": 3.7, "nominal_capacity_Wh": 12.0}], "protections": ["fuse", "reverse_polarity"], "capabilities_absent": ["solar", "measured_capacity"], "limitations": ["modeled load profile", "not field evidence"]}
+  ]
+}

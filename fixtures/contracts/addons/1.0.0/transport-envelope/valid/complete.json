@@ -1,0 +1,22 @@
+{
+  "bearer": "carry_bundle",
+  "created_at": "2026-07-17T14:01:00.000000Z",
+  "direction": "inbound",
+  "envelope_id": "22000000-0000-4000-8000-000000000002",
+  "envelope_type": "openbrec_protected",
+  "expires_at": "2026-07-18T14:01:00.000000Z",
+  "hop_budget": 0,
+  "limitations": [
+    "delayed delivery",
+    "technical receipt only"
+  ],
+  "message_id": "20000000-0000-4000-8000-000000000002",
+  "payload_schema_ref": "https://openbrec.org/schemas/addons/human-message/1.0.0",
+  "protected_payload_base64": "YnVuZGxl",
+  "schema_version": "1.0.0",
+  "transport_metadata": {
+    "adapter": "signed-file",
+    "adapter_version": "1.0.0",
+    "path_id": "custody-a"
+  }
+}

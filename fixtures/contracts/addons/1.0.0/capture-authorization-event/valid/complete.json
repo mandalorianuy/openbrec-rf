@@ -1,0 +1,17 @@
+{
+  "actor_id": "role:incident-commander",
+  "authorization_event_type": "break_glass",
+  "beacon_id": "beacon-a1b2c3d5",
+  "capture_mode": "triggered_snippet",
+  "event_id": "32000000-0000-4000-8000-000000000002",
+  "limitations": [
+    "dual review required",
+    "simulation only"
+  ],
+  "occurred_at": "2026-07-17T16:31:00.000000Z",
+  "reason": "synthetic life-safety preservation drill",
+  "retention_policy_id": "urn:openbrec:retention:life-safety:1.0.0",
+  "schema_version": "1.0.0",
+  "signature": "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB",
+  "valid_until": "2026-07-17T16:46:00.000000Z"
+}

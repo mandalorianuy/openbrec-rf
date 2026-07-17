@@ -5,7 +5,7 @@
 - Autoridad de secuencia: `DELIVERY_BOARD.md`
 - Baseline requerido: M0 cerrado en `0dee758af0a1ea02578e0710f81d361933651756`
 - Alcance: P0-01–P0-09, simulación, fixtures, replay, UI y receipts
-- Estado de ejecución inicial: `0 / 9` tasks aceptadas; `P0-01` elegible, no iniciada
+- Estado de ejecución: `1 / 9` tasks aceptadas (`11.1%`); `P0-02` elegible, no iniciada
 - Fuera de alcance: compra, hardware, TX, ensayo radiado, campo y claims físicos
 
 ## 1. Objetivo
@@ -465,7 +465,8 @@ El único numerador de progreso es `tasks aceptadas / 9`.
 
 ## 9. Primera acción gobernada
 
-Con este plan aprobado, `P0-01` queda como única task elegible. Su ejecución debe
-abrir una nueva rama desde `main` limpio y terminar tras su propio closeout. Este
-commit de planificación no implementa contratos addon y mantiene el progreso P0
-en `0 / 9`.
+P0-01 fue aceptada el 2026-07-17 sobre el SHA de implementación
+`9f741fd204c5abb89c1ca1b457b9d4cc9c910f24`; sus cuatro receipts limpios viven
+en `evidence/p0/p0-01/` y su review en
+`docs/security/2026-07-17-p0-01-addon-contracts-review.md`. P0-02 queda como
+única task elegible, pero este closeout no la inicia. El progreso P0 es `1 / 9`.

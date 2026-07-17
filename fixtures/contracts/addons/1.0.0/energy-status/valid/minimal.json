@@ -1,0 +1,30 @@
+{
+  "alarms": [
+    "sensor"
+  ],
+  "energy_domain_id": "energy-cell-a",
+  "fsm_state": "unknown",
+  "limitations": [
+    "no runtime claim"
+  ],
+  "loads_shed": [],
+  "measurements": [
+    {
+      "method": "synthetic",
+      "metric": "voltage",
+      "quality": 0.8,
+      "uncertainty": 0.1,
+      "unit": "V",
+      "value": 12.6
+    }
+  ],
+  "observed_at": "2026-07-17T13:05:00.000000Z",
+  "reason": "SOC sensor absent",
+  "schema_version": "1.0.0",
+  "sensors_absent": [
+    "soc"
+  ],
+  "sequence": 1,
+  "soc_status": "unknown",
+  "status_type": "energy_status"
+}

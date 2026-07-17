@@ -1,0 +1,81 @@
+{
+  "baseline_version": "1.0.0",
+  "status": "experimental",
+  "accepted_at": null,
+  "contract_set_sha256": "fdab8dcc94eeb6c63e40a206d60f07fe931e7d0d3da125dab76054c0ea22067b",
+  "addons": [
+    {
+      "$id": "https://openbrec.org/schemas/addons/bearer-capability/1.0.0",
+      "sha256": "bc0d393eeabf7bc817c6b3325cdc4fd3374055a578a64b7d5b10afa549afcc48"
+    },
+    {
+      "$id": "https://openbrec.org/schemas/addons/beacon-capability/1.0.0",
+      "sha256": "1bc0e099cfd5bdddabb8744577c820e9e08d4b0c2acd1e6c1041f1d6ee4c67f2"
+    },
+    {
+      "$id": "https://openbrec.org/schemas/addons/beacon-health/1.0.0",
+      "sha256": "ccebb342fb2c08734d4007874f453e1983f239f1d47be3edbab1440fd36c4e70"
+    },
+    {
+      "$id": "https://openbrec.org/schemas/addons/beacon-observation/1.0.0",
+      "sha256": "e59db4a7705faff24f38abda999bfe8c46f822f867fa27f27816fa814f40e697"
+    },
+    {
+      "$id": "https://openbrec.org/schemas/addons/beacon-placement/1.0.0",
+      "sha256": "380dcc751661486d25e64a1cdd9d04dbd54bbf79000c75ff1bac8544c7a97ad6"
+    },
+    {
+      "$id": "https://openbrec.org/schemas/addons/capture-authorization-event/1.0.0",
+      "sha256": "dd3434ab6f43de8da976915ebfa99ec43214be781c25e665ac5e6100c8741f95"
+    },
+    {
+      "$id": "https://openbrec.org/schemas/addons/energy-budget/1.0.0",
+      "sha256": "f76d4c6506f53c04df7bd0b4b64f224b4b0964ee007368b4834e4d72b690a00d"
+    },
+    {
+      "$id": "https://openbrec.org/schemas/addons/energy-capability/1.0.0",
+      "sha256": "c2e6838c007a8b7ce3580d8419d39aa423cecf894583c1aec948be9f105bf448"
+    },
+    {
+      "$id": "https://openbrec.org/schemas/addons/energy-status/1.0.0",
+      "sha256": "1b932e38676c22772c5612dbe099951fe31d5a4260d976d789933ed8d89eb42d"
+    },
+    {
+      "$id": "https://openbrec.org/schemas/addons/federation-event/1.0.0",
+      "sha256": "f38a02ec3b8158788c63153bb9cb02f6958a59c159a9cef476c9401a56eaabc4"
+    },
+    {
+      "$id": "https://openbrec.org/schemas/addons/federation-topology-event/1.0.0",
+      "sha256": "6ac7ca7381ee241cce52f16de32eab9d90fed490e216ee0d7bf1031e7b71c792"
+    },
+    {
+      "$id": "https://openbrec.org/schemas/addons/human-message-event/1.0.0",
+      "sha256": "838378f2cf08202cfda062e7e5aceb1b84377f363ad700430a9aef50a4a84c8e"
+    },
+    {
+      "$id": "https://openbrec.org/schemas/addons/human-message/1.0.0",
+      "sha256": "7a3f524578716378307a5914750eacdc61e682ddbf2429ed2ccd10c26e1b7a1a"
+    },
+    {
+      "$id": "https://openbrec.org/schemas/addons/review-task-event/1.0.0",
+      "sha256": "a7fbbcbb9cb993e5ff86ee4a32b2b5bb886e560f4963939f806393ec757a25ed"
+    },
+    {
+      "$id": "https://openbrec.org/schemas/addons/terminal-capability/1.0.0",
+      "sha256": "88ce04fc231f04044941ea5aa486f07e07f9467d2a6a07ef8012091912d4d0be"
+    },
+    {
+      "$id": "https://openbrec.org/schemas/addons/transport-envelope/1.0.0",
+      "sha256": "9d34b71f20a3bb22427b2f4a04c64aa6c557d1bdfa5086777a0a502ae8a45516"
+    },
+    {
+      "$id": "https://openbrec.org/schemas/addons/transport-policy-decision/1.0.0",
+      "sha256": "27841ca34221fd19405240f81ce02b3c134be9b2d770417d5bf702ef87500731"
+    },
+    {
+      "$id": "https://openbrec.org/schemas/addons/transport-profile/1.0.0",
+      "sha256": "b358e08293a206f6e6da9b13b789f50030d56bd655c92e337af94775266ab4da"
+    }
+  ],
+  "policy": "experimental_byte_baseline_until_acceptance"
+}

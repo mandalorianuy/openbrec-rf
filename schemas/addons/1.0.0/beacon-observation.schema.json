@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openbrec.org/schemas/addons/beacon-observation/1.0.0",
+  "title": "BeaconObservation",
+  "allOf": [
+    {"$ref": "../../core/1.0.0/observation.schema.json"}
+  ],
+  "required": ["schema_version", "observation_id", "sensor_id", "sensor_type", "observation_kind", "window_start", "window_end", "measurements", "quality", "uncertainty", "coverage", "capabilities_absent", "limitations"],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "sensor_type": {"enum": ["addon_registered"]},
+    "observation_kind": {"enum": ["measurement"]},
+    "window_start": {"type": "string", "format": "date-time", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{6}Z$"},
+    "measurements": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "oneOf": [
+          {"type": "object", "additionalProperties": false, "required": ["measurement_type", "metric", "value", "unit", "uncertainty", "quality", "method"], "properties": {"measurement_type": {"enum": ["scalar"]}, "metric": {"enum": ["acoustic.human_compatible_candidate", "acoustic.animal_compatible_candidate", "acoustic.impact_candidate", "acoustic.repetitive_signal_candidate", "acoustic.unknown"]}, "value": {"type": "number", "minimum": 0, "maximum": 1}, "unit": {"enum": ["1"]}, "uncertainty": {"type": "number", "minimum": 0}, "quality": {"type": "number", "minimum": 0, "maximum": 1}, "method": {"type": "string", "pattern": "^feature:[a-z0-9._-]+$"}}},
+          {"type": "object", "additionalProperties": false, "required": ["measurement_type", "metric", "value", "unit", "uncertainty", "quality", "method"], "properties": {"measurement_type": {"enum": ["scalar"]}, "metric": {"enum": ["pir.motion_window", "pir.unknown"]}, "value": {"type": "number", "minimum": 0, "maximum": 1}, "unit": {"enum": ["1"]}, "uncertainty": {"type": "number", "minimum": 0}, "quality": {"type": "number", "minimum": 0, "maximum": 1}, "method": {"type": "string", "pattern": "^pir:[a-z0-9._-]+$"}}},
+          {"type": "object", "additionalProperties": false, "required": ["measurement_type", "metric", "value", "unit", "uncertainty", "quality", "method"], "properties": {"measurement_type": {"enum": ["scalar"]}, "metric": {"enum": ["thermal.hot_source_candidate", "thermal.grid_variation", "thermal.unknown"]}, "value": {"type": "number"}, "unit": {"enum": ["1", "Cel"]}, "uncertainty": {"type": "number", "minimum": 0}, "quality": {"type": "number", "minimum": 0, "maximum": 1}, "method": {"type": "string", "pattern": "^thermal:[a-z0-9._-]+$"}}}
+        ]
+      }
+    }
+  },
+  "examples": [
+    {"schema_version": "1.0.0", "observation_id": "31000000-0000-4000-8000-000000000001", "sensor_id": "beacon-a1b2c3d4", "sensor_type": "addon_registered", "observation_kind": "measurement", "window_start": "2026-07-17T16:20:00.000000Z", "window_end": "2026-07-17T16:20:01.000000Z", "zone_id": "zone-a", "measurements": [{"measurement_type": "scalar", "metric": "acoustic.unknown", "value": 0.4, "unit": "1", "uncertainty": 0.3, "quality": 0.6, "method": "feature:baseline-v1"}], "quality": 0.6, "uncertainty": 0.4, "coverage": "single synthetic acoustic window", "capabilities_absent": ["pir_motion", "thermal_low_resolution"], "limitations": ["candidate only", "no presence or absence inference"]},
+    {"schema_version": "1.0.0", "observation_id": "31000000-0000-4000-8000-000000000002", "sensor_id": "beacon-a1b2c3d5", "sensor_type": "addon_registered", "observation_kind": "measurement", "window_start": "2026-07-17T16:21:00.000000Z", "window_end": "2026-07-17T16:21:02.000000Z", "zone_id": "zone-b", "measurements": [{"measurement_type": "scalar", "metric": "pir.motion_window", "value": 0.8, "unit": "1", "uncertainty": 0.2, "quality": 0.7, "method": "pir:synthetic-v1"}, {"measurement_type": "scalar", "metric": "thermal.hot_source_candidate", "value": 31.2, "unit": "Cel", "uncertainty": 2, "quality": 0.6, "method": "thermal:synthetic-v1"}], "quality": 0.65, "uncertainty": 0.35, "coverage": "modeled overlapping windows", "calibration_ref": "urn:sha256:3333333333333333333333333333333333333333333333333333333333333333", "capabilities_absent": [], "limitations": ["corroboration is not independent by default", "no confirmation"]}
+  ]
+}

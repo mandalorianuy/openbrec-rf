@@ -1,0 +1,16 @@
+{
+  "actor_id": "actor-reviewer",
+  "disposition": "artifact",
+  "event_id": "33000000-0000-4000-8000-000000000002",
+  "limitations": [
+    "review does not establish absence"
+  ],
+  "notes": "synthetic tool noise",
+  "occurred_at": "2026-07-17T16:45:00.000000Z",
+  "review_event_type": "closed",
+  "review_state": "closed",
+  "schema_version": "1.0.0",
+  "signature": "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB",
+  "source_observation_id": "31000000-0000-4000-8000-000000000001",
+  "task_id": "33000000-0000-4000-8000-000000000010"
+}

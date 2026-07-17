@@ -1,0 +1,23 @@
+{
+  "bearer": "reticulum",
+  "broadcast": true,
+  "capability_id": "23000000-0000-4000-8000-000000000002",
+  "capability_type": "bearer",
+  "declared_at": "2026-07-17T14:21:00.000000Z",
+  "direct": true,
+  "energy_class": "medium",
+  "limitations": [
+    "modeled interface",
+    "no external security audit inherited"
+  ],
+  "mobility": [
+    "fixed",
+    "nomadic"
+  ],
+  "payload_max_bytes": 500,
+  "regulation_status": "simulation_only",
+  "schema_version": "1.0.0",
+  "store_forward": true,
+  "support_status": "experimental",
+  "version_pin": "source-review-2026-07-17"
+}

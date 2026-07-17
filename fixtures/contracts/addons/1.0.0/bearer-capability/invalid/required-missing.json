@@ -1,0 +1,21 @@
+{
+  "bearer": "meshtastic",
+  "broadcast": true,
+  "capability_id": "23000000-0000-4000-8000-000000000001",
+  "capability_type": "bearer",
+  "declared_at": "2026-07-17T14:20:00.000000Z",
+  "direct": true,
+  "energy_class": "low",
+  "limitations": [
+    "modeled only",
+    "transport identity untrusted"
+  ],
+  "mobility": [
+    "mobile",
+    "mixed"
+  ],
+  "payload_max_bytes": 220,
+  "regulation_status": "simulation_only",
+  "store_forward": false,
+  "support_status": "unverified"
+}

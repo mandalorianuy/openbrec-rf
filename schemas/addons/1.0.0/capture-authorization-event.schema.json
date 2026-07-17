@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openbrec.org/schemas/addons/capture-authorization-event/1.0.0",
+  "title": "CaptureAuthorizationEvent",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "authorization_event_type", "event_id", "beacon_id", "capture_mode", "occurred_at", "valid_until", "actor_id", "retention_policy_id", "reason", "signature", "limitations"],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "authorization_event_type": {"enum": ["granted", "revoked", "expired", "break_glass"]},
+    "event_id": {"type": "string", "format": "uuid"},
+    "beacon_id": {"type": "string", "pattern": "^beacon-[0-9a-f]{8}$"},
+    "capture_mode": {"enum": ["features_only", "triggered_snippet"]},
+    "occurred_at": {"type": "string", "format": "date-time", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{6}Z$"},
+    "valid_until": {"type": "string", "format": "date-time", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{6}Z$"},
+    "actor_id": {"type": "string", "minLength": 1},
+    "retention_policy_id": {"type": "string", "minLength": 1},
+    "reason": {"type": "string", "minLength": 1},
+    "signature": {"type": "string", "pattern": "^[A-Za-z0-9_-]{86}$"},
+    "limitations": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1, "uniqueItems": true}
+  },
+  "examples": [
+    {"schema_version": "1.0.0", "authorization_event_type": "granted", "event_id": "32000000-0000-4000-8000-000000000001", "beacon_id": "beacon-a1b2c3d4", "capture_mode": "features_only", "occurred_at": "2026-07-17T16:30:00.000000Z", "valid_until": "2026-07-18T16:30:00.000000Z", "actor_id": "role:privacy-reviewer", "retention_policy_id": "urn:openbrec:retention:lab:1.0.0", "reason": "synthetic feature processing", "signature": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", "limitations": ["no waveform retained"]},
+    {"schema_version": "1.0.0", "authorization_event_type": "break_glass", "event_id": "32000000-0000-4000-8000-000000000002", "beacon_id": "beacon-a1b2c3d5", "capture_mode": "triggered_snippet", "occurred_at": "2026-07-17T16:31:00.000000Z", "valid_until": "2026-07-17T16:46:00.000000Z", "actor_id": "role:incident-commander", "retention_policy_id": "urn:openbrec:retention:life-safety:1.0.0", "reason": "synthetic life-safety preservation drill", "signature": "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB", "limitations": ["dual review required", "simulation only"]}
+  ]
+}

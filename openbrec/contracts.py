@@ -34,8 +34,18 @@ def load_catalog(
 
 
 def load_core_schemas(root: Path) -> list[tuple[dict[str, Any], Path]]:
+    return load_schemas(root, "schemas/core/catalog.json")
+
+
+def load_addon_schemas(root: Path) -> list[tuple[dict[str, Any], Path]]:
+    return load_schemas(root, "schemas/addons/catalog.json")
+
+
+def load_schemas(
+    root: Path, relative_catalog_path: str
+) -> list[tuple[dict[str, Any], Path]]:
     root = root.resolve()
-    catalog = load_catalog(root)
+    catalog = load_catalog(root, relative_catalog_path)
     schemas: list[tuple[dict[str, Any], Path]] = []
     for entry in catalog["entries"]:
         path = (root / entry["path"]).resolve()
@@ -131,6 +141,46 @@ def validate_core_schemas(root: Path) -> tuple[list[str], dict[str, Any]]:
     }
 
 
+def validate_addon_schemas(root: Path) -> tuple[list[str], dict[str, Any]]:
+    errors: list[str] = []
+    catalog = load_catalog(root, "schemas/addons/catalog.json")
+    addons = load_addon_schemas(root)
+    core = load_core_schemas(root)
+    known_ids = {schema["$id"] for schema, _ in [*core, *addons]}
+    known_paths = {path.name for _, path in [*core, *addons]}
+    for schema, path in addons:
+        try:
+            Draft202012Validator.check_schema(schema)
+        except Exception as exc:
+            errors.append(f"metaschema failure {path.relative_to(root)}: {exc}")
+        if not isinstance(schema.get("examples"), list) or len(schema["examples"]) < 2:
+            errors.append(f"{path.relative_to(root)}: two examples required")
+        for reference in _references(schema):
+            if reference.startswith(("http://", "https://", "urn:")):
+                if reference not in known_ids:
+                    errors.append(
+                        f"unregistered reference in {path.relative_to(root)}: {reference}"
+                    )
+            elif Path(reference).name not in known_paths:
+                errors.append(
+                    f"missing local reference in {path.relative_to(root)}: {reference}"
+                )
+    actual_contract_set = contract_set_sha256(addons)
+    if catalog.get("contract_set_sha256") != actual_contract_set:
+        errors.append(
+            "addon contract_set_sha256 mismatch: "
+            f"expected {catalog.get('contract_set_sha256')}, got {actual_contract_set}"
+        )
+    if catalog.get("status") != "experimental":
+        errors.append("addon catalog support status must remain experimental in P0")
+    return errors, {
+        "addon_schemas": len(addons),
+        "contract_set_sha256": actual_contract_set,
+        "metaschema": DRAFT_2020_12,
+        "support_status": catalog.get("status"),
+    }
+
+
 def _first_top_level_property(schema: dict[str, Any], predicate: Any) -> str | None:
     for name, definition in schema.get("properties", {}).items():
         if isinstance(definition, dict) and predicate(definition):
@@ -182,8 +232,12 @@ def fixture_material(schema: dict[str, Any]) -> dict[str, dict[str, Any]]:
     }
 
 
-def generate_fixture_tree(root: Path, target: Path) -> None:
-    for schema, path in load_core_schemas(root):
+def generate_fixture_tree(
+    root: Path,
+    target: Path,
+    schemas: list[tuple[dict[str, Any], Path]] | None = None,
+) -> None:
+    for schema, path in schemas if schemas is not None else load_core_schemas(root):
         schema_name = path.name.removesuffix(".schema.json")
         for relative, material in fixture_material(schema).items():
             output = target / schema_name / relative
@@ -203,7 +257,13 @@ def _run(command: list[str], *, root: Path) -> None:
         )
 
 
-def generate_python_models(root: Path, target: Path) -> None:
+def generate_python_models(
+    root: Path,
+    target: Path,
+    *,
+    schema_directory: str = "schemas/core/1.0.0",
+    schemas: list[tuple[dict[str, Any], Path]] | None = None,
+) -> None:
     executable = shutil.which("datamodel-codegen")
     if executable is None:
         raise RuntimeError("datamodel-codegen not available in locked environment")
@@ -211,7 +271,7 @@ def generate_python_models(root: Path, target: Path) -> None:
         [
             executable,
             "--input",
-            "schemas/core/1.0.0",
+            schema_directory,
             "--input-file-type",
             "jsonschema",
             "--output",
@@ -238,7 +298,7 @@ def generate_python_models(root: Path, target: Path) -> None:
         root=root,
     )
     exports: list[tuple[str, str]] = []
-    for schema, path in load_core_schemas(root):
+    for schema, path in schemas if schemas is not None else load_core_schemas(root):
         module = path.name.removesuffix(".json").replace("-", "_").replace(".", "_")
         exports.append((module, schema["title"]))
     header = "# Generated from JSON Schema. DO NOT EDIT.\n"
@@ -255,7 +315,13 @@ def generate_python_models(root: Path, target: Path) -> None:
     (target / "__init__.py").write_text("".join(init_lines), encoding="utf-8")
 
 
-def generate_typescript_models(root: Path, target: Path) -> None:
+def generate_typescript_models(
+    root: Path,
+    target: Path,
+    *,
+    schema_directory: str = "schemas/core/1.0.0",
+    schemas: list[tuple[dict[str, Any], Path]] | None = None,
+) -> None:
     executable = root / "node_modules/.bin/json2ts"
     if not executable.is_file():
         raise RuntimeError("json2ts not available in locked environment")
@@ -263,17 +329,17 @@ def generate_typescript_models(root: Path, target: Path) -> None:
         [
             str(executable),
             "--input",
-            "schemas/core/1.0.0",
+            schema_directory,
             "--output",
             str(target),
             "--cwd",
-            "schemas/core/1.0.0",
+            schema_directory,
             "--unknownAny",
             "--no-enableConstEnums",
         ],
         root=root,
     )
-    schemas = load_core_schemas(root)
+    schemas = schemas if schemas is not None else load_core_schemas(root)
     exports = [
         (path.name.removesuffix(".json"), schema["title"], path)
         for schema, path in schemas
@@ -311,7 +377,10 @@ def generate_typescript_models(root: Path, target: Path) -> None:
     )
 
 
-def validate_typescript_models(root: Path) -> list[str]:
+def validate_typescript_models(
+    root: Path,
+    project: str = "packages/contracts/generated/typescript/tsconfig.json",
+) -> list[str]:
     executable = root / "node_modules/.bin/tsc"
     if not executable.is_file():
         return ["tsc not available in locked environment"]
@@ -319,7 +388,7 @@ def validate_typescript_models(root: Path) -> list[str]:
         [
             str(executable),
             "--project",
-            "packages/contracts/generated/typescript/tsconfig.json",
+            project,
         ],
         cwd=root,
         text=True,
@@ -339,6 +408,24 @@ def generate_assets(root: Path, target: Path) -> None:
     generate_typescript_models(root, target / "typescript")
 
 
+def generate_addon_assets(root: Path, target: Path) -> None:
+    schemas = load_addon_schemas(root)
+    schema_directory = "schemas/addons/1.0.0"
+    generate_fixture_tree(root, target / "fixtures", schemas)
+    generate_python_models(
+        root,
+        target / "python",
+        schema_directory=schema_directory,
+        schemas=schemas,
+    )
+    generate_typescript_models(
+        root,
+        target / "typescript",
+        schema_directory=schema_directory,
+        schemas=schemas,
+    )
+
+
 def _tree_bytes(path: Path) -> dict[str, bytes]:
     if not path.exists():
         return {}
@@ -356,12 +443,21 @@ def sync_generated_assets(
         generated = Path(directory)
         try:
             generate_assets(root, generated)
+            generate_addon_assets(root, generated / "addons")
         except Exception as exc:
             return [str(exc)], {}
         mappings = {
             generated / "fixtures": root / "fixtures/contracts/core/1.0.0",
             generated / "python": root / "packages/contracts/generated/python",
             generated / "typescript": root / "packages/contracts/generated/typescript",
+            generated
+            / "addons/fixtures": root / "fixtures/contracts/addons/1.0.0",
+            generated
+            / "addons/python": root
+            / "packages/contracts/generated/addons/python",
+            generated
+            / "addons/typescript": root
+            / "packages/contracts/generated/addons/typescript",
         }
         differences: list[str] = []
         for source, destination in mappings.items():
@@ -378,25 +474,65 @@ def sync_generated_assets(
             else []
         )
         typescript_errors = [] if errors else validate_typescript_models(root)
+        if not errors:
+            typescript_errors.extend(
+                validate_typescript_models(
+                    root,
+                    "packages/contracts/generated/addons/typescript/tsconfig.json",
+                )
+            )
         errors.extend(typescript_errors)
         return errors, {
             "fixture_files": len(_tree_bytes(generated / "fixtures")),
             "python_files": len(_tree_bytes(generated / "python")),
             "typescript_files": len(_tree_bytes(generated / "typescript")),
+            "addon_schemas": len(load_addon_schemas(root)),
+            "addon_fixture_files": len(_tree_bytes(generated / "addons/fixtures")),
+            "addon_python_files": len(_tree_bytes(generated / "addons/python")),
+            "addon_typescript_files": len(
+                _tree_bytes(generated / "addons/typescript")
+            ),
             "changed_targets": differences,
             "typescript_checked": not typescript_errors and not (check and differences),
         }
 
 
 def validate_fixtures(root: Path) -> tuple[list[str], dict[str, Any]]:
+    return _validate_fixtures(
+        root,
+        schemas=load_core_schemas(root),
+        registry_schemas=load_core_schemas(root),
+        fixture_root=root / "fixtures/contracts/core/1.0.0",
+        python_package="packages.contracts.generated.python",
+    )
+
+
+def validate_addon_fixtures(root: Path) -> tuple[list[str], dict[str, Any]]:
+    addons = load_addon_schemas(root)
+    return _validate_fixtures(
+        root,
+        schemas=addons,
+        registry_schemas=[*load_core_schemas(root), *addons],
+        fixture_root=root / "fixtures/contracts/addons/1.0.0",
+        python_package="packages.contracts.generated.addons.python",
+    )
+
+
+def _validate_fixtures(
+    root: Path,
+    *,
+    schemas: list[tuple[dict[str, Any], Path]],
+    registry_schemas: list[tuple[dict[str, Any], Path]],
+    fixture_root: Path,
+    python_package: str,
+) -> tuple[list[str], dict[str, Any]]:
     errors: list[str] = []
-    schemas = load_core_schemas(root)
-    registry = schema_registry(schemas)
+    registry = schema_registry(registry_schemas)
     valid_count = 0
     invalid_count = 0
     for schema, schema_path in schemas:
         name = schema_path.name.removesuffix(".schema.json")
-        base = root / "fixtures/contracts/core/1.0.0" / name
+        base = fixture_root / name
         validator = Draft202012Validator(
             schema, registry=registry, format_checker=FormatChecker()
         )
@@ -420,7 +556,14 @@ def validate_fixtures(root: Path) -> tuple[list[str], dict[str, Any]]:
                 errors.append(f"{path.relative_to(root)} unexpectedly valid")
             invalid_count += 1
     if not errors:
-        errors.extend(validate_pydantic_fixtures(root))
+        errors.extend(
+            validate_pydantic_fixtures(
+                root,
+                schemas=schemas,
+                fixture_root=fixture_root,
+                python_package=python_package,
+            )
+        )
     return errors, {
         "schemas": len(schemas),
         "valid_fixtures": valid_count,
@@ -428,21 +571,33 @@ def validate_fixtures(root: Path) -> tuple[list[str], dict[str, Any]]:
     }
 
 
-def validate_pydantic_fixtures(root: Path) -> list[str]:
+def validate_pydantic_fixtures(
+    root: Path,
+    *,
+    schemas: list[tuple[dict[str, Any], Path]] | None = None,
+    fixture_root: Path | None = None,
+    python_package: str = "packages.contracts.generated.python",
+) -> list[str]:
     errors: list[str] = []
+    selected_schemas = schemas if schemas is not None else load_core_schemas(root)
+    selected_fixture_root = (
+        fixture_root
+        if fixture_root is not None
+        else root / "fixtures/contracts/core/1.0.0"
+    )
     sys.path.insert(0, str(root))
     try:
-        for schema, path in load_core_schemas(root):
+        for schema, path in selected_schemas:
             name = path.name.removesuffix(".schema.json")
             module_name = (
                 path.name.removesuffix(".json").replace("-", "_").replace(".", "_")
             )
             module = importlib.import_module(
-                f"packages.contracts.generated.python.{module_name}"
+                f"{python_package}.{module_name}"
             )
             model = getattr(module, schema["title"])
             for fixture in sorted(
-                (root / "fixtures/contracts/core/1.0.0" / name / "valid").glob("*.json")
+                (selected_fixture_root / name / "valid").glob("*.json")
             ):
                 try:
                     model.model_validate_json(
@@ -478,7 +633,28 @@ def validate_compatibility(root: Path) -> tuple[list[str], dict[str, Any]]:
         errors.append("core compatibility baseline mismatch")
     if baseline.get("contract_set_sha256") != core.get("contract_set_sha256"):
         errors.append("core contract set baseline mismatch")
+    addon_baseline_path = root / "schemas/addons/compatibility-baseline.json"
+    if not addon_baseline_path.is_file():
+        errors.append("schemas/addons/compatibility-baseline.json missing")
+        addon_baseline: dict[str, Any] = {}
+    else:
+        addon_baseline = json.loads(addon_baseline_path.read_text(encoding="utf-8"))
+    addons = load_catalog(root, "schemas/addons/catalog.json")
+    expected_addons = [
+        {"$id": entry["$id"], "sha256": entry["sha256"]}
+        for entry in addons["entries"]
+    ]
+    if addon_baseline.get("addons") != expected_addons:
+        errors.append("addon compatibility baseline mismatch")
+    if addon_baseline.get("contract_set_sha256") != addons.get(
+        "contract_set_sha256"
+    ):
+        errors.append("addon contract set baseline mismatch")
+    if addon_baseline.get("status") != "experimental":
+        errors.append("addon compatibility status must remain experimental in P0")
     return errors, {
         "legacy_schemas": len(expected_legacy),
         "core_schemas": len(expected_core),
+        "addon_schemas": len(expected_addons),
+        "addon_status": addon_baseline.get("status"),
     }

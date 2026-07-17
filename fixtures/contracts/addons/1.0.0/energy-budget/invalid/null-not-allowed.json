@@ -1,0 +1,19 @@
+{
+  "assumptions": [
+    "synthetic load profile"
+  ],
+  "auxiliary_generation_Wh": 0,
+  "budget_id": "10000000-0000-4000-8000-000000000001",
+  "budget_type": null,
+  "created_at": "2026-07-17T13:10:00.000000Z",
+  "critical_load_Wh": 20,
+  "energy_domain_id": "energy-cell-a",
+  "gaps": [
+    "measured storage capacity"
+  ],
+  "reserves_Wh": 5,
+  "result": "unknown",
+  "schema_version": "1.0.0",
+  "usable_storage_Wh": 0,
+  "window_s": 3600
+}

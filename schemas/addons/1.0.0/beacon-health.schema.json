@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openbrec.org/schemas/addons/beacon-health/1.0.0",
+  "title": "BeaconHealth",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "health_type", "beacon_id", "observed_at", "health_state", "energy_state", "clock_uncertainty_ms", "modalities_available", "modalities_absent", "storage_state", "relay_state", "limitations"],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "health_type": {"enum": ["beacon_health"]},
+    "beacon_id": {"type": "string", "pattern": "^beacon-[0-9a-f]{8}$"},
+    "observed_at": {"type": "string", "format": "date-time", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{6}Z$"},
+    "health_state": {"enum": ["healthy", "degraded", "isolated", "fault", "unknown"]},
+    "energy_state": {"enum": ["normal", "conserve", "critical", "survival", "shutdown", "unknown"]},
+    "clock_uncertainty_ms": {"type": "integer", "minimum": 0},
+    "modalities_available": {"type": "array", "items": {"enum": ["acoustic_features", "pir_motion", "thermal_low_resolution", "imu_self_motion"]}, "uniqueItems": true},
+    "modalities_absent": {"type": "array", "items": {"enum": ["acoustic_features", "pir_motion", "thermal_low_resolution", "imu_self_motion"]}, "uniqueItems": true},
+    "storage_state": {"enum": ["available", "constrained", "full", "fault", "unknown"]},
+    "relay_state": {"enum": ["available", "unavailable", "not_configured", "unknown"]},
+    "limitations": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1, "uniqueItems": true}
+  },
+  "examples": [
+    {"schema_version": "1.0.0", "health_type": "beacon_health", "beacon_id": "beacon-a1b2c3d4", "observed_at": "2026-07-17T16:10:00.000000Z", "health_state": "degraded", "energy_state": "unknown", "clock_uncertainty_ms": 500, "modalities_available": ["acoustic_features"], "modalities_absent": ["pir_motion", "thermal_low_resolution", "imu_self_motion"], "storage_state": "available", "relay_state": "unavailable", "limitations": ["coverage gap visible"]},
+    {"schema_version": "1.0.0", "health_type": "beacon_health", "beacon_id": "beacon-a1b2c3d5", "observed_at": "2026-07-17T16:11:00.000000Z", "health_state": "isolated", "energy_state": "conserve", "clock_uncertainty_ms": 100, "modalities_available": ["acoustic_features", "pir_motion", "thermal_low_resolution", "imu_self_motion"], "modalities_absent": [], "storage_state": "constrained", "relay_state": "unavailable", "limitations": ["local sensing continues", "backhaul unavailable"]}
+  ]
+}

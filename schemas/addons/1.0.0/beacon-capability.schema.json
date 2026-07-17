@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openbrec.org/schemas/addons/beacon-capability/1.0.0",
+  "title": "BeaconCapability",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "capability_type", "beacon_id", "node_id", "declared_at", "support_status", "modalities", "storage_mode", "clock_uncertainty_ms", "store_forward", "capabilities_absent", "limitations"],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "capability_type": {"enum": ["beacon"]},
+    "beacon_id": {"type": "string", "pattern": "^beacon-[0-9a-f]{8}$"},
+    "node_id": {"type": "string", "pattern": "^node-[0-9a-f]{8}$"},
+    "declared_at": {"type": "string", "format": "date-time", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{6}Z$"},
+    "support_status": {"enum": ["experimental", "unverified", "unavailable"]},
+    "modalities": {"type": "array", "items": {"enum": ["acoustic_features", "pir_motion", "thermal_low_resolution", "imu_self_motion"]}, "minItems": 1, "uniqueItems": true},
+    "storage_mode": {"enum": ["features_only", "authorized_snippet_vault", "none"]},
+    "clock_uncertainty_ms": {"type": "integer", "minimum": 0},
+    "store_forward": {"type": "boolean"},
+    "capabilities_absent": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+    "limitations": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1, "uniqueItems": true}
+  },
+  "examples": [
+    {"schema_version": "1.0.0", "capability_type": "beacon", "beacon_id": "beacon-a1b2c3d4", "node_id": "node-a1b2c3d4", "declared_at": "2026-07-17T16:00:00.000000Z", "support_status": "unverified", "modalities": ["acoustic_features"], "storage_mode": "features_only", "clock_uncertainty_ms": 500, "store_forward": true, "capabilities_absent": ["hardware", "pir_motion", "thermal_low_resolution"], "limitations": ["synthetic fixtures only"]},
+    {"schema_version": "1.0.0", "capability_type": "beacon", "beacon_id": "beacon-a1b2c3d5", "node_id": "node-a1b2c3d5", "declared_at": "2026-07-17T16:01:00.000000Z", "support_status": "experimental", "modalities": ["acoustic_features", "pir_motion", "thermal_low_resolution", "imu_self_motion"], "storage_mode": "authorized_snippet_vault", "clock_uncertainty_ms": 100, "store_forward": true, "capabilities_absent": ["triangulation"], "limitations": ["no presence confirmation", "no field evidence"]}
+  ]
+}

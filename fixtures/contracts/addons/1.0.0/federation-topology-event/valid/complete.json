@@ -1,0 +1,23 @@
+{
+  "capability_refs": [
+    "urn:sha256:3333333333333333333333333333333333333333333333333333333333333333"
+  ],
+  "cell_id": "cell-alpha",
+  "effective_at": "2026-07-17T15:10:00.000000Z",
+  "entity_id": "cell-alpha",
+  "entity_type": "response_cell",
+  "event_id": "25000000-0000-4000-8000-000000000002",
+  "limitations": [
+    "isolation does not stop local operation"
+  ],
+  "parent_entity_id": "area-north",
+  "previous_topology_event_id": "25000000-0000-4000-8000-000000000003",
+  "public_identity_ref": "urn:sha256:2222222222222222222222222222222222222222222222222222222222222222",
+  "schema_version": "1.0.0",
+  "signature": "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB",
+  "status": "isolated",
+  "topology_event_type": "status_changed",
+  "topology_version": 2,
+  "valid_from": "2026-07-17T15:10:00.000000Z",
+  "valid_until": "2026-07-18T15:10:00.000000Z"
+}

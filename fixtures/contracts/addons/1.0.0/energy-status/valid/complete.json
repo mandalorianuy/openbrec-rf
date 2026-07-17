@@ -1,0 +1,39 @@
+{
+  "alarms": [],
+  "energy_domain_id": "energy-beacon-a",
+  "fsm_state": "conserve",
+  "limitations": [
+    "simulation only"
+  ],
+  "loads_shed": [
+    "thermal_high_rate"
+  ],
+  "measurements": [
+    {
+      "method": "modeled",
+      "metric": "soc",
+      "quality": 0.6,
+      "uncertainty": 0.1,
+      "unit": "1",
+      "value": 0.4
+    },
+    {
+      "method": "synthetic",
+      "metric": "power",
+      "quality": 0.7,
+      "uncertainty": 0.2,
+      "unit": "W",
+      "value": 2.1
+    }
+  ],
+  "observed_at": "2026-07-17T13:06:00.000000Z",
+  "reason": "modeled reserve threshold",
+  "runtime_lower_bound_s": 14400,
+  "schema_version": "1.0.0",
+  "sensors_absent": [
+    "soh"
+  ],
+  "sequence": 2,
+  "soc_status": "estimated",
+  "status_type": "energy_status"
+}
