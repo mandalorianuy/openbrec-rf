@@ -7,14 +7,14 @@
     "--root",
     "/Users/facundo/desarrollo/OpenBREC-RF",
     "--receipt",
-    "/var/folders/sx/4wqgpxv140j57cllvyb23h100000gn/T/openbrec-m0-exit-psh7322l/life-safety-preservation/m0-06-receipt.json"
+    "/var/folders/sx/4wqgpxv140j57cllvyb23h100000gn/T/openbrec-m0-exit-9c5u21p5/life-safety-preservation/m0-06-receipt.json"
   ],
   "dirty": false,
   "errors": [],
-  "finished_at": "2026-07-17T18:26:10.676290Z",
+  "finished_at": "2026-07-17T18:36:28.458020Z",
   "gate": "life-safety-preservation",
   "gate_version": "0.1.0",
-  "git_sha": "fb82384d08dbcc1618e080f542a5b0dbfaee9450",
+  "git_sha": "90b44bd4631c07404c8b968ba6bf8490ef8b4d90",
   "inputs": [
     {
       "path": "openbrec/disposition.py",
@@ -39,7 +39,7 @@
       "sha256": "12a1ed34e601b49a319846ef8d87c316708bb695853661ec3b3b95208701d278"
     }
   ],
-  "output_sha256": "450c2af18284a24b53a5ac28289fb1693a1bfa37cfde1d560b62d77655e5f766",
+  "output_sha256": "99c9468ce38f1f5959ef9f341a72793f1af9a707e8850fa7decc4aa6fe452f99",
   "receipt_version": "1.0.0",
   "responsible_role": "privacy-safety-reviewer",
   "result": "passed",
@@ -50,13 +50,13 @@
     "python": "3.12.13"
   },
   "scope": "sealed_audited_ttl_preservation",
-  "started_at": "2026-07-17T18:26:10.440751Z",
+  "started_at": "2026-07-17T18:36:28.220368Z",
   "summary": {
     "active_ttl_delete": "denied",
     "audit_events": 4,
     "authorized_access": "passed",
     "break_glass_without_actor": "denied",
-    "deletion_receipt_sha256": "7f2dac93e0951d3893308b2e7876b1151333351893ebce1305cfc457817fae07",
+    "deletion_receipt_sha256": "fc4ee3835b7e5ded71aeadc940a58f3a7b18393e6040dd36d93b93c2dc20ea3e",
     "field_support": "unverified",
     "reviewed_deletion": "passed"
   },

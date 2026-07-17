@@ -50,7 +50,7 @@ Cada cambio conserva ID, estado anterior, fecha, evidencia y razón. Un residual
 | 2026-07-17 | M0-R016 | inexistente | planned para M0-06 | Residual nuevo identificado por la decisión criptográfica M0-04; bloquea M0 exit/campo. |
 | 2026-07-17 | M0-R017 | inexistente | planned para M0-06 | Residual nuevo identificado al separar semántica portable de integración PostgreSQL; bloquea M0 exit. |
 | 2026-07-17 | M0-R013 | planned para M0-05 | resolved en M0-05 para `lab-sim`; campo `unverified` | Ingress web loopback, smoke Chromium offline y startup con egress core denegado, todos acreditados sobre SHA limpio. |
-| 2026-07-17 | M0-R006 | planned para M0-06 | resolved en M0-06 para la frontera core M0 | Catálogo promovido a `supported` tras runtime/replay y 22 receipts íntegros sobre `fb82384`. |
+| 2026-07-17 | M0-R006 | planned para M0-06 | resolved en M0-06 para la frontera core M0 | Catálogo promovido a `supported` tras runtime/replay y 22 receipts íntegros sobre `90b44bd`. |
 | 2026-07-17 | M0-R007 | planned para M0-06 | resolved en M0-06 | SBOM/licencias/vulnerabilidades/secret scan separados, con locks exactos y negativos sintéticos. |
 | 2026-07-17 | M0-R012 | planned para M0-06 bajo M0-R007 | resolved en M0-06 para `lab-sim` | Cinco inputs OCI fijados por digest y startup offline separado de provisioning. |
 | 2026-07-17 | M0-R014 | controlled en M0-04 | controlled permanente; reforzado en M0-06 | ACK sólo post-commit; accepted log/audit continúa como autoridad. |

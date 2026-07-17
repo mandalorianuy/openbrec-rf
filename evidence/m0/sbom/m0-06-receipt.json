@@ -7,16 +7,16 @@
     "--root",
     "/Users/facundo/desarrollo/OpenBREC-RF",
     "--output",
-    "/var/folders/sx/4wqgpxv140j57cllvyb23h100000gn/T/openbrec-m0-exit-psh7322l/sbom/openbrec-m0.cdx.json",
+    "/var/folders/sx/4wqgpxv140j57cllvyb23h100000gn/T/openbrec-m0-exit-9c5u21p5/sbom/openbrec-m0.cdx.json",
     "--receipt",
-    "/var/folders/sx/4wqgpxv140j57cllvyb23h100000gn/T/openbrec-m0-exit-psh7322l/sbom/m0-06-receipt.json"
+    "/var/folders/sx/4wqgpxv140j57cllvyb23h100000gn/T/openbrec-m0-exit-9c5u21p5/sbom/m0-06-receipt.json"
   ],
   "dirty": false,
   "errors": [],
-  "finished_at": "2026-07-17T18:26:23.986085Z",
+  "finished_at": "2026-07-17T18:36:41.522679Z",
   "gate": "sbom",
   "gate_version": "0.1.0",
-  "git_sha": "fb82384d08dbcc1618e080f542a5b0dbfaee9450",
+  "git_sha": "90b44bd4631c07404c8b968ba6bf8490ef8b4d90",
   "inputs": [
     {
       "path": "uv.lock",
@@ -45,7 +45,7 @@
       "sha256": "12a1ed34e601b49a319846ef8d87c316708bb695853661ec3b3b95208701d278"
     }
   ],
-  "output_sha256": "8fde21aee17bf4de37fdb31b7cd517d07b31d12f8c0df9eaa29f03a5acada2bf",
+  "output_sha256": "7a78b0c24573804b88139060f6794719a202d263f53d072fa56d880aeff6bfcd",
   "receipt_version": "1.0.0",
   "responsible_role": "contract-maintainer",
   "result": "passed",
@@ -56,11 +56,11 @@
     "python": "3.12.13"
   },
   "scope": "installed_locked_component_inventory",
-  "started_at": "2026-07-17T18:26:23.616498Z",
+  "started_at": "2026-07-17T18:36:41.147135Z",
   "summary": {
     "components": 124,
     "format": "CycloneDX",
-    "output": "/var/folders/sx/4wqgpxv140j57cllvyb23h100000gn/T/openbrec-m0-exit-psh7322l/sbom/openbrec-m0.cdx.json",
+    "output": "/var/folders/sx/4wqgpxv140j57cllvyb23h100000gn/T/openbrec-m0-exit-9c5u21p5/sbom/openbrec-m0.cdx.json",
     "sbom_sha256": "75adc57c137e97c6543f5e69e419fa32b95f418ac4bbf1739a1101a6b25e8bfd",
     "spec_version": "1.7"
   },

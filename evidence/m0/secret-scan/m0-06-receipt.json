@@ -7,14 +7,14 @@
     "--root",
     "/Users/facundo/desarrollo/OpenBREC-RF",
     "--receipt",
-    "/var/folders/sx/4wqgpxv140j57cllvyb23h100000gn/T/openbrec-m0-exit-psh7322l/secret-scan/m0-06-receipt.json"
+    "/var/folders/sx/4wqgpxv140j57cllvyb23h100000gn/T/openbrec-m0-exit-9c5u21p5/secret-scan/m0-06-receipt.json"
   ],
   "dirty": false,
   "errors": [],
-  "finished_at": "2026-07-17T18:26:23.453425Z",
+  "finished_at": "2026-07-17T18:36:40.991293Z",
   "gate": "secret-scan",
   "gate_version": "0.1.0",
-  "git_sha": "fb82384d08dbcc1618e080f542a5b0dbfaee9450",
+  "git_sha": "90b44bd4631c07404c8b968ba6bf8490ef8b4d90",
   "inputs": [
     {
       "path": ".gitignore",
@@ -39,7 +39,7 @@
       "sha256": "12a1ed34e601b49a319846ef8d87c316708bb695853661ec3b3b95208701d278"
     }
   ],
-  "output_sha256": "be54da2e70f53313934b5583e3a4a5e49d400a4de598f92fb0ce8d86f407b0a1",
+  "output_sha256": "b483e76b709e4a459479b15f248d14ff178153992499bc3d3e3d147df44a98ff",
   "receipt_version": "1.0.0",
   "responsible_role": "privacy-safety-reviewer",
   "result": "passed",
@@ -50,9 +50,9 @@
     "python": "3.12.13"
   },
   "scope": "tracked_source_high_confidence_secrets",
-  "started_at": "2026-07-17T18:26:23.139197Z",
+  "started_at": "2026-07-17T18:36:40.671335Z",
   "summary": {
-    "files_scanned": 382,
+    "files_scanned": 407,
     "findings": 0,
     "negative_secret_dummy": "detected"
   },
