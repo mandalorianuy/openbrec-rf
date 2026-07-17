@@ -1,0 +1,25 @@
+{
+  "created_at": "2026-07-17T15:20:00.000000Z",
+  "disclosure_basis": "minimum_necessary",
+  "event_id": "26000000-0000-4000-8000-000000000001",
+  "expires_at": "2026-07-17T16:20:00.000000Z",
+  "federation_event_type": null,
+  "handling_policy_ref": "urn:openbrec:handling:routine:1.0.0",
+  "limitations": [
+    "no raw telemetry"
+  ],
+  "origin_cell_id": "cell-alpha",
+  "priority": "routine",
+  "schema_version": "1.0.0",
+  "sequence": 1,
+  "signature": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+  "signing_binding_id": "binding-cell-alpha",
+  "source_event_ids": [],
+  "summary": {
+    "summary_type": "health",
+    "value": "isolated; local operation available"
+  },
+  "target_entity_ids": [
+    "area-north"
+  ]
+}

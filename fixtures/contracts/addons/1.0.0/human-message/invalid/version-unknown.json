@@ -1,0 +1,22 @@
+{
+  "actor_id": "actor-1111111111111111",
+  "algorithm": "AEAD_AES_256_GCM+Ed25519",
+  "boot_id": "33333333-3333-4333-8333-333333333333",
+  "cell_id": "cell-alpha",
+  "ciphertext": "c29z",
+  "created_at": "2026-07-17T14:00:00.000000Z",
+  "device_id": "device-2222222222222222",
+  "encryption_key_id": "sos-cell-alpha-1",
+  "expires_at": "2026-07-17T14:15:00.000000Z",
+  "incident_id": "11111111-1111-4111-8111-111111111111",
+  "message_id": "20000000-0000-4000-8000-000000000001",
+  "message_type": "sos",
+  "nonce": "AAAAAAAAAAAAAAAA",
+  "priority": "distress",
+  "recipient": "role:rescue-command",
+  "schema_version": "9.9.9",
+  "sequence": 1,
+  "signature": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+  "signing_key_id": "sign-cell-alpha-1",
+  "tag": "AAAAAAAAAAAAAAAAAAAAAA"
+}

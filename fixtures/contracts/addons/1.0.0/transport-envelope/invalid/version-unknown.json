@@ -1,0 +1,20 @@
+{
+  "bearer": "meshtastic",
+  "created_at": "2026-07-17T14:00:00.000000Z",
+  "direction": "outbound",
+  "envelope_id": "22000000-0000-4000-8000-000000000001",
+  "envelope_type": "openbrec_protected",
+  "expires_at": "2026-07-17T14:15:00.000000Z",
+  "hop_budget": 3,
+  "limitations": [
+    "transport is not identity"
+  ],
+  "message_id": "20000000-0000-4000-8000-000000000001",
+  "payload_schema_ref": "https://openbrec.org/schemas/addons/human-message/1.0.0",
+  "protected_payload_base64": "cHJvdGVjdGVk",
+  "schema_version": "9.9.9",
+  "transport_metadata": {
+    "adapter": "meshtastic-model",
+    "adapter_version": "1.0.0"
+  }
+}

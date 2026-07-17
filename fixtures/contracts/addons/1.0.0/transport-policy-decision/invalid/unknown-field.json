@@ -1,0 +1,22 @@
+{
+  "allowed_bearers": [
+    "meshtastic",
+    "carry_bundle"
+  ],
+  "decided_at": "2026-07-17T14:22:00.000000Z",
+  "decision_actor": "role:cell-lead",
+  "decision_id": "24000000-0000-4000-8000-000000000001",
+  "decision_type": "transport_policy",
+  "expires_at": "2026-07-17T14:37:00.000000Z",
+  "limitations": [
+    "technical delivery only"
+  ],
+  "message_id": "20000000-0000-4000-8000-000000000001",
+  "profile_id": "transport-mobile-team",
+  "prohibited_bearers": [
+    "lorawan"
+  ],
+  "reason": "mobile distress profile",
+  "schema_version": "1.0.0",
+  "unexpected_field": true
+}

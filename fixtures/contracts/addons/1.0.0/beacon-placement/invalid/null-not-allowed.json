@@ -1,0 +1,23 @@
+{
+  "actor_id": "actor-simulated",
+  "baseline_ref": "urn:sha256:1111111111111111111111111111111111111111111111111111111111111111",
+  "beacon_id": "beacon-a1b2c3d4",
+  "height_m": 1,
+  "known_interferences": [
+    "tools"
+  ],
+  "limitations": [
+    "synthetic placement"
+  ],
+  "mounting": "tripod",
+  "occlusions": [
+    "synthetic wall"
+  ],
+  "orientation_deg": 0,
+  "placed_at": "2026-07-17T16:05:00.000000Z",
+  "placement_event_type": null,
+  "placement_id": "30000000-0000-4000-8000-000000000001",
+  "position_precision_m": 5,
+  "schema_version": "1.0.0",
+  "zone_id": "zone-a"
+}

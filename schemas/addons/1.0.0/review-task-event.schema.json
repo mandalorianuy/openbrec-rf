@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openbrec.org/schemas/addons/review-task-event/1.0.0",
+  "title": "ReviewTaskEvent",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "review_event_type", "event_id", "task_id", "source_observation_id", "occurred_at", "review_state", "actor_id", "disposition", "signature", "limitations"],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "review_event_type": {"enum": ["created", "assigned", "annotated", "closed", "reopened"]},
+    "event_id": {"type": "string", "format": "uuid"},
+    "task_id": {"type": "string", "format": "uuid"},
+    "source_observation_id": {"type": "string", "format": "uuid"},
+    "occurred_at": {"type": "string", "format": "date-time", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{6}Z$"},
+    "review_state": {"enum": ["open", "assigned", "under_review", "closed", "reopened"]},
+    "actor_id": {"type": "string", "minLength": 1},
+    "disposition": {"enum": ["pending", "candidate", "artifact", "unknown"]},
+    "notes": {"type": "string", "maxLength": 1000},
+    "signature": {"type": "string", "pattern": "^[A-Za-z0-9_-]{86}$"},
+    "limitations": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1, "uniqueItems": true}
+  },
+  "examples": [
+    {"schema_version": "1.0.0", "review_event_type": "created", "event_id": "33000000-0000-4000-8000-000000000001", "task_id": "33000000-0000-4000-8000-000000000010", "source_observation_id": "31000000-0000-4000-8000-000000000001", "occurred_at": "2026-07-17T16:40:00.000000Z", "review_state": "open", "actor_id": "policy:review-router", "disposition": "pending", "signature": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", "limitations": ["candidate requires human review"]},
+    {"schema_version": "1.0.0", "review_event_type": "closed", "event_id": "33000000-0000-4000-8000-000000000002", "task_id": "33000000-0000-4000-8000-000000000010", "source_observation_id": "31000000-0000-4000-8000-000000000001", "occurred_at": "2026-07-17T16:45:00.000000Z", "review_state": "closed", "actor_id": "actor-reviewer", "disposition": "artifact", "notes": "synthetic tool noise", "signature": "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB", "limitations": ["review does not establish absence"]}
+  ]
+}

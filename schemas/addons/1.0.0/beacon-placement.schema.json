@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openbrec.org/schemas/addons/beacon-placement/1.0.0",
+  "title": "BeaconPlacement",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "placement_event_type", "placement_id", "beacon_id", "zone_id", "placed_at", "position_precision_m", "height_m", "orientation_deg", "mounting", "occlusions", "known_interferences", "baseline_ref", "actor_id", "limitations"],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "placement_event_type": {"enum": ["installed", "relocated", "invalidated"]},
+    "placement_id": {"type": "string", "format": "uuid"},
+    "beacon_id": {"type": "string", "pattern": "^beacon-[0-9a-f]{8}$"},
+    "zone_id": {"type": "string", "pattern": "^[a-z][a-z0-9._-]{2,63}$"},
+    "placed_at": {"type": "string", "format": "date-time", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{6}Z$"},
+    "position_precision_m": {"type": "number", "minimum": 0},
+    "height_m": {"type": "number", "minimum": 0},
+    "orientation_deg": {"type": "number", "minimum": 0, "exclusiveMaximum": 360},
+    "mounting": {"enum": ["floor", "wall", "tripod", "suspended", "unknown"]},
+    "occlusions": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+    "known_interferences": {"type": "array", "items": {"enum": ["rescuers", "tools", "radio", "wind", "generator", "sun", "hot_equipment", "animals", "unknown"]}, "uniqueItems": true},
+    "baseline_ref": {"type": "string", "pattern": "^urn:sha256:[0-9a-f]{64}$"},
+    "actor_id": {"type": "string", "minLength": 1},
+    "limitations": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1, "uniqueItems": true}
+  },
+  "examples": [
+    {"schema_version": "1.0.0", "placement_event_type": "installed", "placement_id": "30000000-0000-4000-8000-000000000001", "beacon_id": "beacon-a1b2c3d4", "zone_id": "zone-a", "placed_at": "2026-07-17T16:05:00.000000Z", "position_precision_m": 5, "height_m": 1, "orientation_deg": 0, "mounting": "tripod", "occlusions": ["synthetic wall"], "known_interferences": ["tools"], "baseline_ref": "urn:sha256:1111111111111111111111111111111111111111111111111111111111111111", "actor_id": "actor-simulated", "limitations": ["synthetic placement"]},
+    {"schema_version": "1.0.0", "placement_event_type": "relocated", "placement_id": "30000000-0000-4000-8000-000000000002", "beacon_id": "beacon-a1b2c3d5", "zone_id": "zone-b", "placed_at": "2026-07-17T16:06:00.000000Z", "position_precision_m": 2, "height_m": 1.5, "orientation_deg": 90, "mounting": "wall", "occlusions": ["modeled rubble"], "known_interferences": ["rescuers", "radio", "wind"], "baseline_ref": "urn:sha256:2222222222222222222222222222222222222222222222222222222222222222", "actor_id": "actor-simulated", "limitations": ["previous baseline invalidated", "no localization claim"]}
+  ]
+}

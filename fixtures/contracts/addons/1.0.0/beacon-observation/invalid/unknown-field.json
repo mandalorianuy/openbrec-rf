@@ -1,0 +1,33 @@
+{
+  "capabilities_absent": [
+    "pir_motion",
+    "thermal_low_resolution"
+  ],
+  "coverage": "single synthetic acoustic window",
+  "limitations": [
+    "candidate only",
+    "no presence or absence inference"
+  ],
+  "measurements": [
+    {
+      "measurement_type": "scalar",
+      "method": "feature:baseline-v1",
+      "metric": "acoustic.unknown",
+      "quality": 0.6,
+      "uncertainty": 0.3,
+      "unit": "1",
+      "value": 0.4
+    }
+  ],
+  "observation_id": "31000000-0000-4000-8000-000000000001",
+  "observation_kind": "measurement",
+  "quality": 0.6,
+  "schema_version": "1.0.0",
+  "sensor_id": "beacon-a1b2c3d4",
+  "sensor_type": "addon_registered",
+  "uncertainty": 0.4,
+  "unexpected_field": true,
+  "window_end": "2026-07-17T16:20:01.000000Z",
+  "window_start": "2026-07-17T16:20:00.000000Z",
+  "zone_id": "zone-a"
+}

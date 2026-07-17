@@ -1,0 +1,28 @@
+{
+  "capabilities_absent": [
+    "solar",
+    "measured_capacity"
+  ],
+  "capability_type": "energy",
+  "declared_at": "2026-07-17T13:01:00.000000Z",
+  "energy_domain_id": "energy-beacon-a",
+  "limitations": [
+    "modeled load profile",
+    "not field evidence"
+  ],
+  "node_id": "node-a1b2c3d5",
+  "protections": [
+    "fuse",
+    "reverse_polarity"
+  ],
+  "schema_version": "1.0.0",
+  "sources": [
+    {
+      "nominal_capacity_Wh": 12.0,
+      "nominal_voltage_V": 3.7,
+      "source_id": "battery-model",
+      "source_type": "replaceable_battery"
+    }
+  ],
+  "support_status": "experimental"
+}

@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openbrec.org/schemas/addons/federation-event/1.0.0",
+  "title": "FederationEvent",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "federation_event_type", "event_id", "origin_cell_id", "target_entity_ids", "source_event_ids", "priority", "created_at", "expires_at", "sequence", "summary", "handling_policy_ref", "disclosure_basis", "signing_binding_id", "signature", "limitations"],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "federation_event_type": {"enum": ["distress_summary", "cell_status", "capability_offer", "resource_request", "resource_assignment", "handoff_offer", "handoff_acceptance", "policy_intent", "revocation_update"]},
+    "event_id": {"type": "string", "format": "uuid"},
+    "origin_cell_id": {"type": "string", "pattern": "^cell-[a-z0-9-]{3,48}$"},
+    "target_entity_ids": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1, "uniqueItems": true},
+    "source_event_ids": {"type": "array", "items": {"type": "string", "format": "uuid"}, "uniqueItems": true},
+    "priority": {"enum": ["routine", "urgent", "distress"]},
+    "created_at": {"type": "string", "format": "date-time", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{6}Z$"},
+    "expires_at": {"type": "string", "format": "date-time", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{6}Z$"},
+    "sequence": {"type": "integer", "minimum": 0},
+    "summary": {"type": "object", "additionalProperties": false, "required": ["summary_type", "value"], "properties": {"summary_type": {"enum": ["distress", "health", "capability", "resource", "handoff", "policy", "revocation"]}, "value": {"type": "string", "minLength": 1, "maxLength": 280}}},
+    "handling_policy_ref": {"type": "string", "minLength": 1},
+    "disclosure_basis": {"enum": ["minimum_necessary", "life_safety_exception", "operator_authorized"]},
+    "signing_binding_id": {"type": "string", "minLength": 1},
+    "signature": {"type": "string", "pattern": "^[A-Za-z0-9_-]{86}$"},
+    "limitations": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1, "uniqueItems": true}
+  },
+  "examples": [
+    {"schema_version": "1.0.0", "federation_event_type": "cell_status", "event_id": "26000000-0000-4000-8000-000000000001", "origin_cell_id": "cell-alpha", "target_entity_ids": ["area-north"], "source_event_ids": [], "priority": "routine", "created_at": "2026-07-17T15:20:00.000000Z", "expires_at": "2026-07-17T16:20:00.000000Z", "sequence": 1, "summary": {"summary_type": "health", "value": "isolated; local operation available"}, "handling_policy_ref": "urn:openbrec:handling:routine:1.0.0", "disclosure_basis": "minimum_necessary", "signing_binding_id": "binding-cell-alpha", "signature": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", "limitations": ["no raw telemetry"]},
+    {"schema_version": "1.0.0", "federation_event_type": "distress_summary", "event_id": "26000000-0000-4000-8000-000000000002", "origin_cell_id": "cell-alpha", "target_entity_ids": ["hub-a", "hub-b"], "source_event_ids": ["21000000-0000-4000-8000-000000000001"], "priority": "distress", "created_at": "2026-07-17T15:21:00.000000Z", "expires_at": "2026-07-17T15:36:00.000000Z", "sequence": 2, "summary": {"summary_type": "distress", "value": "unresolved signed distress in cell-alpha"}, "handling_policy_ref": "urn:openbrec:handling:life-safety:1.0.0", "disclosure_basis": "life_safety_exception", "signing_binding_id": "binding-cell-alpha", "signature": "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB", "limitations": ["summary does not include message content", "hub cannot accept operationally"]}
+  ]
+}

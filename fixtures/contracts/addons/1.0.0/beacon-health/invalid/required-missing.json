@@ -1,0 +1,21 @@
+{
+  "beacon_id": "beacon-a1b2c3d4",
+  "clock_uncertainty_ms": 500,
+  "energy_state": "unknown",
+  "health_state": "degraded",
+  "health_type": "beacon_health",
+  "limitations": [
+    "coverage gap visible"
+  ],
+  "modalities_absent": [
+    "pir_motion",
+    "thermal_low_resolution",
+    "imu_self_motion"
+  ],
+  "modalities_available": [
+    "acoustic_features"
+  ],
+  "observed_at": "2026-07-17T16:10:00.000000Z",
+  "relay_state": "unavailable",
+  "storage_state": "available"
+}

@@ -1,0 +1,31 @@
+{
+  "activation_conditions": [
+    "operator commissioning"
+  ],
+  "carry_bearer": "carry_bundle",
+  "created_at": "2026-07-17T14:10:00.000000Z",
+  "decision_actor": "role:cell-lead",
+  "evidence_refs": [],
+  "expires_at": "2026-07-18T14:10:00.000000Z",
+  "fallback_bearers": [
+    "carry_bundle"
+  ],
+  "latency_class": "distress",
+  "limitations": [
+    "simulation profile"
+  ],
+  "message_rate_per_hour": 24,
+  "mission": "sos",
+  "mobility": "mobile",
+  "node_count": 12,
+  "payload_bytes": 180,
+  "plane": "human",
+  "primary_bearer": "meshtastic",
+  "profile_id": "transport-mobile-team",
+  "profile_type": "unknown-enum-value",
+  "prohibited_bridges": [
+    "raw-frame"
+  ],
+  "schema_version": "1.0.0",
+  "topology": "unknown"
+}

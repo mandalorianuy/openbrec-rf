@@ -32,6 +32,8 @@ jobs:
       - run: uv run --offline python -m openbrec.verify bundle-structure --receipt evidence/m0/bundle-structure/m0-06-receipt.json
       - run: uv run --offline python -m openbrec.verify schema --receipt evidence/m0/schema/m0-06-receipt.json
       - run: uv run --offline python -m openbrec.verify fixtures --receipt evidence/m0/fixtures/m0-06-receipt.json
+      - run: uv run --offline python -m openbrec.verify addon-contracts --receipt evidence/p0/p0-01/addon-contracts/p0-01-receipt.json
+      - run: uv run --offline python -m openbrec.verify addon-fixtures --receipt evidence/p0/p0-01/addon-fixtures/p0-01-receipt.json
       - run: uv run --offline python -m openbrec.verify schema-compat --receipt evidence/m0/schema-compat/m0-06-receipt.json
       - run: uv run --offline python -m openbrec.verify contracts-gen --check --receipt evidence/m0/contracts-gen/m0-06-receipt.json
       - uses: actions/upload-artifact@v7

@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openbrec.org/schemas/addons/energy-budget/1.0.0",
+  "title": "EnergyBudget",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "budget_type", "budget_id", "energy_domain_id", "created_at", "window_s", "usable_storage_Wh", "critical_load_Wh", "reserves_Wh", "auxiliary_generation_Wh", "result", "assumptions", "gaps"],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "budget_type": {"enum": ["energy_budget"]},
+    "budget_id": {"type": "string", "format": "uuid"},
+    "energy_domain_id": {"type": "string", "pattern": "^energy-[a-z0-9-]{3,48}$"},
+    "created_at": {"type": "string", "format": "date-time", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{6}Z$"},
+    "window_s": {"type": "integer", "minimum": 1},
+    "usable_storage_Wh": {"type": "number", "minimum": 0},
+    "critical_load_Wh": {"type": "number", "minimum": 0},
+    "reserves_Wh": {"type": "number", "minimum": 0},
+    "auxiliary_generation_Wh": {"type": "number", "minimum": 0},
+    "runtime_lower_bound_s": {"type": "integer", "minimum": 0},
+    "result": {"enum": ["sufficient_under_model", "insufficient", "unknown"]},
+    "assumptions": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1, "uniqueItems": true},
+    "gaps": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true}
+  },
+  "examples": [
+    {"schema_version": "1.0.0", "budget_type": "energy_budget", "budget_id": "10000000-0000-4000-8000-000000000001", "energy_domain_id": "energy-cell-a", "created_at": "2026-07-17T13:10:00.000000Z", "window_s": 3600, "usable_storage_Wh": 0, "critical_load_Wh": 20, "reserves_Wh": 5, "auxiliary_generation_Wh": 0, "result": "unknown", "assumptions": ["synthetic load profile"], "gaps": ["measured storage capacity"]},
+    {"schema_version": "1.0.0", "budget_type": "energy_budget", "budget_id": "10000000-0000-4000-8000-000000000002", "energy_domain_id": "energy-beacon-a", "created_at": "2026-07-17T13:11:00.000000Z", "window_s": 14400, "usable_storage_Wh": 30, "critical_load_Wh": 8, "reserves_Wh": 4, "auxiliary_generation_Wh": 0, "runtime_lower_bound_s": 14400, "result": "sufficient_under_model", "assumptions": ["modeled conversion efficiency", "no generation credited"], "gaps": ["physical load trace", "temperature derating"]}
+  ]
+}

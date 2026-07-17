@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openbrec.org/schemas/addons/transport-profile/1.0.0",
+  "title": "TransportProfile",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "profile_type", "profile_id", "created_at", "plane", "mission", "mobility", "topology", "node_count", "message_rate_per_hour", "payload_bytes", "latency_class", "primary_bearer", "fallback_bearers", "carry_bearer", "prohibited_bridges", "activation_conditions", "expires_at", "decision_actor", "evidence_refs", "limitations"],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "profile_type": {"enum": ["transport_profile"]},
+    "profile_id": {"type": "string", "pattern": "^transport-[a-z0-9-]{3,64}$"},
+    "created_at": {"type": "string", "format": "date-time", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{6}Z$"},
+    "plane": {"enum": ["human", "machine", "federation", "media"]},
+    "mission": {"enum": ["chat", "status", "sos", "location", "telemetry", "artifact", "voice"]},
+    "mobility": {"enum": ["fixed", "nomadic", "mobile", "mixed"]},
+    "topology": {"enum": ["unknown", "partially_planned", "planned"]},
+    "node_count": {"type": "integer", "minimum": 1},
+    "message_rate_per_hour": {"type": "number", "minimum": 0},
+    "payload_bytes": {"type": "integer", "minimum": 1},
+    "latency_class": {"enum": ["best_effort", "minutes", "urgent", "distress"]},
+    "primary_bearer": {"enum": ["meshtastic", "meshcore", "reticulum", "lorawan", "ip", "carry_bundle", "none"]},
+    "fallback_bearers": {"type": "array", "items": {"enum": ["meshtastic", "meshcore", "reticulum", "lorawan", "ip", "carry_bundle"]}, "uniqueItems": true},
+    "carry_bearer": {"enum": ["carry_bundle", "none"]},
+    "prohibited_bridges": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+    "activation_conditions": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1},
+    "expires_at": {"type": "string", "format": "date-time", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{6}Z$"},
+    "decision_actor": {"type": "string", "minLength": 1},
+    "evidence_refs": {"type": "array", "items": {"type": "string", "pattern": "^urn:sha256:[0-9a-f]{64}$"}, "uniqueItems": true},
+    "limitations": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1, "uniqueItems": true}
+  },
+  "examples": [
+    {"schema_version": "1.0.0", "profile_type": "transport_profile", "profile_id": "transport-mobile-team", "created_at": "2026-07-17T14:10:00.000000Z", "plane": "human", "mission": "sos", "mobility": "mobile", "topology": "unknown", "node_count": 12, "message_rate_per_hour": 24, "payload_bytes": 180, "latency_class": "distress", "primary_bearer": "meshtastic", "fallback_bearers": ["carry_bundle"], "carry_bearer": "carry_bundle", "prohibited_bridges": ["raw-frame"], "activation_conditions": ["operator commissioning"], "expires_at": "2026-07-18T14:10:00.000000Z", "decision_actor": "role:cell-lead", "evidence_refs": [], "limitations": ["simulation profile"]},
+    {"schema_version": "1.0.0", "profile_type": "transport_profile", "profile_id": "transport-planned-cell", "created_at": "2026-07-17T14:11:00.000000Z", "plane": "human", "mission": "chat", "mobility": "mixed", "topology": "planned", "node_count": 40, "message_rate_per_hour": 120, "payload_bytes": 160, "latency_class": "minutes", "primary_bearer": "meshcore", "fallback_bearers": ["meshtastic", "ip"], "carry_bearer": "carry_bundle", "prohibited_bridges": ["raw-frame", "shared-psk"], "activation_conditions": ["repeaters commissioned", "separate keys"], "expires_at": "2026-07-18T14:11:00.000000Z", "decision_actor": "role:communications-lead", "evidence_refs": ["urn:sha256:1111111111111111111111111111111111111111111111111111111111111111"], "limitations": ["no RF evidence", "no global support claim"]}
+  ]
+}

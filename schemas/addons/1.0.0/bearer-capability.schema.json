@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openbrec.org/schemas/addons/bearer-capability/1.0.0",
+  "title": "BearerCapability",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "capability_type", "capability_id", "bearer", "support_status", "declared_at", "payload_max_bytes", "broadcast", "direct", "store_forward", "mobility", "energy_class", "regulation_status", "limitations"],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "capability_type": {"enum": ["bearer"]},
+    "capability_id": {"type": "string", "format": "uuid"},
+    "bearer": {"enum": ["meshtastic", "meshcore", "reticulum", "lorawan", "ip", "carry_bundle", "simulated"]},
+    "support_status": {"enum": ["experimental", "unverified", "unavailable"]},
+    "declared_at": {"type": "string", "format": "date-time", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{6}Z$"},
+    "payload_max_bytes": {"type": "integer", "minimum": 1},
+    "broadcast": {"type": "boolean"},
+    "direct": {"type": "boolean"},
+    "store_forward": {"type": "boolean"},
+    "mobility": {"type": "array", "items": {"enum": ["fixed", "nomadic", "mobile", "mixed"]}, "minItems": 1, "uniqueItems": true},
+    "energy_class": {"enum": ["low", "medium", "high", "unknown"]},
+    "regulation_status": {"enum": ["simulation_only", "unreviewed", "conducted_only", "jurisdiction_validated"]},
+    "version_pin": {"type": "string", "minLength": 1},
+    "limitations": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1, "uniqueItems": true}
+  },
+  "examples": [
+    {"schema_version": "1.0.0", "capability_type": "bearer", "capability_id": "23000000-0000-4000-8000-000000000001", "bearer": "meshtastic", "support_status": "unverified", "declared_at": "2026-07-17T14:20:00.000000Z", "payload_max_bytes": 220, "broadcast": true, "direct": true, "store_forward": false, "mobility": ["mobile", "mixed"], "energy_class": "low", "regulation_status": "simulation_only", "limitations": ["modeled only", "transport identity untrusted"]},
+    {"schema_version": "1.0.0", "capability_type": "bearer", "capability_id": "23000000-0000-4000-8000-000000000002", "bearer": "reticulum", "support_status": "experimental", "declared_at": "2026-07-17T14:21:00.000000Z", "payload_max_bytes": 500, "broadcast": true, "direct": true, "store_forward": true, "mobility": ["fixed", "nomadic"], "energy_class": "medium", "regulation_status": "simulation_only", "version_pin": "source-review-2026-07-17", "limitations": ["modeled interface", "no external security audit inherited"]}
+  ]
+}

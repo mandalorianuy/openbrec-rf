@@ -1,0 +1,22 @@
+{
+  "beacon_id": "beacon-a1b2c3d4",
+  "capabilities_absent": [
+    "hardware",
+    "pir_motion",
+    "thermal_low_resolution"
+  ],
+  "capability_type": "beacon",
+  "clock_uncertainty_ms": 500,
+  "declared_at": "2026-07-17T16:00:00.000000Z",
+  "limitations": [
+    "synthetic fixtures only"
+  ],
+  "modalities": [
+    "acoustic_features"
+  ],
+  "node_id": "node-a1b2c3d4",
+  "schema_version": "9.9.9",
+  "storage_mode": "features_only",
+  "store_forward": true,
+  "support_status": "unverified"
+}

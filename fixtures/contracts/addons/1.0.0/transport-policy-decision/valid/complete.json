@@ -1,0 +1,20 @@
+{
+  "allowed_bearers": [
+    "meshcore",
+    "ip"
+  ],
+  "decided_at": "2026-07-17T14:23:00.000000Z",
+  "decision_actor": "role:communications-lead",
+  "decision_id": "24000000-0000-4000-8000-000000000002",
+  "decision_type": "transport_policy",
+  "expires_at": "2026-07-18T14:23:00.000000Z",
+  "limitations": [
+    "simulation decision",
+    "no automatic cross-bearer bridge"
+  ],
+  "message_id": "20000000-0000-4000-8000-000000000002",
+  "profile_id": "transport-planned-cell",
+  "prohibited_bearers": [],
+  "reason": "planned repeater cell",
+  "schema_version": "1.0.0"
+}
