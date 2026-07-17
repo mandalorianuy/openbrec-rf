@@ -1,0 +1,15 @@
+.git
+.venv
+node_modules
+dist
+build
+coverage
+evidence
+output
+data/private
+datasets/raw
+models/private
+*.pcap
+*.pcapng
+*.iq
+*.sigmf-data

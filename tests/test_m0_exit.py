@@ -113,6 +113,18 @@ class SupplyChainGateTests(unittest.TestCase):
             if line.strip().startswith("image:") and "openbrec/" not in line:
                 self.assertIn("@sha256:", line)
 
+    def test_docker_contexts_exclude_host_dependency_trees(self) -> None:
+        for relative_path in (".dockerignore", "apps/web/.dockerignore"):
+            ignored = {
+                line.strip()
+                for line in (REPO_ROOT / relative_path)
+                .read_text(encoding="utf-8")
+                .splitlines()
+                if line.strip() and not line.startswith("#")
+            }
+            self.assertIn("node_modules", ignored, relative_path)
+            self.assertIn("dist", ignored, relative_path)
+
 
 class KeyLifecycleTests(unittest.TestCase):
     def test_rotation_recovery_revocation_zeroization_and_rollback_fail_closed(
