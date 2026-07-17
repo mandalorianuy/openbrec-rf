@@ -1,0 +1,9 @@
+{
+  "name": "OpenBREC RF Lab Sim",
+  "short_name": "OpenBREC",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0c1714",
+  "theme_color": "#14231f",
+  "description": "Shell offline para evidencia OpenBREC RF"
+}

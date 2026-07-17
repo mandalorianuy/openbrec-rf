@@ -211,6 +211,11 @@ class VerifyCliTests(unittest.TestCase):
             data = json.loads(receipt.read_text(encoding="utf-8"))
             self.assertEqual(data["warnings"], ["optional validator unavailable"])
 
+    def test_runtime_gates_are_registered(self) -> None:
+        for gate in ("compose-build", "offline-startup"):
+            result = self.run_verify(gate, "--help")
+            self.assertEqual(result.returncode, 0, result.stderr)
+
 
 if __name__ == "__main__":
     unittest.main()

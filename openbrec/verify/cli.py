@@ -3,6 +3,8 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
+import secrets
 import subprocess
 import sys
 from datetime import UTC, datetime
@@ -14,6 +16,7 @@ from openbrec.contracts import (sync_generated_assets, validate_compatibility,
 
 DRAFT_2020_12 = "https://json-schema.org/draft/2020-12/schema"
 VERIFY_VERSION = "0.1.0"
+RUNTIME_GATES = {"compose-build", "offline-startup"}
 
 
 def _sha256(path: Path) -> str:
@@ -174,6 +177,137 @@ def _run_bundle_structure(root: Path) -> tuple[list[str], list[str], dict[str, A
     return errors, warnings, summary
 
 
+def _compose_environment() -> dict[str, str]:
+    return {
+        **os.environ,
+        "OPENBREC_POSTGRES_PASSWORD": secrets.token_urlsafe(32),
+        "COMPOSE_MENU": "false",
+    }
+
+
+def _compose_command(
+    root: Path, args: Sequence[str], *, environment: dict[str, str]
+) -> subprocess.CompletedProcess[str]:
+    return subprocess.run(
+        ["docker", "compose", *args],
+        cwd=root,
+        env=environment,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+
+
+def _run_compose_build(root: Path) -> tuple[list[str], list[str], dict[str, Any]]:
+    environment = _compose_environment()
+    config = _compose_command(
+        root, ["--profile", "lab-sim", "config", "--quiet"], environment=environment
+    )
+    summary: dict[str, Any] = {
+        "compose_config_exit_code": config.returncode,
+        "infrastructure_pull_exit_code": None,
+        "compose_build_exit_code": None,
+        "services": ["mqtt", "postgres", "api", "fusion-worker", "web"],
+    }
+    errors: list[str] = []
+    warnings = [line for line in config.stderr.splitlines() if line.strip()]
+    if config.returncode != 0:
+        errors.append(f"docker compose config failed: {config.stderr.strip()}")
+        return errors, warnings, summary
+    pull = _compose_command(
+        root,
+        ["--profile", "lab-sim", "pull", "mqtt", "postgres"],
+        environment=environment,
+    )
+    summary["infrastructure_pull_exit_code"] = pull.returncode
+    if pull.returncode != 0:
+        errors.append(f"infrastructure image pull failed: {pull.stderr.strip()}")
+        return errors, warnings, summary
+    build = _compose_command(
+        root, ["--profile", "lab-sim", "build"], environment=environment
+    )
+    summary["compose_build_exit_code"] = build.returncode
+    summary["build_output_tail"] = build.stdout.splitlines()[-20:]
+    warnings.extend(line for line in build.stderr.splitlines() if "warning" in line.lower())
+    if build.returncode != 0:
+        errors.append(f"docker compose build failed: {build.stderr.strip()}")
+    return errors, warnings, summary
+
+
+def _run_offline_startup(root: Path) -> tuple[list[str], list[str], dict[str, Any]]:
+    environment = _compose_environment()
+    base = ["--profile", "lab-sim"]
+    errors: list[str] = []
+    warnings: list[str] = []
+    summary: dict[str, Any] = {
+        "startup_exit_code": None,
+        "smoke_exit_code": None,
+        "shutdown_exit_code": None,
+        "external_network": "not_checked",
+    }
+    try:
+        startup = _compose_command(
+            root,
+            [
+                *base,
+                "up",
+                "--detach",
+                "--no-build",
+                "--pull",
+                "never",
+                "--wait",
+                "--wait-timeout",
+                "90",
+            ],
+            environment=environment,
+        )
+        summary["startup_exit_code"] = startup.returncode
+        warnings.extend(
+            line for line in startup.stderr.splitlines() if "warning" in line.lower()
+        )
+        if startup.returncode != 0:
+            errors.append(f"offline compose startup failed: {startup.stderr.strip()}")
+            return errors, warnings, summary
+
+        smoke = _compose_command(
+            root,
+            [
+                "--profile",
+                "lab-sim",
+                "--profile",
+                "m0-gate",
+                "run",
+                "--rm",
+                "--no-deps",
+                "runtime-smoke",
+            ],
+            environment=environment,
+        )
+        summary["smoke_exit_code"] = smoke.returncode
+        summary["smoke_output"] = smoke.stdout.strip()
+        if smoke.returncode != 0:
+            errors.append(f"runtime smoke failed: {smoke.stderr.strip()}")
+        else:
+            try:
+                smoke_result = json.loads(smoke.stdout.strip().splitlines()[-1])
+            except (IndexError, json.JSONDecodeError):
+                errors.append("runtime smoke did not emit a JSON result")
+            else:
+                summary.update(smoke_result)
+                if smoke_result.get("external_network") != "denied":
+                    errors.append("runtime smoke did not prove external network denial")
+    finally:
+        shutdown = _compose_command(
+            root,
+            [*base, "down", "--volumes", "--remove-orphans"],
+            environment=environment,
+        )
+        summary["shutdown_exit_code"] = shutdown.returncode
+        if shutdown.returncode != 0:
+            errors.append(f"compose cleanup failed: {shutdown.stderr.strip()}")
+    return errors, warnings, summary
+
+
 def _write_receipt(
     *,
     root: Path,
@@ -212,7 +346,9 @@ def _write_receipt(
         "warnings": warnings,
         "started_at": started_at,
         "finished_at": datetime.now(UTC).isoformat().replace("+00:00", "Z"),
-        "responsible_role": "contract-maintainer",
+        "responsible_role": (
+            "runtime-maintainer" if gate in RUNTIME_GATES else "contract-maintainer"
+        ),
     }
     receipt_path.write_text(
         json.dumps(receipt, indent=2, sort_keys=True) + "\n", encoding="utf-8"
@@ -228,6 +364,8 @@ def _parser() -> argparse.ArgumentParser:
         "fixtures",
         "schema-compat",
         "contracts-gen",
+        "compose-build",
+        "offline-startup",
     ):
         subparser = subparsers.add_parser(gate)
         subparser.add_argument("--root", default=".")
@@ -280,6 +418,28 @@ def main(argv: Sequence[str] | None = None) -> int:
         warnings = []
         scope = "immutable_baseline"
         inputs.append(root / "schemas/core/compatibility-baseline.json")
+    elif args.gate == "compose-build":
+        errors, warnings, summary = _run_compose_build(root)
+        scope = "lab_sim_images"
+        inputs.extend(
+            [
+                root / "docker-compose.yml",
+                root / "apps/api/Dockerfile",
+                root / "apps/web/Dockerfile",
+                root / "apps/web/pnpm-lock.yaml",
+                root / "uv.lock",
+            ]
+        )
+    elif args.gate == "offline-startup":
+        errors, warnings, summary = _run_offline_startup(root)
+        scope = "contained_lab_sim_runtime"
+        inputs.extend(
+            [
+                root / "docker-compose.yml",
+                root / "config/mosquitto/lab-sim.conf",
+                root / "schemas/core/catalog.json",
+            ]
+        )
     else:
         errors, summary = sync_generated_assets(root, check=args.check)
         warnings = []
