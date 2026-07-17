@@ -3,8 +3,8 @@
 - Autoridad de secuencia: este board
 - Plan activo aprobado: `docs/superpowers/plans/2026-07-17-openbrec-p0-simulated-addons-plan.md`
 - Baseline cerrado: `docs/superpowers/plans/2026-07-17-openbrec-m0-executable-plan.md`
-- Estado real: M0 completo; P0 planificado y no iniciado (`0 / 9` tasks aceptadas)
-- Regla de avance: sólo `P0-01` está elegible; ninguna task se inicia automáticamente
+- Estado real: M0 completo; P0-01 aceptada (`1 / 9`, `11.1%`)
+- Regla de avance: sólo `P0-02` queda elegible; ninguna task se inicia automáticamente
 
 ## Decisiones de gobernanza cerradas
 
@@ -97,10 +97,10 @@ Registro obligatorio: `docs/governance/M0_RESIDUAL_REGISTER.md`.
 
 ## Now — P0 addons completamente simulados
 
-Progreso de aceptación: `0 / 9` (`0%`). Una task marcada sólo cambia después de
+Progreso de aceptación: `1 / 9` (`11.1%`). Una task marcada sólo cambia después de
 su implementación, validación, review y receipt; planificación o inicio no suman.
 
-- [ ] `P0-01`: contratos addon, catálogo, fixtures y modelos generados.
+- [x] `P0-01`: contratos addon, catálogo, fixtures y modelos generados.
 - [ ] `P0-02`: EnergyDomain/FSM/budget y brownout replay.
 - [ ] `P0-03`: HumanMessage protegido, SOS append-only y transporte hostil.
 - [ ] `P0-04`: comparación Meshtastic/MeshCore/Reticulum por TransportProfile.
@@ -110,7 +110,22 @@ su implementación, validación, review y receipt; planificación o inicio no su
 - [ ] `P0-08`: campaña integrada con fallos y adversarios.
 - [ ] `P0-09`: exit P0, support status por perfil y decisión P1a.
 
-Única task elegible: `P0-01`. Este board no registra inicio ni implementación.
+### Evidencia P0-01
+
+- Contratos: 18 schemas addon Draft 2020-12 cerrados, catálogo experimental y
+  baseline byte-inmutable con contract set
+  `fdab8dcc94eeb6c63e40a206d60f07fe931e7d0d3da125dab76054c0ea22067b`.
+- Fixtures: 36 válidos y 126 inválidos; Pydantic v2 y TypeScript estricto
+  comprueban los ejemplos válidos y la regeneración deja diff vacío.
+- Safety: estado operativo no se acepta desde transporte, bearer no puede elevarse
+  a `supported`, y beacon no admite `person_present`, ausencia ni identidad.
+- Validación: 67 tests pasan; cuatro receipts P0-01 pasan sobre
+  `9f741fd204c5abb89c1ca1b457b9d4cc9c910f24`, todos con `dirty: false`.
+- Review: `docs/security/2026-07-17-p0-01-addon-contracts-review.md`.
+- Residuales: P0-R009 controlado permanentemente y P0-R010 planificado por las
+  tasks consumidoras; ninguno habilita runtime, hardware, TX o campo.
+
+Única task elegible: `P0-02`. No está iniciada por este cierre.
 
 Plan: `docs/superpowers/plans/2026-07-17-openbrec-p0-simulated-addons-plan.md`.
 Residuales: `docs/governance/P0_RESIDUAL_REGISTER.md`.

@@ -1,0 +1,20 @@
+{
+  "acceptance_version": "1.0.0",
+  "accepted_at": "2026-07-17",
+  "implementation_role": "contract-maintainer",
+  "implementation_sha": "9f741fd204c5abb89c1ca1b457b9d4cc9c910f24",
+  "progress": {
+    "accepted_tasks": 1,
+    "percent": 11.1,
+    "total_tasks": 9
+  },
+  "receipt_sha256": {
+    "addon-contracts": "b32d357edb505913406d23c1ca98efc7fc7eab5858ff3821b3a0295deff56f2d",
+    "addon-fixtures": "372083efb2506e34cce7578424e398036514db5ac2ba3d691e40737aac433dc8",
+    "contracts-gen": "11295a7d6b71ce2e9a603e8ad31d84b73ecdad8f7655dbaff5e5845c12c7ee86",
+    "schema-compat": "db4f4cbb82de97ea9c7e05761655adfdba54c0e5022c5375eb75dd6b665ae20a"
+  },
+  "review_role": "privacy-safety-reviewer",
+  "status": "accepted",
+  "task": "P0-01"
+}
