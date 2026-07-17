@@ -148,6 +148,26 @@ jobs:
           path: evidence/p0/p0-04
           if-no-files-found: error
 
+  federation-simulation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
+        with:
+          version: "0.11.1"
+      - run: uv sync --frozen
+      - run: uv run --offline python -m openbrec.verify federation-scale --scenario fixtures/p0/federation/50k-sites.json --receipt evidence/p0/p0-05/federation-scale/p0-05-receipt.json
+      - run: uv run --offline python -m openbrec.verify federation-reconciliation --receipt evidence/p0/p0-05/federation-reconciliation/p0-05-receipt.json
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: p0-federation-simulation-receipts
+          path: evidence/p0/p0-05
+          if-no-files-found: error
+
   simulation-ui:
     runs-on: ubuntu-latest
     steps:

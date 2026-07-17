@@ -50,6 +50,8 @@ from openbrec.messaging import SCENARIO_PATH as MESSAGE_SCENARIO_PATH
 from openbrec.messaging import run_p0_message_gate
 from openbrec.transports import WORKLOAD_PATH as TRANSPORT_WORKLOAD_PATH
 from openbrec.transports import run_transport_gate
+from openbrec.federation import SCENARIO_PATH as FEDERATION_SCENARIO_PATH
+from openbrec.federation import run_federation_gate
 
 DRAFT_2020_12 = "https://json-schema.org/draft/2020-12/schema"
 VERIFY_VERSION = "0.1.0"
@@ -62,6 +64,7 @@ P0_MESSAGE_GATES = {
     "transport-policy",
 }
 P0_TRANSPORT_GATES = {"transport-comparison", "malicious-transport"}
+P0_FEDERATION_GATES = {"federation-scale", "federation-reconciliation"}
 PRIVACY_SAFETY_GATES = {
     "review-quarantine",
     "life-safety-preservation",
@@ -163,6 +166,8 @@ def _responsible_role(gate: str) -> str:
         return "energy-maintainer"
     if gate in P0_TRANSPORT_GATES:
         return "radio-transport-maintainer"
+    if gate in P0_FEDERATION_GATES:
+        return "federation-maintainer"
     if gate in PRIVACY_SAFETY_GATES:
         return "privacy-safety-reviewer"
     return "contract-maintainer"
@@ -642,6 +647,8 @@ def _parser() -> argparse.ArgumentParser:
         "transport-policy",
         "transport-comparison",
         "malicious-transport",
+        "federation-scale",
+        "federation-reconciliation",
         "review-quarantine",
         "life-safety-preservation",
         "privacy",
@@ -671,6 +678,8 @@ def _parser() -> argparse.ArgumentParser:
             subparser.add_argument("--scenario", required=True)
         if gate == "transport-comparison":
             subparser.add_argument("--workload", required=True)
+        if gate == "federation-scale":
+            subparser.add_argument("--scenario", required=True)
         if gate == "core-replay":
             subparser.add_argument("--bundle")
         if gate == "sbom":
@@ -945,6 +954,35 @@ def main(argv: Sequence[str] | None = None) -> int:
         scope = {
             "transport-comparison": "versioned_common_envelope_transport_models",
             "malicious-transport": "hostile_transport_disposition_and_safety_boundary",
+        }[args.gate]
+    elif args.gate in P0_FEDERATION_GATES:
+        try:
+            scenario_path = (
+                _resolve_inside(root, args.scenario, label="scenario")
+                if args.gate == "federation-scale"
+                else root / FEDERATION_SCENARIO_PATH
+            )
+            errors, warnings, summary = run_federation_gate(
+                root, args.gate, scenario_path
+            )
+            inputs.extend(
+                [
+                    scenario_path,
+                    root / "openbrec/federation.py",
+                    root / "schemas/addons/1.0.0/federation-event.schema.json",
+                    root
+                    / "schemas/addons/1.0.0/federation-topology-event.schema.json",
+                ]
+            )
+        except (OSError, ValueError) as exc:
+            errors, warnings, summary = [str(exc)], [], {
+                "scenario": str(
+                    getattr(args, "scenario", FEDERATION_SCENARIO_PATH)
+                )
+            }
+        scope = {
+            "federation-scale": "generated_50k_hierarchy_and_recursive_autonomy",
+            "federation-reconciliation": "append_only_partition_and_hostile_hub_reconciliation",
         }[args.gate]
     elif args.gate == "review-quarantine":
         errors, warnings, summary = run_review_quarantine(root)
