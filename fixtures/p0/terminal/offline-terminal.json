@@ -1,0 +1,205 @@
+{
+  "scenario_version": "1.0.0",
+  "scenario_id": "p0-offline-human-terminal",
+  "claim_scope": "deterministic_simulation_only",
+  "logical_now": "2026-07-17T18:00:00.000000Z",
+  "connectivity": {
+    "internet_available": false,
+    "hub_available": false,
+    "superior_service_available": false,
+    "bearer_state": "partitioned",
+    "partition_started_at": "2026-07-17T17:30:00.000000Z",
+    "queue_gap_visible": true,
+    "gap_reason": "Sin bearer disponible; reintento local pendiente"
+  },
+  "terminal_capability": {
+    "schema_version": "1.0.0",
+    "capability_type": "human_terminal",
+    "terminal_id": "terminal-a1b2c3d6",
+    "declared_at": "2026-07-17T17:00:00.000000Z",
+    "support_status": "experimental",
+    "offline_actions": [
+      "text",
+      "status",
+      "sos",
+      "location",
+      "cancel_request",
+      "queue_review"
+    ],
+    "input_modes": ["touch", "keyboard"],
+    "output_modes": ["visual", "audio", "haptic"],
+    "accessibility_features": [
+      "text_labels",
+      "high_contrast",
+      "large_targets",
+      "screen_reader",
+      "redundant_cues"
+    ],
+    "capabilities_absent": [
+      "physical_sos_button",
+      "live_gnss_fix",
+      "human_usability_evidence",
+      "field_hardened_device"
+    ],
+    "limitations": [
+      "simulated browser terminal only",
+      "automated checks do not prove comprehension",
+      "no delivery, arrival or rescue guarantee"
+    ]
+  },
+  "coverage": {
+    "label": "Cobertura parcial; celda local aislada",
+    "location_source": "last_known_fixture",
+    "location_zone": "zone-bravo",
+    "location_uncertainty_m": 45,
+    "last_bearer_receipt_at": "2026-07-17T17:29:42.000000Z"
+  },
+  "safety_copy": {
+    "acceptance": "Aceptado significa que un operador asumió la gestión; no garantiza arribo ni rescate.",
+    "silence": "El silencio o la falta de respuesta no implica ausencia.",
+    "queue": "Sin bearer: el mensaje queda en cola local y su gap permanece visible.",
+    "cancel": "Cancelar agrega una solicitud al historial; no borra el SOS ni sus recibos previos."
+  },
+  "expected_states": [
+    "queued",
+    "sent",
+    "delivered",
+    "seen",
+    "accepted",
+    "cancelled",
+    "expired"
+  ],
+  "messages": [
+    {
+      "message_id": "26000000-0000-4000-8000-000000000001",
+      "message_type": "text",
+      "recipient": "role:cell-lead",
+      "preview": "Necesitamos agua en el acceso norte",
+      "created_at": "2026-07-17T17:55:00.000000Z",
+      "expires_at": "2026-07-17T18:55:00.000000Z",
+      "uncertainty": "destino aislado; entrega desconocida",
+      "event_log": [
+        {"event_id": "26100000-0000-4000-8000-000000000001", "event_type": "message.created", "occurred_at": "2026-07-17T17:55:00.000000Z"},
+        {"event_id": "26100000-0000-4000-8000-000000000002", "event_type": "message.queued", "occurred_at": "2026-07-17T17:55:01.000000Z"}
+      ],
+      "path_receipts": [
+        {"receipt_id": "26200000-0000-4000-8000-000000000001", "kind": "local_queue", "result": "preserved"}
+      ]
+    },
+    {
+      "message_id": "26000000-0000-4000-8000-000000000002",
+      "message_type": "status",
+      "recipient": "role:cell-lead",
+      "preview": "Equipo operativo; batería en conservación",
+      "created_at": "2026-07-17T17:40:00.000000Z",
+      "expires_at": "2026-07-17T18:40:00.000000Z",
+      "uncertainty": "transmisión intentada; sin recibo de gateway",
+      "event_log": [
+        {"event_id": "26100000-0000-4000-8000-000000000003", "event_type": "message.created", "occurred_at": "2026-07-17T17:40:00.000000Z"},
+        {"event_id": "26100000-0000-4000-8000-000000000004", "event_type": "message.queued", "occurred_at": "2026-07-17T17:40:01.000000Z"},
+        {"event_id": "26100000-0000-4000-8000-000000000005", "event_type": "transport.transmitted", "occurred_at": "2026-07-17T17:40:02.000000Z"}
+      ],
+      "path_receipts": [
+        {"receipt_id": "26200000-0000-4000-8000-000000000002", "kind": "bearer_attempt", "result": "transmitted_unconfirmed"}
+      ]
+    },
+    {
+      "message_id": "26000000-0000-4000-8000-000000000003",
+      "message_type": "location",
+      "recipient": "role:cell-lead",
+      "preview": "zone-bravo · ±45 m · última ubicación conocida",
+      "created_at": "2026-07-17T17:20:00.000000Z",
+      "expires_at": "2026-07-17T18:20:00.000000Z",
+      "uncertainty": "sin GNSS live; precisión 45 m",
+      "event_log": [
+        {"event_id": "26100000-0000-4000-8000-000000000006", "event_type": "message.created", "occurred_at": "2026-07-17T17:20:00.000000Z"},
+        {"event_id": "26100000-0000-4000-8000-000000000007", "event_type": "message.queued", "occurred_at": "2026-07-17T17:20:01.000000Z"},
+        {"event_id": "26100000-0000-4000-8000-000000000008", "event_type": "transport.transmitted", "occurred_at": "2026-07-17T17:20:02.000000Z"},
+        {"event_id": "26100000-0000-4000-8000-000000000009", "event_type": "gateway.received", "occurred_at": "2026-07-17T17:20:09.000000Z"}
+      ],
+      "path_receipts": [
+        {"receipt_id": "26200000-0000-4000-8000-000000000003", "kind": "gateway", "result": "received"}
+      ]
+    },
+    {
+      "message_id": "26000000-0000-4000-8000-000000000004",
+      "message_type": "sos",
+      "recipient": "role:rescue-command",
+      "preview": "SOS · lesión en acceso sur",
+      "created_at": "2026-07-17T17:10:00.000000Z",
+      "expires_at": "2026-07-17T18:10:00.000000Z",
+      "uncertainty": "visto por operador; todavía no aceptado",
+      "event_log": [
+        {"event_id": "26100000-0000-4000-8000-000000000010", "event_type": "sos.created", "occurred_at": "2026-07-17T17:10:00.000000Z"},
+        {"event_id": "26100000-0000-4000-8000-000000000011", "event_type": "sos.queued", "occurred_at": "2026-07-17T17:10:01.000000Z"},
+        {"event_id": "26100000-0000-4000-8000-000000000012", "event_type": "transport.transmitted", "occurred_at": "2026-07-17T17:10:02.000000Z"},
+        {"event_id": "26100000-0000-4000-8000-000000000013", "event_type": "gateway.received", "occurred_at": "2026-07-17T17:10:08.000000Z"},
+        {"event_id": "26100000-0000-4000-8000-000000000014", "event_type": "operator.seen", "occurred_at": "2026-07-17T17:10:20.000000Z"}
+      ],
+      "path_receipts": [
+        {"receipt_id": "26200000-0000-4000-8000-000000000004", "kind": "gateway", "result": "received"},
+        {"receipt_id": "26200000-0000-4000-8000-000000000005", "kind": "operator", "result": "seen"}
+      ]
+    },
+    {
+      "message_id": "26000000-0000-4000-8000-000000000005",
+      "message_type": "sos",
+      "recipient": "role:rescue-command",
+      "preview": "SOS · persona inmovilizada",
+      "created_at": "2026-07-17T16:50:00.000000Z",
+      "expires_at": "2026-07-17T18:05:00.000000Z",
+      "uncertainty": "aceptado operacionalmente; arribo no confirmado",
+      "event_log": [
+        {"event_id": "26100000-0000-4000-8000-000000000015", "event_type": "sos.created", "occurred_at": "2026-07-17T16:50:00.000000Z"},
+        {"event_id": "26100000-0000-4000-8000-000000000016", "event_type": "sos.queued", "occurred_at": "2026-07-17T16:50:01.000000Z"},
+        {"event_id": "26100000-0000-4000-8000-000000000017", "event_type": "transport.transmitted", "occurred_at": "2026-07-17T16:50:02.000000Z"},
+        {"event_id": "26100000-0000-4000-8000-000000000018", "event_type": "gateway.received", "occurred_at": "2026-07-17T16:50:08.000000Z"},
+        {"event_id": "26100000-0000-4000-8000-000000000019", "event_type": "operator.seen", "occurred_at": "2026-07-17T16:50:20.000000Z"},
+        {"event_id": "26100000-0000-4000-8000-000000000020", "event_type": "operator.accepted", "occurred_at": "2026-07-17T16:50:35.000000Z"}
+      ],
+      "path_receipts": [
+        {"receipt_id": "26200000-0000-4000-8000-000000000006", "kind": "gateway", "result": "received"},
+        {"receipt_id": "26200000-0000-4000-8000-000000000007", "kind": "operator", "result": "seen"},
+        {"receipt_id": "26200000-0000-4000-8000-000000000008", "kind": "operator", "result": "accepted"}
+      ]
+    },
+    {
+      "message_id": "26000000-0000-4000-8000-000000000006",
+      "message_type": "sos",
+      "recipient": "role:rescue-command",
+      "preview": "SOS accidental · cancelación solicitada",
+      "created_at": "2026-07-17T17:58:00.000000Z",
+      "expires_at": "2026-07-17T18:13:00.000000Z",
+      "uncertainty": "cancelación local pendiente de propagación",
+      "event_log": [
+        {"event_id": "26100000-0000-4000-8000-000000000021", "event_type": "sos.created", "occurred_at": "2026-07-17T17:58:00.000000Z"},
+        {"event_id": "26100000-0000-4000-8000-000000000022", "event_type": "sos.queued", "occurred_at": "2026-07-17T17:58:01.000000Z"},
+        {"event_id": "26100000-0000-4000-8000-000000000023", "event_type": "sos.cancel_requested", "occurred_at": "2026-07-17T17:58:20.000000Z"}
+      ],
+      "path_receipts": [
+        {"receipt_id": "26200000-0000-4000-8000-000000000009", "kind": "local_queue", "result": "preserved_before_cancel"}
+      ]
+    },
+    {
+      "message_id": "26000000-0000-4000-8000-000000000007",
+      "message_type": "sos",
+      "recipient": "role:rescue-command",
+      "preview": "SOS vencido sin bearer",
+      "created_at": "2026-07-17T17:00:00.000000Z",
+      "expires_at": "2026-07-17T17:15:00.000000Z",
+      "uncertainty": "TTL agotado; historial conservado",
+      "event_log": [
+        {"event_id": "26100000-0000-4000-8000-000000000024", "event_type": "sos.created", "occurred_at": "2026-07-17T17:00:00.000000Z"},
+        {"event_id": "26100000-0000-4000-8000-000000000025", "event_type": "sos.queued", "occurred_at": "2026-07-17T17:00:01.000000Z"},
+        {"event_id": "26100000-0000-4000-8000-000000000026", "event_type": "sos.expired", "occurred_at": "2026-07-17T17:15:00.000000Z"}
+      ],
+      "path_receipts": [
+        {"receipt_id": "26200000-0000-4000-8000-000000000010", "kind": "expiry", "result": "history_preserved"}
+      ]
+    }
+  ],
+  "expected_result_sha256": {
+    "terminal-ux": "3efd1a53896ff30f7539564c61368b08c99703366994de70a25555519f065cfd",
+    "accessibility": "111fe45ae1c6ad2cd055587677c939f933344b1408eebb11b243b8104fc04bb9"
+  }
+}
