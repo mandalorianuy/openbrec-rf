@@ -1,10 +1,10 @@
 # Matriz de decisión: energía, comunicaciones off-grid y beacons
 
-- Estado: matriz aprobada; sólo M0 F-01–F-06 habilitado para planificación
+- Estado: matriz aprobada; M0 cerrado y plan P0 simulado aprobado
 - Fecha: 2026-07-17
 - Alcance: decisión y orden de experimentos M0/P0/P1/P2
 - Autoridad de entrada: cuatro especificaciones hijas aprobadas
-- Condición: no autoriza implementación, compra, TX ni despliegue
+- Condición: autoriza la secuencia P0 sólo mediante `DELIVERY_BOARD.md`; no autoriza compra, TX ni despliegue
 
 ## 1. Veredicto ejecutivo
 
@@ -27,14 +27,18 @@ Recomendaciones principales:
 
 ## 2. Estado real del repositorio
 
-Las cuatro especificaciones hijas están aprobadas, pero M0 no está implementado. `scripts/validate_bundle.py` sólo valida estructura. `docker-compose.yml` referencia servicios todavía inexistentes y `services/README.md` los declara placeholders.
+M0-01–M0-06 están implementados, aceptados y mergeados. El core dispone de
+contratos normativos, runtime offline, persistencia PostgreSQL, replay,
+simulador/PWA y 22 gates con receipts íntegros. Esto acredita sólo `lab-sim`.
 
 Por lo tanto:
 
-- la madurez OpenBREC máxima actual de estas capacidades es `M1 design-approved`;
-- ninguna integración tiene evidencia `M2 simulated` dentro del repo;
-- esta matriz ordena decisiones, no es todavía un implementation plan;
-- `DELIVERY_BOARD.md` es la autoridad de ejecución y sólo puede habilitar M0 hasta demostrar su exit.
+- el core M0 alcanzó evidencia reproducible de laboratorio;
+- los addons permanecen `M1 design-approved` hasta que cada task P0 sea aceptada;
+- esta matriz conserva decisiones; el plan ejecutable P0 vive en
+  `docs/superpowers/plans/2026-07-17-openbrec-p0-simulated-addons-plan.md`;
+- `DELIVERY_BOARD.md` es la autoridad de ejecución y sólo `P0-01` queda elegible;
+- ninguna evidencia M0/P0 autoriza hardware, TX, 72 horas o campo.
 
 ## 3. Escalas y códigos
 
@@ -475,4 +479,14 @@ Referencias externas:
 
 ## 16. Gate de aprobación
 
-La matriz y su revisión multi-bearer fueron aprobadas el 2026-07-17. La aprobación no habilita addons: habilita actualizar `DELIVERY_BOARD.md` y someter a aprobación un plan M0 ejecutable que cierre únicamente F-01–F-06, con tasks pequeñas, responsables, comandos y evidencias. P0 se planifica después de demostrar M0 exit.
+La matriz y su revisión multi-bearer fueron aprobadas el 2026-07-17. Después de
+demostrar M0 exit, se aprobó el plan P0 de nueve tasks completamente simuladas.
+La autorización efectiva sigue siendo task-by-task desde `DELIVERY_BOARD.md`:
+`P0-01` es elegible, pero este cambio no la inicia. P1a, compra, hardware, TX y
+campo requieren planes y autorizaciones posteriores.
+
+## 17. Historial de gobernanza
+
+| Fecha | Estado anterior | Estado nuevo | Evidencia/razón |
+|---|---|---|---|
+| 2026-07-17 | M0 era precondición; P0 no planificado | M0 aceptado; plan P0 simulado aprobado, `0 / 9` | Merge M0 `0dee758`; plan P0 y registro de residuales, sin implementación addon. |
