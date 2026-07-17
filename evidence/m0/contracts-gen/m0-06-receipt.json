@@ -8,14 +8,14 @@
     "/Users/facundo/desarrollo/OpenBREC-RF",
     "--check",
     "--receipt",
-    "/var/folders/sx/4wqgpxv140j57cllvyb23h100000gn/T/openbrec-m0-exit-9c5u21p5/contracts-gen/m0-06-receipt.json"
+    "/var/folders/sx/4wqgpxv140j57cllvyb23h100000gn/T/openbrec-m0-exit-jlo5ka7d/contracts-gen/m0-06-receipt.json"
   ],
   "dirty": false,
   "errors": [],
-  "finished_at": "2026-07-17T18:35:57.252819Z",
+  "finished_at": "2026-07-17T18:56:33.633323Z",
   "gate": "contracts-gen",
   "gate_version": "0.1.0",
-  "git_sha": "90b44bd4631c07404c8b968ba6bf8490ef8b4d90",
+  "git_sha": "2648f38bbddac755f2064e59148bb6fb26bcffd0",
   "inputs": [
     {
       "path": "schemas/core/catalog.json",
@@ -47,7 +47,7 @@
     "python": "3.12.13"
   },
   "scope": "generated_consumers",
-  "started_at": "2026-07-17T18:35:55.513605Z",
+  "started_at": "2026-07-17T18:56:31.719302Z",
   "summary": {
     "changed_targets": [],
     "fixture_files": 162,

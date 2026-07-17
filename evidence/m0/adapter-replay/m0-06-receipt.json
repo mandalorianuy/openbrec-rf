@@ -7,14 +7,14 @@
     "--root",
     "/Users/facundo/desarrollo/OpenBREC-RF",
     "--receipt",
-    "/var/folders/sx/4wqgpxv140j57cllvyb23h100000gn/T/openbrec-m0-exit-9c5u21p5/adapter-replay/m0-06-receipt.json"
+    "/var/folders/sx/4wqgpxv140j57cllvyb23h100000gn/T/openbrec-m0-exit-jlo5ka7d/adapter-replay/m0-06-receipt.json"
   ],
   "dirty": false,
   "errors": [],
-  "finished_at": "2026-07-17T18:36:26.656276Z",
+  "finished_at": "2026-07-17T18:57:04.299797Z",
   "gate": "adapter-replay",
   "gate_version": "0.1.0",
-  "git_sha": "90b44bd4631c07404c8b968ba6bf8490ef8b4d90",
+  "git_sha": "2648f38bbddac755f2064e59148bb6fb26bcffd0",
   "inputs": [
     {
       "path": "fixtures/replay/adapter/synthetic-observation.bundle.json",
@@ -54,7 +54,7 @@
     "python": "3.12.13"
   },
   "scope": "adapter_fixture_to_domain_events",
-  "started_at": "2026-07-17T18:36:26.399640Z",
+  "started_at": "2026-07-17T18:57:04.012971Z",
   "summary": {
     "adapter_receipt": {
       "adapter_artifact_sha256": "1111111111111111111111111111111111111111111111111111111111111111",

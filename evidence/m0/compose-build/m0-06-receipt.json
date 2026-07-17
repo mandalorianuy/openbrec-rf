@@ -7,14 +7,14 @@
     "--root",
     "/Users/facundo/desarrollo/OpenBREC-RF",
     "--receipt",
-    "/var/folders/sx/4wqgpxv140j57cllvyb23h100000gn/T/openbrec-m0-exit-9c5u21p5/compose-build/m0-06-receipt.json"
+    "/var/folders/sx/4wqgpxv140j57cllvyb23h100000gn/T/openbrec-m0-exit-jlo5ka7d/compose-build/m0-06-receipt.json"
   ],
   "dirty": false,
   "errors": [],
-  "finished_at": "2026-07-17T18:36:02.143683Z",
+  "finished_at": "2026-07-17T18:56:39.238520Z",
   "gate": "compose-build",
   "gate_version": "0.1.0",
-  "git_sha": "90b44bd4631c07404c8b968ba6bf8490ef8b4d90",
+  "git_sha": "2648f38bbddac755f2064e59148bb6fb26bcffd0",
   "inputs": [
     {
       "path": "docker-compose.yml",
@@ -51,7 +51,7 @@
       "sha256": "12a1ed34e601b49a319846ef8d87c316708bb695853661ec3b3b95208701d278"
     }
   ],
-  "output_sha256": "15b87e0a23c4aa05fac1cae65b4bd15b223692de9f273c82d9503b87a44c2dbb",
+  "output_sha256": "0afea5a30d4caac43d69b1cc1553d1ab1341591f27dbfd0c2dfc67c0956979a2",
   "receipt_version": "1.0.0",
   "responsible_role": "runtime-maintainer",
   "result": "passed",
@@ -62,29 +62,29 @@
     "python": "3.12.13"
   },
   "scope": "lab_sim_images",
-  "started_at": "2026-07-17T18:35:57.410104Z",
+  "started_at": "2026-07-17T18:56:33.804808Z",
   "summary": {
     "build_output_tail": [
-      "#29 DONE 0.0s",
+      "#30 exporting manifest list sha256:f5ddd11f14578d7c9c64e160b87ef3bd14ed45193fb3fa6f1d7045894ffc2122 done",
+      "#30 naming to docker.io/openbrec/runtime:m0 done",
+      "#30 unpacking to docker.io/openbrec/runtime:m0 0.0s done",
+      "#30 DONE 0.1s",
       "",
-      "#30 [api 9/9] COPY --chown=openbrec:openbrec apps/fusion-worker ./apps/fusion-worker",
-      "#30 DONE 0.0s",
-      "",
-      "#31 [api] exporting to image",
-      "#31 exporting layers 0.1s done",
-      "#31 exporting manifest sha256:38974962d0d8e506eaca46703e126b7e50c12e5497affbc7793e34a96e0a7b3b done",
-      "#31 exporting config sha256:9a7b4c22d3663bb0fb8ae146c4f61599f5972af51834b679aef512b04c6de51c done",
-      "#31 exporting attestation manifest sha256:5ada7cc458f4b420fd6ea04a9cca05c7efd876a0c9c3a381544d3f542e8c2012 0.0s done",
-      "#31 exporting manifest list sha256:765560e2a430b789c49a60ee10b28685384c1799910176ca81114eccfbc0139e done",
-      "#31 naming to docker.io/openbrec/runtime:m0 done",
-      "#31 unpacking to docker.io/openbrec/runtime:m0 0.0s done",
-      "#31 DONE 0.2s",
+      "#31 [web] exporting to image",
+      "#31 exporting layers done",
+      "#31 exporting manifest sha256:f5908ece197d863f6da44a28e4e6cb8e7a70ccc5002d7393569e83865128c54a done",
+      "#31 exporting config sha256:fbffb949b5d23a7594d43a63de276306cafeaa8c21333ab08961bcacf56a2f21 done",
+      "#31 exporting attestation manifest sha256:d302e3e27462cc3c654bbb5867aaf799b6a17ae2eb6a440c11a24156da3c38ff 0.0s done",
+      "#31 exporting manifest list sha256:d8e1f0298660d86022357e33bfe1493bc6ca04b66b09f1486e00bf234135bd08 done",
+      "#31 naming to docker.io/openbrec/web:m0 done",
+      "#31 unpacking to docker.io/openbrec/web:m0 done",
+      "#31 DONE 0.1s",
       "",
       "#32 [web] resolving provenance for metadata file",
       "#32 DONE 0.0s",
       "",
       "#33 [api] resolving provenance for metadata file",
-      "#33 DONE 0.0s"
+      "#33 DONE 0.1s"
     ],
     "compose_build_exit_code": 0,
     "compose_config_exit_code": 0,

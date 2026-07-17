@@ -9,14 +9,14 @@
     "--runs",
     "10",
     "--receipt",
-    "/var/folders/sx/4wqgpxv140j57cllvyb23h100000gn/T/openbrec-m0-exit-9c5u21p5/determinism/m0-06-receipt.json"
+    "/var/folders/sx/4wqgpxv140j57cllvyb23h100000gn/T/openbrec-m0-exit-jlo5ka7d/determinism/m0-06-receipt.json"
   ],
   "dirty": false,
   "errors": [],
-  "finished_at": "2026-07-17T18:36:27.642431Z",
+  "finished_at": "2026-07-17T18:57:05.395409Z",
   "gate": "determinism",
   "gate_version": "0.1.0",
-  "git_sha": "90b44bd4631c07404c8b968ba6bf8490ef8b4d90",
+  "git_sha": "2648f38bbddac755f2064e59148bb6fb26bcffd0",
   "inputs": [
     {
       "path": "fixtures/replay/adapter/synthetic-observation.bundle.json",
@@ -56,7 +56,7 @@
     "python": "3.12.13"
   },
   "scope": "replay_result_hash_stability",
-  "started_at": "2026-07-17T18:36:27.287719Z",
+  "started_at": "2026-07-17T18:57:04.997736Z",
   "summary": {
     "result_sha256": "bf4ad6c38a7ed8bdcd2e0f0106aec916f9d2a36b55bd104293206cc754a132fe",
     "runs": 10,

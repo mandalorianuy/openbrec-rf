@@ -79,7 +79,7 @@ Registro obligatorio: `docs/governance/M0_RESIDUAL_REGISTER.md`.
 - Claves: perfil sustituible de laboratorio con key IDs, epoch monotónico, rotación, recovery, revocación, zeroization best-effort y rollback fail-closed; campo permanece `unverified`.
 - Supply chain: cinco imágenes fijadas por digest, SBOM CycloneDX 1.7 con 124 componentes, cero licencias faltantes/denegadas, cero secretos y cero vulnerabilidades conocidas al 2026-07-17.
 - CI: siete jobs independientes (`contracts`, `runtime`, `replay`, `privacy-security`, `simulation-ui`, `supply-chain`, `m0-exit`) y un receipt por gate.
-- Receipts: 22 gates sobre `90b44bd4631c07404c8b968ba6bf8490ef8b4d90`, todos `dirty: false`, exit code cero e integridad canónica aprobada; manifiesto en `evidence/m0/m0-exit-manifest.json`.
+- Receipts: 22 gates sobre `2648f38bbddac755f2064e59148bb6fb26bcffd0`, todos `dirty: false`, exit code cero e integridad canónica aprobada; manifiesto en `evidence/m0/m0-exit-manifest.json`.
 - Review: `docs/security/2026-07-17-m0-06-exit-review.md`; residuales M0-R006/R007/R012/R015/R017 resueltos y M0-R016 controlado para laboratorio.
 
 ## Gate de salida M0

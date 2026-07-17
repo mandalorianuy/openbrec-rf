@@ -7,14 +7,14 @@
     "--root",
     "/Users/facundo/desarrollo/OpenBREC-RF",
     "--receipt",
-    "/var/folders/sx/4wqgpxv140j57cllvyb23h100000gn/T/openbrec-m0-exit-9c5u21p5/security/m0-06-receipt.json"
+    "/var/folders/sx/4wqgpxv140j57cllvyb23h100000gn/T/openbrec-m0-exit-jlo5ka7d/security/m0-06-receipt.json"
   ],
   "dirty": false,
   "errors": [],
-  "finished_at": "2026-07-17T18:36:29.339315Z",
+  "finished_at": "2026-07-17T18:57:07.155104Z",
   "gate": "security",
   "gate_version": "0.1.0",
-  "git_sha": "90b44bd4631c07404c8b968ba6bf8490ef8b4d90",
+  "git_sha": "2648f38bbddac755f2064e59148bb6fb26bcffd0",
   "inputs": [
     {
       "path": "openbrec/canonical.py",
@@ -62,7 +62,7 @@
     "python": "3.12.13"
   },
   "scope": "tamper_and_fail_closed",
-  "started_at": "2026-07-17T18:36:29.065662Z",
+  "started_at": "2026-07-17T18:57:06.858803Z",
   "summary": {
     "duplicate_json_keys": "review_quarantine",
     "idempotency_collision": "failed_no_outputs",
