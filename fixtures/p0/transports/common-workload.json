@@ -125,12 +125,12 @@
   },
   "node_scales": [12, 40, 100],
   "faults": {
-    "mobility": {"seed": 40401, "events": 7},
-    "relay_loss": {"seed": 40402, "events": 3},
-    "path_churn": {"seed": 40403, "events": 5},
-    "flood": {"seed": 40404, "events": 2},
-    "partition": {"seed": 40405, "events": 2},
-    "carry": {"seed": 40406, "events": 4}
+    "mobility": {"seed": 40401, "events": 7, "success_penalty_bps": 60},
+    "relay_loss": {"seed": 40402, "events": 3, "success_penalty_bps": 100},
+    "path_churn": {"seed": 40403, "events": 5, "success_penalty_bps": 80},
+    "flood": {"seed": 40404, "events": 2, "success_penalty_bps": 120},
+    "partition": {"seed": 40405, "events": 2, "success_penalty_bps": 100},
+    "carry": {"seed": 40406, "events": 4, "success_penalty_bps": 40}
   },
   "traffic": [
     {"message_type": "sos", "priority": 0, "ttl_s": 900},
@@ -151,7 +151,7 @@
     {"case_id": "mt-011", "kind": "silent_drop_attempt", "expected_disposition": "review_quarantine"}
   ],
   "expected_result_sha256": {
-    "transport-comparison": "d5f54dfa69d8f1198c71823405bb25644823ed88c08d0df9c1901410764bf7b9",
+    "transport-comparison": "d2d22f5f4c5fa5e04ad3c261ba46ea326b5eef6142701b9549509df76846c261",
     "malicious-transport": "63caebfa0dbd7058a4e2a85b1e979b9a3a8e4ebf3575c39cb79f1293bc9e49d9"
   }
 }

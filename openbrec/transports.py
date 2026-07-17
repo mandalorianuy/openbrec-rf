@@ -62,6 +62,16 @@ def load_workload(root: Path, workload_path: Path) -> dict[str, Any]:
         raise TransportWorkloadError("workload must preserve node scales 12, 40 and 100")
     if set(workload.get("faults", {})) != FAULTS:
         raise TransportWorkloadError("workload must declare the complete fault matrix")
+    for fault_name, fault in workload["faults"].items():
+        if not isinstance(fault.get("events"), int) or fault["events"] <= 0:
+            raise TransportWorkloadError(f"{fault_name} must declare positive events")
+        if (
+            not isinstance(fault.get("success_penalty_bps"), int)
+            or fault["success_penalty_bps"] <= 0
+        ):
+            raise TransportWorkloadError(
+                f"{fault_name} must declare a positive synthetic success penalty"
+            )
     if set(workload.get("bearer_models", {})) != set(BEARERS):
         raise TransportWorkloadError("workload must pin all three bearer models")
     if set(workload.get("profiles", {})) != set(PROFILES):
@@ -202,6 +212,7 @@ def _run_metrics(
     profile: dict[str, Any],
     node_count: int,
     traffic_count: int,
+    fault_penalty_bps: int,
 ) -> dict[str, Any]:
     coefficients = model["synthetic_coefficients"]
     denominator = node_count * traffic_count
@@ -209,6 +220,7 @@ def _run_metrics(
     success_bps -= (node_count - SCALES[0]) * int(
         coefficients["scale_penalty_bps_per_node"]
     )
+    success_bps -= fault_penalty_bps
     success_bps = max(0, min(10000, success_bps))
     delivered = denominator * success_bps // 10000
     failed = denominator - delivered
@@ -251,6 +263,7 @@ def _run_metrics(
         "denominator_messages": denominator,
         "delivered_messages": delivered,
         "failed_messages": failed,
+        "fault_penalty_bps": fault_penalty_bps,
         "metrics": metrics,
         "support_status": "unverified",
         "claim_scope": "deterministic_simulation_only",
@@ -265,6 +278,10 @@ def _comparison_outcome(root: Path, workload: dict[str, Any]) -> dict[str, Any]:
     input_mismatches = 0
     sos_priority_violations = 0
     raw_bridges = 0
+    fault_events = sum(item["events"] for item in workload["faults"].values())
+    fault_penalty_bps = sum(
+        item["success_penalty_bps"] for item in workload["faults"].values()
+    )
 
     queue = sorted(workload["traffic"], key=lambda item: (item["priority"], item["message_type"]))
     if not queue or queue[0]["message_type"] != "sos":
@@ -294,6 +311,7 @@ def _comparison_outcome(root: Path, workload: dict[str, Any]) -> dict[str, Any]:
                     profile_definition,
                     node_count,
                     len(queue),
+                    fault_penalty_bps,
                 )
                 result["common_envelope_sha256"] = common_hash
                 result["adapted_envelope_sha256"] = canonical_hash(adapted)
@@ -311,6 +329,10 @@ def _comparison_outcome(root: Path, workload: dict[str, Any]) -> dict[str, Any]:
         "scales": list(SCALES),
         "model_profile_scale_runs": len(results),
         "common_envelope_sets": len(PROFILES) * len(SCALES),
+        "fault_classes_modeled": len(workload["faults"]),
+        "fault_events_modeled": fault_events,
+        "fault_effects_applied": len(results),
+        "common_fault_penalty_bps": fault_penalty_bps,
         "cross_bearer_input_hash_mismatches": input_mismatches,
         "denominator_messages": denominator,
         "delivered_messages": delivered,
