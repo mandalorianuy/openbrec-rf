@@ -174,6 +174,29 @@ class VerifyCliTests(unittest.TestCase):
             self.assertEqual(data["scope"], "structural_only")
             self.assertEqual(data["result"], "passed")
 
+    def test_bundle_structure_receipt_preserves_validator_warnings(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            scripts = root / "scripts"
+            scripts.mkdir()
+            (scripts / "validate_bundle.py").write_text(
+                'print("Advertencias:")\nprint("- optional validator unavailable")\n',
+                encoding="utf-8",
+            )
+            receipt = root / "evidence/bundle.json"
+
+            result = self.run_verify(
+                "bundle-structure",
+                "--root",
+                str(root),
+                "--receipt",
+                str(receipt.relative_to(root)),
+            )
+
+            self.assertEqual(result.returncode, 0, result.stderr)
+            data = json.loads(receipt.read_text(encoding="utf-8"))
+            self.assertEqual(data["warnings"], ["optional validator unavailable"])
+
 
 if __name__ == "__main__":
     unittest.main()

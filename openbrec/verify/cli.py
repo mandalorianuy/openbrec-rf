@@ -136,10 +136,10 @@ def _validate_catalog(root: Path, catalog_path: Path) -> tuple[list[str], dict[s
     return errors, summary
 
 
-def _run_bundle_structure(root: Path) -> tuple[list[str], dict[str, Any]]:
+def _run_bundle_structure(root: Path) -> tuple[list[str], list[str], dict[str, Any]]:
     validator = root / "scripts/validate_bundle.py"
     if not validator.is_file():
-        return ["scripts/validate_bundle.py not found"], {}
+        return ["scripts/validate_bundle.py not found"], [], {}
     result = subprocess.run(
         [sys.executable, str(validator)],
         cwd=root,
@@ -155,7 +155,8 @@ def _run_bundle_structure(root: Path) -> tuple[list[str], dict[str, Any]]:
         "stderr": result.stderr.strip(),
     }
     errors = [] if result.returncode == 0 else ["legacy structural validator failed"]
-    return errors, summary
+    warnings = [line[2:] for line in result.stdout.splitlines() if line.startswith("- ")]
+    return errors, warnings, summary
 
 
 def _write_receipt(
@@ -167,6 +168,7 @@ def _write_receipt(
     command: Sequence[str],
     started_at: str,
     errors: list[str],
+    warnings: list[str],
     summary: dict[str, Any],
     inputs: list[Path],
 ) -> None:
@@ -192,7 +194,7 @@ def _write_receipt(
         ],
         "summary": summary,
         "errors": errors,
-        "warnings": [],
+        "warnings": warnings,
         "started_at": started_at,
         "finished_at": datetime.now(UTC).isoformat().replace("+00:00", "Z"),
         "responsible_role": "contract-maintainer",
@@ -218,7 +220,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     started_at = datetime.now(UTC).isoformat().replace("+00:00", "Z")
     inputs: list[Path] = []
     if args.gate == "bundle-structure":
-        errors, summary = _run_bundle_structure(root)
+        errors, warnings, summary = _run_bundle_structure(root)
         inputs.append(root / "scripts/validate_bundle.py")
         scope = "structural_only"
     else:
@@ -228,6 +230,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             errors, summary = _validate_catalog(root, catalog_path)
         except ValueError as exc:
             errors, summary = [str(exc)], {"catalog": args.catalog, "catalog_entries": 0}
+        warnings = []
         scope = "catalog_integrity_only"
 
     if args.receipt:
@@ -239,6 +242,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             command=["python", "-m", "openbrec.verify", *(argv if argv is not None else sys.argv[1:])],
             started_at=started_at,
             errors=errors,
+            warnings=warnings,
             summary=summary,
             inputs=inputs,
         )
