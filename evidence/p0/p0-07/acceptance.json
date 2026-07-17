@@ -1,0 +1,19 @@
+{
+  "acceptance_version": "1.0.0",
+  "accepted_at": "2026-07-17",
+  "implementation_role": "beacon-science-maintainer",
+  "implementation_sha": "b5ddce10f10615e8247bdb2947a4943d55bf24a3",
+  "progress": {
+    "accepted_tasks": 7,
+    "percent": 77.8,
+    "total_tasks": 9
+  },
+  "receipt_sha256": {
+    "beacon-adversarial": "b8d6922dfc9e71dd32e03d69ed26e2d63583c39086fdf5ee052208321a97182c",
+    "beacon-replay": "d17ed2f9f21a22aef0e21d2465606042302ca408d20e6e8d0dfd56f1fa3843f3",
+    "retention-fault": "e74f570a1df4386f2ab5b2d7a1082c23629a6ef019ec2bff38eb0f2a7477f9e6"
+  },
+  "review_role": "privacy-safety-reviewer",
+  "status": "accepted",
+  "task": "P0-07"
+}

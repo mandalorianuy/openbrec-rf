@@ -5,7 +5,7 @@
 - Autoridad de secuencia: `DELIVERY_BOARD.md`
 - Baseline requerido: M0 cerrado en `0dee758af0a1ea02578e0710f81d361933651756`
 - Alcance: P0-01–P0-09, simulación, fixtures, replay, UI y receipts
-- Estado de ejecución: `6 / 9` tasks aceptadas (`66.7%`); `P0-07` elegible, no iniciada
+- Estado de ejecución: `7 / 9` tasks aceptadas (`77.8%`); `P0-08` elegible, no iniciada
 - Fuera de alcance: compra, hardware, TX, ensayo radiado, campo y claims físicos
 
 ## 1. Objetivo
@@ -493,6 +493,11 @@ P0-05 fue aceptada el 2026-07-17 sobre el SHA de implementación
 P0-06 fue aceptada el 2026-07-17 sobre el SHA de implementación
 `d100f75a3cd3d18abffa15573799726c545b96fe`; sus receipts limpios viven en
 `evidence/p0/p0-06/` y su review en
-`docs/security/2026-07-17-p0-06-offline-terminal-review.md`. P0-07 queda como
-única task elegible, pero este closeout no la inicia. El progreso P0 es `6 / 9`
-(`66.7%`).
+`docs/security/2026-07-17-p0-06-offline-terminal-review.md`.
+
+P0-07 fue aceptada el 2026-07-17 sobre el SHA de implementación
+`b5ddce10f10615e8247bdb2947a4943d55bf24a3`; sus receipts limpios viven en
+`evidence/p0/p0-07/` y su review en
+`docs/security/2026-07-17-p0-07-beacon-fusion-retention-review.md`. P0-08 queda
+como única task elegible, pero este closeout no la inicia. El progreso P0 es
+`7 / 9` (`77.8%`).
