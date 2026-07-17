@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openbrec.org/schemas/core/handling-policy/1.0.0",
+  "title": "HandlingPolicy",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "policy_id", "mode", "retention_until", "accepted_at", "purpose", "audit_required"],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "policy_id": {"type": "string", "pattern": "^urn:openbrec:handling:[a-z0-9._-]+:[0-9]+\\.[0-9]+\\.[0-9]+$"},
+    "mode": {"enum": ["routine_minimized", "life_safety_preservation"]},
+    "retention_until": {"type": "string", "format": "date-time", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{6}Z$"},
+    "accepted_at": {"type": "string", "format": "date-time", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{6}Z$"},
+    "purpose": {"type": "string", "minLength": 1, "maxLength": 512},
+    "audit_required": {"const": true},
+    "break_glass": {"type": "boolean"}
+  },
+  "examples": [
+    {"schema_version": "1.0.0", "policy_id": "urn:openbrec:handling:routine:1.0.0", "mode": "routine_minimized", "retention_until": "2026-07-18T12:00:00.000000Z", "accepted_at": "2026-07-17T12:00:00.000000Z", "purpose": "synthetic laboratory replay", "audit_required": true},
+    {"schema_version": "1.0.0", "policy_id": "urn:openbrec:handling:life-safety:1.0.0", "mode": "life_safety_preservation", "retention_until": "2026-07-24T12:00:00.000000Z", "accepted_at": "2026-07-17T12:00:00.000000Z", "purpose": "preserve potentially life-saving evidence", "audit_required": true, "break_glass": false}
+  ]
+}

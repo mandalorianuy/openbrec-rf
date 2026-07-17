@@ -1,0 +1,11 @@
+{
+  "disposition": "review_quarantine",
+  "errors": [
+    "required field missing"
+  ],
+  "expected_schema_ref": "https://openbrec.org/schemas/core/observation/1.0.0",
+  "failed_at": "2026-07-17T12:21:00.000000Z",
+  "failure_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+  "input_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "stage": "payload"
+}

@@ -1,0 +1,30 @@
+{
+  "capabilities_absent": [
+    "hardware"
+  ],
+  "coverage": "synthetic window",
+  "limitations": [
+    "not field evidence"
+  ],
+  "measurements": [
+    {
+      "measurement_type": "scalar",
+      "method": "fixture",
+      "metric": "synthetic.level",
+      "quality": 0.8,
+      "uncertainty": 0.1,
+      "unit": "1",
+      "value": 0.25
+    }
+  ],
+  "observation_id": "55555555-5555-4555-8555-555555555555",
+  "observation_kind": "measurement",
+  "quality": 0.8,
+  "schema_version": "1.0.0",
+  "sensor_id": "synthetic-1",
+  "sensor_type": "synthetic",
+  "uncertainty": 0.2,
+  "unexpected_field": true,
+  "window_end": "2026-07-17T12:10:01.000000Z",
+  "window_start": "2026-07-17T12:10:00.000000Z"
+}

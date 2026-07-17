@@ -1,0 +1,8 @@
+{
+  "action": "created",
+  "handling_policy_ref": "urn:openbrec:handling:routine:1.0.0",
+  "incident_id": null,
+  "occurred_at": "2026-07-17T12:00:00.000000Z",
+  "reason": "synthetic M0 incident",
+  "schema_version": "1.0.0"
+}

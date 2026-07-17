@@ -1,0 +1,48 @@
+{
+  "command": [
+    "python",
+    "-m",
+    "openbrec.verify",
+    "bundle-structure",
+    "--receipt",
+    "evidence/m0/bundle-structure/m0-02-receipt.json"
+  ],
+  "dirty": false,
+  "errors": [],
+  "finished_at": "2026-07-17T13:48:21.706119Z",
+  "gate": "bundle-structure",
+  "gate_version": "0.1.0",
+  "git_sha": "eaa3fa8816e6d7bf48816655f4b574b13627ed72",
+  "inputs": [
+    {
+      "path": "scripts/validate_bundle.py",
+      "sha256": "54b2d7fb6fbf7cf50b79e4288975900171c584ed23cfaacbb2f5b61952ed6474"
+    }
+  ],
+  "lockfiles": [
+    {
+      "path": "uv.lock",
+      "sha256": "e0e73ed0d2f4e016d7c2e6e6e955fafa34d995b0a1955d0ebedbb1af85da81ea"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "sha256": "ed7659f050b279f37e5cf84fb065fc528e15b3204d374681f3a70ad081d1c25a"
+    }
+  ],
+  "receipt_version": "1.0.0",
+  "responsible_role": "contract-maintainer",
+  "result": "passed",
+  "runtime": {
+    "python": "3.12.13"
+  },
+  "scope": "structural_only",
+  "started_at": "2026-07-17T13:48:21.119667Z",
+  "summary": {
+    "exit_code": 0,
+    "legacy_validator": "scripts/validate_bundle.py",
+    "legacy_validator_sha256": "54b2d7fb6fbf7cf50b79e4288975900171c584ed23cfaacbb2f5b61952ed6474",
+    "stderr": "",
+    "stdout": "OpenBREC RF v0.2: repositorio estructuralmente v\u00e1lido."
+  },
+  "warnings": []
+}

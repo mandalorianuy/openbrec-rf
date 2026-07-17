@@ -1,51 +1,118 @@
+name: openbrec-lab-sim
+
+x-runtime-environment: &runtime-environment
+  OPENBREC_MQTT_HOST: mqtt
+  OPENBREC_MQTT_PORT: "1883"
+
 services:
   mqtt:
     image: eclipse-mosquitto:2
-    profiles: ["lab-sim", "field-basic", "field-csi", "field-spectrum", "lab-bfi", "advanced-fusion", "field-ruview", "field-drone-drop", "field-drone-rf", "field-rf-quiet"]
-    ports: ["1883:1883"]
+    profiles: ["lab-sim"]
+    command: ["mosquitto", "-c", "/mosquitto-no-auth/lab-sim.conf"]
+    volumes:
+      - ./config/mosquitto/lab-sim.conf:/mosquitto-no-auth/lab-sim.conf:ro
+    networks: [lab-core]
+    read_only: true
+    tmpfs: [/tmp]
+    healthcheck:
+      test: ["CMD", "mosquitto_pub", "-h", "127.0.0.1", "-t", "openbrec/healthcheck", "-m", "ping", "-q", "1"]
+      interval: 3s
+      timeout: 3s
+      retries: 10
+      start_period: 3s
+
   postgres:
     image: postgres:17-alpine
-    profiles: ["lab-sim", "field-basic", "field-csi", "field-spectrum", "lab-bfi", "advanced-fusion", "field-ruview", "field-drone-drop", "field-drone-rf", "field-rf-quiet"]
+    profiles: ["lab-sim"]
     environment:
       POSTGRES_DB: openbrec
       POSTGRES_USER: openbrec
-      POSTGRES_PASSWORD: change-me
-    volumes: ["openbrec-db:/var/lib/postgresql/data"]
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
+    secrets: [postgres_password]
+    volumes: [openbrec-db:/var/lib/postgresql/data]
+    networks: [lab-core]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U openbrec -d openbrec"]
+      interval: 3s
+      timeout: 3s
+      retries: 15
+      start_period: 5s
+
   api:
-    build: ./apps/api
-    profiles: ["lab-sim", "field-basic", "field-csi", "field-spectrum", "lab-bfi", "advanced-fusion", "field-ruview", "field-drone-drop", "field-drone-rf", "field-rf-quiet"]
-    depends_on: [mqtt, postgres]
+    image: openbrec/runtime:m0
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    profiles: ["lab-sim"]
+    environment: *runtime-environment
+    networks: [lab-core]
+    read_only: true
+    tmpfs: [/tmp]
+    depends_on:
+      mqtt: {condition: service_healthy}
+      postgres: {condition: service_healthy}
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/readyz', timeout=2).read()"]
+      interval: 3s
+      timeout: 3s
+      retries: 10
+      start_period: 3s
+
   fusion-worker:
-    build: ./apps/fusion-worker
-    profiles: ["lab-sim", "field-basic", "field-csi", "field-spectrum", "lab-bfi", "advanced-fusion", "field-ruview", "field-drone-drop", "field-drone-rf", "field-rf-quiet"]
-    depends_on: [mqtt, postgres]
+    image: openbrec/runtime:m0
+    profiles: ["lab-sim"]
+    command: ["python", "-m", "openbrec_worker.worker"]
+    environment: *runtime-environment
+    networks: [lab-core]
+    read_only: true
+    tmpfs: [/tmp]
+    depends_on:
+      mqtt: {condition: service_healthy}
+      postgres: {condition: service_healthy}
+    healthcheck:
+      test: ["CMD", "test", "-f", "/tmp/openbrec-worker-ready"]
+      interval: 3s
+      timeout: 3s
+      retries: 10
+      start_period: 3s
+
   web:
-    build: ./apps/web
-    profiles: ["lab-sim", "field-basic", "field-csi", "field-spectrum", "lab-bfi", "advanced-fusion", "field-ruview", "field-drone-drop", "field-drone-rf", "field-rf-quiet"]
-    depends_on: [api]
-  collector-kismet:
-    build: ./collectors/kismet
-    profiles: ["field-basic", "field-csi", "field-spectrum", "lab-bfi", "advanced-fusion", "field-ruview", "field-drone-drop", "field-drone-rf", "field-rf-quiet"]
-  collector-ble:
-    build: ./collectors/ble-bluez
-    profiles: ["field-basic", "field-csi", "field-spectrum", "lab-bfi", "advanced-fusion", "field-ruview", "field-drone-drop", "field-drone-rf", "field-rf-quiet"]
-  collector-csi:
-    build: ./collectors/esp-csi
-    profiles: ["field-csi", "lab-bfi", "advanced-fusion", "field-ruview", "field-drone-drop", "field-drone-rf", "field-rf-quiet"]
-  collector-sdr:
-    build: ./collectors/sdr-soapysdr
-    profiles: ["field-spectrum", "advanced-fusion", "field-ruview", "field-drone-drop", "field-drone-rf", "field-rf-quiet"]
-  collector-bfi:
-    build: ./collectors/bfi-wibfi
-    profiles: ["lab-bfi", "advanced-fusion", "field-ruview", "field-drone-drop", "field-drone-rf", "field-rf-quiet"]
-  collector-ruview:
-    build: ./collectors/ruview-csi
-    profiles: ["field-ruview", "advanced-fusion"]
-  drone-mavlink:
-    build: ./collectors/drone-mavlink
-    profiles: ["field-drone-drop", "field-drone-rf", "advanced-fusion"]
-  rf-isolation:
-    build: ./collectors/rf-isolation
-    profiles: ["field-rf-quiet", "advanced-fusion"]
+    image: openbrec/web:m0
+    build:
+      context: ./apps/web
+    profiles: ["lab-sim"]
+    networks: [lab-core]
+    read_only: true
+    tmpfs: [/tmp, /var/cache/nginx, /var/run]
+    depends_on:
+      api: {condition: service_healthy}
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:8080/"]
+      interval: 3s
+      timeout: 3s
+      retries: 10
+      start_period: 3s
+
+  runtime-smoke:
+    image: openbrec/runtime:m0
+    profiles: ["m0-gate"]
+    command: ["python", "-m", "openbrec_api.smoke"]
+    environment: *runtime-environment
+    networks: [lab-core]
+    read_only: true
+    tmpfs: [/tmp]
+    depends_on:
+      api: {condition: service_healthy}
+      fusion-worker: {condition: service_healthy}
+      web: {condition: service_healthy}
+
+networks:
+  lab-core:
+    internal: true
+
 volumes:
   openbrec-db:
+
+secrets:
+  postgres_password:
+    environment: OPENBREC_POSTGRES_PASSWORD

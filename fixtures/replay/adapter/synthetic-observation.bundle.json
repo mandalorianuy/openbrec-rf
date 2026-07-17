@@ -1,0 +1,42 @@
+{
+  "adapter": {"artifact_sha256": "1111111111111111111111111111111111111111111111111111111111111111", "name": "synthetic", "version": "1.0.0"},
+  "bundle_version": "1.0.0",
+  "configuration": {
+    "boot_id": "33333333-3333-4333-8333-333333333333",
+    "configuration_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+    "correlation_id": "11111111-1111-4111-8111-111111111111",
+    "deployment_id": "22222222-2222-4222-8222-222222222222",
+    "incident_id": "11111111-1111-4111-8111-111111111111",
+    "received_at": "2026-07-17T12:10:02.000000Z",
+    "session_id": "44444444-4444-4444-8444-444444444444",
+    "source_namespace": "urn:openbrec:adapter:synthetic",
+    "source_node_id": "node-a1b2c3d4"
+  },
+  "contract_set_sha256": "1a8d147e033ecaa0f80df894dbee005c14192b28bfb966d98a4f5b391462f84d",
+  "handling_policy": {
+    "accepted_at": "2026-07-17T12:00:00.000000Z",
+    "audit_required": true,
+    "mode": "routine_minimized",
+    "policy_id": "urn:openbrec:handling:routine:1.0.0",
+    "purpose": "synthetic M0 replay",
+    "retention_until": "2026-07-18T12:00:00.000000Z",
+    "schema_version": "1.0.0"
+  },
+  "input_sha256": "59909a53fa9dd0c283d5a07d3552da91de8dbbe552ffc29fdf8a97410aae9366",
+  "logical_time": "2026-07-17T12:30:00.000000Z",
+  "observations": [{
+    "capabilities_absent": ["hardware"],
+    "coverage": "synthetic window",
+    "limitations": ["not field evidence"],
+    "measurements": [{"measurement_type": "scalar", "method": "fixture", "metric": "synthetic.level", "quality": 0.8, "uncertainty": 0.1, "unit": "1", "value": 0.25}],
+    "observation_id": "55555555-5555-4555-8555-555555555555",
+    "observation_kind": "measurement",
+    "quality": 0.8,
+    "schema_version": "1.0.0",
+    "sensor_id": "synthetic-1",
+    "sensor_type": "synthetic",
+    "uncertainty": 0.2,
+    "window_end": "2026-07-17T12:10:01.000000Z",
+    "window_start": "2026-07-17T12:10:00.000000Z"
+  }]
+}

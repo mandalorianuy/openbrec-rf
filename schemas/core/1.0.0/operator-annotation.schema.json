@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openbrec.org/schemas/core/operator-annotation/1.0.0",
+  "title": "OperatorAnnotation",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "annotation_id", "actor_id", "actor_role", "action", "annotated_at", "target_event_ids", "reason", "authentication_ref"],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "annotation_id": {"type": "string", "format": "uuid"},
+    "actor_id": {"type": "string", "minLength": 1},
+    "actor_role": {"enum": ["operator", "incident_commander", "privacy_safety_reviewer"]},
+    "action": {"enum": ["note", "accept_for_review", "reject", "request_verification"]},
+    "annotated_at": {"type": "string", "format": "date-time", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{6}Z$"},
+    "target_event_ids": {"type": "array", "items": {"type": "string", "format": "uuid"}, "minItems": 1, "uniqueItems": true},
+    "zone_id": {"type": "string", "pattern": "^[a-z][a-z0-9._-]{2,63}$"},
+    "reason": {"type": "string", "minLength": 1, "maxLength": 1024},
+    "authentication_ref": {"type": "string", "pattern": "^urn:sha256:[0-9a-f]{64}$"}
+  },
+  "examples": [
+    {"schema_version": "1.0.0", "annotation_id": "88888888-8888-4888-8888-888888888888", "actor_id": "operator-1", "actor_role": "operator", "action": "request_verification", "annotated_at": "2026-07-17T12:17:00.000000Z", "target_event_ids": ["77777777-7777-4777-8777-777777777778"], "reason": "conflicting evidence requires field check", "authentication_ref": "urn:sha256:8888888888888888888888888888888888888888888888888888888888888888"},
+    {"schema_version": "1.0.0", "annotation_id": "88888888-8888-4888-8888-888888888889", "actor_id": "commander-1", "actor_role": "incident_commander", "action": "accept_for_review", "annotated_at": "2026-07-17T12:18:00.000000Z", "target_event_ids": ["77777777-7777-4777-8777-777777777778"], "zone_id": "zone-a", "reason": "prioritize verification without confirming presence", "authentication_ref": "urn:sha256:9999999999999999999999999999999999999999999999999999999999999999"}
+  ]
+}

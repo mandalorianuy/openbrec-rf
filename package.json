@@ -1,0 +1,14 @@
+{
+  "name": "openbrec-rf",
+  "version": "0.0.0",
+  "private": true,
+  "engines": {
+    "node": ">=24 <25",
+    "pnpm": "11.9.0"
+  },
+  "packageManager": "pnpm@11.9.0",
+  "devDependencies": {
+    "json-schema-to-typescript": "15.0.4",
+    "typescript": "7.0.2"
+  }
+}

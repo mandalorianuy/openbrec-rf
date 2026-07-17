@@ -1,0 +1,92 @@
+{
+  "command": [
+    "python",
+    "-m",
+    "openbrec.verify",
+    "adapter-replay",
+    "--root",
+    ".",
+    "--receipt",
+    "/Users/facundo/desarrollo/OpenBREC-RF/evidence/m0/adapter-replay/m0-04-receipt.json"
+  ],
+  "dirty": false,
+  "errors": [],
+  "finished_at": "2026-07-17T14:40:03.369071Z",
+  "gate": "adapter-replay",
+  "gate_version": "0.1.0",
+  "git_sha": "803f4c196f50ab7d45156190428748996961d860",
+  "inputs": [
+    {
+      "path": "fixtures/replay/adapter/synthetic-observation.bundle.json",
+      "sha256": "94d515107056cdc109a5cbf43f82128dfcb0d60f2800d2759717993fc6db5b57"
+    },
+    {
+      "path": "openbrec/replay.py",
+      "sha256": "6a62f49e2b75e948551857dcbbe53af7759b4dc326423a8678b798746ae624fc"
+    },
+    {
+      "path": "openbrec/semantic.py",
+      "sha256": "161fd77dfd115fde2ae7b51322957cb8562a26f765c15bde6a89a8ac763ba949"
+    }
+  ],
+  "lockfiles": [
+    {
+      "path": "uv.lock",
+      "sha256": "3b9c3bc7589554a87f6a2c796160007388d871806add0d874deb29c432b534a1"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "sha256": "ed7659f050b279f37e5cf84fb065fc528e15b3204d374681f3a70ad081d1c25a"
+    }
+  ],
+  "receipt_version": "1.0.0",
+  "responsible_role": "core-replay-maintainer",
+  "result": "passed",
+  "runtime": {
+    "python": "3.12.13"
+  },
+  "scope": "adapter_fixture_to_domain_events",
+  "started_at": "2026-07-17T14:40:02.897813Z",
+  "summary": {
+    "adapter_receipt": {
+      "adapter_artifact_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+      "adapter_name": "synthetic",
+      "adapter_version": "1.0.0",
+      "configuration_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+      "contract_set_sha256": "1a8d147e033ecaa0f80df894dbee005c14192b28bfb966d98a4f5b391462f84d",
+      "errors": [],
+      "events_produced": 1,
+      "generated_at": "2026-07-17T12:30:00.000000Z",
+      "handling_policy_ref": "urn:openbrec:handling:routine:1.0.0",
+      "input_sha256": "59909a53fa9dd0c283d5a07d3552da91de8dbbe552ffc29fdf8a97410aae9366",
+      "normalized_events_sha256": "1b324dc44f41009229e6303eb693c0b5b856bc6ad38b29a22f354bf70ab8b101",
+      "receipt_id": "381a6276-b559-5bfc-af32-9e53cb24b391",
+      "result": "passed",
+      "schema_version": "1.0.0"
+    },
+    "events_produced": 1,
+    "failed_adapter_receipt": {
+      "adapter_artifact_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+      "adapter_name": "synthetic",
+      "adapter_version": "1.0.0",
+      "configuration_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+      "contract_set_sha256": "1a8d147e033ecaa0f80df894dbee005c14192b28bfb966d98a4f5b391462f84d",
+      "errors": [
+        "input hash mismatch"
+      ],
+      "events_produced": 0,
+      "generated_at": "2026-07-17T12:30:00.000000Z",
+      "handling_policy_ref": "urn:openbrec:handling:routine:1.0.0",
+      "input_sha256": "59909a53fa9dd0c283d5a07d3552da91de8dbbe552ffc29fdf8a97410aae9366",
+      "normalized_events_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "receipt_id": "005ecd9f-d0a9-5465-870b-caf3990a4bae",
+      "result": "failed",
+      "schema_version": "1.0.0"
+    },
+    "fixture": "fixtures/replay/adapter/synthetic-observation.bundle.json",
+    "negative_cases": {
+      "corrupt_fixture_hash": "failed"
+    }
+  },
+  "warnings": []
+}

@@ -1,0 +1,18 @@
+{
+  "adapter_artifact_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+  "adapter_name": "synthetic",
+  "adapter_version": "1.0.0",
+  "configuration_sha256": "3333333333333333333333333333333333333333333333333333333333333333",
+  "contract_set_sha256": "4444444444444444444444444444444444444444444444444444444444444444",
+  "errors": [
+    "invalid input"
+  ],
+  "events_produced": 0,
+  "generated_at": "2026-07-17T12:26:00.000000Z",
+  "handling_policy_ref": "urn:openbrec:handling:life-safety:1.0.0",
+  "input_sha256": "6666666666666666666666666666666666666666666666666666666666666666",
+  "normalized_events_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "receipt_id": "cccccccc-cccc-4ccc-8ccc-cccccccccccd",
+  "result": "failed",
+  "schema_version": "1.0.0"
+}

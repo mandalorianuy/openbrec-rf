@@ -1,0 +1,1 @@
+"""OpenBREC contract consumers."""

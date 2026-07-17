@@ -1,0 +1,84 @@
+{
+  "boot_id": "33333333-3333-4333-8333-333333333333",
+  "captured_at": "2026-07-17T12:10:00.000000Z",
+  "causation_event_ids": [],
+  "clock_source": "logical",
+  "clock_uncertainty_ms": 100,
+  "correlation_id": "11111111-1111-4111-8111-111111111111",
+  "deployment_id": "22222222-2222-4222-8222-222222222222",
+  "event_id": "6ba7b811-9dad-51d1-80b4-00c04fd430c8",
+  "event_type": "observation",
+  "extensions": {},
+  "handling_policy": {
+    "accepted_at": "2026-07-17T12:00:00.000000Z",
+    "audit_required": true,
+    "mode": "routine_minimized",
+    "policy_id": "urn:openbrec:handling:routine:1.0.0",
+    "purpose": "synthetic laboratory replay",
+    "retention_until": "2026-07-18T12:00:00.000000Z",
+    "schema_version": "1.0.0"
+  },
+  "idempotency_id": "urn:sha256:2222222222222222222222222222222222222222222222222222222222222222",
+  "incident_id": "11111111-1111-4111-8111-111111111111",
+  "origin": "adapter",
+  "payload": {
+    "capabilities_absent": [
+      "hardware"
+    ],
+    "coverage": "synthetic window",
+    "limitations": [
+      "not field evidence"
+    ],
+    "measurements": [
+      {
+        "measurement_type": "scalar",
+        "method": "fixture",
+        "metric": "synthetic.level",
+        "quality": 0.8,
+        "uncertainty": 0.1,
+        "unit": "1",
+        "value": 0.25
+      }
+    ],
+    "observation_id": "55555555-5555-4555-8555-555555555555",
+    "observation_kind": "measurement",
+    "quality": 0.8,
+    "schema_version": "1.0.0",
+    "sensor_id": "synthetic-1",
+    "sensor_type": "synthetic",
+    "uncertainty": 0.2,
+    "window_end": "2026-07-17T12:10:01.000000Z",
+    "window_start": "2026-07-17T12:10:00.000000Z"
+  },
+  "privacy_flags": {
+    "contains_direct_identifier": false,
+    "contains_raw_payload": false,
+    "life_safety_relevant": false
+  },
+  "provenance": {
+    "artifact_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+    "artifact_type": "adapter",
+    "capabilities_absent": [
+      "hardware"
+    ],
+    "capabilities_present": [
+      "synthetic.observation"
+    ],
+    "limitations": [
+      "synthetic only"
+    ],
+    "name": "synthetic",
+    "recorded_at": "2026-07-17T12:10:00.000000Z",
+    "schema_version": "1.0.0",
+    "version": "1.0.0"
+  },
+  "received_at": "2026-07-17T12:10:00.100000Z",
+  "retention_policy_id": "urn:openbrec:retention:lab:1.0.0",
+  "schema_ref": "https://openbrec.org/schemas/core/observation/1.0.0",
+  "schema_version": "1.0.0",
+  "sequence": 1,
+  "session_id": "44444444-4444-4444-8444-444444444444",
+  "source_event_id": "fixture:observation:0",
+  "source_node_id": "node-a1b2c3d4",
+  "zone_id": "zone-a"
+}

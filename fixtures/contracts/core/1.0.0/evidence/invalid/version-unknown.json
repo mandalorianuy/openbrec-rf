@@ -1,0 +1,24 @@
+{
+  "confidence": 0.4,
+  "coverage": "synthetic",
+  "engine_name": "openbrec-rules",
+  "engine_version": "1.0.0",
+  "evidence_id": "66666666-6666-4666-8666-666666666666",
+  "explanation": "rule synthetic.level above threshold",
+  "hypothesis": "possible_signal_of_interest",
+  "limitations": [
+    "single synthetic source"
+  ],
+  "schema_version": "9.9.9",
+  "source_observation_ids": [
+    "55555555-5555-4555-8555-555555555555"
+  ],
+  "uncertainty": 0.6,
+  "unsupported_claims": [
+    "person_present",
+    "person_absent"
+  ],
+  "valid_until": "2026-07-17T12:15:00.000000Z",
+  "window_end": "2026-07-17T12:10:01.000000Z",
+  "window_start": "2026-07-17T12:10:00.000000Z"
+}

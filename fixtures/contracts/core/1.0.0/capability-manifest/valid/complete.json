@@ -1,0 +1,16 @@
+{
+  "capabilities": [
+    "synthetic.observation",
+    "deterministic.replay"
+  ],
+  "capabilities_absent": [
+    "ml"
+  ],
+  "declared_at": "2026-07-17T12:08:01.000000Z",
+  "evidence_refs": [
+    "urn:sha256:5555555555555555555555555555555555555555555555555555555555555555"
+  ],
+  "node_id": "node-a1b2c3d4",
+  "schema_version": "1.0.0",
+  "support_level": "experimental"
+}

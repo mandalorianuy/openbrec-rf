@@ -1,0 +1,11 @@
+{
+  "action": "validate",
+  "actor_id": "contract-validator",
+  "actor_type": "service",
+  "audit_id": "99999999-9999-4999-8999-999999999999",
+  "object_ref": "urn:sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "occurred_at": "2026-07-17T12:19:00.000000Z",
+  "policy_ref": "urn:openbrec:handling:routine:1.0.0",
+  "result": "allowed",
+  "schema_version": "1.0.0"
+}

@@ -1,0 +1,30 @@
+{
+  "abstained": false,
+  "abstention_reasons": [],
+  "capabilities_absent": [
+    "acoustic"
+  ],
+  "confidence": 0.3,
+  "configuration_sha256": "7777777777777777777777777777777777777777777777777777777777777777",
+  "conflict_score": 0.8,
+  "contradicting_evidence_ids": [
+    "66666666-6666-4666-8666-666666666667"
+  ],
+  "coverage": "partial zone",
+  "engine_name": "openbrec-fusion",
+  "engine_version": "1.0.0",
+  "explanation": "requires operator verification",
+  "limitations": [
+    "conflicting evidence"
+  ],
+  "result_id": "77777777-7777-4777-8777-777777777778",
+  "schema_version": "1.0.0",
+  "state": "conflicted",
+  "supporting_evidence_ids": [
+    "66666666-6666-4666-8666-666666666666"
+  ],
+  "valid_until": "2026-07-17T12:16:00.000000Z",
+  "window_end": "2026-07-17T12:11:02.000000Z",
+  "window_start": "2026-07-17T12:10:00.000000Z",
+  "zone_id": "zone-a"
+}

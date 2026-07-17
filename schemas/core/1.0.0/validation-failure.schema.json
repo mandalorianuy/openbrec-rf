@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openbrec.org/schemas/core/validation-failure/1.0.0",
+  "title": "ValidationFailure",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "failure_id", "failed_at", "stage", "disposition", "input_sha256", "expected_schema_ref", "errors"],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "failure_id": {"type": "string", "format": "uuid"},
+    "failed_at": {"type": "string", "format": "date-time", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{6}Z$"},
+    "stage": {"enum": ["catalog", "envelope", "payload", "replay"]},
+    "disposition": {"enum": ["review_quarantine", "evidence_vault", "rejection_ledger"]},
+    "input_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "expected_schema_ref": {"type": "string", "format": "uri"},
+    "source_offset": {"type": "integer", "minimum": 0},
+    "errors": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1},
+    "handling_policy_ref": {"type": "string", "minLength": 1}
+  },
+  "examples": [
+    {"schema_version": "1.0.0", "failure_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa", "failed_at": "2026-07-17T12:21:00.000000Z", "stage": "payload", "disposition": "review_quarantine", "input_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "expected_schema_ref": "https://openbrec.org/schemas/core/observation/1.0.0", "errors": ["required field missing"]},
+    {"schema_version": "1.0.0", "failure_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaab", "failed_at": "2026-07-17T12:22:00.000000Z", "stage": "envelope", "disposition": "evidence_vault", "input_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "expected_schema_ref": "https://openbrec.org/schemas/core/domain-event/1.0.0", "source_offset": 12, "errors": ["unknown schema reference"], "handling_policy_ref": "urn:openbrec:handling:life-safety:1.0.0"}
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "cases": [
+    {"name": "duplicate_identical", "expected": "deduplicated"},
+    {"name": "idempotency_collision", "expected": "failed_no_outputs"},
+    {"name": "sequence_regressive", "expected": "failed_no_outputs"},
+    {"name": "late_after_retention", "expected": "failed_no_outputs"},
+    {"name": "corrupt_fixture_hash", "expected": "failed_no_outputs"},
+    {"name": "unknown_schema", "expected": "failed_no_outputs"},
+    {"name": "source_absent", "expected": "abstained_with_capability_absent"}
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "disposition": "evidence_vault",
+  "errors": [
+    "unknown schema reference"
+  ],
+  "expected_schema_ref": "https://openbrec.org/schemas/core/domain-event/1.0.0",
+  "failed_at": "2026-07-17T12:22:00.000000Z",
+  "failure_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaab",
+  "handling_policy_ref": "urn:openbrec:handling:life-safety:1.0.0",
+  "input_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+  "schema_version": "1.0.0",
+  "source_offset": 12,
+  "stage": "envelope"
+}
