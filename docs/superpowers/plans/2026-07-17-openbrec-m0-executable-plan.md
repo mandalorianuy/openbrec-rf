@@ -1,6 +1,6 @@
 # Plan ejecutable M0 de OpenBREC RF
 
-- Estado: propuesto para aprobación; implementación no iniciada
+- Estado: aprobado el 2026-07-17; M0-01 en ejecución
 - Fecha: 2026-07-17
 - Alcance: cierre exclusivo de F-01–F-06
 - Autoridad de secuencia: `DELIVERY_BOARD.md`
@@ -362,4 +362,4 @@ No se hace squash entre una evidencia aprobada y su material sin regenerar los r
 
 ## 9. Gate de aprobación y primera acción
 
-Este plan no comienza por el código. Primero requiere aprobación explícita y el check correspondiente en `DELIVERY_BOARD.md`. Después, la única task elegible será `M0-01`. Su primer entregable será ADR-0001; `M0-02` y todo P0 permanecerán bloqueados hasta cerrar sus gates.
+El plan fue aprobado el 2026-07-17 y el check correspondiente quedó registrado en `DELIVERY_BOARD.md`. La única task elegible es `M0-01`. Su primer entregable es ADR-0001; `M0-02` y todo P0 permanecen bloqueados hasta cerrar sus gates.

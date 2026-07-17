@@ -1,0 +1,43 @@
+{
+  "catalog_version": "1.0.0",
+  "draft": "https://json-schema.org/draft/2020-12/schema",
+  "status": "legacy-unverified",
+  "entries": [
+    {
+      "path": "schemas/capability-manifest.schema.json",
+      "$id": "https://openbrec.org/schemas/capability-manifest/1.0.0",
+      "declared_version": "1.0.0",
+      "sha256": "c7459c898856f3b07cc4c2371be9463038ec833c9caa37ff72d4cd981c149d36"
+    },
+    {
+      "path": "schemas/drone-deployment-event.schema.json",
+      "$id": "https://openbrec.org/schemas/drone-deployment-event/1.0.0",
+      "declared_version": "1.0.0",
+      "sha256": "ca138722c200b82271e6f3e7f19b21c2e5693a463fe60b04a7e125386844df32"
+    },
+    {
+      "path": "schemas/fusion-result.schema.json",
+      "$id": "https://openbrec.org/schemas/fusion-result/1.0.0",
+      "declared_version": "1.0.0",
+      "sha256": "d9c0b7c8049c154252ceb857aea9e2743f072f5db8deb758cd0a0a5aca8ac86f"
+    },
+    {
+      "path": "schemas/observation.schema.json",
+      "$id": "https://openbrec.org/schemas/observation/1.0.0",
+      "declared_version": "1.0.0",
+      "sha256": "94ef019f6b15c9cb9edcc4ed61d34b0bf7bef9e02be79553124fb60582944455"
+    },
+    {
+      "path": "schemas/rf-isolation-profile.schema.json",
+      "$id": "https://openbrec.org/schemas/rf-isolation-profile/1.0.0",
+      "declared_version": "1.0.0",
+      "sha256": "2710507ef8eeda8a8c4863879dbfb2ca36eb4f4beb23e7b897962af3ec9f73bb"
+    },
+    {
+      "path": "schemas/ruview-observation.schema.json",
+      "$id": "https://openbrec.org/schemas/ruview-observation/1.0.0",
+      "declared_version": "1.0.0",
+      "sha256": "f3c262dc3842c5005433e406897afdeea650cb07bc798107800d589f246dd713"
+    }
+  ]
+}

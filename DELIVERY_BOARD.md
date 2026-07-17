@@ -10,13 +10,13 @@
 - [x] Cuatro especificaciones hijas aprobadas.
 - [x] Revisión multi-bearer aprobada el 2026-07-17.
 - [x] Matriz conjunta de energía, comunicaciones y beacons aprobada el 2026-07-17.
-- [ ] Plan M0 aprobado para ejecución.
+- [x] Plan M0 aprobado para ejecución el 2026-07-17.
 
 ## Now — M0 Fundación
 
 Los checks permanecen abiertos hasta producir la evidencia exigida por el plan. El orden es obligatorio.
 
-- [ ] `M0-01` / F-01: aceptar ADR-0001, catálogo core y registro inmutable de schemas legacy.
+- [ ] `M0-01` / F-01: aceptar ADR-0001, catálogo core y registro inmutable de schemas legacy. **En ejecución.**
 - [ ] `M0-02` / F-01: implementar schemas, fixtures, modelos Pydantic/TypeScript y compatibilidad SemVer.
 - [ ] `M0-03` / F-02: crear API, worker y PWA mínimos; construir y arrancar `lab-sim` sin Internet.
 - [ ] `M0-04` / F-03–F-04: implementar accepted log, vault/quarantine/ledger y replay determinístico en dos niveles.

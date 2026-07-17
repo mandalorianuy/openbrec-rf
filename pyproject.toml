@@ -1,0 +1,9 @@
+[project]
+name = "openbrec-rf"
+version = "0.0.0"
+description = "Offline-first evidence fusion reference platform for BREC operations"
+requires-python = "==3.12.*"
+dependencies = []
+
+[tool.uv]
+package = false
