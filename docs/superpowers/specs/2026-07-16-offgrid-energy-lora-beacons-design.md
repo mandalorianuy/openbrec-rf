@@ -1,8 +1,8 @@
 # Addons de energía off-grid, comunicaciones LoRa y beacons para OpenBREC RF
 
-- Estado: dirección arquitectónica aprobada; revisión de endurecimiento pendiente de aprobación; planificación bloqueada
+- Estado: dirección arquitectónica aprobada; dos especificaciones hijas documentadas; planificación bloqueada
 - Fecha inicial: 2026-07-16
-- Revisión incorporada: 2026-07-16
+- Revisión incorporada: 2026-07-17
 - Perfil regulatorio inicial: Uruguay
 - Alcance: visión padre para contratos P0, banco P1 y validación controlada P2
 
@@ -11,6 +11,8 @@
 OpenBREC RF es hoy un bundle de diseño TRL 2–3, no una plataforma operacional ejecutable. El comando `python3 scripts/validate_bundle.py` demuestra únicamente que el bundle es estructuralmente válido. No prueba contratos, runtime, replay, privacidad operacional ni hardware.
 
 Esta especificación define una dirección arquitectónica. No autoriza todavía un plan de implementación P0 off-grid.
+
+Enmienda 2026-07-17: `2026-07-17-openbrec-radio-security-regulation-design.md` reemplaza la política `blocked_unverified` de esta visión por los modos `receive_only`, `conducted_only`, `jurisdiction_validated` y `emergency_assumed_risk`. También agrega federación multi-equipo con autonomía recursiva. Esa especificación hija es la autoridad en radio, regulación, seguridad y federación; el texto histórico incompatible de esta visión no debe implementarse.
 
 Antes de planificar o implementar estos addons deben cumplirse dos condiciones:
 
@@ -41,7 +43,7 @@ ADR-0001 deberá formalizar esta precedencia, el alcance del core y las red line
 - Adoptar Meshtastic como transporte de referencia opcional, version-pinned y reemplazable.
 - Definir `BeaconNode` como sensor, relay o ambos.
 - Permitir construir diseños abiertos o reutilizar hardware compatible.
-- Fallar cerrado ante regulación, seguridad, privacidad o evidencia insuficientes.
+- Fallar cerrado para elevar confianza, roles, aceptación SOS o publicación sensible; preservar y mostrar posible distress aunque no pueda autenticarse.
 
 ## 4. Fuera de alcance
 
@@ -51,7 +53,7 @@ ADR-0001 deberá formalizar esta precedencia, el alcance del core y las red line
 - Permitir que la red humana escriba hechos OpenBREC.
 - Exigir Meshtastic, un chipset o un fabricante.
 - Declarar autonomía perpetua sin balance medido.
-- Habilitar TX radiado antes del gate Uruguay.
+- Habilitar TX radiado sin un perfil explícito, acotado, auditable y con kill switch.
 - Modificar prohibiciones sobre radio ofensiva, jamming, interferencia, emulación celular o control UAS.
 
 ## 5. Arquitectura y dependencias
@@ -263,24 +265,22 @@ El ciclo de vida incluirá alta, join, rotación, revocación, dispositivo perdi
 
 ## 14. Regulación Uruguay y fases P1
 
-Uruguay no figura actualmente en la tabla oficial de regiones Meshtastic; no se aceptará ningún preset por presunción.
-
-El artefacto `regulatory-profile-uy.yaml` comenzará con:
+Uruguay no figura actualmente en la tabla oficial de regiones Meshtastic; no se aceptará ningún preset por presunción. El artefacto `regulatory-profile-uy.yaml` comenzará con:
 
 ```yaml
-status: blocked_unverified
-tx_allowed: false
-country: UY
+mode: receive_only
+jurisdiction_status: unreviewed
+tx_policy: explicit_operator_action
 ```
 
-Para cambiar `tx_allowed` a `true` deberá registrar frecuencia, potencia conducida, EIRP, antena, duty cycle/canales, homologación, importación, autorización aplicable, evidencia, fecha, responsable y revisión competente.
+Los modos normativos son `receive_only`, `conducted_only`, `jurisdiction_validated` y `emergency_assumed_risk`. El último no declara cumplimiento: registra una decisión BREC extraordinaria con frecuencia/rango exacto, potencia, EIRP, antena, airtime, geografía, evidencia, actores, TTL, monitoreo, stop conditions y kill switch. La especificación hija define double authorization y break-glass acotado.
 
 P1 se divide:
 
 - `P1a`: simulación RF, replay, interfaces cableadas, dummy load, conducted testing o recinto de atenuación medido; sin radiación exterior.
-- `P1b`: TX radiado únicamente después de aprobar `regulatory-profile-uy.yaml` y el safety review.
+- `P1b`: TX radiado sólo con `jurisdiction_validated` o una activación `emergency_assumed_risk`, además de safety review y perfil de coexistencia.
 
-Los perfiles de campo prohibirán overrides de frecuencia, potencia y duty cycle.
+Jamming deliberado, TX continuo, suplantación de servicios y SDR ofensivo siguen prohibidos sin excepción. Interferencia perjudicial observada obliga a ceder o detener.
 
 ## 15. Coexistencia RF
 
@@ -397,7 +397,7 @@ Incluirá solar, generadores, almacenamiento, LoRaWAN, Meshtastic, otras mallas,
 
 ## 22. Riesgos residuales
 
-- Regulación Uruguay continúa bloqueando TX radiado.
+- Una activación `emergency_assumed_risk` puede generar consecuencias regulatorias o interferencia y nunca equivale a autorización legal.
 - Hardware, chipsets e importación pueden cambiar.
 - Capacidad mesh depende de terreno, carga, antena y regulación.
 - Autonomía depende de clima, sombra, envejecimiento y mantenimiento.
