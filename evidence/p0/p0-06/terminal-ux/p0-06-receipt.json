@@ -1,0 +1,124 @@
+{
+  "command": [
+    "python",
+    "-m",
+    "openbrec.verify",
+    "terminal-ux",
+    "--receipt",
+    "/tmp/openbrec-p0-06-d100f75-receipts/terminal-ux/p0-06-receipt.json"
+  ],
+  "dirty": false,
+  "errors": [],
+  "finished_at": "2026-07-17T23:25:46.307557Z",
+  "gate": "terminal-ux",
+  "gate_version": "0.1.0",
+  "git_sha": "d100f75a3cd3d18abffa15573799726c545b96fe",
+  "inputs": [
+    {
+      "path": "fixtures/p0/terminal/offline-terminal.json",
+      "sha256": "6c29527b8f7a2775386e3b11cf453b3f65d018956e46f7dec0c637cfbf765675"
+    },
+    {
+      "path": "apps/web/public/p0-terminal.json",
+      "sha256": "6c29527b8f7a2775386e3b11cf453b3f65d018956e46f7dec0c637cfbf765675"
+    },
+    {
+      "path": "docs/testing/p1a-terminal-comprehension-protocol.md",
+      "sha256": "c46038eb678f866194f74be74b086925673d29f0d1d5ba734a7912b1ea6bc252"
+    },
+    {
+      "path": "openbrec/terminal.py",
+      "sha256": "86cc8c9a536822972631c99ef7a8fcff63233459f8fa32fc97f89b6a962bdd80"
+    },
+    {
+      "path": "schemas/addons/1.0.0/terminal-capability.schema.json",
+      "sha256": "88ce04fc231f04044941ea5aa486f07e07f9467d2a6a07ef8012091912d4d0be"
+    },
+    {
+      "path": "apps/web/src/main.tsx",
+      "sha256": "c9016388f9f54efa0a94b9b4cd7e08b2e737b10031c4c310fb25fe67e3a4bca1"
+    },
+    {
+      "path": "apps/web/src/style.css",
+      "sha256": "b8ba8244f9c4a48c7842aa1bcdf72bde91c950ed5620a9fe7eeee8fc89813f42"
+    },
+    {
+      "path": "apps/web/public/sw.js",
+      "sha256": "8d60b86775f4812047d70dad2f2ed5cf3723ae6c8ec7cc4785e82c7ccbb22145"
+    },
+    {
+      "path": "apps/web/scripts/ui-smoke.mjs",
+      "sha256": "015fdcf5ee1b12f379c7331d01e63896573953a1099916a9b52f11e25a98360a"
+    }
+  ],
+  "lockfiles": [
+    {
+      "path": "uv.lock",
+      "sha256": "2d1b79df4cd5878ec7f4674a133c54ca7b16dfa559560ba3a93911e620f435d5"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "sha256": "ed7659f050b279f37e5cf84fb065fc528e15b3204d374681f3a70ad081d1c25a"
+    },
+    {
+      "path": "apps/web/pnpm-lock.yaml",
+      "sha256": "12a1ed34e601b49a319846ef8d87c316708bb695853661ec3b3b95208701d278"
+    }
+  ],
+  "output_sha256": "d4993b6cf7d87b5e84b7a5c42882db20a53c1188138f917c482b404ffe46668e",
+  "receipt_version": "1.0.0",
+  "responsible_role": "product-ux-reviewer",
+  "result": "passed",
+  "runtime": {
+    "docker": "Docker version 29.5.3, build d1c06ef",
+    "node": "v26.5.0",
+    "pnpm": "11.9.0",
+    "python": "3.12.13"
+  },
+  "scope": "offline_human_terminal_event_derived_states",
+  "started_at": "2026-07-17T23:25:45.791338Z",
+  "summary": {
+    "append_only_events": 26,
+    "cancelled_history_events": 3,
+    "cancelled_messages": 1,
+    "cancelled_path_receipts_preserved": 1,
+    "capabilities_absent_visible": true,
+    "claim_scope": "deterministic_simulation_only",
+    "deleted_sos_events": 0,
+    "derived_states": [
+      "accepted",
+      "cancelled",
+      "delivered",
+      "expired",
+      "queued",
+      "seen",
+      "sent"
+    ],
+    "direct_state_edits": 0,
+    "event_log_sha256": "d1c2dd53b2b2dbc930aa7a0167950b1d3f1c67019b9d42c1031a2287f4636333",
+    "expiry_visible": true,
+    "false_absence_claims": 0,
+    "false_delivery_or_rescue_guarantees": 0,
+    "hidden_queue_gaps": 0,
+    "limitations": [
+      "browser terminal and state campaign are simulated only",
+      "generic terminal interaction events remain a projection, not a new normative contract",
+      "automated checks do not prove human comprehension or field usability"
+    ],
+    "message_types": 4,
+    "messages_denominator": 7,
+    "messages_reconciled": 7,
+    "offline_composer_available": true,
+    "partition_visible": true,
+    "path_receipts": 10,
+    "projection_sha256": "a8c108a605a28956e67085edaa0c47b47ac00a5fc4895425368984ae56e5505b",
+    "result_sha256": "3efd1a53896ff30f7539564c61368b08c99703366994de70a25555519f065cfd",
+    "scenario": "fixtures/p0/terminal/offline-terminal.json",
+    "superior_critical_path_dependencies": 0,
+    "terminal_capability_schema_validated": true,
+    "uncertainty_visible": true,
+    "unreconciled": 0,
+    "visible_queue_items": 1
+  },
+  "warnings": []
+}

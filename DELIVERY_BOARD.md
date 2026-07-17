@@ -3,8 +3,8 @@
 - Autoridad de secuencia: este board
 - Plan activo aprobado: `docs/superpowers/plans/2026-07-17-openbrec-p0-simulated-addons-plan.md`
 - Baseline cerrado: `docs/superpowers/plans/2026-07-17-openbrec-m0-executable-plan.md`
-- Estado real: M0 completo; P0-01–P0-05 aceptadas (`5 / 9`, `55.6%`)
-- Regla de avance: sólo `P0-06` queda elegible; ninguna task se inicia automáticamente
+- Estado real: M0 completo; P0-01–P0-06 aceptadas (`6 / 9`, `66.7%`)
+- Regla de avance: sólo `P0-07` queda elegible; ninguna task se inicia automáticamente
 
 ## Decisiones de gobernanza cerradas
 
@@ -97,7 +97,7 @@ Registro obligatorio: `docs/governance/M0_RESIDUAL_REGISTER.md`.
 
 ## Now — P0 addons completamente simulados
 
-Progreso de aceptación: `5 / 9` (`55.6%`). Una task marcada sólo cambia después de
+Progreso de aceptación: `6 / 9` (`66.7%`). Una task marcada sólo cambia después de
 su implementación, validación, review y receipt; planificación o inicio no suman.
 
 - [x] `P0-01`: contratos addon, catálogo, fixtures y modelos generados.
@@ -105,7 +105,7 @@ su implementación, validación, review y receipt; planificación o inicio no su
 - [x] `P0-03`: HumanMessage protegido, SOS append-only y transporte hostil.
 - [x] `P0-04`: comparación Meshtastic/MeshCore/Reticulum por TransportProfile.
 - [x] `P0-05`: federación 50k sites/60 cells/5 areas/2 hubs.
-- [ ] `P0-06`: terminal offline para texto, estado, SOS y ubicación.
+- [x] `P0-06`: terminal offline para texto, estado, SOS y ubicación.
 - [ ] `P0-07`: beacons acústico/PIR/térmico, fusión, review y retención.
 - [ ] `P0-08`: campaña integrada con fallos y adversarios.
 - [ ] `P0-09`: exit P0, support status por perfil y decisión P1a.
@@ -224,7 +224,29 @@ su implementación, validación, review y receipt; planificación o inicio no su
   para performance/representatividad; P0-R010 se resuelve para P0-05 y sigue
   planificado para P0-06–P0-07. TM-005/TM-010 permanecen High.
 
-Única task elegible: `P0-06`. No está iniciada por este cierre.
+### Evidencia P0-06
+
+- Terminal: cuatro flujos offline y siete historiales derivados de 26 eventos
+  append-only, con cero edición directa de estado y `unreconciled: 0`.
+- Safety: aceptación no promete arribo/rescate, silencio no implica ausencia y
+  la cancelación conserva SOS, tres eventos y un receipt previo.
+- Degradación visible: partición, cobertura parcial, cola/gap, expiración,
+  incertidumbre y cuatro capacidades ausentes quedan expuestas.
+- Browser: Chromium encola texto/SOS, exige confirmación textual para SOS,
+  cancela sin borrar historia y recarga offline con cola persistente; cero
+  errores de consola.
+- Accesibilidad técnica: 18/18 checks pasan para teclado, labels textuales,
+  objetivos de 44 px, cues redundantes y reduced motion; cero participantes y
+  ningún claim de comprensión humana.
+- Receipts: `evidence/p0/p0-06/`, evaluados sobre
+  `d100f75a3cd3d18abffa15573799726c545b96fe` con `dirty: false` e integridad
+  canónica aprobada.
+- Review: `docs/security/2026-07-17-p0-06-offline-terminal-review.md`.
+- Residuales: P0-R005 controla comprensión/accesibilidad humana; P0-R010 queda
+  resuelto para P0-06 y planificado sólo para P0-07; P0-R013 gobierna la falta
+  de contrato normativo para el log genérico de interacción. TM-013 sigue High.
+
+Única task elegible: `P0-07`. No está iniciada por este cierre.
 
 Plan: `docs/superpowers/plans/2026-07-17-openbrec-p0-simulated-addons-plan.md`.
 Residuales: `docs/governance/P0_RESIDUAL_REGISTER.md`.

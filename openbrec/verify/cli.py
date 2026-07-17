@@ -52,6 +52,9 @@ from openbrec.transports import WORKLOAD_PATH as TRANSPORT_WORKLOAD_PATH
 from openbrec.transports import run_transport_gate
 from openbrec.federation import SCENARIO_PATH as FEDERATION_SCENARIO_PATH
 from openbrec.federation import run_federation_gate
+from openbrec.terminal import PUBLIC_PROJECTION_PATH as TERMINAL_PUBLIC_PATH
+from openbrec.terminal import P1A_PROTOCOL_PATH, SCENARIO_PATH as TERMINAL_SCENARIO_PATH
+from openbrec.terminal import run_accessibility_gate, run_terminal_gate
 
 DRAFT_2020_12 = "https://json-schema.org/draft/2020-12/schema"
 VERIFY_VERSION = "0.1.0"
@@ -65,6 +68,7 @@ P0_MESSAGE_GATES = {
 }
 P0_TRANSPORT_GATES = {"transport-comparison", "malicious-transport"}
 P0_FEDERATION_GATES = {"federation-scale", "federation-reconciliation"}
+P0_TERMINAL_GATES = {"terminal-ux", "accessibility"}
 PRIVACY_SAFETY_GATES = {
     "review-quarantine",
     "life-safety-preservation",
@@ -168,6 +172,10 @@ def _responsible_role(gate: str) -> str:
         return "radio-transport-maintainer"
     if gate in P0_FEDERATION_GATES:
         return "federation-maintainer"
+    if gate == "terminal-ux":
+        return "product-ux-reviewer"
+    if gate == "accessibility":
+        return "privacy-safety-reviewer"
     if gate in PRIVACY_SAFETY_GATES:
         return "privacy-safety-reviewer"
     return "contract-maintainer"
@@ -649,6 +657,8 @@ def _parser() -> argparse.ArgumentParser:
         "malicious-transport",
         "federation-scale",
         "federation-reconciliation",
+        "terminal-ux",
+        "accessibility",
         "review-quarantine",
         "life-safety-preservation",
         "privacy",
@@ -984,6 +994,26 @@ def main(argv: Sequence[str] | None = None) -> int:
             "federation-scale": "generated_50k_hierarchy_and_recursive_autonomy",
             "federation-reconciliation": "append_only_partition_and_hostile_hub_reconciliation",
         }[args.gate]
+    elif args.gate in P0_TERMINAL_GATES:
+        if args.gate == "terminal-ux":
+            errors, warnings, summary = run_terminal_gate(root)
+            scope = "offline_human_terminal_event_derived_states"
+        else:
+            errors, warnings, summary = run_accessibility_gate(root)
+            scope = "technical_accessibility_without_human_claim"
+        inputs.extend(
+            [
+                root / TERMINAL_SCENARIO_PATH,
+                root / TERMINAL_PUBLIC_PATH,
+                root / P1A_PROTOCOL_PATH,
+                root / "openbrec/terminal.py",
+                root / "schemas/addons/1.0.0/terminal-capability.schema.json",
+                root / "apps/web/src/main.tsx",
+                root / "apps/web/src/style.css",
+                root / "apps/web/public/sw.js",
+                root / "apps/web/scripts/ui-smoke.mjs",
+            ]
+        )
     elif args.gate == "review-quarantine":
         errors, warnings, summary = run_review_quarantine(root)
         scope = "exactly_one_primary_disposition"
@@ -1050,10 +1080,12 @@ def main(argv: Sequence[str] | None = None) -> int:
                 root / "apps/web/pnpm-lock.yaml",
                 root / "apps/web/public/favicon.svg",
                 root / "apps/web/public/m0-projection.json",
+                root / "apps/web/public/p0-terminal.json",
                 root / "apps/web/public/sw.js",
                 root / "apps/web/scripts/ui-smoke.mjs",
                 root / "docker-compose.yml",
                 root / "fixtures/replay/core/m0-six-node.json",
+                root / "fixtures/p0/terminal/offline-terminal.json",
             ]
         )
     elif args.gate == "secret-scan":

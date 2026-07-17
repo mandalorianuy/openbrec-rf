@@ -187,12 +187,20 @@ jobs:
       - run: pnpm --dir apps/web install --frozen-lockfile
       - run: pnpm --dir apps/web exec playwright install --with-deps chromium
       - run: uv run --offline python -m openbrec.verify simulator --scenario fixtures/replay/core/m0-six-node.json --receipt evidence/m0/simulator/m0-06-receipt.json
-      - run: uv run --offline python -m openbrec.verify ui-smoke --receipt evidence/m0/ui-smoke/m0-06-receipt.json
+      - run: uv run --offline python -m openbrec.verify terminal-ux --receipt evidence/p0/p0-06/terminal-ux/p0-06-receipt.json
+      - run: uv run --offline python -m openbrec.verify ui-smoke --receipt evidence/p0/p0-06/ui-smoke/p0-06-receipt.json
+      - run: uv run --offline python -m openbrec.verify accessibility --receipt evidence/p0/p0-06/accessibility/p0-06-receipt.json
       - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: m0-simulation-ui-receipts
           path: evidence/m0
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: p0-offline-terminal-receipts
+          path: evidence/p0/p0-06
           if-no-files-found: error
 
   supply-chain:

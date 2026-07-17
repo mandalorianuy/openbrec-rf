@@ -89,6 +89,8 @@ def run_core_scenario_gate(
 
 def run_ui_smoke_gate(root: Path) -> tuple[list[str], list[str], dict[str, Any]]:
     projection_path = root / "apps/web/public/m0-projection.json"
+    terminal_path = root / "apps/web/public/p0-terminal.json"
+    terminal_fixture_path = root / "fixtures/p0/terminal/offline-terminal.json"
     source_path = root / "apps/web/src/main.tsx"
     compose_path = root / "docker-compose.yml"
     errors: list[str] = []
@@ -100,24 +102,41 @@ def run_ui_smoke_gate(root: Path) -> tuple[list[str], list[str], dict[str, Any]]
         'data-testid="capability-matrix"',
         'data-testid="event-timeline"',
         'data-testid="semantic-inspector"',
+        'data-testid="offline-terminal"',
+        'data-testid="message-composer"',
+        'data-testid="message-queue"',
+        'data-testid="message-history"',
     ):
         if marker not in source:
             errors.append(f"PWA source is missing {marker}")
+    if not terminal_path.is_file() or not terminal_fixture_path.is_file():
+        errors.append("PWA terminal projection fixture is missing")
     compose = compose_path.read_text(encoding="utf-8") if compose_path.is_file() else ""
     if '127.0.0.1:${OPENBREC_WEB_PORT:-8080}:8080' not in compose:
         errors.append("PWA ingress is not constrained to host loopback")
     scenario_path = root / "fixtures/replay/core/m0-six-node.json"
     projection_sha256: str | None = None
+    terminal_sha256: str | None = None
     if projection_path.is_file() and scenario_path.is_file():
         projection = json.loads(projection_path.read_text(encoding="utf-8"))
         scenario = _load_scenario(scenario_path)
         projection_sha256 = canonical_hash(projection)
         if projection_sha256 != scenario["expected"]["projection_sha256"]:
             errors.append("PWA projection does not match the versioned scenario")
+    if terminal_path.is_file() and terminal_fixture_path.is_file():
+        terminal_projection = json.loads(terminal_path.read_text(encoding="utf-8"))
+        terminal_fixture = json.loads(
+            terminal_fixture_path.read_text(encoding="utf-8")
+        )
+        terminal_sha256 = canonical_hash(terminal_projection)
+        if terminal_sha256 != canonical_hash(terminal_fixture):
+            errors.append("PWA terminal projection does not match its fixture")
 
     summary: dict[str, Any] = {
         "projection": "apps/web/public/m0-projection.json",
         "projection_sha256": projection_sha256,
+        "terminal_projection": "apps/web/public/p0-terminal.json",
+        "terminal_projection_sha256": terminal_sha256,
         "ingress_bind": "127.0.0.1",
         "build_exit_code": None,
         "browser": "not_run",

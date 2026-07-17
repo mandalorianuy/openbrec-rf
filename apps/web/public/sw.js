@@ -1,9 +1,10 @@
-const CACHE = "openbrec-offline-shell-v2";
+const CACHE = "openbrec-offline-shell-v3";
 const OFFLINE_ASSETS = [
   "/",
   "/favicon.svg",
   "/manifest.webmanifest",
   "/m0-projection.json",
+  "/p0-terminal.json",
 ];
 
 self.addEventListener("install", (event) => {
