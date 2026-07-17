@@ -1,6 +1,6 @@
 # Contratos core y replay determinístico de OpenBREC RF
 
-- Estado: especificación aprobada; M0-01 y M0-02 validados; replay no implementado
+- Estado: especificación aprobada; M0-01–M0-03 validados; replay no implementado
 - Fecha: 2026-07-16
 - Especificación padre: `2026-07-16-offgrid-energy-lora-beacons-design.md`
 - Alcance: autoridad contractual común de M0 y replay en dos niveles
@@ -646,4 +646,4 @@ Pasar `python3 scripts/validate_bundle.py` no satisface estos criterios; sólo a
 
 ## 22. Estado de implementación y siguiente gate
 
-M0-02 materializa y valida la familia core `1.0.0`, fixtures, baseline de compatibilidad y proyecciones Pydantic/TypeScript. Los límites semánticos que JSON Schema no puede demostrar están gobernados en `docs/governance/M0_RESIDUAL_REGISTER.md` y asignados principalmente a M0-04. M0-03 no se inició en este slice; P0 continúa bloqueado hasta el M0 exit completo.
+M0-02 materializa y valida la familia core `1.0.0`, fixtures, baseline de compatibilidad y proyecciones Pydantic/TypeScript. M0-03 demuestra que API y worker aplican esa autoridad en un runtime `lab-sim` contenido y que una observación válida o inválida toma el camino esperado sin Internet. Persistencia reconciliada, relaciones semánticas y replay siguen gobernados para M0-04; los límites completos están en `docs/governance/M0_RESIDUAL_REGISTER.md`. P0 continúa bloqueado hasta el M0 exit completo.

@@ -2,7 +2,7 @@
 
 - Autoridad de secuencia: este board
 - Plan activo aprobado: `docs/superpowers/plans/2026-07-17-openbrec-m0-executable-plan.md`
-- Estado real: M0 parcial; M0-01 y M0-02 cerrados; runtime M0 inexistente
+- Estado real: M0 parcial; M0-01, M0-02 y M0-03 cerrados; M0-04 no iniciado
 - Regla de avance: una sola task M0 a la vez, con gate y receipt; no iniciar addons antes del M0 exit
 
 ## Decisiones de gobernanza cerradas
@@ -18,7 +18,7 @@ Los checks permanecen abiertos hasta producir la evidencia exigida por el plan. 
 
 - [x] `M0-01` / F-01: aceptar ADR-0001, catálogo core y registro inmutable de schemas legacy.
 - [x] `M0-02` / F-01: implementar schemas, fixtures, modelos Pydantic/TypeScript y compatibilidad SemVer.
-- [ ] `M0-03` / F-02: crear API, worker y PWA mínimos; construir y arrancar `lab-sim` sin Internet.
+- [x] `M0-03` / F-02: crear API, worker y PWA mínimos; construir y arrancar `lab-sim` sin Internet.
 - [ ] `M0-04` / F-03–F-04: implementar accepted log, vault/quarantine/ledger y replay determinístico en dos niveles.
 - [ ] `M0-05` / F-05: simular seis nodos, dos tracks y tres zonas; mostrar capacidades, mapa, timeline y explicación.
 - [ ] `M0-06` / F-06: separar gates CI, generar receipts y demostrar el M0 exit completo.
@@ -43,9 +43,18 @@ Registro obligatorio: `docs/governance/M0_RESIDUAL_REGISTER.md`.
 - Receipts: `evidence/m0/{bundle-structure,schema,fixtures,schema-compat,contracts-gen}/`, evaluados sobre `eaa3fa8816e6d7bf48816655f4b574b13627ed72` con `dirty: false`.
 - Residuales: todos registrados como `resolved`, `controlled` o `planned`; M0-R003/M0-R004/M0-R009 bloquean el cierre de M0-04 y M0-R006/M0-R007 el M0 exit.
 
+### Evidencia M0-03
+
+- Runtime: API FastAPI y worker asyncio revalidan `Observation` contra el schema normativo antes de publicar/procesar.
+- PWA: React/TypeScript/Vite compila con lockfile offline; manifest y service worker forman un shell cacheable.
+- Compose: Mosquitto y PostgreSQL sin puertos publicados, password PostgreSQL por secret, cinco healthchecks y red `lab-core` con `internal: true`.
+- Smoke: observación válida procesada API → MQTT → worker; inválida rechazada con HTTP 422; shell/manifest/service worker disponibles; egress externo denegado.
+- Receipts: `evidence/m0/{compose-build,offline-startup}/m0-03-receipt.json`, evaluados sobre `a2b446f8a5214ff2cfcb115f1a82573acc31d142` con `dirty: false` y `warnings: []`.
+- Residuales M0-R011–M0-R015: uno `controlled` y cuatro `planned` con owners y stop conditions para M0-04/M0-05/M0-06.
+
 ## Gate de salida M0
 
-- [ ] Todos los servicios referenciados por Compose existen, construyen y arrancan offline.
+- [x] Todos los servicios referenciados por Compose existen, construyen y arrancan offline.
 - [x] Catálogo, metaschemas y fixtures pasan; modelos generados se regeneran sin diff.
 - [ ] Replay adapter/core produce hashes estables en diez ejecuciones y bajo variación de orden, locale y timezone.
 - [ ] Cada input termina exactamente en accepted log, quarantine, vault o ledger; no existe descarte silencioso.

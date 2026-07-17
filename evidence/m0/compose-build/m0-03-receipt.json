@@ -1,0 +1,91 @@
+{
+  "command": [
+    "python",
+    "-m",
+    "openbrec.verify",
+    "compose-build",
+    "--receipt",
+    "evidence/m0/compose-build/m0-03-receipt.json"
+  ],
+  "dirty": false,
+  "errors": [],
+  "finished_at": "2026-07-17T14:14:35.499779Z",
+  "gate": "compose-build",
+  "gate_version": "0.1.0",
+  "git_sha": "a2b446f8a5214ff2cfcb115f1a82573acc31d142",
+  "inputs": [
+    {
+      "path": "docker-compose.yml",
+      "sha256": "c95a6fa4c4895f44022c25e464b15b2bb977b24dcb3d376a2d0d2d7b1ab88842"
+    },
+    {
+      "path": "apps/api/Dockerfile",
+      "sha256": "5b2de775cf0f1f677d0129100727237f4c00c34f0aad74c8e001a24bb9d7ab22"
+    },
+    {
+      "path": "apps/web/Dockerfile",
+      "sha256": "5e63eb2d2d9f7e2e1d346057cf54cda545484cb4d2768ff7f1fa0831dbf81b69"
+    },
+    {
+      "path": "apps/web/pnpm-lock.yaml",
+      "sha256": "c8c5e23abedd5d4d810e3d5abf86ab855cd8db1a246c0b4b0533ad1c8ba87662"
+    },
+    {
+      "path": "uv.lock",
+      "sha256": "cf76ef9cc1e2f742df09948ea5940bbdfeeec113078a5dbdd57662fd127e492a"
+    }
+  ],
+  "lockfiles": [
+    {
+      "path": "uv.lock",
+      "sha256": "cf76ef9cc1e2f742df09948ea5940bbdfeeec113078a5dbdd57662fd127e492a"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "sha256": "ed7659f050b279f37e5cf84fb065fc528e15b3204d374681f3a70ad081d1c25a"
+    }
+  ],
+  "receipt_version": "1.0.0",
+  "responsible_role": "runtime-maintainer",
+  "result": "passed",
+  "runtime": {
+    "python": "3.12.13"
+  },
+  "scope": "lab_sim_images",
+  "started_at": "2026-07-17T14:14:30.517395Z",
+  "summary": {
+    "build_output_tail": [
+      "",
+      "#29 [web build 2/7] WORKDIR /app",
+      "#29 CACHED",
+      "",
+      "#30 [web stage-1 3/3] COPY --from=build /app/dist /usr/share/nginx/html",
+      "#30 CACHED",
+      "",
+      "#31 [web] exporting to image",
+      "#31 exporting layers done",
+      "#31 exporting manifest sha256:abbeafebf4ff3c334197d76ed9cb663dbbe1248dc4420a793326e2671a1418db 0.1s done",
+      "#31 exporting config sha256:0faa7bea44c10d1b3e5709f4a7867a937a574e9d0e7d01e49bb56ec832a6f7cc done",
+      "#31 exporting attestation manifest sha256:13ffdc6b2218e840ae5656c5b61e660fda04f1ab63325d88cbf747b01c9c0a5b 0.0s done",
+      "#31 exporting manifest list sha256:5441caf0b7d396fc72ab188f8c46fa28e6ee8232dc0c6b044fbb5b3a82dbc473",
+      "#31 exporting manifest list sha256:5441caf0b7d396fc72ab188f8c46fa28e6ee8232dc0c6b044fbb5b3a82dbc473 done",
+      "#31 naming to docker.io/openbrec/web:m0 done",
+      "#31 unpacking to docker.io/openbrec/web:m0 0.0s done",
+      "#31 DONE 0.2s",
+      "",
+      "#32 [web] resolving provenance for metadata file",
+      "#32 DONE 0.0s"
+    ],
+    "compose_build_exit_code": 0,
+    "compose_config_exit_code": 0,
+    "infrastructure_pull_exit_code": 0,
+    "services": [
+      "mqtt",
+      "postgres",
+      "api",
+      "fusion-worker",
+      "web"
+    ]
+  },
+  "warnings": []
+}
