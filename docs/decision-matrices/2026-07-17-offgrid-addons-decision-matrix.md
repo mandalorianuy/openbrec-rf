@@ -1,6 +1,6 @@
 # Matriz de decisión: energía, comunicaciones off-grid y beacons
 
-- Estado: análisis inicial y revisión multi-bearer completas; pendiente de aprobación
+- Estado: matriz aprobada; sólo M0 F-01–F-06 habilitado para planificación
 - Fecha: 2026-07-17
 - Alcance: decisión y orden de experimentos M0/P0/P1/P2
 - Autoridad de entrada: cuatro especificaciones hijas aprobadas
@@ -34,7 +34,7 @@ Por lo tanto:
 - la madurez OpenBREC máxima actual de estas capacidades es `M1 design-approved`;
 - ninguna integración tiene evidencia `M2 simulated` dentro del repo;
 - esta matriz ordena decisiones, no es todavía un implementation plan;
-- `DELIVERY_BOARD.md` sigue siendo la autoridad de ejecución hasta aprobar esta matriz y completar M0.
+- `DELIVERY_BOARD.md` es la autoridad de ejecución y sólo puede habilitar M0 hasta demostrar su exit.
 
 ## 3. Escalas y códigos
 
@@ -475,4 +475,4 @@ Referencias externas:
 
 ## 16. Gate de aprobación
 
-Si se aprueba esta matriz, el siguiente paso no es implementar addons. Es actualizar `DELIVERY_BOARD.md` y escribir un plan M0 ejecutable que cierre únicamente F-01–F-06, con tasks pequeñas, responsables, comandos y evidencias. P0 se planifica después de demostrar M0 exit.
+La matriz y su revisión multi-bearer fueron aprobadas el 2026-07-17. La aprobación no habilita addons: habilita actualizar `DELIVERY_BOARD.md` y someter a aprobación un plan M0 ejecutable que cierre únicamente F-01–F-06, con tasks pequeñas, responsables, comandos y evidencias. P0 se planifica después de demostrar M0 exit.

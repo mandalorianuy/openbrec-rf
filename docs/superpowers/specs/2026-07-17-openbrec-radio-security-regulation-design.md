@@ -1,6 +1,6 @@
 # Radio, seguridad, regulación y federación de OpenBREC RF
 
-- Estado: especificación aprobada; revisión multi-bearer pendiente de aprobación; implementación no autorizada
+- Estado: especificación y revisión multi-bearer aprobadas; implementación no autorizada
 - Fecha: 2026-07-17
 - Especificación padre: `2026-07-16-offgrid-energy-lora-beacons-design.md`
 - Dependencia contractual: `2026-07-16-openbrec-core-contracts-replay-design.md`
@@ -14,7 +14,7 @@ Esta especificación convierte la visión de comunicaciones off-grid en límites
 
 La jerarquía facilita coordinación, pero nunca se ubica en el camino crítico local. Cada nivel conserva capacidad de operar aislado, registrar evidencia, comunicar SOS, administrar confianza y reconciliarse después.
 
-Este documento no autoriza TX radiado, despliegue de campo ni implementación. Las cuatro especificaciones hijas ya fueron aprobadas, pero la revisión multi-bearer y la matriz conjunta permanecen en revisión. Cualquier plan addon sigue condicionado por M0 ejecutable.
+Este documento no autoriza TX radiado, despliegue de campo ni implementación. Las cuatro especificaciones hijas, la revisión multi-bearer y la matriz conjunta fueron aprobadas. Cualquier plan addon sigue condicionado por M0 ejecutable.
 
 ## 2. Autoridad y corrección de la especificación padre
 
@@ -534,4 +534,4 @@ Las versiones y condiciones externas se vuelven a verificar al crear cada perfil
 
 ## 20. Siguiente gate
 
-La revisión multi-bearer debe aprobarse junto con su actualización de la matriz conjunta. No habilita implementación ni TX. Después de aprobarla, el siguiente trabajo ejecutable sigue siendo M0 core; la comparación P0 de transportes sólo se planifica después de demostrar M0 exit.
+La revisión multi-bearer y su actualización de la matriz conjunta fueron aprobadas el 2026-07-17. No habilitan implementación addon ni TX. El siguiente frente es únicamente M0 core; la comparación P0 de transportes sólo se planifica después de demostrar M0 exit.

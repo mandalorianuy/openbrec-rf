@@ -1,6 +1,6 @@
 # Estado del arte y selección contextual de comunicaciones off-grid
 
-- Estado: revisión inicial completa; pendiente de aprobación
+- Estado: revisión multi-bearer aprobada; implementación no autorizada
 - Fecha de corte: 2026-07-17
 - Alcance: transportes humanos, máquina, federación y fallback para OpenBREC
 - Condición: no autoriza implementación, compra, TX ni selección final de hardware
