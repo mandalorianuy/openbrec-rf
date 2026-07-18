@@ -245,12 +245,12 @@ class OpenSpecFederationTests(unittest.TestCase):
     def test_acceptance_references_a_clean_passing_receipt(self) -> None:
         receipt = self.load_json(RECEIPT)
         acceptance = self.load_json(ACCEPTANCE)
-        self.assertEqual(receipt["status"], "passed")
-        self.assertFalse(receipt["repository"]["dirty"])
+        self.assertEqual(receipt["result"], "passed")
+        self.assertFalse(receipt["dirty"])
         self.assertEqual(acceptance["task"], "OS-06")
         self.assertEqual(acceptance["status"], "accepted")
         self.assertEqual(
-            acceptance["receipt_sha256"],
+            acceptance["receipt"]["sha256"],
             __import__("hashlib").sha256(RECEIPT.read_bytes()).hexdigest(),
         )
         self.assertEqual(acceptance["next_task"], "OS-07")

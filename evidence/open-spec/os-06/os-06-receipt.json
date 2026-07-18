@@ -1,0 +1,100 @@
+{
+  "command": [
+    "python",
+    "-m",
+    "openbrec.verify",
+    "open-spec-federation",
+    "--receipt",
+    "evidence/open-spec/os-06/os-06-receipt.json"
+  ],
+  "dirty": false,
+  "errors": [],
+  "finished_at": "2026-07-18T17:54:42.070712Z",
+  "gate": "open-spec-federation",
+  "gate_version": "0.1.0",
+  "git_sha": "4c583da636034859b9e430fc44864ee770a53b7a",
+  "inputs": [
+    {
+      "path": "config/open-spec/governance.json",
+      "sha256": "ac6ed4752858d9a530c10debc48e5ac073c8b8b3fdcd00581581efa024b2c433"
+    },
+    {
+      "path": "specs/openbrec/1.0.0-draft.1/recursive-federation-profiles.json",
+      "sha256": "cde97f36fa6f96ada00a0f0835eac826bd8691743679647b6b9e7f724d0c8f9f"
+    },
+    {
+      "path": "schemas/open-spec/federation-peer-agreement.schema.json",
+      "sha256": "2e0a20e5a57c6f11b4e2c8695e5e64f038a2c157a57de8767321c4ff70fcc996"
+    },
+    {
+      "path": "fixtures/open-spec/federation/conformance-examples.json",
+      "sha256": "7a5bf1b6eac2d528ec075a07e23a7da2f1493b2c9a854b529e4f30131460c4e9"
+    },
+    {
+      "path": "docs/governance/open-spec-federation-residuals.json",
+      "sha256": "e31bd1726592b662fbbbd71de206f8506e5074744f8b942c1e91447df8621f30"
+    },
+    {
+      "path": "openbrec/open_spec_federation.py",
+      "sha256": "58beb0f48abee588aa3ad081579f5428692bd53ba17e0cddb74d918ceb41fb6d"
+    }
+  ],
+  "lockfiles": [
+    {
+      "path": "uv.lock",
+      "sha256": "2d1b79df4cd5878ec7f4674a133c54ca7b16dfa559560ba3a93911e620f435d5"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "sha256": "ed7659f050b279f37e5cf84fb065fc528e15b3204d374681f3a70ad081d1c25a"
+    },
+    {
+      "path": "apps/web/pnpm-lock.yaml",
+      "sha256": "12a1ed34e601b49a319846ef8d87c316708bb695853661ec3b3b95208701d278"
+    }
+  ],
+  "output_sha256": "05739c1565db21f0efbd4b2e21c7efe60892f67538629b1211ab0071b8e25f5a",
+  "receipt_version": "1.0.0",
+  "responsible_role": "release-reviewer",
+  "result": "passed",
+  "runtime": {
+    "docker": "Docker version 29.5.3, build d1c06ef",
+    "node": "v26.5.0",
+    "pnpm": "11.9.0",
+    "python": "3.12.13"
+  },
+  "scope": "open_spec_recursive_autonomous_federation_and_reconciliation",
+  "started_at": "2026-07-18T17:54:41.528555Z",
+  "summary": {
+    "autonomous_levels": 5,
+    "duplicates_deduplicated": 1,
+    "false_operator_acceptances": 0,
+    "forged_cell_events_accepted": 0,
+    "hierarchy_levels": 5,
+    "hostile_hub_cases": 6,
+    "hub_decryptions": 0,
+    "hub_tx_orders": 0,
+    "last_write_wins_resolutions": 0,
+    "local_operations_blocked_by_superior": 0,
+    "local_operations_executed": 20,
+    "next_task": "OS-07",
+    "next_task_started": false,
+    "partition_cases": 5,
+    "peer_agreements": 2,
+    "physical_scale_blocks_publication": false,
+    "reconciliation_inputs": 10,
+    "replay_hashes": 1,
+    "replay_orders": 10,
+    "replay_sha256": "dac3026b4c42b87106028b78c61e809b143762a01317da2a297f2d6ca6b8251b",
+    "scale_evidence_scope": "deterministic_simulation_correctness_only",
+    "scale_reference_sites": 50000,
+    "silent_losses": 0,
+    "source_log_overwrites": 0,
+    "spec_tasks_accepted": 6,
+    "spec_tasks_total": 8,
+    "spec_version": "1.0.0-draft.1",
+    "unverified_distress_preserved": 1,
+    "visible_conflicts": 3
+  },
+  "warnings": []
+}
