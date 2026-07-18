@@ -22,7 +22,13 @@ OpenBREC RF es una plataforma open source, modular y offline-first para investig
 
 P1a-01 está `blocked_external_evidence`: su gate existe, pero faltan nueve assets
 reales autorizados, inspeccionados y bajo custodia. Se comprueba sin promover la
-task con:
+task con el checklist no contable:
+
+```bash
+uv run --offline python -m openbrec.verify p1a-assets-intake --evidence-dir evidence/p1a/p1a-01
+```
+
+Cuando el checklist indique 9/9 submissions, el gate de aceptación es:
 
 ```bash
 uv run --offline python -m openbrec.verify p1a-assets --evidence-dir evidence/p1a/p1a-01

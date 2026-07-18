@@ -66,9 +66,11 @@ from openbrec.p1a_readiness import (
     run_readiness_gate,
 )
 from openbrec.p1a_assets import (
+    AUTHORIZATION_REQUEST_PATH as P1A_ASSET_REQUEST_PATH,
     DEFAULT_EVIDENCE_DIR as P1A_ASSET_EVIDENCE_DIR,
     SCHEMA_PATH as P1A_ASSET_SCHEMA_PATH,
     run_asset_gate,
+    run_asset_intake,
 )
 from openbrec.open_spec import (
     CLAIM_SCHEMA_PATH as OPEN_SPEC_CLAIM_SCHEMA_PATH,
@@ -295,6 +297,7 @@ def _responsible_role(gate: str) -> str:
     if gate in {
         "p1a-readiness",
         "p1a-assets",
+        "p1a-assets-intake",
         "open-spec",
         "open-spec-energy",
         "open-spec-transports",
@@ -812,6 +815,7 @@ def _parser() -> argparse.ArgumentParser:
         "p0-all",
         "p1a-readiness",
         "p1a-assets",
+        "p1a-assets-intake",
         "open-spec",
         "open-spec-energy",
         "open-spec-transports",
@@ -856,6 +860,11 @@ def _parser() -> argparse.ArgumentParser:
                 "--evidence-dir", default=str(P1A_ASSET_EVIDENCE_DIR)
             )
             subparser.add_argument("--schema", default=str(P1A_ASSET_SCHEMA_PATH))
+        if gate == "p1a-assets-intake":
+            subparser.add_argument(
+                "--evidence-dir", default=str(P1A_ASSET_EVIDENCE_DIR)
+            )
+            subparser.add_argument("--request", default=str(P1A_ASSET_REQUEST_PATH))
         if gate == "open-spec":
             subparser.add_argument("--policy", default=str(OPEN_SPEC_POLICY_PATH))
             subparser.add_argument("--profiles", default=str(OPEN_SPEC_PROFILES_PATH))
@@ -1494,6 +1503,28 @@ def main(argv: Sequence[str] | None = None) -> int:
                 },
             )
         scope = "p1a_exact_asset_identity_custody_and_inspection"
+    elif args.gate == "p1a-assets-intake":
+        try:
+            evidence_dir = _resolve_inside(
+                root, args.evidence_dir, label="evidence-dir"
+            )
+            request_path = _resolve_inside(root, args.request, label="request")
+            errors, warnings, summary, gate_inputs = run_asset_intake(
+                root,
+                evidence_dir=evidence_dir,
+                request_path=request_path,
+            )
+            inputs.extend(gate_inputs)
+        except (OSError, ValueError) as exc:
+            errors, warnings, summary = (
+                [str(exc)],
+                [],
+                {
+                    "evidence_dir": args.evidence_dir,
+                    "request": args.request,
+                },
+            )
+        scope = "p1a_external_asset_evidence_intake_status"
     elif args.gate == "open-spec":
         try:
             policy_path = _resolve_inside(root, args.policy, label="policy")

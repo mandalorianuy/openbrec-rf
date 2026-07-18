@@ -10,6 +10,9 @@ from jsonschema import Draft202012Validator, FormatChecker
 
 SCHEMA_PATH = Path("schemas/p1a/capability-manifest.schema.json")
 DEFAULT_EVIDENCE_DIR = Path("evidence/p1a/p1a-01")
+AUTHORIZATION_REQUEST_PATH = Path(
+    "docs/governance/p1a-01-asset-authorization-request.json"
+)
 
 CATEGORIES = (
     "lorawan_gateway",
@@ -124,6 +127,137 @@ def _validate_authorization_record(
         ):
             errors.append(f"{prefix}.loan requires owner, return terms and receipt evidence")
     return errors, record
+
+
+def run_asset_intake(
+    root: Path,
+    *,
+    evidence_dir: Path,
+    request_path: Path,
+) -> tuple[list[str], list[str], dict[str, Any], list[Path]]:
+    """Report missing external evidence without accepting physical claims."""
+    request, errors = _read_json(request_path, "asset authorization request")
+    inputs = [request_path]
+    if request is None:
+        return errors, [], {"task": "P1a-01"}, inputs
+
+    rows = request.get("asset_requests")
+    if not isinstance(rows, list):
+        return (
+            [*errors, "asset authorization request must contain asset_requests"],
+            [],
+            {"task": "P1a-01"},
+            inputs,
+        )
+    requested_by_category = {
+        row.get("category"): row for row in rows if isinstance(row, dict)
+    }
+    if set(requested_by_category) != CATEGORY_SET or len(rows) != len(CATEGORIES):
+        errors.append("asset authorization request must cover nine categories exactly once")
+    for category, row in requested_by_category.items():
+        if (
+            category in CANDIDATE_BY_CATEGORY
+            and row.get("candidate_id") != CANDIDATE_BY_CATEGORY[category]
+        ):
+            errors.append(
+                f"{category} candidate_id does not match governed category"
+            )
+
+    authorization_categories: set[str] = set()
+    register_path = evidence_dir / "authorization-register.json"
+    if register_path.is_file():
+        inputs.append(register_path)
+        register, register_errors = _read_json(register_path, "authorization register")
+        errors.extend(register_errors)
+        records = register.get("authorizations") if register is not None else []
+        if not isinstance(records, list):
+            errors.append("authorization register authorizations must be an array")
+            records = []
+        for record in records:
+            if not isinstance(record, dict):
+                continue
+            category = record.get("category")
+            if (
+                category in CATEGORY_SET
+                and record.get("candidate_id") == CANDIDATE_BY_CATEGORY[category]
+            ):
+                authorization_categories.add(category)
+
+    manifest_categories: set[str] = set()
+    manifests_dir = evidence_dir / "manifests"
+    manifest_paths = (
+        sorted(manifests_dir.glob("*.json")) if manifests_dir.is_dir() else []
+    )
+    inputs.extend(manifest_paths)
+    for path in manifest_paths:
+        manifest, manifest_errors = _read_json(path, "capability manifest")
+        errors.extend(manifest_errors)
+        if manifest is None:
+            continue
+        category = manifest.get("category")
+        if (
+            category in CATEGORY_SET
+            and manifest.get("candidate_id") == CANDIDATE_BY_CATEGORY[category]
+        ):
+            manifest_categories.add(category)
+
+    checklist: list[dict[str, Any]] = []
+    for category in CATEGORIES:
+        request_row = requested_by_category.get(category, {})
+        authorization_present = category in authorization_categories
+        manifest_present = category in manifest_categories
+        missing: list[str] = []
+        if not authorization_present:
+            missing.append("authorization_record")
+        if not manifest_present:
+            missing.append("capability_manifest")
+        if missing:
+            required = request_row.get("required_external_evidence", [])
+            if isinstance(required, list):
+                missing.extend(item for item in required if isinstance(item, str))
+        checklist.append(
+            {
+                "category": category,
+                "candidate_id": CANDIDATE_BY_CATEGORY[category],
+                "authorization_present": authorization_present,
+                "manifest_present": manifest_present,
+                "status": (
+                    "submitted_for_gate_review"
+                    if authorization_present and manifest_present
+                    else "awaiting_external_evidence"
+                ),
+                "missing_external_evidence": list(dict.fromkeys(missing)),
+            }
+        )
+
+    ready = sum(row["status"] == "submitted_for_gate_review" for row in checklist)
+    summary = {
+        "task": "P1a-01",
+        "task_status": (
+            "ready_for_acceptance_gate"
+            if ready == len(CATEGORIES)
+            else "blocked_external_evidence"
+        ),
+        "evidence_dir": str(evidence_dir.relative_to(root)),
+        "category_denominator": len(CATEGORIES),
+        "categories_ready_for_gate": ready,
+        "categories_awaiting_external_evidence": len(CATEGORIES) - ready,
+        "accepted_tasks": 0,
+        "total_tasks": 8,
+        "percent": 0.0,
+        "physical_actions_authorized": bool(
+            request.get("physical_actions_authorized", False)
+        ),
+        "purchase_authorized": bool(request.get("purchase_authorized", False)),
+        "acceptance_gate": request.get("acceptance_gate"),
+        "next_task": "P1a-01",
+        "next_task_started": False,
+        "category_checklist": checklist,
+        "non_progress_notice": (
+            "This preflight reports intake readiness only and does not accept P1a-01."
+        ),
+    }
+    return errors, [], summary, inputs
 
 
 def run_asset_gate(

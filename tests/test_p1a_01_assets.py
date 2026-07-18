@@ -15,6 +15,7 @@ AUTHORIZATION_REQUEST = (
 )
 PLAN = REPO_ROOT / "docs/superpowers/plans/2026-07-17-openbrec-p1a-bench-conducted-plan.md"
 RESIDUALS = REPO_ROOT / "docs/governance/p1a-residuals.json"
+INTAKE_GUIDE = REPO_ROOT / "docs/governance/P1A_ASSET_INTAKE.md"
 CATEGORIES = (
     "lorawan_gateway",
     "lorawan_endpoint",
@@ -125,6 +126,49 @@ class P1AAssetGateTests(unittest.TestCase):
         self.assertIn("nine exact manifests", result.stderr)
         self.assertNotIn(str(REPO_ROOT), result.stderr)
 
+    def test_intake_preflight_lists_every_missing_category_without_progress(
+        self,
+    ) -> None:
+        result = self.run_verify(
+            "p1a-assets-intake", "--evidence-dir", "evidence/p1a/p1a-01"
+        )
+        self.assertEqual(result.returncode, 0, result.stderr)
+        payload = json.loads(result.stdout)
+        summary = payload["summary"]
+        self.assertEqual(summary["task"], "P1a-01")
+        self.assertEqual(summary["task_status"], "blocked_external_evidence")
+        self.assertEqual(summary["category_denominator"], 9)
+        self.assertEqual(summary["categories_ready_for_gate"], 0)
+        self.assertEqual(summary["categories_awaiting_external_evidence"], 9)
+        self.assertEqual(summary["accepted_tasks"], 0)
+        self.assertFalse(summary["physical_actions_authorized"])
+        self.assertFalse(summary["next_task_started"])
+        rows = summary["category_checklist"]
+        self.assertEqual({row["category"] for row in rows}, set(CATEGORIES))
+        for row in rows:
+            self.assertEqual(row["status"], "awaiting_external_evidence")
+            self.assertFalse(row["authorization_present"])
+            self.assertFalse(row["manifest_present"])
+            self.assertTrue(row["missing_external_evidence"])
+
+    def test_intake_preflight_rejects_candidate_category_drift(self) -> None:
+        with tempfile.TemporaryDirectory(dir=REPO_ROOT) as temporary:
+            request_path = Path(temporary) / "authorization-request.json"
+            request = json.loads(
+                AUTHORIZATION_REQUEST.read_text(encoding="utf-8")
+            )
+            request["asset_requests"][0]["candidate_id"] = "P1A-HW-09"
+            request_path.write_text(json.dumps(request), encoding="utf-8")
+            result = self.run_verify(
+                "p1a-assets-intake",
+                "--evidence-dir",
+                "evidence/p1a/p1a-01",
+                "--request",
+                str(request_path.relative_to(REPO_ROOT)),
+            )
+        self.assertNotEqual(result.returncode, 0, result.stdout)
+        self.assertIn("candidate_id does not match governed category", result.stderr)
+
     def test_complete_exact_authorized_inventory_passes_structural_gate(self) -> None:
         with tempfile.TemporaryDirectory(dir=REPO_ROOT) as temporary:
             evidence_dir = Path(temporary)
@@ -230,6 +274,22 @@ class P1AAssetGateTests(unittest.TestCase):
         self.assertIn("test $gate_status -eq 1", job)
         self.assertIn('receipt["result"] == "failed"', job)
         self.assertIn("p1a-01-blocked-receipt", job)
+
+    def test_intake_preflight_is_documented_and_published_by_ci(self) -> None:
+        self.assertTrue(INTAKE_GUIDE.is_file())
+        guide = INTAKE_GUIDE.read_text(encoding="utf-8")
+        self.assertIn("openbrec.verify p1a-assets-intake", guide)
+        self.assertIn("no acepta P1a-01", guide)
+        self.assertIn("0 / 8", guide)
+
+        workflow = (REPO_ROOT / ".github/workflows/validate.yml").read_text(
+            encoding="utf-8"
+        )
+        job = workflow.split("  p1a-assets-blocked:", 1)[1]
+        self.assertIn("openbrec.verify p1a-assets-intake", job)
+        self.assertIn("p1a-01-intake-receipt", job)
+        self.assertIn('task_status"] == "blocked_external_evidence"', job)
+        self.assertIn('accepted_tasks"] == 0', job)
 
     def test_plan_and_board_record_blocked_status_without_progress(self) -> None:
         plan = PLAN.read_text(encoding="utf-8")

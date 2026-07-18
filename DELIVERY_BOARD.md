@@ -387,6 +387,11 @@ fabrica esos nueve assets: la solicitud trazable está en
 `docs/governance/p1a-01-asset-authorization-request.json`. Progreso: `0 / 8`
 (`0%`). P1a-02 no iniciada.
 
+El comando `openbrec.verify p1a-assets-intake` publica un checklist determinístico
+por las nueve categorías y queda documentado en
+`docs/governance/P1A_ASSET_INTAKE.md`. Es un preflight no contable: no autoriza
+acciones físicas, no acepta P1a-01 y no cambia el numerador `0 / 8`.
+
 Frontera: P0 no autoriza compra, hardware, TX, captura real, ensayo de 72 horas,
 campo ni claims físicos. Solar, storage, generadores, conducted/radiated radio,
 beacons físicos y validación humana pertenecen a planes posteriores.
