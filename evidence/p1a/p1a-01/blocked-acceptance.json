@@ -1,0 +1,40 @@
+{
+  "acceptance_version": "1.0.0",
+  "task": "P1a-01",
+  "status": "blocked_external_evidence",
+  "decision_at": "2026-07-17",
+  "subject_git_sha": "e362119471825ae79007ca2c12a49e64be83ee66",
+  "receipt": {
+    "path": "evidence/p1a/p1a-01/blocked-receipt.json",
+    "sha256": "98b27df8fea067d208703902e1a8ed287013adecf198e88460fdf61cfa1e30a1",
+    "result": "failed",
+    "dirty": false
+  },
+  "progress": {
+    "accepted_tasks": 0,
+    "total_tasks": 8,
+    "percent": 0.0
+  },
+  "observed": {
+    "category_denominator": 9,
+    "authorization_records": 0,
+    "manifest_files": 0,
+    "accepted_assets": 0,
+    "physical_behavior_validated": false,
+    "radiated_tx_authorized": false
+  },
+  "accepted_repository_work": [
+    "p1a-assets gate implementation",
+    "negative and complete synthetic structural tests",
+    "authorization request",
+    "blocked residual disposition",
+    "CI proof that missing external evidence fails closed"
+  ],
+  "not_accepted": [
+    "P1a-01 task completion",
+    "any physical asset",
+    "purchase, loan, inspection or hardware use",
+    "P1a-02 start or conducted testing"
+  ],
+  "next_required_evidence": "Nine per-asset authorization records and nine exact inspected capability manifests supplied by the responsible asset owner and custodian."
+}
