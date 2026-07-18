@@ -1,0 +1,42 @@
+{
+  "acceptance_version": "1.0.0",
+  "task": "OS-02",
+  "status": "accepted",
+  "decision_at": "2026-07-18",
+  "subject_git_sha": "2db77568f1cbd4687f335f0df2be04516c9c16c9",
+  "receipt": {
+    "path": "evidence/open-spec/os-02/os-02-receipt.json",
+    "sha256": "07ccaa5a3cbb7caa78f2d18ca7ebb28f86e5ad79f799bc5e99560e692fb99f6d",
+    "result": "passed",
+    "dirty": false
+  },
+  "open_spec_progress": {
+    "accepted_tasks": 2,
+    "total_tasks": 8,
+    "percent": 25.0
+  },
+  "physical_validation_progress": {
+    "accepted_tasks": 0,
+    "total_tasks": 8,
+    "percent": 0.0,
+    "blocks_open_spec": false
+  },
+  "accepted": [
+    "four interchangeable energy architecture topologies",
+    "solar may be central, per-component, hybrid or absent",
+    "all nine OpenBREC role categories have energy mappings",
+    "eight source adapters declare safety and evidence requirements",
+    "L0 life-safety is preserved until hardware safety requires cutoff",
+    "storage-only and sustainable-under-profile claims remain distinct and bounded"
+  ],
+  "not_accepted": [
+    "any exact hardware implementation",
+    "physical battery capacity, solar yield, runtime or 72-hour autonomy",
+    "perpetual operation",
+    "field electrical or generator safety",
+    "OS-03 or later Open Spec tasks",
+    "P1a-01 through P1a-08"
+  ],
+  "next_task": "OS-03",
+  "next_task_started": false
+}
