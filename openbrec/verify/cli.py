@@ -57,6 +57,7 @@ from openbrec.terminal import P1A_PROTOCOL_PATH, SCENARIO_PATH as TERMINAL_SCENA
 from openbrec.terminal import run_accessibility_gate, run_terminal_gate
 from openbrec.beacons import CAMPAIGN_PATH as BEACON_CAMPAIGN_PATH
 from openbrec.beacons import run_beacon_gate
+from openbrec.integrated import run_integrated_gate
 
 DRAFT_2020_12 = "https://json-schema.org/draft/2020-12/schema"
 VERIFY_VERSION = "0.1.0"
@@ -72,6 +73,7 @@ P0_TRANSPORT_GATES = {"transport-comparison", "malicious-transport"}
 P0_FEDERATION_GATES = {"federation-scale", "federation-reconciliation"}
 P0_TERMINAL_GATES = {"terminal-ux", "accessibility"}
 P0_BEACON_GATES = {"beacon-replay", "beacon-adversarial", "retention-fault"}
+P0_INTEGRATED_GATES = {"p0-integrated"}
 PRIVACY_SAFETY_GATES = {
     "review-quarantine",
     "life-safety-preservation",
@@ -181,6 +183,8 @@ def _responsible_role(gate: str) -> str:
         return "privacy-safety-reviewer"
     if gate == "beacon-replay":
         return "beacon-science-maintainer"
+    if gate in P0_INTEGRATED_GATES:
+        return "core-replay-maintainer"
     if gate in {"beacon-adversarial", "retention-fault"}:
         return "privacy-safety-reviewer"
     if gate in PRIVACY_SAFETY_GATES:
@@ -669,6 +673,7 @@ def _parser() -> argparse.ArgumentParser:
         "beacon-replay",
         "beacon-adversarial",
         "retention-fault",
+        "p0-integrated",
         "review-quarantine",
         "life-safety-preservation",
         "privacy",
@@ -699,6 +704,8 @@ def _parser() -> argparse.ArgumentParser:
         if gate == "transport-comparison":
             subparser.add_argument("--workload", required=True)
         if gate == "federation-scale":
+            subparser.add_argument("--scenario", required=True)
+        if gate == "p0-integrated":
             subparser.add_argument("--scenario", required=True)
         if gate == "core-replay":
             subparser.add_argument("--bundle")
@@ -1045,6 +1052,25 @@ def main(argv: Sequence[str] | None = None) -> int:
                 root / "schemas/core/1.0.0/preservation-record.schema.json",
             ]
         )
+    elif args.gate == "p0-integrated":
+        try:
+            scenario_path = _resolve_inside(root, args.scenario, label="scenario")
+            errors, warnings, summary = run_integrated_gate(root, scenario_path)
+            inputs.extend(
+                [
+                    scenario_path,
+                    root / "openbrec/integrated.py",
+                    root / "fixtures/p0/energy/three-domains.json",
+                    root / "fixtures/p0/messaging/hostile-transport.json",
+                    root / "fixtures/p0/transports/common-workload.json",
+                    root / "fixtures/p0/federation/50k-sites.json",
+                    root / "fixtures/p0/terminal/offline-terminal.json",
+                    root / "fixtures/p0/beacons/deterministic-campaign.json",
+                ]
+            )
+        except (OSError, ValueError) as exc:
+            errors, warnings, summary = [str(exc)], [], {"scenario": args.scenario}
+        scope = "cross_addon_24h_partition_fault_and_adversary_campaign"
     elif args.gate == "review-quarantine":
         errors, warnings, summary = run_review_quarantine(root)
         scope = "exactly_one_primary_disposition"

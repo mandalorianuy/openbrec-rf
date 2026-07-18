@@ -1,0 +1,41 @@
+{
+  "campaign_version": "1.0.0",
+  "claim_scope": "deterministic_simulation_only",
+  "partition_duration_s": 86400,
+  "component_scenarios": {
+    "energy": "fixtures/p0/energy/three-domains.json",
+    "messages": "fixtures/p0/messaging/hostile-transport.json",
+    "communication": "fixtures/p0/transports/common-workload.json",
+    "federation": "fixtures/p0/federation/50k-sites.json",
+    "terminal": "fixtures/p0/terminal/offline-terminal.json",
+    "beacon": "fixtures/p0/beacons/deterministic-campaign.json"
+  },
+  "cells": [
+    {"cell_id": "cell-meshtastic", "bearer": "meshtastic", "carry_bundle": true, "local_critical_operations": ["sos", "messaging", "sensing"]},
+    {"cell_id": "cell-meshcore", "bearer": "meshcore", "carry_bundle": true, "local_critical_operations": ["sos", "messaging", "sensing"]},
+    {"cell_id": "cell-reticulum", "bearer": "reticulum", "carry_bundle": true, "local_critical_operations": ["sos", "messaging", "sensing"]}
+  ],
+  "faults": [
+    {"fault_id": "fault-001", "kind": "partition", "domain": "federation", "disposition": "local_operation_with_carry_bundle", "visible": true, "reconciled": true},
+    {"fault_id": "fault-002", "kind": "node_loss", "domain": "sensing", "disposition": "coverage_gap_visible", "visible": true, "reconciled": true},
+    {"fault_id": "fault-003", "kind": "relay_loss", "domain": "communication", "disposition": "bearer_degraded", "visible": true, "reconciled": true},
+    {"fault_id": "fault-004", "kind": "source_loss", "domain": "energy", "disposition": "local_reserve_preserved", "visible": true, "reconciled": true},
+    {"fault_id": "fault-005", "kind": "hub_loss", "domain": "federation", "disposition": "cell_autonomy_preserved", "visible": true, "reconciled": true},
+    {"fault_id": "fault-006", "kind": "brownout", "domain": "energy", "disposition": "survival_state_with_log_preserved", "visible": true, "reconciled": true},
+    {"fault_id": "fault-007", "kind": "forged_distress", "domain": "messages", "disposition": "review_quarantine", "visible": true, "reconciled": true},
+    {"fault_id": "fault-008", "kind": "replay", "domain": "messages", "disposition": "rejection_ledger", "visible": true, "reconciled": true},
+    {"fault_id": "fault-009", "kind": "stolen_terminal", "domain": "messages", "disposition": "revoked_binding_quarantine", "visible": true, "reconciled": true},
+    {"fault_id": "fault-010", "kind": "spoofed_sensor", "domain": "sensing", "disposition": "sensor_artifact_likely", "visible": true, "reconciled": true},
+    {"fault_id": "fault-011", "kind": "malicious_hub", "domain": "federation", "disposition": "rejected_or_review_quarantine", "visible": true, "reconciled": true}
+  ],
+  "component_gaps": [
+    {"domain": "energy", "visible": true, "explanation": "energy budgets and brownout are modeled; no physical autonomy claim"},
+    {"domain": "communication", "visible": true, "explanation": "bearers are versioned synthetic models and remain unverified"},
+    {"domain": "messages", "visible": true, "explanation": "application keys are synthetic and cannot be reused operationally"},
+    {"domain": "federation", "visible": true, "explanation": "50k topology proves deterministic correctness, not field capacity"},
+    {"domain": "terminal", "visible": true, "explanation": "technical checks do not prove human comprehension under stress"},
+    {"domain": "beacon", "visible": true, "explanation": "synthetic modalities do not establish detection performance"}
+  ],
+  "offline_projection": ["energy", "communication", "messages", "beacon", "review"],
+  "expected_result_sha256": "54c52e8383cd4ed4cc57604c6cb74c85425b80e333e9eb5184f445edf5351441"
+}
