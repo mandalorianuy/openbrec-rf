@@ -1,0 +1,67 @@
+{
+  "command": [
+    "python",
+    "-m",
+    "openbrec.verify",
+    "p1a-assets",
+    "--evidence-dir",
+    "evidence/p1a/p1a-01",
+    "--receipt",
+    "evidence/p1a/p1a-01/blocked-receipt.json"
+  ],
+  "dirty": false,
+  "errors": [
+    "authorization register unreadable: authorization-register.json: No such file or directory",
+    "evidence must contain nine exact manifests",
+    "manifest categories must match the nine-category denominator exactly once"
+  ],
+  "finished_at": "2026-07-18T02:01:47.607914Z",
+  "gate": "p1a-assets",
+  "gate_version": "0.1.0",
+  "git_sha": "e362119471825ae79007ca2c12a49e64be83ee66",
+  "inputs": [
+    {
+      "path": "schemas/p1a/capability-manifest.schema.json",
+      "sha256": "09cdb5e03753b3674a8ce9d2572e5224903693c1fbfb633f4c7384116505be6f"
+    }
+  ],
+  "lockfiles": [
+    {
+      "path": "uv.lock",
+      "sha256": "2d1b79df4cd5878ec7f4674a133c54ca7b16dfa559560ba3a93911e620f435d5"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "sha256": "ed7659f050b279f37e5cf84fb065fc528e15b3204d374681f3a70ad081d1c25a"
+    },
+    {
+      "path": "apps/web/pnpm-lock.yaml",
+      "sha256": "12a1ed34e601b49a319846ef8d87c316708bb695853661ec3b3b95208701d278"
+    }
+  ],
+  "output_sha256": "b9eca188cedc44ad94887dec53d9bf7974b628658d4c58566b76e72e04e96a37",
+  "receipt_version": "1.0.0",
+  "responsible_role": "release-reviewer",
+  "result": "failed",
+  "runtime": {
+    "docker": "Docker version 29.5.3, build d1c06ef",
+    "node": "v26.5.0",
+    "pnpm": "11.9.0",
+    "python": "3.12.13"
+  },
+  "scope": "p1a_exact_asset_identity_custody_and_inspection",
+  "started_at": "2026-07-18T02:01:46.302422Z",
+  "summary": {
+    "accepted_assets": 0,
+    "authorization_mismatches": 0,
+    "authorization_records": 0,
+    "category_denominator": 9,
+    "evidence_dir": "evidence/p1a/p1a-01",
+    "manifest_files": 0,
+    "physical_behavior_validated": false,
+    "radiated_tx_authorized": false,
+    "support_statuses": {},
+    "task": "P1a-01"
+  },
+  "warnings": []
+}

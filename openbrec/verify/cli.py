@@ -65,6 +65,11 @@ from openbrec.p1a_readiness import (
     SCHEMA_PATH as P1A_SCHEMA_PATH,
     run_readiness_gate,
 )
+from openbrec.p1a_assets import (
+    DEFAULT_EVIDENCE_DIR as P1A_ASSET_EVIDENCE_DIR,
+    SCHEMA_PATH as P1A_ASSET_SCHEMA_PATH,
+    run_asset_gate,
+)
 
 DRAFT_2020_12 = "https://json-schema.org/draft/2020-12/schema"
 VERIFY_VERSION = "0.1.0"
@@ -224,7 +229,7 @@ def _responsible_role(gate: str) -> str:
         return "core-replay-maintainer"
     if gate in P0_GOVERNANCE_GATES:
         return "release-reviewer"
-    if gate == "p1a-readiness":
+    if gate in {"p1a-readiness", "p1a-assets"}:
         return "release-reviewer"
     if gate in {"beacon-adversarial", "retention-fault"}:
         return "privacy-safety-reviewer"
@@ -732,6 +737,7 @@ def _parser() -> argparse.ArgumentParser:
         "p0-residuals",
         "p0-all",
         "p1a-readiness",
+        "p1a-assets",
         "all",
     ):
         subparser = subparsers.add_parser(gate)
@@ -763,6 +769,9 @@ def _parser() -> argparse.ArgumentParser:
             subparser.add_argument("--policy", default=str(P1A_POLICY_PATH))
             subparser.add_argument("--schema", default=str(P1A_SCHEMA_PATH))
             subparser.add_argument("--residuals", default=str(P1A_RESIDUALS_PATH))
+        if gate == "p1a-assets":
+            subparser.add_argument("--evidence-dir", default=str(P1A_ASSET_EVIDENCE_DIR))
+            subparser.add_argument("--schema", default=str(P1A_ASSET_SCHEMA_PATH))
         if gate == "p0-all":
             subparser.add_argument("--evidence-dir", default="evidence/p0")
             subparser.add_argument("--plan-only", action="store_true")
@@ -1254,6 +1263,22 @@ def main(argv: Sequence[str] | None = None) -> int:
                 "residuals": args.residuals,
             }
         scope = "p1a_non_physical_authorization_readiness"
+    elif args.gate == "p1a-assets":
+        try:
+            evidence_dir = _resolve_inside(root, args.evidence_dir, label="evidence-dir")
+            schema_path = _resolve_inside(root, args.schema, label="schema")
+            errors, warnings, summary, gate_inputs = run_asset_gate(
+                root,
+                evidence_dir=evidence_dir,
+                schema_path=schema_path,
+            )
+            inputs.extend(gate_inputs)
+        except (OSError, ValueError) as exc:
+            errors, warnings, summary = [str(exc)], [], {
+                "evidence_dir": args.evidence_dir,
+                "schema": args.schema,
+            }
+        scope = "p1a_exact_asset_identity_custody_and_inspection"
     elif args.gate == "review-quarantine":
         errors, warnings, summary = run_review_quarantine(root)
         scope = "exactly_one_primary_disposition"

@@ -364,3 +364,44 @@ jobs:
           name: p1a-readiness-receipt
           path: evidence/p1a/readiness
           if-no-files-found: error
+
+  p1a-assets-blocked:
+    needs: [p1a-readiness]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
+        with:
+          version: "0.11.1"
+      - run: uv sync --frozen
+      - run: uv run --offline python -m unittest tests.test_p1a_01_assets -v
+      - name: Prove P1a-01 fails closed without external asset evidence
+        shell: bash
+        run: |
+          set +e
+          uv run --offline python -m openbrec.verify p1a-assets \
+            --evidence-dir evidence/p1a/p1a-01 \
+            --receipt "${RUNNER_TEMP}/p1a-01-blocked-receipt.json"
+          gate_status=$?
+          set -e
+          test $gate_status -eq 1
+          RECEIPT="${RUNNER_TEMP}/p1a-01-blocked-receipt.json" uv run --offline python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          receipt = json.loads(Path(os.environ["RECEIPT"]).read_text(encoding="utf-8"))
+          assert receipt["result"] == "failed"
+          assert receipt["summary"]["accepted_assets"] == 0
+          assert any("authorization register" in error for error in receipt["errors"])
+          assert any("nine exact manifests" in error for error in receipt["errors"])
+          PY
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: p1a-01-blocked-receipt
+          path: ${{ runner.temp }}/p1a-01-blocked-receipt.json
+          if-no-files-found: error

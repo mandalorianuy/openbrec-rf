@@ -6,7 +6,8 @@
 - Baseline requerido: P0 cerrado en `520c4719f9b2e078069d96cc64ef9099be5d3807`
 - Alcance: P1a-01–P1a-08, hardware exacto, banco, conducted, UX y energía
 - Progreso: `0 / 8` tasks aceptadas (`0%`)
-- Estado inmediato: P1a-01 no iniciada; compra/préstamo no autorizado
+- Estado inmediato: P1a-01 no iniciada físicamente; gate implementado;
+  `blocked_external_evidence`; compra/préstamo no autorizado; P1a-02 no iniciada
 - Red line: TX radiado prohibido en P1a
 
 ## 1. Objetivo y autoridad
@@ -42,6 +43,8 @@ Precedencia:
 
 ### P1a-01 — activos exactos y capability manifests
 
+- Estado de ejecución: `blocked_external_evidence`; el contrato y gate existen,
+  pero no hay authorization register ni manifests físicos aceptables
 - Owner: `hardware-custody-owner`
 - Reviewers: `release-reviewer`, cada owner técnico y `privacy-safety-reviewer`
 - Dependencias: P0-09 aceptada; autorización explícita de cada asset
@@ -53,6 +56,8 @@ Precedencia:
 - Stop: presupuesto/owner ausente, SKU/revisión/serial evidence ausente, asset no
   inspeccionado, firmware flotante o soporte promovido
 - Evidencia: `evidence/p1a/p1a-01/`
+- Solicitud gobernada:
+  `docs/governance/p1a-01-asset-authorization-request.json`
 
 ### P1a-02 — radio conducted multi-bearer
 
@@ -162,6 +167,12 @@ El único numerador es `tasks aceptadas / 8`:
 Estado al aprobar este plan: `0 / 8` (`0%`). P1a-01 no iniciada. La próxima
 acción posible es una autorización explícita de asset/custodia; este plan no la
 sustituye.
+
+El gate `p1a-assets` fue implementado y probado para exigir el denominador 9/9,
+identidad exacta, authorization match, custodia, inspección, serial evidence
+hasheada, `unverified` y firmware inmutable donde aplica. La evidencia del repo
+permanece `blocked_external_evidence`; implementar el gate no acepta P1a-01.
+P1a-02 no iniciada.
 
 El readiness no contable fue aceptado el 2026-07-17 sobre
 `922cc7fd2c505d8bfa10dd7367299adccd996b70`; su receipt limpio vive en
