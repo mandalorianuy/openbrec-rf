@@ -2,7 +2,7 @@
   "governance_version": "1.0.0",
   "spec_version": "1.0.0-draft.1",
   "main_lane": "open_spec",
-  "progress": {"accepted_tasks": 7, "total_tasks": 8, "percent": 87.5},
+  "progress": {"accepted_tasks": 8, "total_tasks": 8, "percent": 100.0},
   "publication": {
     "requires_owned_hardware": false,
     "requires_physical_evidence": false,
@@ -29,6 +29,6 @@
     {"id": "OS-05", "status": "accepted", "title": "Open beacon capability profiles", "gate": "open-spec-beacons"},
     {"id": "OS-06", "status": "accepted", "title": "Recursive autonomous federation", "gate": "open-spec-federation"},
     {"id": "OS-07", "status": "accepted", "title": "Reference builds and reuse guides", "gate": "open-spec-builds"},
-    {"id": "OS-08", "status": "not_started", "title": "Conformance kit and publication", "gate": "open-spec-exit"}
+    {"id": "OS-08", "status": "accepted", "title": "Conformance kit and publication", "gate": "open-spec-exit"}
   ]
 }

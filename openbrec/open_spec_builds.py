@@ -52,18 +52,16 @@ def _read_json(path: Path, label: str) -> tuple[dict[str, Any] | None, list[str]
 def _validate_policy(value: dict[str, Any]) -> list[str]:
     errors: list[str] = []
     if value.get("progress") != {
-        "accepted_tasks": 7,
+        "accepted_tasks": 8,
         "total_tasks": 8,
-        "percent": 87.5,
+        "percent": 100.0,
     }:
-        errors.append("open-spec progress must be 7 / 8")
+        errors.append("open-spec progress must be 8 / 8")
     tasks = value.get("tasks")
     if not isinstance(tasks, list) or len(tasks) != 8:
         return [*errors, "open-spec policy must contain eight tasks"]
-    if [task.get("status") for task in tasks[:7]] != ["accepted"] * 7:
-        errors.append("OS-01 through OS-07 must be accepted")
-    if tasks[7].get("status") != "not_started":
-        errors.append("OS-08 must remain not_started")
+    if [task.get("status") for task in tasks] != ["accepted"] * 8:
+        errors.append("OS-01 through OS-08 must be accepted")
     if tasks[6].get("gate") != "open-spec-builds":
         errors.append("OS-07 must use the open-spec-builds gate")
     return errors
@@ -389,12 +387,14 @@ def run_open_spec_build_gate(
         [],
         {
             "spec_version": policy.get("spec_version") if policy else None,
-            "spec_tasks_accepted": 7,
+            "spec_tasks_accepted": 8,
             "spec_tasks_total": 8,
             **fixture_summary,
             "guides": guide_count,
             "physical_build_blocks_publication": False,
-            "next_task": "OS-08",
+            "open_spec_complete": True,
+            "next_task": "P1a-01",
+            "next_task_lane": "optional_physical_validation",
             "next_task_started": False,
         },
         inputs,

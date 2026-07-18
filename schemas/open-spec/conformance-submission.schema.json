@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openbrec.local/schemas/open-spec/conformance-submission.schema.json",
+  "title": "OpenBREC conformance submission",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["submission_id", "contribution_type", "spec_version", "subject", "exact_versions", "claimed_evidence_level", "exact_configuration", "physical_evidence", "evidence_refs", "negative_results", "limitations", "privacy_review", "safety_review", "license", "status", "supersedes"],
+  "properties": {
+    "submission_id": {"type": "string", "pattern": "^submission\\.[a-z0-9][a-z0-9._-]+$"},
+    "contribution_type": {"enum": ["core_conformance", "addon_profile", "reuse_adapter", "reference_build", "evidence_pack", "extension"]},
+    "spec_version": {"const": "1.0.0-draft.1"},
+    "subject": {"type": "string", "minLength": 3},
+    "exact_versions": {"type": "object", "minProperties": 1, "additionalProperties": {"type": "string", "minLength": 1}},
+    "claimed_evidence_level": {"enum": ["unverified", "specified", "simulated", "lab_validated", "field_validated"]},
+    "exact_configuration": {
+      "oneOf": [
+        {"type": "null"},
+        {"type": "object", "minProperties": 3, "additionalProperties": {"type": ["string", "number", "boolean"]}}
+      ]
+    },
+    "physical_evidence": {
+      "oneOf": [
+        {"type": "null"},
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["protocol_ref", "results_ref", "negative_results_ref", "custody_actor", "jurisdiction", "environment"],
+          "properties": {
+            "protocol_ref": {"type": "string", "minLength": 1},
+            "results_ref": {"type": "string", "minLength": 1},
+            "negative_results_ref": {"type": "string", "minLength": 1},
+            "custody_actor": {"type": "string", "minLength": 1},
+            "jurisdiction": {"type": "string", "minLength": 1},
+            "environment": {"type": "string", "minLength": 1}
+          }
+        }
+      ]
+    },
+    "evidence_refs": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+    "negative_results": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+    "limitations": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+    "privacy_review": {"$ref": "#/$defs/review"},
+    "safety_review": {"$ref": "#/$defs/review"},
+    "license": {"const": "Apache-2.0"},
+    "status": {"enum": ["draft", "submitted", "validated", "accepted", "rejected_with_record", "superseded"]},
+    "supersedes": {"type": "array", "items": {"type": "string", "pattern": "^submission\\."}, "uniqueItems": true}
+  },
+  "$defs": {
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "reviewer_role", "findings"],
+      "properties": {
+        "status": {"enum": ["pending", "passed", "not_applicable"]},
+        "reviewer_role": {"type": "string", "minLength": 1},
+        "findings": {"type": "array", "items": {"type": "string", "minLength": 1}}
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"claimed_evidence_level": {"enum": ["lab_validated", "field_validated"]}}, "required": ["claimed_evidence_level"]},
+      "then": {
+        "properties": {
+          "exact_configuration": {"type": "object", "minProperties": 3},
+          "physical_evidence": {"type": "object"},
+          "evidence_refs": {"minItems": 2}
+        }
+      }
+    }
+  ]
+}

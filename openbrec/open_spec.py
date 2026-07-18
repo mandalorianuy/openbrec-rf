@@ -56,11 +56,11 @@ def _validate_policy(value: dict[str, Any]) -> list[str]:
     if value.get("main_lane") != "open_spec":
         errors.append("main_lane must be open_spec")
     if value.get("progress") != {
-        "accepted_tasks": 7,
+        "accepted_tasks": 8,
         "total_tasks": 8,
-        "percent": 87.5,
+        "percent": 100.0,
     }:
-        errors.append("open-spec progress must be 7 / 8")
+        errors.append("open-spec progress must be 8 / 8")
     publication = value.get("publication")
     if not isinstance(publication, dict):
         errors.append("publication policy is required")
@@ -97,10 +97,8 @@ def _validate_policy(value: dict[str, Any]) -> list[str]:
         task.get("id") for task in tasks if isinstance(task, dict)
     ] != [f"OS-{index:02d}" for index in range(1, 9)]:
         errors.append("tasks must cover OS-01 through OS-08 in order")
-    elif any(task.get("status") != "accepted" for task in tasks[:7]) or any(
-        task.get("status") != "not_started" for task in tasks[7:]
-    ):
-        errors.append("only OS-01 through OS-07 may be accepted")
+    elif any(task.get("status") != "accepted" for task in tasks):
+        errors.append("OS-01 through OS-08 must be accepted")
     return errors
 
 
@@ -224,7 +222,7 @@ def run_open_spec_gate(
         plan = ""
     for marker in (
         "Autoridad principal: Open Spec",
-        "7 / 8",
+        "8 / 8",
         "OS-01 — aceptada",
         "OS-02 — aceptada",
         "OS-03 — aceptada",
@@ -232,7 +230,8 @@ def run_open_spec_gate(
         "OS-05 — aceptada",
         "OS-06 — aceptada",
         "OS-07 — aceptada",
-        "OS-08 — no iniciada",
+        "OS-08 — aceptada",
+        "P1a-01 no fue iniciada",
         "P1a es un carril opcional",
     ):
         if marker not in plan:
@@ -268,12 +267,14 @@ def run_open_spec_gate(
         [],
         {
             "spec_version": policy.get("spec_version") if policy else None,
-            "spec_tasks_accepted": 7,
+            "spec_tasks_accepted": 8,
             "spec_tasks_total": 8,
             "reference_profiles": len(profiles.get("profiles", [])) if profiles else 0,
             "physical_validation_tasks_accepted": 0,
             "physical_evidence_blocks_publication": False,
-            "next_task": "OS-08",
+            "open_spec_complete": True,
+            "next_task": "P1a-01",
+            "next_task_lane": "optional_physical_validation",
             "next_task_started": False,
         },
         inputs,
