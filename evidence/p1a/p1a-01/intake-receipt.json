@@ -1,0 +1,214 @@
+{
+  "command": [
+    "python",
+    "-m",
+    "openbrec.verify",
+    "p1a-assets-intake",
+    "--evidence-dir",
+    "evidence/p1a/p1a-01",
+    "--receipt",
+    "evidence/p1a/p1a-01/intake-receipt.json"
+  ],
+  "dirty": false,
+  "errors": [],
+  "finished_at": "2026-07-18T19:34:03.800153Z",
+  "gate": "p1a-assets-intake",
+  "gate_version": "0.1.0",
+  "git_sha": "2cd716134e92f07c54325acd04d837019f25d5f1",
+  "inputs": [
+    {
+      "path": "docs/governance/p1a-01-asset-authorization-request.json",
+      "sha256": "6d77fe88e55dbeb761666b42b012486c3c6e789d2cd1afd09f6e361bd219cf8a"
+    }
+  ],
+  "lockfiles": [
+    {
+      "path": "uv.lock",
+      "sha256": "2d1b79df4cd5878ec7f4674a133c54ca7b16dfa559560ba3a93911e620f435d5"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "sha256": "ed7659f050b279f37e5cf84fb065fc528e15b3204d374681f3a70ad081d1c25a"
+    },
+    {
+      "path": "apps/web/pnpm-lock.yaml",
+      "sha256": "12a1ed34e601b49a319846ef8d87c316708bb695853661ec3b3b95208701d278"
+    }
+  ],
+  "output_sha256": "9908874f53863254ce650595c4606b08223c77e16155fea1e1112d8de9edf056",
+  "receipt_version": "1.0.0",
+  "responsible_role": "release-reviewer",
+  "result": "passed",
+  "runtime": {
+    "docker": "Docker version 29.5.3, build d1c06ef",
+    "node": "v26.5.0",
+    "pnpm": "11.9.0",
+    "python": "3.12.13"
+  },
+  "scope": "p1a_external_asset_evidence_intake_status",
+  "started_at": "2026-07-18T19:34:03.489264Z",
+  "summary": {
+    "acceptance_gate": "uv run --offline python -m openbrec.verify p1a-assets --evidence-dir evidence/p1a/p1a-01",
+    "accepted_tasks": 0,
+    "categories_awaiting_external_evidence": 9,
+    "categories_ready_for_gate": 0,
+    "category_checklist": [
+      {
+        "authorization_present": false,
+        "candidate_id": "P1A-HW-01",
+        "category": "lorawan_gateway",
+        "manifest_present": false,
+        "missing_external_evidence": [
+          "authorization_record",
+          "capability_manifest",
+          "exact asset identity",
+          "asset owner authorization",
+          "custodian",
+          "serial evidence hash",
+          "physical inspection evidence"
+        ],
+        "status": "awaiting_external_evidence"
+      },
+      {
+        "authorization_present": false,
+        "candidate_id": "P1A-HW-02",
+        "category": "lorawan_endpoint",
+        "manifest_present": false,
+        "missing_external_evidence": [
+          "authorization_record",
+          "capability_manifest",
+          "exact asset identity",
+          "asset owner authorization",
+          "custodian",
+          "serial evidence hash",
+          "physical inspection evidence"
+        ],
+        "status": "awaiting_external_evidence"
+      },
+      {
+        "authorization_present": false,
+        "candidate_id": "P1A-HW-03",
+        "category": "meshtastic_node",
+        "manifest_present": false,
+        "missing_external_evidence": [
+          "authorization_record",
+          "capability_manifest",
+          "exact asset identity",
+          "asset owner authorization",
+          "custodian",
+          "serial evidence hash",
+          "physical inspection evidence"
+        ],
+        "status": "awaiting_external_evidence"
+      },
+      {
+        "authorization_present": false,
+        "candidate_id": "P1A-HW-04",
+        "category": "meshcore_node",
+        "manifest_present": false,
+        "missing_external_evidence": [
+          "authorization_record",
+          "capability_manifest",
+          "exact asset identity",
+          "asset owner authorization",
+          "custodian",
+          "serial evidence hash",
+          "physical inspection evidence"
+        ],
+        "status": "awaiting_external_evidence"
+      },
+      {
+        "authorization_present": false,
+        "candidate_id": "P1A-HW-05",
+        "category": "rnode",
+        "manifest_present": false,
+        "missing_external_evidence": [
+          "authorization_record",
+          "capability_manifest",
+          "exact asset identity",
+          "asset owner authorization",
+          "custodian",
+          "serial evidence hash",
+          "physical inspection evidence"
+        ],
+        "status": "awaiting_external_evidence"
+      },
+      {
+        "authorization_present": false,
+        "candidate_id": "P1A-HW-06",
+        "category": "offline_terminal",
+        "manifest_present": false,
+        "missing_external_evidence": [
+          "authorization_record",
+          "capability_manifest",
+          "exact asset identity",
+          "asset owner authorization",
+          "custodian",
+          "serial evidence hash",
+          "physical inspection evidence"
+        ],
+        "status": "awaiting_external_evidence"
+      },
+      {
+        "authorization_present": false,
+        "candidate_id": "P1A-HW-07",
+        "category": "trimodal_beacon",
+        "manifest_present": false,
+        "missing_external_evidence": [
+          "authorization_record",
+          "capability_manifest",
+          "exact asset identity",
+          "asset owner authorization",
+          "custodian",
+          "serial evidence hash",
+          "physical inspection evidence"
+        ],
+        "status": "awaiting_external_evidence"
+      },
+      {
+        "authorization_present": false,
+        "candidate_id": "P1A-HW-08",
+        "category": "energy_storage",
+        "manifest_present": false,
+        "missing_external_evidence": [
+          "authorization_record",
+          "capability_manifest",
+          "exact asset identity",
+          "asset owner authorization",
+          "custodian",
+          "serial evidence hash",
+          "physical inspection evidence"
+        ],
+        "status": "awaiting_external_evidence"
+      },
+      {
+        "authorization_present": false,
+        "candidate_id": "P1A-HW-09",
+        "category": "wired_cell_gateway",
+        "manifest_present": false,
+        "missing_external_evidence": [
+          "authorization_record",
+          "capability_manifest",
+          "exact asset identity",
+          "asset owner authorization",
+          "custodian",
+          "serial evidence hash",
+          "physical inspection evidence"
+        ],
+        "status": "awaiting_external_evidence"
+      }
+    ],
+    "category_denominator": 9,
+    "evidence_dir": "evidence/p1a/p1a-01",
+    "next_task": "P1a-01",
+    "next_task_started": false,
+    "non_progress_notice": "This preflight reports intake readiness only and does not accept P1a-01.",
+    "percent": 0.0,
+    "physical_actions_authorized": false,
+    "purchase_authorized": false,
+    "task": "P1a-01",
+    "task_status": "blocked_external_evidence",
+    "total_tasks": 8
+  },
+  "warnings": []
+}
