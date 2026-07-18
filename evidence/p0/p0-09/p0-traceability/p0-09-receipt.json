@@ -1,0 +1,56 @@
+{
+  "command": [
+    "python",
+    "-m",
+    "openbrec.verify",
+    "p0-traceability",
+    "--root",
+    "/Users/facundo/desarrollo/OpenBREC-RF",
+    "--receipt",
+    "/var/folders/sx/4wqgpxv140j57cllvyb23h100000gn/T/openbrec-p0-exit-rroiq4ks/p0-09/p0-traceability/p0-09-receipt.json"
+  ],
+  "dirty": false,
+  "errors": [],
+  "finished_at": "2026-07-18T00:59:03.510182Z",
+  "gate": "p0-traceability",
+  "gate_version": "0.1.0",
+  "git_sha": "53fe18e4d1427cc355e423103cfe6b263ad0e3b3",
+  "inputs": [
+    {
+      "path": "docs/governance/p0-traceability.json",
+      "sha256": "9bb4242e70344362c7901cff1bde344b02cbceabe631a6a82eb318530833287b"
+    }
+  ],
+  "lockfiles": [
+    {
+      "path": "uv.lock",
+      "sha256": "2d1b79df4cd5878ec7f4674a133c54ca7b16dfa559560ba3a93911e620f435d5"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "sha256": "ed7659f050b279f37e5cf84fb065fc528e15b3204d374681f3a70ad081d1c25a"
+    },
+    {
+      "path": "apps/web/pnpm-lock.yaml",
+      "sha256": "12a1ed34e601b49a319846ef8d87c316708bb695853661ec3b3b95208701d278"
+    }
+  ],
+  "output_sha256": "637183615ffc62153785aab56ef6f0625ad6caf0411b0bbaad6eaddf0e978cbb",
+  "receipt_version": "1.0.0",
+  "responsible_role": "release-reviewer",
+  "result": "passed",
+  "runtime": {
+    "docker": "Docker version 29.5.3, build d1c06ef",
+    "node": "v26.5.0",
+    "pnpm": "11.9.0",
+    "python": "3.12.13"
+  },
+  "scope": "requirement_fixture_gate_receipt_traceability",
+  "started_at": "2026-07-18T00:59:03.121638Z",
+  "summary": {
+    "artifact": "docs/governance/p0-traceability.json",
+    "denominator": 9,
+    "errors": 0
+  },
+  "warnings": []
+}

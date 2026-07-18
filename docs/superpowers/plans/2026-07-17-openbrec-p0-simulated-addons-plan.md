@@ -1,11 +1,11 @@
 # OpenBREC P0 — plan ejecutable de addons completamente simulados
 
-- Estado: aprobado y activo para secuenciación
+- Estado: completado y aceptado
 - Fecha: 2026-07-17
 - Autoridad de secuencia: `DELIVERY_BOARD.md`
 - Baseline requerido: M0 cerrado en `0dee758af0a1ea02578e0710f81d361933651756`
 - Alcance: P0-01–P0-09, simulación, fixtures, replay, UI y receipts
-- Estado de ejecución: `7 / 9` tasks aceptadas (`77.8%`); `P0-08` elegible, no iniciada
+- Estado de ejecución: `9 / 9` tasks aceptadas (`100%`); P0 cerrado
 - Fuera de alcance: compra, hardware, TX, ensayo radiado, campo y claims físicos
 
 ## 1. Objetivo
@@ -504,6 +504,12 @@ dejó P0-08 como única task elegible para el ciclo siguiente.
 P0-08 fue aceptada el 2026-07-17 sobre el SHA de implementación
 `6eb7bcbbd9e4fdde3d63437e097d385577fd422c`; su receipt limpio vive en
 `evidence/p0/p0-08/` y su review en
-`docs/security/2026-07-17-p0-08-integrated-fault-review.md`. P0-09 queda como
-única task elegible, pero este closeout no la inicia. El progreso P0 es
-`8 / 9` (`88.9%`).
+`docs/security/2026-07-17-p0-08-integrated-fault-review.md`.
+
+P0-09 fue aceptada el 2026-07-17 sobre el SHA de implementación
+`53fe18e4d1427cc355e423103cfe6b263ad0e3b3`. `p0-all` pasó 27/27 gates con
+receipts íntegros y `dirty: false`; el manifest vive en
+`evidence/p0/p0-exit-manifest.json`, los receipts y SBOM en
+`evidence/p0/p0-09/`, y la review en
+`docs/security/2026-07-17-p0-09-exit-review.md`. El progreso final es
+`9 / 9` (`100%`). P0 queda cerrado. P1a no fue iniciada ni autorizada.

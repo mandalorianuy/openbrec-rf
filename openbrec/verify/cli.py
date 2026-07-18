@@ -58,6 +58,7 @@ from openbrec.terminal import run_accessibility_gate, run_terminal_gate
 from openbrec.beacons import CAMPAIGN_PATH as BEACON_CAMPAIGN_PATH
 from openbrec.beacons import run_beacon_gate
 from openbrec.integrated import run_integrated_gate
+from openbrec.p0_exit import run_governance_gate
 
 DRAFT_2020_12 = "https://json-schema.org/draft/2020-12/schema"
 VERIFY_VERSION = "0.1.0"
@@ -106,6 +107,36 @@ ALL_GATES = (
     "sbom",
     "licenses",
     "vulnerability-scan",
+)
+P0_GOVERNANCE_GATES = {"p0-traceability", "p0-support-status", "p0-residuals"}
+P0_ALL_GATES = (
+    "addon-contracts",
+    "addon-fixtures",
+    "schema-compat",
+    "contracts-gen",
+    "energy-replay",
+    "determinism",
+    "human-message-security",
+    "sos-state-replay",
+    "transport-policy",
+    "transport-comparison",
+    "malicious-transport",
+    "federation-scale",
+    "federation-reconciliation",
+    "terminal-ux",
+    "ui-smoke",
+    "accessibility",
+    "beacon-replay",
+    "beacon-adversarial",
+    "retention-fault",
+    "p0-integrated",
+    "secret-scan",
+    "sbom",
+    "licenses",
+    "vulnerability-scan",
+    "p0-traceability",
+    "p0-support-status",
+    "p0-residuals",
 )
 
 
@@ -185,6 +216,8 @@ def _responsible_role(gate: str) -> str:
         return "beacon-science-maintainer"
     if gate in P0_INTEGRATED_GATES:
         return "core-replay-maintainer"
+    if gate in P0_GOVERNANCE_GATES:
+        return "release-reviewer"
     if gate in {"beacon-adversarial", "retention-fault"}:
         return "privacy-safety-reviewer"
     if gate in PRIVACY_SAFETY_GATES:
@@ -686,6 +719,10 @@ def _parser() -> argparse.ArgumentParser:
         "vulnerability-scan",
         "key-lifecycle",
         "postgres-disposition",
+        "p0-traceability",
+        "p0-support-status",
+        "p0-residuals",
+        "p0-all",
         "all",
     ):
         subparser = subparsers.add_parser(gate)
@@ -711,6 +748,11 @@ def _parser() -> argparse.ArgumentParser:
             subparser.add_argument("--bundle")
         if gate == "sbom":
             subparser.add_argument("--output")
+        if gate in P0_GOVERNANCE_GATES:
+            subparser.add_argument("--artifact")
+        if gate == "p0-all":
+            subparser.add_argument("--evidence-dir", default="evidence/p0")
+            subparser.add_argument("--plan-only", action="store_true")
         if gate == "all":
             subparser.add_argument("--evidence-dir", default="evidence/m0")
             subparser.add_argument("--plan-only", action="store_true")
@@ -789,9 +831,100 @@ def _run_all(root: Path, evidence_dir: str) -> tuple[int, dict[str, Any]]:
     return (0 if manifest["result"] == "passed" else 1), manifest
 
 
+def _p0_all_arguments(gate: str, temporary: Path) -> list[str]:
+    if gate == "contracts-gen":
+        return ["--check"]
+    if gate == "determinism":
+        return ["--runs", "10"]
+    if gate == "energy-replay":
+        return ["--scenario", "fixtures/p0/energy/three-domains.json"]
+    if gate == "transport-comparison":
+        return ["--workload", "fixtures/p0/transports/common-workload.json"]
+    if gate == "federation-scale":
+        return ["--scenario", "fixtures/p0/federation/50k-sites.json"]
+    if gate == "p0-integrated":
+        return ["--scenario", "fixtures/p0/integrated/campaign.json"]
+    if gate == "sbom":
+        return ["--output", str(temporary / "sbom/openbrec-p0.cdx.json")]
+    return []
+
+
+def _run_p0_all(root: Path, evidence_dir: str) -> tuple[int, dict[str, Any]]:
+    target = Path(evidence_dir)
+    if not target.is_absolute():
+        target = root / target
+    gate_results: list[dict[str, Any]] = []
+    state = _repository_state(root)
+    with tempfile.TemporaryDirectory(prefix="openbrec-p0-exit-") as directory:
+        temporary = Path(directory)
+        for gate in P0_ALL_GATES:
+            receipt = temporary / "p0-09" / gate / "p0-09-receipt.json"
+            command = [
+                sys.executable,
+                "-m",
+                "openbrec.verify",
+                gate,
+                "--root",
+                str(root),
+                *_p0_all_arguments(gate, temporary / "p0-09"),
+                "--receipt",
+                str(receipt),
+            ]
+            result = subprocess.run(
+                command, cwd=root, text=True, capture_output=True, check=False
+            )
+            integrity_errors = validate_receipt(
+                receipt,
+                expected_git_sha=state["git_sha"],
+                require_clean=True,
+            )
+            gate_results.append(
+                {
+                    "gate": gate,
+                    "exit_code": result.returncode,
+                    "receipt": str(receipt.relative_to(temporary)),
+                    "receipt_integrity": (
+                        "passed" if not integrity_errors else "failed"
+                    ),
+                    "integrity_errors": integrity_errors,
+                    "stderr": result.stderr.strip(),
+                }
+            )
+        passed = all(
+            item["exit_code"] == 0 and item["receipt_integrity"] == "passed"
+            for item in gate_results
+        )
+        manifest = {
+            "manifest_version": "1.0.0",
+            "task": "P0-09",
+            "subject_git_sha": state["git_sha"],
+            "result": "passed" if passed else "failed",
+            "gate_denominator": len(P0_ALL_GATES),
+            "gate_passed": sum(
+                item["exit_code"] == 0
+                and item["receipt_integrity"] == "passed"
+                for item in gate_results
+            ),
+            "gates": gate_results,
+        }
+        (temporary / "p0-exit-manifest.json").write_text(
+            json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+        )
+        target.mkdir(parents=True, exist_ok=True)
+        shutil.copytree(temporary, target, dirs_exist_ok=True)
+    return (0 if passed else 1), manifest
+
+
 def main(argv: Sequence[str] | None = None) -> int:
     args = _parser().parse_args(argv)
     root = Path(args.root).resolve()
+    if args.gate == "p0-all" and args.plan_only:
+        print(json.dumps({"result": "planned", "gates": list(P0_ALL_GATES)}))
+        return 0
+    if args.gate == "p0-all":
+        exit_code, manifest = _run_p0_all(root, args.evidence_dir)
+        print(json.dumps(manifest, sort_keys=True))
+        return exit_code
     if args.gate == "all" and args.plan_only:
         print(json.dumps({"result": "planned", "gates": list(ALL_GATES)}))
         return 0
@@ -1071,6 +1204,24 @@ def main(argv: Sequence[str] | None = None) -> int:
         except (OSError, ValueError) as exc:
             errors, warnings, summary = [str(exc)], [], {"scenario": args.scenario}
         scope = "cross_addon_24h_partition_fault_and_adversary_campaign"
+    elif args.gate in P0_GOVERNANCE_GATES:
+        try:
+            artifact = (
+                _resolve_inside(root, args.artifact, label="artifact")
+                if args.artifact
+                else None
+            )
+            errors, warnings, summary, gate_inputs = run_governance_gate(
+                root, args.gate, artifact
+            )
+            inputs.extend(gate_inputs)
+        except (OSError, ValueError) as exc:
+            errors, warnings, summary = [str(exc)], [], {"artifact": args.artifact}
+        scope = {
+            "p0-traceability": "requirement_fixture_gate_receipt_traceability",
+            "p0-support-status": "profile_scoped_support_and_no_purchase_shortlist",
+            "p0-residuals": "terminal_residual_governance",
+        }[args.gate]
     elif args.gate == "review-quarantine":
         errors, warnings, summary = run_review_quarantine(root)
         scope = "exactly_one_primary_disposition"

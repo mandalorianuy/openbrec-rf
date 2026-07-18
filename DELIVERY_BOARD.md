@@ -1,10 +1,10 @@
 # OpenBREC RF — Delivery Board
 
 - Autoridad de secuencia: este board
-- Plan activo aprobado: `docs/superpowers/plans/2026-07-17-openbrec-p0-simulated-addons-plan.md`
+- Último plan completado: `docs/superpowers/plans/2026-07-17-openbrec-p0-simulated-addons-plan.md`
 - Baseline cerrado: `docs/superpowers/plans/2026-07-17-openbrec-m0-executable-plan.md`
-- Estado real: M0 completo; P0-01–P0-08 aceptadas (`8 / 9`, `88.9%`)
-- Regla de avance: sólo `P0-09` queda elegible; ninguna task se inicia automáticamente
+- Estado real: M0 y P0 completos; P0-01–P0-09 aceptadas (`9 / 9`, `100%`)
+- Regla de avance: P1a requiere plan y autorización separados; ninguna task se inicia automáticamente
 
 ## Decisiones de gobernanza cerradas
 
@@ -97,7 +97,7 @@ Registro obligatorio: `docs/governance/M0_RESIDUAL_REGISTER.md`.
 
 ## Now — P0 addons completamente simulados
 
-Progreso de aceptación: `8 / 9` (`88.9%`). Una task marcada sólo cambia después de
+Progreso de aceptación: `9 / 9` (`100%`). Una task marcada sólo cambia después de
 su implementación, validación, review y receipt; planificación o inicio no suman.
 
 - [x] `P0-01`: contratos addon, catálogo, fixtures y modelos generados.
@@ -108,7 +108,7 @@ su implementación, validación, review y receipt; planificación o inicio no su
 - [x] `P0-06`: terminal offline para texto, estado, SOS y ubicación.
 - [x] `P0-07`: beacons acústico/PIR/térmico, fusión, review y retención.
 - [x] `P0-08`: campaña integrada con fallos y adversarios.
-- [ ] `P0-09`: exit P0, support status por perfil y decisión P1a.
+- [x] `P0-09`: exit P0, support status por perfil y decisión P1a.
 
 ### Evidencia P0-01
 
@@ -286,9 +286,27 @@ su implementación, validación, review y receipt; planificación o inicio no su
 - Residuales: P0-R011 cierra integración simulada y conserva power-cut físico;
   P0-R015 gobierna que la composición in-process no es runtime distribuido.
 
-Única task elegible: `P0-09`. No está iniciada por este cierre.
+### Evidencia P0-09
 
-Plan: `docs/superpowers/plans/2026-07-17-openbrec-p0-simulated-addons-plan.md`.
+- Exit: `p0-all` pasó 27/27 gates independientes sobre
+  `53fe18e4d1427cc355e423103cfe6b263ad0e3b3`, con receipts íntegros y repo
+  limpio en `evidence/p0/p0-09/`.
+- Supply chain: SBOM CycloneDX 1.7 con 124 componentes, 124/124 licencias
+  revisadas, cero vulnerabilidades conocidas en los lockfiles y cero secretos
+  en 701 archivos; los negativos sintéticos fueron detectados.
+- Soporte: matriz 3×3 por perfil/bearer; sólo `experimental` o `unverified`,
+  sin ganador global ni hardware `supported`.
+- Decisión física: nueve categorías con una unidad candidata cada una, todas
+  `unverified`, `shortlisted_no_purchase` y sujetas a autorización separada.
+- Residuales: P0-R001–P0-R015 tienen estado, owner, gate/plan y stop condition;
+  ninguno queda vencido en P0-09.
+
+P0 está cerrado. La siguiente task gobernada es `P1a-01` (capability manifests
+y adquisición/préstamo de una unidad por categoría), pero no está iniciada ni
+autorizada: antes requiere un plan P1a aprobado y autorización explícita para
+hardware/adquisición.
+
+Último plan: `docs/superpowers/plans/2026-07-17-openbrec-p0-simulated-addons-plan.md`.
 Residuales: `docs/governance/P0_RESIDUAL_REGISTER.md`.
 
 Frontera: P0 no autoriza compra, hardware, TX, captura real, ensayo de 72 horas,

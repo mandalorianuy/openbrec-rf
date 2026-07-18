@@ -1,0 +1,43 @@
+{
+  "shortlist_version": "1.0.0",
+  "decision": "eligible_only_after_separate_plan_and_authorization",
+  "purchase_authorized": false,
+  "categories": [
+    {
+      "category": "lorawan_gateway",
+      "candidates": [{"candidate_id": "P1A-HW-01", "unit": "RAK7268V2 reference gateway", "source": "https://docs.rakwireless.com/product-categories/wisgate/rak7268v2/overview/", "support_status": "unverified", "disposition": "shortlisted_no_purchase", "separate_authorization_required": true, "acceptance_gate": "P1a conducted LoRaWAN enrollment, key and coexistence protocol"}]
+    },
+    {
+      "category": "lorawan_endpoint",
+      "candidates": [{"candidate_id": "P1A-HW-02", "unit": "RAK4631 WisBlock Core", "source": "https://docs.rakwireless.com/product-categories/wisblock/rak4631/overview/", "support_status": "unverified", "disposition": "shortlisted_no_purchase", "separate_authorization_required": true, "acceptance_gate": "P1a OTAA, counter, current and dummy-load protocol"}]
+    },
+    {
+      "category": "meshtastic_node",
+      "candidates": [{"candidate_id": "P1A-HW-03", "unit": "RAK4631 WisBlock Core flashed with reviewed Meshtastic pin", "source": "https://meshtastic.org/docs/hardware/devices/", "support_status": "unverified", "disposition": "shortlisted_no_purchase", "separate_authorization_required": true, "acceptance_gate": "P1a conducted messaging, congestion and key-lifecycle protocol"}]
+    },
+    {
+      "category": "meshcore_node",
+      "candidates": [{"candidate_id": "P1A-HW-04", "unit": "RAK4631 WisBlock Core flashed with reviewed MeshCore pin", "source": "https://github.com/meshcore-dev/MeshCore", "support_status": "unverified", "disposition": "shortlisted_no_purchase", "separate_authorization_required": true, "acceptance_gate": "P1a conducted companion/repeater and loss protocol"}]
+    },
+    {
+      "category": "rnode",
+      "candidates": [{"candidate_id": "P1A-HW-05", "unit": "RNode-compatible LilyGO T-Beam reference unit", "source": "https://unsigned.io/rnode/", "support_status": "unverified", "disposition": "shortlisted_no_purchase", "separate_authorization_required": true, "acceptance_gate": "P1a RNode/Reticulum interface, custody and conducted-link protocol"}]
+    },
+    {
+      "category": "offline_terminal",
+      "candidates": [{"candidate_id": "P1A-HW-06", "unit": "Reused Android terminal with BLE and USB-C; exact asset selected at authorization", "source": "docs/testing/p1a-terminal-comprehension-protocol.md", "support_status": "unverified", "disposition": "shortlisted_no_purchase", "separate_authorization_required": true, "acceptance_gate": "P1a terminal secure-storage, stolen-device and human comprehension protocol"}]
+    },
+    {
+      "category": "trimodal_beacon",
+      "candidates": [{"candidate_id": "P1A-HW-07", "unit": "ESP32-S3 reference beacon with microphone, PIR and thermal-array modules", "source": "docs/superpowers/specs/2026-07-17-openbrec-beacons-human-ux-design.md", "support_status": "unverified", "disposition": "shortlisted_no_purchase", "separate_authorization_required": true, "acceptance_gate": "P1a tri-modal calibration, OOD, privacy and negative-result protocol"}]
+    },
+    {
+      "category": "energy_storage",
+      "candidates": [{"candidate_id": "P1A-HW-08", "unit": "LiFePO4 portable storage class, 500-800 Wh; exact unit selected after load inventory", "source": "docs/superpowers/specs/2026-07-17-openbrec-energy-design.md", "support_status": "unverified", "disposition": "shortlisted_no_purchase", "separate_authorization_required": true, "acceptance_gate": "P1a storage-only characterization and 72-hour reproducible protocol"}]
+    },
+    {
+      "category": "wired_cell_gateway",
+      "candidates": [{"candidate_id": "P1A-HW-09", "unit": "Reused x86-64 or ARM64 offline gateway with two isolated network interfaces", "source": "docs/research/2026-07-17-offgrid-communications-state-of-art.md", "support_status": "unverified", "disposition": "shortlisted_no_purchase", "separate_authorization_required": true, "acceptance_gate": "P1a distributed cell, resource contention and carry-bundle protocol"}]
+    }
+  ]
+}

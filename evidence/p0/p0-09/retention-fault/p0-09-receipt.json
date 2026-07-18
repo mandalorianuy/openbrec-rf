@@ -1,0 +1,136 @@
+{
+  "command": [
+    "python",
+    "-m",
+    "openbrec.verify",
+    "retention-fault",
+    "--root",
+    "/Users/facundo/desarrollo/OpenBREC-RF",
+    "--receipt",
+    "/var/folders/sx/4wqgpxv140j57cllvyb23h100000gn/T/openbrec-p0-exit-rroiq4ks/p0-09/retention-fault/p0-09-receipt.json"
+  ],
+  "dirty": false,
+  "errors": [],
+  "finished_at": "2026-07-18T00:58:23.554173Z",
+  "gate": "retention-fault",
+  "gate_version": "0.1.0",
+  "git_sha": "53fe18e4d1427cc355e423103cfe6b263ad0e3b3",
+  "inputs": [
+    {
+      "path": "fixtures/p0/beacons/deterministic-campaign.json",
+      "sha256": "8c406b067bb389a35f4ae8749702badc5b696a1300c024010f3785486b6f9a11"
+    },
+    {
+      "path": "openbrec/beacons.py",
+      "sha256": "36215c4717a6a67be961700865dc6d4c731f7179a7de9b866113bfc196cf1bb4"
+    },
+    {
+      "path": "schemas/addons/1.0.0/beacon-capability.schema.json",
+      "sha256": "1bc0e099cfd5bdddabb8744577c820e9e08d4b0c2acd1e6c1041f1d6ee4c67f2"
+    },
+    {
+      "path": "schemas/addons/1.0.0/beacon-health.schema.json",
+      "sha256": "ccebb342fb2c08734d4007874f453e1983f239f1d47be3edbab1440fd36c4e70"
+    },
+    {
+      "path": "schemas/addons/1.0.0/beacon-observation.schema.json",
+      "sha256": "e59db4a7705faff24f38abda999bfe8c46f822f867fa27f27816fa814f40e697"
+    },
+    {
+      "path": "schemas/addons/1.0.0/beacon-placement.schema.json",
+      "sha256": "380dcc751661486d25e64a1cdd9d04dbd54bbf79000c75ff1bac8544c7a97ad6"
+    },
+    {
+      "path": "schemas/addons/1.0.0/capture-authorization-event.schema.json",
+      "sha256": "dd3434ab6f43de8da976915ebfa99ec43214be781c25e665ac5e6100c8741f95"
+    },
+    {
+      "path": "schemas/addons/1.0.0/review-task-event.schema.json",
+      "sha256": "a7fbbcbb9cb993e5ff86ee4a32b2b5bb886e560f4963939f806393ec757a25ed"
+    },
+    {
+      "path": "schemas/core/1.0.0/preservation-record.schema.json",
+      "sha256": "eadfcbc8def432c111c87e3dcbc9a240edea46310f40bc46cc58236998d67bb3"
+    }
+  ],
+  "lockfiles": [
+    {
+      "path": "uv.lock",
+      "sha256": "2d1b79df4cd5878ec7f4674a133c54ca7b16dfa559560ba3a93911e620f435d5"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "sha256": "ed7659f050b279f37e5cf84fb065fc528e15b3204d374681f3a70ad081d1c25a"
+    },
+    {
+      "path": "apps/web/pnpm-lock.yaml",
+      "sha256": "12a1ed34e601b49a319846ef8d87c316708bb695853661ec3b3b95208701d278"
+    }
+  ],
+  "output_sha256": "c866e09b0d485972882ffdf4df0b92d7c454fda679ad9a4a9d1d7cabae62dbf9",
+  "receipt_version": "1.0.0",
+  "responsible_role": "privacy-safety-reviewer",
+  "result": "passed",
+  "runtime": {
+    "docker": "Docker version 29.5.3, build d1c06ef",
+    "node": "v26.5.0",
+    "pnpm": "11.9.0",
+    "python": "3.12.13"
+  },
+  "scope": "authorized_capture_preservation_and_disposition",
+  "started_at": "2026-07-18T00:58:23.274153Z",
+  "summary": {
+    "capture_cases": 7,
+    "cases_reconciled": 7,
+    "claim_scope": "deterministic_simulation_only",
+    "deletions_without_disposition_receipt": 0,
+    "disposition_receipts": 4,
+    "dispositions": [
+      {
+        "case_id": "break-glass-hold",
+        "disposition": "hold_for_review"
+      },
+      {
+        "case_id": "dual-authorized",
+        "disposition": "preserved_for_review"
+      },
+      {
+        "case_id": "expired-authorization",
+        "disposition": "rejected_expired"
+      },
+      {
+        "case_id": "expiry-fault-hold",
+        "disposition": "hold_before_delete"
+      },
+      {
+        "case_id": "features-only",
+        "disposition": "no_material"
+      },
+      {
+        "case_id": "reviewed-delete",
+        "disposition": "deleted_after_review"
+      },
+      {
+        "case_id": "unauthorized",
+        "disposition": "rejected"
+      }
+    ],
+    "holds_created": 2,
+    "life_safety_items_preserved": 3,
+    "limitations": [
+      "vault, encryption and deletion are modeled only",
+      "no raw snippets or thermal grids are stored in the repository"
+    ],
+    "material_items": 4,
+    "material_items_traced_to_disposition": 4,
+    "maximum_snippet_duration_s": 15,
+    "over_cap_snippets_preserved": 0,
+    "raw_material_exported": 0,
+    "result_sha256": "814bd4d3e263fca03ebbe8b695433ee041e41f962c81bb3ed5eb5bdf0ef0e68b",
+    "unauthorized_snippets_captured": 0,
+    "unencrypted_snippets_preserved": 0,
+    "unreconciled": 0,
+    "unreviewed_material_deleted": 0
+  },
+  "warnings": []
+}

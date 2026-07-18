@@ -18,7 +18,7 @@ OpenBREC RF es una plataforma open source, modular y offline-first para investig
 > El sistema produce **indicios**, no diagnósticos ni certezas de víctima. La ausencia de RF nunca descarta una persona atrapada.
 
 > [!NOTE]
-> Estado actual: M0 completo como referencia de laboratorio sobre el SHA `2648f38`. Existen contratos core `supported`, API, worker con commit PostgreSQL previo al ACK, replay determinístico, disposición portable/PostgreSQL, simulador de seis nodos y PWA explicable offline. Los 22 gates y sus receipts están en `evidence/m0/`. El plan P0 simulado está aprobado con `0 / 9` tasks aceptadas y sólo `P0-01` elegible; todavía no existe implementación addon. No es una plataforma operacional ni un perfil de campo.
+> Estado actual: M0 y P0 simulado completos. P0 cerró `9 / 9` tasks y su exit ejecuta 27 gates con receipts en `evidence/p0/`: energía, mensajería/SOS, comparación Meshtastic/MeshCore/Reticulum, federación 50k, terminal offline, beacons y campaña integrada. Todo soporte físico continúa `unverified`; no se compró hardware, no hubo TX ni se inició P1a. No es una plataforma operacional ni un perfil de campo.
 
 ## Documentos principales
 

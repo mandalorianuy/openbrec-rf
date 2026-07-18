@@ -1,0 +1,78 @@
+{
+  "matrix_version": "1.0.0",
+  "claim_scope": "deterministic_simulation_only",
+  "requirements": [
+    {
+      "task": "P0-01",
+      "requirement": "Contratos addon normativos, fixtures y consumidores generados sin drift",
+      "fixtures": ["fixtures/contracts/addons/1.0.0"],
+      "gate": ["addon-contracts", "addon-fixtures", "schema-compat", "contracts-gen"],
+      "receipt": ["evidence/p0/p0-09/addon-contracts/p0-09-receipt.json", "evidence/p0/p0-09/addon-fixtures/p0-09-receipt.json", "evidence/p0/p0-09/schema-compat/p0-09-receipt.json", "evidence/p0/p0-09/contracts-gen/p0-09-receipt.json"],
+      "status": "accepted"
+    },
+    {
+      "task": "P0-02",
+      "requirement": "Tres dominios energéticos, FSM, brownout y replay determinístico",
+      "fixtures": ["fixtures/p0/energy/three-domains.json"],
+      "gate": ["energy-replay", "determinism"],
+      "receipt": ["evidence/p0/p0-09/energy-replay/p0-09-receipt.json", "evidence/p0/p0-09/determinism/p0-09-receipt.json"],
+      "status": "accepted"
+    },
+    {
+      "task": "P0-03",
+      "requirement": "Mensajería autenticada, reducer SOS append-only y transporte hostil",
+      "fixtures": ["fixtures/p0/messaging/hostile-transport.json"],
+      "gate": ["human-message-security", "sos-state-replay", "transport-policy"],
+      "receipt": ["evidence/p0/p0-09/human-message-security/p0-09-receipt.json", "evidence/p0/p0-09/sos-state-replay/p0-09-receipt.json", "evidence/p0/p0-09/transport-policy/p0-09-receipt.json"],
+      "status": "accepted"
+    },
+    {
+      "task": "P0-04",
+      "requirement": "Comparación común, opaca y reproducible de tres bearers sin ganador global",
+      "fixtures": ["fixtures/p0/transports/common-workload.json"],
+      "gate": ["transport-comparison", "malicious-transport"],
+      "receipt": ["evidence/p0/p0-09/transport-comparison/p0-09-receipt.json", "evidence/p0/p0-09/malicious-transport/p0-09-receipt.json"],
+      "status": "accepted"
+    },
+    {
+      "task": "P0-05",
+      "requirement": "Jerarquía 50k con autonomía recursiva y reconciliación determinística",
+      "fixtures": ["fixtures/p0/federation/50k-sites.json"],
+      "gate": ["federation-scale", "federation-reconciliation"],
+      "receipt": ["evidence/p0/p0-09/federation-scale/p0-09-receipt.json", "evidence/p0/p0-09/federation-reconciliation/p0-09-receipt.json"],
+      "status": "accepted"
+    },
+    {
+      "task": "P0-06",
+      "requirement": "Terminal offline con estados derivados, degradación visible y accesibilidad técnica",
+      "fixtures": ["fixtures/p0/terminal/offline-terminal.json", "apps/web/public/p0-terminal.json"],
+      "gate": ["terminal-ux", "ui-smoke", "accessibility"],
+      "receipt": ["evidence/p0/p0-09/terminal-ux/p0-09-receipt.json", "evidence/p0/p0-09/ui-smoke/p0-09-receipt.json", "evidence/p0/p0-09/accessibility/p0-09-receipt.json"],
+      "status": "accepted"
+    },
+    {
+      "task": "P0-07",
+      "requirement": "Beacon tri-modal, OOD, adversarial y disposición reviewable",
+      "fixtures": ["fixtures/p0/beacons/deterministic-campaign.json"],
+      "gate": ["beacon-replay", "beacon-adversarial", "retention-fault"],
+      "receipt": ["evidence/p0/p0-09/beacon-replay/p0-09-receipt.json", "evidence/p0/p0-09/beacon-adversarial/p0-09-receipt.json", "evidence/p0/p0-09/retention-fault/p0-09-receipt.json"],
+      "status": "accepted"
+    },
+    {
+      "task": "P0-08",
+      "requirement": "Campaña integrada 24h con partición, adversario y fallos cruzados",
+      "fixtures": ["fixtures/p0/integrated/campaign.json"],
+      "gate": "p0-integrated",
+      "receipt": "evidence/p0/p0-09/p0-integrated/p0-09-receipt.json",
+      "status": "accepted"
+    },
+    {
+      "task": "P0-09",
+      "requirement": "Exit reproducible, support por perfil, supply chain y residuales gobernados",
+      "fixtures": ["docs/governance/p0-support-status.json", "docs/governance/p1a-hardware-shortlist.json", "docs/governance/p0-residual-closure.json"],
+      "gate": ["p0-traceability", "p0-support-status", "p0-residuals", "secret-scan", "sbom", "licenses", "vulnerability-scan"],
+      "receipt": ["evidence/p0/p0-09/p0-traceability/p0-09-receipt.json", "evidence/p0/p0-09/p0-support-status/p0-09-receipt.json", "evidence/p0/p0-09/p0-residuals/p0-09-receipt.json", "evidence/p0/p0-09/secret-scan/p0-09-receipt.json", "evidence/p0/p0-09/sbom/p0-09-receipt.json", "evidence/p0/p0-09/licenses/p0-09-receipt.json", "evidence/p0/p0-09/vulnerability-scan/p0-09-receipt.json"],
+      "status": "accepted"
+    }
+  ]
+}
