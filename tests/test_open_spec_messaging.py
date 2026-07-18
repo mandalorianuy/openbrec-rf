@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import subprocess
 import sys
@@ -18,6 +19,8 @@ CONTENT_SCHEMA = ROOT / "schemas/open-spec/human-message-content.schema.json"
 EVENT_SCHEMA = ROOT / "schemas/open-spec/human-message-lifecycle-event.schema.json"
 FIXTURES = ROOT / "fixtures/open-spec/messaging/interoperability-examples.json"
 RESIDUALS = ROOT / "docs/governance/open-spec-messaging-residuals.json"
+RECEIPT = ROOT / "evidence/open-spec/os-04/os-04-receipt.json"
+ACCEPTANCE = ROOT / "evidence/open-spec/os-04/acceptance.json"
 
 MESSAGE_TYPES = {"text", "status", "sos", "location"}
 SOS_EVENTS = {
@@ -232,6 +235,26 @@ class OpenSpecMessagingTests(unittest.TestCase):
         self.assertIn("tests.test_open_spec_messaging", job)
         self.assertIn("openbrec.verify open-spec-messaging", job)
         self.assertIn("evidence/open-spec/os-04", job)
+
+    def test_os_04_acceptance_is_scoped_and_does_not_start_os_05(self) -> None:
+        acceptance = self.load_json(ACCEPTANCE)
+        receipt = self.load_json(RECEIPT)
+        self.assertEqual(acceptance["task"], "OS-04")
+        self.assertEqual(acceptance["status"], "accepted")
+        self.assertEqual(acceptance["subject_git_sha"], receipt["git_sha"])
+        self.assertEqual(acceptance["receipt"]["result"], "passed")
+        self.assertFalse(acceptance["receipt"]["dirty"])
+        self.assertEqual(
+            acceptance["receipt"]["sha256"],
+            hashlib.sha256(RECEIPT.read_bytes()).hexdigest(),
+        )
+        self.assertEqual(
+            acceptance["open_spec_progress"],
+            {"accepted_tasks": 4, "total_tasks": 8, "percent": 50.0},
+        )
+        self.assertFalse(acceptance["physical_validation_progress"]["blocks_open_spec"])
+        self.assertEqual(acceptance["next_task"], "OS-05")
+        self.assertFalse(acceptance["next_task_started"])
 
 
 if __name__ == "__main__":

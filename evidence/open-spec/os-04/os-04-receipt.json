@@ -1,0 +1,100 @@
+{
+  "command": [
+    "python",
+    "-m",
+    "openbrec.verify",
+    "open-spec-messaging",
+    "--receipt",
+    "evidence/open-spec/os-04/os-04-receipt.json"
+  ],
+  "dirty": false,
+  "errors": [],
+  "finished_at": "2026-07-18T16:39:23.687227Z",
+  "gate": "open-spec-messaging",
+  "gate_version": "0.1.0",
+  "git_sha": "0d196881cf20d0dd1737f5e2cd3c18e9ecaa7330",
+  "inputs": [
+    {
+      "path": "docs/superpowers/plans/2026-07-18-openbrec-open-spec-plan.md",
+      "sha256": "9ef5d7b824a3b49b86fd09d9c6d347f1d8370869f458fd29d09192726d144434"
+    },
+    {
+      "path": "config/open-spec/governance.json",
+      "sha256": "ded4bd608574da85180924af34084c9c5584429cf512eaecd5cd62f56b042373"
+    },
+    {
+      "path": "specs/openbrec/1.0.0-draft.1/messaging-interoperability-profiles.json",
+      "sha256": "f5c0194eedf91de7b8eb08ea0634c61ccc6367177dd035256d43f4ff790ed908"
+    },
+    {
+      "path": "schemas/open-spec/human-message-content.schema.json",
+      "sha256": "f23b88758de2f16c2a9e7437f3e3fe6df52b47e3f5033e188c674dfd23401b6f"
+    },
+    {
+      "path": "schemas/open-spec/human-message-lifecycle-event.schema.json",
+      "sha256": "7b4f72f3bd8712ce4cf90039d9092129889a00433cda1dc2e00009c74483b6ca"
+    },
+    {
+      "path": "fixtures/open-spec/messaging/interoperability-examples.json",
+      "sha256": "35419f73e359a326cc3bf8a5e5926b1c795ad9933ea25582a10e15b630023735"
+    },
+    {
+      "path": "docs/governance/open-spec-messaging-residuals.json",
+      "sha256": "a621cce1199245a8c6f7055d4e523afaf75d64ffdd1d22cee1a4052908915a0d"
+    },
+    {
+      "path": "evidence/p0/p0-03/human-message-security/p0-03-receipt.json",
+      "sha256": "0b3a772876bc7070405abaec0ae7af6cfbe57aa942d796538a7f0a9a170c3624"
+    }
+  ],
+  "lockfiles": [
+    {
+      "path": "uv.lock",
+      "sha256": "2d1b79df4cd5878ec7f4674a133c54ca7b16dfa559560ba3a93911e620f435d5"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "sha256": "ed7659f050b279f37e5cf84fb065fc528e15b3204d374681f3a70ad081d1c25a"
+    },
+    {
+      "path": "apps/web/pnpm-lock.yaml",
+      "sha256": "12a1ed34e601b49a319846ef8d87c316708bb695853661ec3b3b95208701d278"
+    }
+  ],
+  "output_sha256": "f55ff6862e044eb8a66761fb65de0d661ec7f4a6758ca52aa22d356706d5632e",
+  "receipt_version": "1.0.0",
+  "responsible_role": "release-reviewer",
+  "result": "passed",
+  "runtime": {
+    "docker": "Docker version 29.5.3, build d1c06ef",
+    "node": "v26.5.0",
+    "pnpm": "11.9.0",
+    "python": "3.12.13"
+  },
+  "scope": "open_spec_human_messaging_security_and_distress_semantics",
+  "started_at": "2026-07-18T16:39:23.352837Z",
+  "summary": {
+    "cancel_events_preserved": 1,
+    "conforming_contents": 4,
+    "false_operator_acceptances": 0,
+    "human_state": "seen",
+    "message_profiles": 4,
+    "next_task": "OS-05",
+    "next_task_started": false,
+    "operational_state": "accepted",
+    "physical_delivery_blocks_publication": false,
+    "rejected_false_acceptances": 1,
+    "replay_hashes": 1,
+    "replay_orders": 10,
+    "replay_sha256": "4ba5cb0c944cfcf9a580304287003e3e1c0ad8c32e4a9f6cdb3389cb4d7cbcf2",
+    "silent_discards": 0,
+    "spec_tasks_accepted": 4,
+    "spec_tasks_total": 8,
+    "spec_version": "1.0.0-draft.1",
+    "technical_state": "gateway_received",
+    "unverified_distress_authenticated": 0,
+    "unverified_distress_cases": 4,
+    "unverified_distress_preserved": 4
+  },
+  "warnings": []
+}
