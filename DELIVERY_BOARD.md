@@ -281,7 +281,7 @@ su implementación, validación, review y receipt; planificación o inicio no su
 - Determinismo: diez órdenes producen un único hash integrado
   `54c52e8383cd4ed4cc57604c6cb74c85425b80e333e9eb5184f445edf5351441`.
 - Receipt: `evidence/p0/p0-08/p0-integrated/p0-08-receipt.json`, evaluado sobre
-  `6af0237e5e14b5f14210c3cde6045eed495ed5c0` con `dirty: false` e integridad.
+  `6eb7bcbbd9e4fdde3d63437e097d385577fd422c` con `dirty: false` e integridad.
 - Review: `docs/security/2026-07-17-p0-08-integrated-fault-review.md`.
 - Residuales: P0-R011 cierra integración simulada y conserva power-cut físico;
   P0-R015 gobierna que la composición in-process no es runtime distribuido.

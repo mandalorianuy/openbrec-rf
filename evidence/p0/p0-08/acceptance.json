@@ -2,14 +2,14 @@
   "acceptance_version": "1.0.0",
   "accepted_at": "2026-07-17",
   "implementation_role": "core-replay-maintainer",
-  "implementation_sha": "6af0237e5e14b5f14210c3cde6045eed495ed5c0",
+  "implementation_sha": "6eb7bcbbd9e4fdde3d63437e097d385577fd422c",
   "progress": {
     "accepted_tasks": 8,
     "percent": 88.9,
     "total_tasks": 9
   },
   "receipt_sha256": {
-    "p0-integrated": "b2e0e2e6963519541434f4a8f2daaf37cf0318e1e010f3f3ed82cb0abeaeb12e"
+    "p0-integrated": "b4b28ee3e0c164deedb956c66117ef77d2ed9d7fe80782278759248f9faa6055"
   },
   "review_role": "release-reviewer",
   "status": "accepted",

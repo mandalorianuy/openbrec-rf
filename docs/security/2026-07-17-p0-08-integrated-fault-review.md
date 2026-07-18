@@ -2,7 +2,7 @@
 
 - Fecha: 2026-07-17
 - Task: P0-08
-- SHA evaluado: `6af0237e5e14b5f14210c3cde6045eed495ed5c0`
+- SHA evaluado: `6eb7bcbbd9e4fdde3d63437e097d385577fd422c`
 - Implementación: rol `core-replay-maintainer` (Codex)
 - Review: rol `release-reviewer`
 - Autoridad de ejecución y merge: owner del repositorio
@@ -12,8 +12,10 @@
 
 El receipt de `p0-integrated` pasa sobre el SHA indicado con `dirty: false`,
 errores y warnings vacíos. `validate_receipt` confirmó SHA, checkout limpio,
-runtimes, lockfiles, siete inputs y hash canónico del output. El gate recompone
-13 gates de P0-02 a P0-07; no confía en receipts históricos como sustituto.
+runtimes, lockfiles, ocho inputs y hash canónico del output. El gate recompone
+13 gates de P0-02 a P0-07; no confía en receipts históricos como sustituto. El
+job integrado instala explícitamente el runtime browser requerido por el gate
+de accesibilidad; una regresión impide volver a omitirlo.
 
 La regresión completa pasó 122 tests en procesos aislados por módulo. La
 invocación monolítica no produjo resumen al exceder la ventana del executor y no

@@ -502,7 +502,7 @@ P0-07 fue aceptada el 2026-07-17 sobre el SHA de implementación
 dejó P0-08 como única task elegible para el ciclo siguiente.
 
 P0-08 fue aceptada el 2026-07-17 sobre el SHA de implementación
-`6af0237e5e14b5f14210c3cde6045eed495ed5c0`; su receipt limpio vive en
+`6eb7bcbbd9e4fdde3d63437e097d385577fd422c`; su receipt limpio vive en
 `evidence/p0/p0-08/` y su review en
 `docs/security/2026-07-17-p0-08-integrated-fault-review.md`. P0-09 queda como
 única task elegible, pero este closeout no la inicia. El progreso P0 es

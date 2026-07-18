@@ -11,10 +11,10 @@
   ],
   "dirty": false,
   "errors": [],
-  "finished_at": "2026-07-18T00:20:51.087615Z",
+  "finished_at": "2026-07-18T00:28:38.186369Z",
   "gate": "p0-integrated",
   "gate_version": "0.1.0",
-  "git_sha": "6af0237e5e14b5f14210c3cde6045eed495ed5c0",
+  "git_sha": "6eb7bcbbd9e4fdde3d63437e097d385577fd422c",
   "inputs": [
     {
       "path": "fixtures/p0/integrated/campaign.json",
@@ -74,7 +74,7 @@
     "python": "3.12.13"
   },
   "scope": "cross_addon_24h_partition_fault_and_adversary_campaign",
-  "started_at": "2026-07-18T00:20:38.160852Z",
+  "started_at": "2026-07-18T00:28:26.318209Z",
   "summary": {
     "carry_bundles_reconciled": 3,
     "cell_projection": [
