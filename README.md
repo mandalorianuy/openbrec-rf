@@ -18,7 +18,7 @@ OpenBREC RF es una plataforma open source, modular y offline-first para investig
 > El sistema produce **indicios**, no diagnósticos ni certezas de víctima. La ausencia de RF nunca descarta una persona atrapada.
 
 > [!NOTE]
-> Estado actual: M0 y P0 simulado completos. P0 cerró `9 / 9`; P1a tiene un plan de banco/conducted aprobado y permanece `0 / 8`. El readiness no autoriza compra, préstamo, hardware, ensayos, personas, captura ni TX; todo soporte físico continúa `unverified`. No es una plataforma operacional ni un perfil de campo.
+> Estado actual: M0 y P0 simulado completos. La autoridad actual es spec-first: Open Spec está `1 / 8`, mientras P1a física opcional permanece `0 / 8`. Publicar contratos y perfiles no requiere poseer hardware; evidence packs físicos sólo elevan claims de una implementación exacta. No es una plataforma operacional ni un perfil de campo.
 
 P1a-01 está `blocked_external_evidence`: su gate existe, pero faltan nueve assets
 reales autorizados, inspeccionados y bajo custodia. Se comprueba sin promover la
@@ -29,7 +29,16 @@ uv run --offline python -m openbrec.verify p1a-assets --evidence-dir evidence/p1
 ```
 
 Mientras no exista el denominador 9/9, el fallo de ese comando es el resultado
-seguro esperado y el progreso P1a permanece `0 / 8`.
+seguro esperado y el progreso P1a permanece `0 / 8`; esto no bloquea la spec.
+
+La frontera abierta se valida con:
+
+```bash
+uv run --offline python -m openbrec.verify open-spec
+```
+
+Los nueve perfiles permiten componentes alternativos y comienzan `unverified`.
+Sólo `lab_validated` y `field_validated` requieren evidence packs físicos.
 
 ## Documentos principales
 
@@ -42,6 +51,8 @@ seguro esperado y el progreso P1a permanece `0 / 8`.
 - [`docs/10-rf-quieting.md`](docs/10-rf-quieting.md) — cortinas, carpas y aislamiento medido.
 - [`docs/superpowers/plans/2026-07-17-openbrec-p0-simulated-addons-plan.md`](docs/superpowers/plans/2026-07-17-openbrec-p0-simulated-addons-plan.md) — plan P0 completado, completamente simulado.
 - [`docs/superpowers/plans/2026-07-17-openbrec-p1a-bench-conducted-plan.md`](docs/superpowers/plans/2026-07-17-openbrec-p1a-bench-conducted-plan.md) — plan P1a de banco/conducted y autorizaciones task-by-task.
+- [`docs/superpowers/plans/2026-07-18-openbrec-open-spec-plan.md`](docs/superpowers/plans/2026-07-18-openbrec-open-spec-plan.md) — autoridad spec-first, secuencia OS-01–OS-08 y separación de evidence packs físicos.
+- [`specs/openbrec/1.0.0-draft.1/reference-capability-profiles.json`](specs/openbrec/1.0.0-draft.1/reference-capability-profiles.json) — nueve roles abiertos con alternativas y criterios de aceptación.
 - [`docs/governance/P0_RESIDUAL_REGISTER.md`](docs/governance/P0_RESIDUAL_REGISTER.md) — residuales, owners, gates y stop conditions P0.
 
 ## Perfiles planificados posteriores a M0

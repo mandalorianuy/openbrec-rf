@@ -1,11 +1,11 @@
 # OpenBREC RF — Delivery Board
 
 - Autoridad de secuencia: este board
-- Plan activo aprobado: `docs/superpowers/plans/2026-07-17-openbrec-p1a-bench-conducted-plan.md`
+- Plan activo aprobado: `docs/superpowers/plans/2026-07-18-openbrec-open-spec-plan.md`
 - Último plan completado: `docs/superpowers/plans/2026-07-17-openbrec-p0-simulated-addons-plan.md`
 - Baseline cerrado: `docs/superpowers/plans/2026-07-17-openbrec-m0-executable-plan.md`
-- Estado real: M0/P0 completos; readiness P1a implementado; P1a `0 / 8` (`0%`)
-- Regla de avance: sólo P1a-01 puede seguir, después de autorización explícita de asset/custodia; ninguna acción física se inicia automáticamente
+- Estado real: M0/P0 completos; Open Spec `1 / 8` (`12.5%`); P1a física `0 / 8` (`0%`)
+- Regla de avance: OS-02 es la siguiente task; P1a es evidencia opcional y no bloquea la spec
 
 ## Decisiones de gobernanza cerradas
 
@@ -16,6 +16,7 @@
 - [x] Exit M0 aceptado y mergeado el 2026-07-17.
 - [x] Plan P0 completamente simulado aprobado el 2026-07-17.
 - [x] Plan P1a de banco/conducted y política fail-closed aprobados el 2026-07-17.
+- [x] OS-01 corrige la autoridad a spec-first y separa publicación de evidencia física el 2026-07-18.
 
 ## Now — M0 Fundación
 
@@ -305,7 +306,25 @@ su implementación, validación, review y receipt; planificación o inicio no su
 
 P0 está cerrado.
 
-## Next — P1a banco y conducted
+## Now — Open Spec
+
+Progreso de aceptación: Open Spec `1 / 8` (`12.5%`). Los contratos y perfiles
+abiertos avanzan sin exigir hardware propio; los evidence packs sólo elevan el
+nivel de evidencia de una implementación exacta.
+
+- [x] `OS-01`: frontera spec/evidencia, nueve perfiles de capacidad y claim schema.
+- [ ] `OS-02`: energía y solar abiertos por rol y alternativas.
+- [ ] `OS-03`: perfiles multi-bearer abiertos.
+- [ ] `OS-04`: mensajería, estado, SOS y ubicación interoperables.
+- [ ] `OS-05`: beacons y extensiones modales.
+- [ ] `OS-06`: federación recursiva y autonomía local.
+- [ ] `OS-07`: planos, BOMs y guías de reutilización.
+- [ ] `OS-08`: conformance kit y publicación.
+
+Plan activo: `docs/superpowers/plans/2026-07-18-openbrec-open-spec-plan.md`.
+La próxima task es OS-02 y no fue iniciada en OS-01.
+
+## Optional validation lane — P1a banco y conducted
 
 Progreso de aceptación: `0 / 8` (`0%`). El paquete de readiness no suma una
 task P1a.
@@ -331,6 +350,10 @@ planificadas, cero aceptadas, cero acciones físicas autorizadas y receipt en
 
 Plan activo: `docs/superpowers/plans/2026-07-17-openbrec-p1a-bench-conducted-plan.md`.
 Residuales activos: `docs/governance/p1a-residuals.json`.
+
+Este plan ya no es la autoridad principal. P1a preserva evidencia física y
+permite claims `lab_validated`/`field_validated`; su bloqueo no impide publicar
+la Open Spec.
 
 Estado P1a-01: `blocked_external_evidence`. El gate `p1a-assets` exige 9/9
 categorías exactas, autorización correlacionada, custodia, inspección, serial

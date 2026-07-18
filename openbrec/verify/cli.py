@@ -70,6 +70,13 @@ from openbrec.p1a_assets import (
     SCHEMA_PATH as P1A_ASSET_SCHEMA_PATH,
     run_asset_gate,
 )
+from openbrec.open_spec import (
+    CLAIM_SCHEMA_PATH as OPEN_SPEC_CLAIM_SCHEMA_PATH,
+    DISPOSITION_PATH as OPEN_SPEC_DISPOSITION_PATH,
+    POLICY_PATH as OPEN_SPEC_POLICY_PATH,
+    PROFILES_PATH as OPEN_SPEC_PROFILES_PATH,
+    run_open_spec_gate,
+)
 
 DRAFT_2020_12 = "https://json-schema.org/draft/2020-12/schema"
 VERIFY_VERSION = "0.1.0"
@@ -229,7 +236,7 @@ def _responsible_role(gate: str) -> str:
         return "core-replay-maintainer"
     if gate in P0_GOVERNANCE_GATES:
         return "release-reviewer"
-    if gate in {"p1a-readiness", "p1a-assets"}:
+    if gate in {"p1a-readiness", "p1a-assets", "open-spec"}:
         return "release-reviewer"
     if gate in {"beacon-adversarial", "retention-fault"}:
         return "privacy-safety-reviewer"
@@ -738,6 +745,7 @@ def _parser() -> argparse.ArgumentParser:
         "p0-all",
         "p1a-readiness",
         "p1a-assets",
+        "open-spec",
         "all",
     ):
         subparser = subparsers.add_parser(gate)
@@ -772,6 +780,11 @@ def _parser() -> argparse.ArgumentParser:
         if gate == "p1a-assets":
             subparser.add_argument("--evidence-dir", default=str(P1A_ASSET_EVIDENCE_DIR))
             subparser.add_argument("--schema", default=str(P1A_ASSET_SCHEMA_PATH))
+        if gate == "open-spec":
+            subparser.add_argument("--policy", default=str(OPEN_SPEC_POLICY_PATH))
+            subparser.add_argument("--profiles", default=str(OPEN_SPEC_PROFILES_PATH))
+            subparser.add_argument("--claim-schema", default=str(OPEN_SPEC_CLAIM_SCHEMA_PATH))
+            subparser.add_argument("--disposition", default=str(OPEN_SPEC_DISPOSITION_PATH))
         if gate == "p0-all":
             subparser.add_argument("--evidence-dir", default="evidence/p0")
             subparser.add_argument("--plan-only", action="store_true")
@@ -1279,6 +1292,28 @@ def main(argv: Sequence[str] | None = None) -> int:
                 "schema": args.schema,
             }
         scope = "p1a_exact_asset_identity_custody_and_inspection"
+    elif args.gate == "open-spec":
+        try:
+            policy_path = _resolve_inside(root, args.policy, label="policy")
+            profiles_path = _resolve_inside(root, args.profiles, label="profiles")
+            claim_schema_path = _resolve_inside(root, args.claim_schema, label="claim-schema")
+            disposition_path = _resolve_inside(root, args.disposition, label="disposition")
+            errors, warnings, summary, gate_inputs = run_open_spec_gate(
+                root,
+                policy_path=policy_path,
+                profiles_path=profiles_path,
+                claim_schema_path=claim_schema_path,
+                disposition_path=disposition_path,
+            )
+            inputs.extend(gate_inputs)
+        except (OSError, ValueError) as exc:
+            errors, warnings, summary = [str(exc)], [], {
+                "policy": args.policy,
+                "profiles": args.profiles,
+                "claim_schema": args.claim_schema,
+                "disposition": args.disposition,
+            }
+        scope = "open_spec_publication_and_optional_evidence_boundary"
     elif args.gate == "review-quarantine":
         errors, warnings, summary = run_review_quarantine(root)
         scope = "exactly_one_primary_disposition"

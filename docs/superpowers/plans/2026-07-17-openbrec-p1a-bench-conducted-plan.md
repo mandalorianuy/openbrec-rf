@@ -1,6 +1,6 @@
-# OpenBREC P1a — plan de banco y conducted
+# OpenBREC P1a — carril opcional de banco y conducted
 
-- Estado: aprobado para secuenciación; ejecución física no autorizada
+- Estado: preservado como validación física opcional; no bloquea Open Spec
 - Fecha: 2026-07-17
 - Autoridad de secuencia: `DELIVERY_BOARD.md`
 - Baseline requerido: P0 cerrado en `520c4719f9b2e078069d96cc64ef9099be5d3807`
@@ -11,6 +11,11 @@
 - Red line: TX radiado prohibido en P1a
 
 ## 1. Objetivo y autoridad
+
+Desde 2026-07-18 la autoridad principal es
+`docs/superpowers/plans/2026-07-18-openbrec-open-spec-plan.md`. Este documento
+gobierna evidence packs físicos opcionales y no condiciona la publicación de
+contratos, perfiles, alternativas, planos o fixtures de la Open Spec.
 
 Convertir las hipótesis P0 en evidencia física acotada sin confundir banco con
 campo. Este plan autoriza sólo secuenciación, contratos, gates, fixtures

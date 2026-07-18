@@ -1,0 +1,9 @@
+{
+  "register_version": "1.0.0",
+  "lane": "open_spec",
+  "residuals": [
+    {"id": "OS-R001", "state": "controlled", "blocks_publication": false, "owner": "spec-maintainer", "risk": "Physical validation may be confused with permission to publish the open specification.", "gate_or_task": "OS-01 open-spec", "stop_condition": "Reject any policy that makes owned hardware or physical evidence a publication requirement."},
+    {"id": "OS-R002", "state": "controlled", "blocks_publication": false, "owner": "hardware-reference-maintainer", "risk": "A reference candidate may be mistaken for mandatory hardware.", "gate_or_task": "OS-01 reference profiles", "stop_condition": "Every profile must allow alternatives and remain hardware-agnostic."},
+    {"id": "OS-R003", "state": "planned", "blocks_publication": false, "owner": "release-reviewer", "risk": "Specified, simulated and physically validated claims may be presented without enough scope.", "gate_or_task": "OS-08 conformance kit", "stop_condition": "No physical claim without an exact configuration and evidence pack; otherwise retain unverified/specified/simulated."}
+  ]
+}
