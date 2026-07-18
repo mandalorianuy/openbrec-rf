@@ -4,8 +4,8 @@
 - Plan activo aprobado: `docs/superpowers/plans/2026-07-18-openbrec-open-spec-plan.md`
 - Último plan completado: `docs/superpowers/plans/2026-07-17-openbrec-p0-simulated-addons-plan.md`
 - Baseline cerrado: `docs/superpowers/plans/2026-07-17-openbrec-m0-executable-plan.md`
-- Estado real: M0/P0 completos; Open Spec `7 / 8` (`87.5%`); P1a física `0 / 8` (`0%`)
-- Regla de avance: OS-08 es la siguiente task; P1a es evidencia opcional y no bloquea la spec
+- Estado real: M0/P0 completos; Open Spec `8 / 8` (`100%`); P1a física `0 / 8` (`0%`)
+- Regla de avance: Open Spec está cerrada; P1a-01 es opcional y permanece `blocked_external_evidence`
 
 ## Decisiones de gobernanza cerradas
 
@@ -312,7 +312,7 @@ P0 está cerrado.
 
 ## Now — Open Spec
 
-Progreso de aceptación: Open Spec `7 / 8` (`87.5%`). Los contratos y perfiles
+Progreso de aceptación: Open Spec `8 / 8` (`100%`). Los contratos y perfiles
 abiertos avanzan sin exigir hardware propio; los evidence packs sólo elevan el
 nivel de evidencia de una implementación exacta.
 
@@ -328,7 +328,8 @@ nivel de evidencia de una implementación exacta.
 - [x] `OS-07`: cinco planos/BOMs por capacidades, once adapters y cinco guías;
   construcción abierta, reutilización e híbrida son rutas equivalentes. Ningún
   vendor/SKU es obligatorio y `specified` no acredita performance física.
-- [ ] `OS-08`: conformance kit y publicación.
+- [x] `OS-08`: conformance kit, submission schema, matriz normativa, publicación
+  offline y proceso comunitario append-only para evidence packs.
 
 Plan activo: `docs/superpowers/plans/2026-07-18-openbrec-open-spec-plan.md`.
 OS-04 define cuatro contenidos cerrados y eventos SOS append-only. Separa
@@ -344,7 +345,9 @@ identidad, diagnóstico ni ausencia. Las extensiones requieren namespace, schema
 dataset y reviews propios. Los fixtures sintéticos prueban conformance, abstención
 y replay determinístico, no performance física ni representatividad.
 
-La próxima task es OS-08 y no fue iniciada en OS-07.
+Open Spec está cerrada. La próxima task gobernada es `P1a-01`, dentro del carril
+físico opcional; no fue iniciada y sigue `blocked_external_evidence` hasta que
+existan autorización, custodia y manifests exactos para nueve assets.
 
 ## Optional validation lane — P1a banco y conducted
 

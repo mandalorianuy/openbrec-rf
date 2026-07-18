@@ -66,22 +66,21 @@ class OpenSpecMessagingTests(unittest.TestCase):
         ):
             self.assertIn(option, result.stdout)
 
-    def test_os_04_remains_accepted_after_os_07_closure(self) -> None:
+    def test_os_04_remains_accepted_after_os_08_closure(self) -> None:
         source = PLAN.read_text(encoding="utf-8")
-        self.assertIn("7 / 8", source)
+        self.assertIn("8 / 8", source)
         self.assertIn("OS-04 — aceptada", source)
         self.assertIn("OS-05 — aceptada", source)
         self.assertIn("OS-06 — aceptada", source)
         self.assertIn("OS-07 — aceptada", source)
-        self.assertIn("OS-08 — no iniciada", source)
+        self.assertIn("OS-08 — aceptada", source)
         policy = self.load_json(POLICY)
         self.assertEqual(
             policy["progress"],
-            {"accepted_tasks": 7, "total_tasks": 8, "percent": 87.5},
+            {"accepted_tasks": 8, "total_tasks": 8, "percent": 100.0},
         )
         tasks = policy["tasks"]
-        self.assertEqual([task["status"] for task in tasks[:7]], ["accepted"] * 7)
-        self.assertTrue(all(task["status"] == "not_started" for task in tasks[7:]))
+        self.assertEqual([task["status"] for task in tasks], ["accepted"] * 8)
 
     def test_profiles_cover_four_types_without_transport_coupling(self) -> None:
         value = self.load_json(PROFILES)
@@ -255,19 +254,19 @@ class OpenSpecMessagingTests(unittest.TestCase):
         result = self.run_verify("open-spec-messaging")
         self.assertEqual(result.returncode, 0, result.stderr)
         summary = json.loads(result.stdout)["summary"]
-        self.assertEqual(summary["spec_tasks_accepted"], 7)
+        self.assertEqual(summary["spec_tasks_accepted"], 8)
         self.assertEqual(summary["spec_tasks_total"], 8)
         self.assertEqual(summary["message_profiles"], 4)
         self.assertEqual(summary["conforming_contents"], 4)
         self.assertFalse(summary["physical_delivery_blocks_publication"])
-        self.assertEqual(summary["next_task"], "OS-08")
+        self.assertEqual(summary["next_task"], "P1a-01")
         self.assertFalse(summary["next_task_started"])
 
     def test_board_readme_and_ci_publish_os_04_gate(self) -> None:
         board = (ROOT / "DELIVERY_BOARD.md").read_text(encoding="utf-8")
         readme = (ROOT / "README.md").read_text(encoding="utf-8")
         workflow = (ROOT / ".github/workflows/validate.yml").read_text(encoding="utf-8")
-        self.assertIn("Open Spec `7 / 8`", board)
+        self.assertIn("Open Spec `8 / 8`", board)
         self.assertIn("[x] `OS-04`", board)
         self.assertIn("OS-06", board)
         self.assertIn("openbrec.verify open-spec-messaging", readme)

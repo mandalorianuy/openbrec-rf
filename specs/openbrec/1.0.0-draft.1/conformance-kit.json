@@ -1,0 +1,116 @@
+{
+  "kit_version": "1.0.0-draft.1",
+  "spec_version": "1.0.0-draft.1",
+  "title": "OpenBREC Open Spec conformance kit",
+  "normative_gates": [
+    {
+      "task": "OS-01",
+      "gate": "open-spec",
+      "command": "python -m openbrec.verify open-spec",
+      "normative_inputs": ["config/open-spec/governance.json", "specs/openbrec/1.0.0-draft.1/reference-capability-profiles.json", "schemas/open-spec/evidence-claim.schema.json"],
+      "proves": ["spec and evidence boundary", "capability profiles", "claim vocabulary"],
+      "does_not_prove": ["physical compatibility", "field readiness"]
+    },
+    {
+      "task": "OS-02",
+      "gate": "open-spec-energy",
+      "command": "python -m openbrec.verify open-spec-energy",
+      "normative_inputs": ["specs/openbrec/1.0.0-draft.1/energy-architecture-profiles.json", "schemas/open-spec/energy-architecture.schema.json"],
+      "proves": ["open energy architectures", "bounded energy claims", "solar optionality"],
+      "does_not_prove": ["72-hour autonomy", "solar sustainability"]
+    },
+    {
+      "task": "OS-03",
+      "gate": "open-spec-transports",
+      "command": "python -m openbrec.verify open-spec-transports",
+      "normative_inputs": ["specs/openbrec/1.0.0-draft.1/multi-bearer-transport-profiles.json", "schemas/open-spec/transport-decision.schema.json"],
+      "proves": ["multi-bearer selection", "untrusted transport boundary", "no universal winner"],
+      "does_not_prove": ["RF coverage", "regulatory permission", "airtime capacity"]
+    },
+    {
+      "task": "OS-04",
+      "gate": "open-spec-messaging",
+      "command": "python -m openbrec.verify open-spec-messaging",
+      "normative_inputs": ["specs/openbrec/1.0.0-draft.1/messaging-interoperability-profiles.json", "schemas/open-spec/human-message-content.schema.json", "schemas/open-spec/human-message-lifecycle-event.schema.json"],
+      "proves": ["text status SOS and location semantics", "append-only lifecycle", "distress preservation"],
+      "does_not_prove": ["message delivery", "human comprehension", "rescue outcome"]
+    },
+    {
+      "task": "OS-05",
+      "gate": "open-spec-beacons",
+      "command": "python -m openbrec.verify open-spec-beacons",
+      "normative_inputs": ["specs/openbrec/1.0.0-draft.1/beacon-capability-profiles.json", "schemas/open-spec/beacon-modality-extension.schema.json", "schemas/open-spec/beacon-dataset-manifest.schema.json"],
+      "proves": ["capability-driven modalities", "abstention", "extension isolation"],
+      "does_not_prove": ["person presence", "person absence", "physical sensitivity or range"]
+    },
+    {
+      "task": "OS-06",
+      "gate": "open-spec-federation",
+      "command": "python -m openbrec.verify open-spec-federation",
+      "normative_inputs": ["specs/openbrec/1.0.0-draft.1/recursive-federation-profiles.json", "schemas/open-spec/federation-peer-agreement.schema.json"],
+      "proves": ["recursive local autonomy", "explicit peering", "deterministic reconciliation"],
+      "does_not_prove": ["50k-site capacity", "field-scale readiness"]
+    },
+    {
+      "task": "OS-07",
+      "gate": "open-spec-builds",
+      "command": "python -m openbrec.verify open-spec-builds",
+      "normative_inputs": ["specs/openbrec/1.0.0-draft.1/reference-build-profiles.json", "schemas/open-spec/reference-build-manifest.schema.json", "schemas/open-spec/reuse-adapter-manifest.schema.json"],
+      "proves": ["capability BOMs", "open build reuse and hybrid routes", "adapter status boundaries"],
+      "does_not_prove": ["a physical build", "vendor support", "certification"]
+    }
+  ],
+  "conformance_classes": [
+    {"contribution_type": "core_conformance", "required_gate": "open-spec", "default_evidence_level": "specified"},
+    {"contribution_type": "addon_profile", "required_gate": "matching addon gate", "default_evidence_level": "specified"},
+    {"contribution_type": "reuse_adapter", "required_gate": "open-spec-builds plus pinned vectors", "default_evidence_level": "unverified"},
+    {"contribution_type": "reference_build", "required_gate": "open-spec-builds", "default_evidence_level": "specified"},
+    {"contribution_type": "evidence_pack", "required_gate": "open-spec-exit plus evidence-specific gate", "default_evidence_level": "unverified"},
+    {"contribution_type": "extension", "required_gate": "isolated namespace and matching addon gate", "default_evidence_level": "unverified"}
+  ],
+  "claim_ladder": [
+    {"level": "unverified", "minimum_evidence": "declared subject and limitations", "physical_evidence_required": false, "allowed_claim": "candidate only"},
+    {"level": "specified", "minimum_evidence": "normative schema plus conforming fixtures", "physical_evidence_required": false, "allowed_claim": "contract conformance only"},
+    {"level": "simulated", "minimum_evidence": "specified plus deterministic scenario receipt", "physical_evidence_required": false, "allowed_claim": "simulation result under named scenario"},
+    {"level": "lab_validated", "minimum_evidence": "exact configuration and controlled measurement pack", "physical_evidence_required": true, "allowed_claim": "bounded laboratory result for exact combination"},
+    {"level": "field_validated", "minimum_evidence": "lab evidence plus authorized field protocol and results", "physical_evidence_required": true, "allowed_claim": "bounded field result for exact combination and conditions"}
+  ],
+  "publication_boundary": {
+    "owned_hardware_required": false,
+    "physical_evidence_blocks_open_spec": false,
+    "conformance_never_implies_field_readiness": true,
+    "reference_candidate_never_becomes_mandatory": true,
+    "supported_requires_exact_current_evidence": true
+  },
+  "physical_evidence_rules": {
+    "scope": "exact_combination_only",
+    "exact_hardware_and_firmware": true,
+    "measurement_protocol": true,
+    "raw_or_derived_results": true,
+    "limitations_and_negative_results": true,
+    "custody_and_responsible_actor": true,
+    "jurisdiction_and_environment": true,
+    "reference_candidate_becomes_requirement": false,
+    "evidence_pack_blocks_open_spec": false
+  },
+  "publication": {
+    "license": "Apache-2.0",
+    "offline_bundle": true,
+    "versioned_normative_paths": true,
+    "checksums_required": true,
+    "cloud_required": false,
+    "vendor_certification_program": false,
+    "paywall_allowed": false,
+    "release_artifacts": ["schemas", "profiles", "fixtures", "guides", "decision matrix", "conformance commands", "residual registers"]
+  },
+  "community_process": {
+    "states": ["draft", "submitted", "validated", "accepted", "rejected_with_record", "superseded"],
+    "review_decisions_append_only": true,
+    "negative_results_preserved": true,
+    "rejected_submissions_preserved": true,
+    "silent_deletion_allowed": false,
+    "security_privacy_safety_review_required": true,
+    "life_safety_precedes_destructive_minimization": true,
+    "supersession_preserves_history": true
+  }
+}

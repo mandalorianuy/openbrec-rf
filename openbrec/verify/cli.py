@@ -124,6 +124,15 @@ from openbrec.open_spec_builds import (
     RESIDUALS_PATH as OPEN_SPEC_BUILD_RESIDUALS_PATH,
     run_open_spec_build_gate,
 )
+from openbrec.open_spec_exit import (
+    FIXTURES_PATH as OPEN_SPEC_EXIT_FIXTURES_PATH,
+    KIT_PATH as OPEN_SPEC_EXIT_KIT_PATH,
+    MATRIX_PATH as OPEN_SPEC_EXIT_MATRIX_PATH,
+    PUBLICATION_PATH as OPEN_SPEC_EXIT_PUBLICATION_PATH,
+    RESIDUALS_PATH as OPEN_SPEC_EXIT_RESIDUALS_PATH,
+    SUBMISSION_SCHEMA_PATH as OPEN_SPEC_EXIT_SUBMISSION_SCHEMA_PATH,
+    run_open_spec_exit_gate,
+)
 
 DRAFT_2020_12 = "https://json-schema.org/draft/2020-12/schema"
 VERIFY_VERSION = "0.1.0"
@@ -293,6 +302,7 @@ def _responsible_role(gate: str) -> str:
         "open-spec-beacons",
         "open-spec-federation",
         "open-spec-builds",
+        "open-spec-exit",
     }:
         return "release-reviewer"
     if gate in {"beacon-adversarial", "retention-fault"}:
@@ -809,6 +819,7 @@ def _parser() -> argparse.ArgumentParser:
         "open-spec-beacons",
         "open-spec-federation",
         "open-spec-builds",
+        "open-spec-exit",
         "all",
     ):
         subparser = subparsers.add_parser(gate)
@@ -950,6 +961,22 @@ def _parser() -> argparse.ArgumentParser:
             )
             subparser.add_argument(
                 "--residuals", default=str(OPEN_SPEC_BUILD_RESIDUALS_PATH)
+            )
+        if gate == "open-spec-exit":
+            subparser.add_argument("--kit", default=str(OPEN_SPEC_EXIT_KIT_PATH))
+            subparser.add_argument(
+                "--submission-schema",
+                default=str(OPEN_SPEC_EXIT_SUBMISSION_SCHEMA_PATH),
+            )
+            subparser.add_argument(
+                "--fixtures", default=str(OPEN_SPEC_EXIT_FIXTURES_PATH)
+            )
+            subparser.add_argument("--matrix", default=str(OPEN_SPEC_EXIT_MATRIX_PATH))
+            subparser.add_argument(
+                "--publication", default=str(OPEN_SPEC_EXIT_PUBLICATION_PATH)
+            )
+            subparser.add_argument(
+                "--residuals", default=str(OPEN_SPEC_EXIT_RESIDUALS_PATH)
             )
         if gate == "p0-all":
             subparser.add_argument("--evidence-dir", default="evidence/p0")
@@ -1690,6 +1717,42 @@ def main(argv: Sequence[str] | None = None) -> int:
                 },
             )
         scope = "open_spec_reference_builds_boms_reuse_adapters_and_guides"
+    elif args.gate == "open-spec-exit":
+        try:
+            kit_path = _resolve_inside(root, args.kit, label="kit")
+            submission_schema_path = _resolve_inside(
+                root, args.submission_schema, label="submission-schema"
+            )
+            fixtures_path = _resolve_inside(root, args.fixtures, label="fixtures")
+            matrix_path = _resolve_inside(root, args.matrix, label="matrix")
+            publication_path = _resolve_inside(
+                root, args.publication, label="publication"
+            )
+            residuals_path = _resolve_inside(root, args.residuals, label="residuals")
+            errors, warnings, summary, gate_inputs = run_open_spec_exit_gate(
+                root,
+                kit_path=kit_path,
+                submission_schema_path=submission_schema_path,
+                fixtures_path=fixtures_path,
+                matrix_path=matrix_path,
+                publication_path=publication_path,
+                residuals_path=residuals_path,
+            )
+            inputs.extend(gate_inputs)
+        except (OSError, ValueError) as exc:
+            errors, warnings, summary = (
+                [str(exc)],
+                [],
+                {
+                    "kit": args.kit,
+                    "submission_schema": args.submission_schema,
+                    "fixtures": args.fixtures,
+                    "matrix": args.matrix,
+                    "publication": args.publication,
+                    "residuals": args.residuals,
+                },
+            )
+        scope = "open_spec_conformance_matrix_publication_and_community_evidence"
     elif args.gate == "review-quarantine":
         errors, warnings, summary = run_review_quarantine(root)
         scope = "exactly_one_primary_disposition"

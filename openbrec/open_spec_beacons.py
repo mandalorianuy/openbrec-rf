@@ -57,18 +57,16 @@ def _read_json(path: Path, label: str) -> tuple[dict[str, Any] | None, list[str]
 def _validate_policy(value: dict[str, Any]) -> list[str]:
     errors: list[str] = []
     if value.get("progress") != {
-        "accepted_tasks": 7,
+        "accepted_tasks": 8,
         "total_tasks": 8,
-        "percent": 87.5,
+        "percent": 100.0,
     }:
-        errors.append("open-spec progress must be 7 / 8")
+        errors.append("open-spec progress must be 8 / 8")
     tasks = value.get("tasks")
     if not isinstance(tasks, list) or len(tasks) != 8:
         return [*errors, "open-spec policy must contain eight tasks"]
-    if [task.get("status") for task in tasks[:7]] != ["accepted"] * 7:
-        errors.append("OS-01 through OS-07 must be accepted")
-    if any(task.get("status") != "not_started" for task in tasks[7:]):
-        errors.append("OS-08 must remain not_started")
+    if [task.get("status") for task in tasks] != ["accepted"] * 8:
+        errors.append("OS-01 through OS-08 must be accepted")
     if tasks[4].get("gate") != "open-spec-beacons":
         errors.append("OS-05 must use the open-spec-beacons gate")
     return errors
@@ -467,7 +465,7 @@ def run_open_spec_beacon_gate(
         [],
         {
             "spec_version": policy.get("spec_version") if policy else None,
-            "spec_tasks_accepted": 7,
+            "spec_tasks_accepted": 8,
             "spec_tasks_total": 8,
             "core_modality_profiles": len(
                 profiles.get("core_modality_profiles", []) if profiles else []
@@ -479,7 +477,9 @@ def run_open_spec_beacon_gate(
             "dataset_manifests": datasets,
             **replay_summary,
             "physical_detection_blocks_publication": False,
-            "next_task": "OS-08",
+            "open_spec_complete": True,
+            "next_task": "P1a-01",
+            "next_task_lane": "optional_physical_validation",
             "next_task_started": False,
         },
         inputs,

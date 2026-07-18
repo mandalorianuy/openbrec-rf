@@ -1,9 +1,9 @@
 # OpenBREC Open Spec — plan spec-first
 
-- Estado: activo
+- Estado: cerrado
 - Autoridad principal: Open Spec
 - Versión objetivo: `1.0.0-draft.1`
-- Progreso: `7 / 8` tasks aceptadas (`87.5%`)
+- Progreso: `8 / 8` tasks aceptadas (`100%`)
 - Carril físico: P1a opcional, `0 / 8`, no bloquea publicación
 
 ## Frontera normativa
@@ -51,21 +51,26 @@ invalida el contrato ni habilita claims físicos.
   equivalentes `open_build`, `reuse_existing` e `hybrid`, once adapters
   versionados y cinco guías. Ningún vendor, SKU o build es obligatorio ni
   acredita performance física o readiness.
-- [ ] **OS-08 — no iniciada:** conformance kit, matriz de decisión, publicación y
-  proceso comunitario de evidence packs.
+- [x] **OS-08 — aceptada:** conformance kit agregador, submission schema,
+  fixtures, matriz de diez funcionalidades, publicación offline y proceso
+  comunitario append-only. Los aportes rechazados y resultados negativos se
+  preservan; sólo evidencia de la combinación exacta eleva claims físicos.
 
 ## Métrica
 
 El numerador Open Spec cuenta tasks normativas aceptadas. No exige compra,
 custodia ni ensayo físico. Los carriles se reportan siempre separados:
 
-- Open Spec: `7 / 8` (`87.5%`).
+- Open Spec: `8 / 8` (`100%`).
 - P1a física opcional: `0 / 8` (`0%`).
 
 Un fixture sintético puede acreditar conformance o simulación, pero no
 `lab_validated`. Un evidence pack físico puede elevar sólo la combinación exacta
 que documenta; nunca convierte un candidato en requisito universal.
 
-## Próxima task
+## Cierre y siguiente task gobernada
 
-OS-08 es la siguiente task gobernada. Este cierre no la inicia.
+Open Spec queda cerrada en OS-08. `P1a-01` es la siguiente task gobernada del
+carril físico opcional, pero permanece `blocked_external_evidence`: requiere
+nueve assets exactos, autorización y custodia. P1a-01 no fue iniciada por este
+cierre y su ausencia no reduce ni bloquea la publicación abierta.
