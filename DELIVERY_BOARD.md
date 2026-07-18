@@ -3,8 +3,8 @@
 - Autoridad de secuencia: este board
 - Plan activo aprobado: `docs/superpowers/plans/2026-07-17-openbrec-p0-simulated-addons-plan.md`
 - Baseline cerrado: `docs/superpowers/plans/2026-07-17-openbrec-m0-executable-plan.md`
-- Estado real: M0 completo; P0-01–P0-07 aceptadas (`7 / 9`, `77.8%`)
-- Regla de avance: sólo `P0-08` queda elegible; ninguna task se inicia automáticamente
+- Estado real: M0 completo; P0-01–P0-08 aceptadas (`8 / 9`, `88.9%`)
+- Regla de avance: sólo `P0-09` queda elegible; ninguna task se inicia automáticamente
 
 ## Decisiones de gobernanza cerradas
 
@@ -97,7 +97,7 @@ Registro obligatorio: `docs/governance/M0_RESIDUAL_REGISTER.md`.
 
 ## Now — P0 addons completamente simulados
 
-Progreso de aceptación: `7 / 9` (`77.8%`). Una task marcada sólo cambia después de
+Progreso de aceptación: `8 / 9` (`88.9%`). Una task marcada sólo cambia después de
 su implementación, validación, review y receipt; planificación o inicio no suman.
 
 - [x] `P0-01`: contratos addon, catálogo, fixtures y modelos generados.
@@ -107,7 +107,7 @@ su implementación, validación, review y receipt; planificación o inicio no su
 - [x] `P0-05`: federación 50k sites/60 cells/5 areas/2 hubs.
 - [x] `P0-06`: terminal offline para texto, estado, SOS y ubicación.
 - [x] `P0-07`: beacons acústico/PIR/térmico, fusión, review y retención.
-- [ ] `P0-08`: campaña integrada con fallos y adversarios.
+- [x] `P0-08`: campaña integrada con fallos y adversarios.
 - [ ] `P0-09`: exit P0, support status por perfil y decisión P1a.
 
 ### Evidencia P0-01
@@ -268,7 +268,25 @@ su implementación, validación, review y receipt; planificación o inicio no su
   P0-R010 se resuelve; P0-R014 gobierna el contrato pendiente de hold/deletion
   y disposition receipt. TM-011/TM-012 permanecen High.
 
-Única task elegible: `P0-08`. No está iniciada por este cierre.
+### Evidencia P0-08
+
+- Composición: `p0-integrated` ejecuta 13/13 gates de P0-02–P0-07 y proyecta
+  energía, comunicación, mensajes, beacon y review sin sustituirlos por claims.
+- Campaña: tres celdas Meshtastic/MeshCore/Reticulum, carry bundle en cada una,
+  partición de 86.400 segundos y 11/11 fallos/adversarios con disposición.
+- Safety: cero false acceptance/confirmation/absence, silent success, pérdida de
+  accepted log/estado vital o inversión SOS; cuatro distress quedan en review.
+- Autonomía: 3/3 celdas operan sin superior, 3/3 carry bundles se reconcilian y
+  energía/radio/sensing degradan con seis gaps componentes visibles.
+- Determinismo: diez órdenes producen un único hash integrado
+  `54c52e8383cd4ed4cc57604c6cb74c85425b80e333e9eb5184f445edf5351441`.
+- Receipt: `evidence/p0/p0-08/p0-integrated/p0-08-receipt.json`, evaluado sobre
+  `6af0237e5e14b5f14210c3cde6045eed495ed5c0` con `dirty: false` e integridad.
+- Review: `docs/security/2026-07-17-p0-08-integrated-fault-review.md`.
+- Residuales: P0-R011 cierra integración simulada y conserva power-cut físico;
+  P0-R015 gobierna que la composición in-process no es runtime distribuido.
+
+Única task elegible: `P0-09`. No está iniciada por este cierre.
 
 Plan: `docs/superpowers/plans/2026-07-17-openbrec-p0-simulated-addons-plan.md`.
 Residuales: `docs/governance/P0_RESIDUAL_REGISTER.md`.

@@ -1,0 +1,345 @@
+{
+  "command": [
+    "python",
+    "-m",
+    "openbrec.verify",
+    "p0-integrated",
+    "--scenario",
+    "fixtures/p0/integrated/campaign.json",
+    "--receipt",
+    "evidence/p0/p0-08/p0-integrated/p0-08-receipt.json"
+  ],
+  "dirty": false,
+  "errors": [],
+  "finished_at": "2026-07-18T00:20:51.087615Z",
+  "gate": "p0-integrated",
+  "gate_version": "0.1.0",
+  "git_sha": "6af0237e5e14b5f14210c3cde6045eed495ed5c0",
+  "inputs": [
+    {
+      "path": "fixtures/p0/integrated/campaign.json",
+      "sha256": "94fef8a5a80fb7958159e5e320feadacf669e36031638277e58dbc0ba25c577b"
+    },
+    {
+      "path": "openbrec/integrated.py",
+      "sha256": "e75dbe02a7812da55ae9e2ac18b2207d8edc3db25437cbdf7d5dc87b90cc8d12"
+    },
+    {
+      "path": "fixtures/p0/energy/three-domains.json",
+      "sha256": "cafdb489953fed10eb80818d293d790dcefb4dee416ed25c20767ad2c82ed80b"
+    },
+    {
+      "path": "fixtures/p0/messaging/hostile-transport.json",
+      "sha256": "39802bcca7beab9326c75978cd6edac70da348e80362d58d25601dc27fca7fa0"
+    },
+    {
+      "path": "fixtures/p0/transports/common-workload.json",
+      "sha256": "905d485d1da531334dce633d4dc573f3467955319c92ebe51e9bbd9eeaecfd47"
+    },
+    {
+      "path": "fixtures/p0/federation/50k-sites.json",
+      "sha256": "c6b771e69d37c0545096f0487d29acbf1d52ea879132a2a91ad28cde0247b226"
+    },
+    {
+      "path": "fixtures/p0/terminal/offline-terminal.json",
+      "sha256": "6c29527b8f7a2775386e3b11cf453b3f65d018956e46f7dec0c637cfbf765675"
+    },
+    {
+      "path": "fixtures/p0/beacons/deterministic-campaign.json",
+      "sha256": "8c406b067bb389a35f4ae8749702badc5b696a1300c024010f3785486b6f9a11"
+    }
+  ],
+  "lockfiles": [
+    {
+      "path": "uv.lock",
+      "sha256": "2d1b79df4cd5878ec7f4674a133c54ca7b16dfa559560ba3a93911e620f435d5"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "sha256": "ed7659f050b279f37e5cf84fb065fc528e15b3204d374681f3a70ad081d1c25a"
+    },
+    {
+      "path": "apps/web/pnpm-lock.yaml",
+      "sha256": "12a1ed34e601b49a319846ef8d87c316708bb695853661ec3b3b95208701d278"
+    }
+  ],
+  "output_sha256": "8b85140a4c7c0b8bee62fa0fdd6bdf51ed6199939633eb1816d703ef83c5f039",
+  "receipt_version": "1.0.0",
+  "responsible_role": "core-replay-maintainer",
+  "result": "passed",
+  "runtime": {
+    "docker": "Docker version 29.5.3, build d1c06ef",
+    "node": "v26.5.0",
+    "pnpm": "11.9.0",
+    "python": "3.12.13"
+  },
+  "scope": "cross_addon_24h_partition_fault_and_adversary_campaign",
+  "started_at": "2026-07-18T00:20:38.160852Z",
+  "summary": {
+    "carry_bundles_reconciled": 3,
+    "cell_projection": [
+      {
+        "bearer": "meshcore",
+        "carry_bundle": true,
+        "cell_id": "cell-meshcore",
+        "local_critical_operations": [
+          "sos",
+          "messaging",
+          "sensing"
+        ]
+      },
+      {
+        "bearer": "meshtastic",
+        "carry_bundle": true,
+        "cell_id": "cell-meshtastic",
+        "local_critical_operations": [
+          "sos",
+          "messaging",
+          "sensing"
+        ]
+      },
+      {
+        "bearer": "reticulum",
+        "carry_bundle": true,
+        "cell_id": "cell-reticulum",
+        "local_critical_operations": [
+          "sos",
+          "messaging",
+          "sensing"
+        ]
+      }
+    ],
+    "cells_blocked_by_superior": 0,
+    "cells_denominator": 3,
+    "cells_operating_locally": 3,
+    "claim_scope": "deterministic_simulation_only",
+    "component_gaps_reported": 6,
+    "component_gaps_visible": 6,
+    "component_gates": [
+      {
+        "gate": "accessibility",
+        "result": "passed",
+        "result_sha256": "111fe45ae1c6ad2cd055587677c939f933344b1408eebb11b243b8104fc04bb9"
+      },
+      {
+        "gate": "beacon-adversarial",
+        "result": "passed",
+        "result_sha256": "b9c9a8677f1af5703a28af7b8aaf1e7b511c36ad274f1dcdb8368eeb8323548b"
+      },
+      {
+        "gate": "beacon-replay",
+        "result": "passed",
+        "result_sha256": "81af9595ddf2a5212026cbd0addf990357e0956f234e5a2baf0bf71131d6d8a5"
+      },
+      {
+        "gate": "energy-replay",
+        "result": "passed",
+        "result_sha256": "ab3427bee8d71163cfdbcbe8c900426e63364a333f8ec45a67dd85915fc66833"
+      },
+      {
+        "gate": "federation-reconciliation",
+        "result": "passed",
+        "result_sha256": "1980e711c94d33118101601e09d37888690bcfa64f2e6177b70dd9239c92333f"
+      },
+      {
+        "gate": "federation-scale",
+        "result": "passed",
+        "result_sha256": "75373845865ca37ffca83748cd521ce0322705af3da096c89a98621befaf86c4"
+      },
+      {
+        "gate": "human-message-security",
+        "result": "passed",
+        "result_sha256": "1873e747c33026e186ff0a32dd8c66c97f4f7213cb69d875d2a3162ef05cda64"
+      },
+      {
+        "gate": "malicious-transport",
+        "result": "passed",
+        "result_sha256": "63caebfa0dbd7058a4e2a85b1e979b9a3a8e4ebf3575c39cb79f1293bc9e49d9"
+      },
+      {
+        "gate": "retention-fault",
+        "result": "passed",
+        "result_sha256": "814bd4d3e263fca03ebbe8b695433ee041e41f962c81bb3ed5eb5bdf0ef0e68b"
+      },
+      {
+        "gate": "sos-state-replay",
+        "result": "passed",
+        "result_sha256": "7fcbea861218c18b03811c5a3b58a2be6963633e13deb036bc295ab3cdb0b839"
+      },
+      {
+        "gate": "terminal-ux",
+        "result": "passed",
+        "result_sha256": "3efd1a53896ff30f7539564c61368b08c99703366994de70a25555519f065cfd"
+      },
+      {
+        "gate": "transport-comparison",
+        "result": "passed",
+        "result_sha256": "d2d22f5f4c5fa5e04ad3c261ba46ea326b5eef6142701b9549509df76846c261"
+      },
+      {
+        "gate": "transport-policy",
+        "result": "passed",
+        "result_sha256": "002488b7837dedd562abeda05e6e5314aec5878b6b958680939221e1e5a4cf95"
+      }
+    ],
+    "component_gates_denominator": 13,
+    "component_gates_failed": 0,
+    "component_gates_passed": 13,
+    "degradation_states": [
+      "energy",
+      "radio",
+      "sensing"
+    ],
+    "degraded_domains": 3,
+    "degraded_domains_visible": 3,
+    "distinct_projection_hashes": 1,
+    "distress_preserved_for_review": 4,
+    "failed_component_gates": [],
+    "false_absence": 0,
+    "false_acceptance": 0,
+    "false_confirmation": 0,
+    "fault_dispositions": [
+      {
+        "disposition": "local_operation_with_carry_bundle",
+        "domain": "federation",
+        "fault_id": "fault-001",
+        "kind": "partition",
+        "reconciled": true,
+        "visible": true
+      },
+      {
+        "disposition": "coverage_gap_visible",
+        "domain": "sensing",
+        "fault_id": "fault-002",
+        "kind": "node_loss",
+        "reconciled": true,
+        "visible": true
+      },
+      {
+        "disposition": "bearer_degraded",
+        "domain": "communication",
+        "fault_id": "fault-003",
+        "kind": "relay_loss",
+        "reconciled": true,
+        "visible": true
+      },
+      {
+        "disposition": "local_reserve_preserved",
+        "domain": "energy",
+        "fault_id": "fault-004",
+        "kind": "source_loss",
+        "reconciled": true,
+        "visible": true
+      },
+      {
+        "disposition": "cell_autonomy_preserved",
+        "domain": "federation",
+        "fault_id": "fault-005",
+        "kind": "hub_loss",
+        "reconciled": true,
+        "visible": true
+      },
+      {
+        "disposition": "survival_state_with_log_preserved",
+        "domain": "energy",
+        "fault_id": "fault-006",
+        "kind": "brownout",
+        "reconciled": true,
+        "visible": true
+      },
+      {
+        "disposition": "review_quarantine",
+        "domain": "messages",
+        "fault_id": "fault-007",
+        "kind": "forged_distress",
+        "reconciled": true,
+        "visible": true
+      },
+      {
+        "disposition": "rejection_ledger",
+        "domain": "messages",
+        "fault_id": "fault-008",
+        "kind": "replay",
+        "reconciled": true,
+        "visible": true
+      },
+      {
+        "disposition": "revoked_binding_quarantine",
+        "domain": "messages",
+        "fault_id": "fault-009",
+        "kind": "stolen_terminal",
+        "reconciled": true,
+        "visible": true
+      },
+      {
+        "disposition": "sensor_artifact_likely",
+        "domain": "sensing",
+        "fault_id": "fault-010",
+        "kind": "spoofed_sensor",
+        "reconciled": true,
+        "visible": true
+      },
+      {
+        "disposition": "rejected_or_review_quarantine",
+        "domain": "federation",
+        "fault_id": "fault-011",
+        "kind": "malicious_hub",
+        "reconciled": true,
+        "visible": true
+      }
+    ],
+    "faults_denominator": 11,
+    "faults_reconciled": 11,
+    "hidden_component_gaps": 0,
+    "limitations": [
+      "synthetic modalities do not establish detection performance",
+      "bearers are versioned synthetic models and remain unverified",
+      "energy budgets and brownout are modeled; no physical autonomy claim",
+      "50k topology proves deterministic correctness, not field capacity",
+      "application keys are synthetic and cannot be reused operationally",
+      "technical checks do not prove human comprehension under stress"
+    ],
+    "lost_accepted_log_events": 0,
+    "lost_vital_state_events": 0,
+    "offline_projection": {
+      "beacon": {
+        "false_confirmation": 0,
+        "outputs": [
+          "corroborated_candidate",
+          "insufficient_coverage",
+          "sensor_artifact_likely",
+          "single_modality_candidate",
+          "unknown"
+        ]
+      },
+      "communication": {
+        "bearer_models": 3,
+        "failed_messages": 966
+      },
+      "energy": {
+        "brownout_state_preserved": true,
+        "budget_results": {
+          "energy-beacon-a": "unknown",
+          "energy-cell-a": "sufficient_under_model",
+          "energy-relay-a": "insufficient"
+        }
+      },
+      "messages": {
+        "false_acceptance": 0,
+        "operational_state": "accepted"
+      },
+      "review": {
+        "holds_created": 2,
+        "life_safety_items_preserved": 3
+      }
+    },
+    "order_variations": 10,
+    "partition_duration_s": 86400,
+    "projection_sha256": "0e33c82a7a3e00100a9f6ecf5b8fc93e578c57bbce65dbea1515ff03739c9c00",
+    "result_sha256": "54c52e8383cd4ed4cc57604c6cb74c85425b80e333e9eb5184f445edf5351441",
+    "silent_successes": 0,
+    "sos_priority_inversions": 0,
+    "unreconciled": 0
+  },
+  "warnings": []
+}

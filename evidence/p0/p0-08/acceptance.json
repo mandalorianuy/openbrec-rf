@@ -1,0 +1,17 @@
+{
+  "acceptance_version": "1.0.0",
+  "accepted_at": "2026-07-17",
+  "implementation_role": "core-replay-maintainer",
+  "implementation_sha": "6af0237e5e14b5f14210c3cde6045eed495ed5c0",
+  "progress": {
+    "accepted_tasks": 8,
+    "percent": 88.9,
+    "total_tasks": 9
+  },
+  "receipt_sha256": {
+    "p0-integrated": "b2e0e2e6963519541434f4a8f2daaf37cf0318e1e010f3f3ed82cb0abeaeb12e"
+  },
+  "review_role": "release-reviewer",
+  "status": "accepted",
+  "task": "P0-08"
+}
