@@ -1,0 +1,16 @@
+{
+  "acceptance_version": "1.0.0",
+  "accepted_at": "2026-07-17",
+  "kind": "non_counting_phase_readiness",
+  "implementation_sha": "922cc7fd2c505d8bfa10dd7367299adccd996b70",
+  "progress": {
+    "accepted_tasks": 0,
+    "total_tasks": 8,
+    "percent": 0.0
+  },
+  "receipt_sha256": "17e5654a8cf6e837e5fd098a3327de01678be52a7dbc064f514d3a93eda3a62e",
+  "status": "accepted_readiness_only",
+  "next_task": "P1a-01",
+  "next_task_started": false,
+  "physical_actions_authorized": 0
+}

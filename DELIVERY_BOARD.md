@@ -324,6 +324,11 @@ compra/préstamo/hardware/conducted/personas/captura como `not_authorized`, TX
 radiado `prohibited_in_p1a` y ocho residuales gobernados. `P1a-01` queda como
 siguiente task, no iniciada: requiere autorización explícita de asset/custodia.
 
+Evidencia readiness: gate `p1a-readiness` aceptado sobre
+`922cc7fd2c505d8bfa10dd7367299adccd996b70`, con `dirty: false`, ocho tasks
+planificadas, cero aceptadas, cero acciones físicas autorizadas y receipt en
+`evidence/p1a/readiness/`. Este readiness no incrementa el numerador P1a.
+
 Plan activo: `docs/superpowers/plans/2026-07-17-openbrec-p1a-bench-conducted-plan.md`.
 Residuales activos: `docs/governance/p1a-residuals.json`.
 

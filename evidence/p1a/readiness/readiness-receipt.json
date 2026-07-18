@@ -1,0 +1,73 @@
+{
+  "command": [
+    "python",
+    "-m",
+    "openbrec.verify",
+    "p1a-readiness",
+    "--receipt",
+    "evidence/p1a/readiness/readiness-receipt.json"
+  ],
+  "dirty": false,
+  "errors": [],
+  "finished_at": "2026-07-18T01:26:50.252407Z",
+  "gate": "p1a-readiness",
+  "gate_version": "0.1.0",
+  "git_sha": "922cc7fd2c505d8bfa10dd7367299adccd996b70",
+  "inputs": [
+    {
+      "path": "docs/superpowers/plans/2026-07-17-openbrec-p1a-bench-conducted-plan.md",
+      "sha256": "0d8b121f58fbbd6dcb21f75b609b769d85c89b0bf886511f04bccaf4f756606c"
+    },
+    {
+      "path": "config/p1a/authorization-policy.json",
+      "sha256": "d00094f893641df9757a8f2354afcd9a2a8eedbcfbf519b071b53441b4222548"
+    },
+    {
+      "path": "schemas/p1a/capability-manifest.schema.json",
+      "sha256": "7034f2a495117cfc8a0289af493565082d9446996f3686d32485db27449112a3"
+    },
+    {
+      "path": "docs/governance/p1a-residuals.json",
+      "sha256": "dd9e4c5adbf2d9a6023af0c18bbe2a2ebe9e705f89f866a3a4492cc515d4a805"
+    },
+    {
+      "path": "docs/governance/p1a-hardware-shortlist.json",
+      "sha256": "968e4f3a05e6bfd61d80ff574495774ecbfa02cc763b723893bd227b18ec7271"
+    }
+  ],
+  "lockfiles": [
+    {
+      "path": "uv.lock",
+      "sha256": "2d1b79df4cd5878ec7f4674a133c54ca7b16dfa559560ba3a93911e620f435d5"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "sha256": "ed7659f050b279f37e5cf84fb065fc528e15b3204d374681f3a70ad081d1c25a"
+    },
+    {
+      "path": "apps/web/pnpm-lock.yaml",
+      "sha256": "12a1ed34e601b49a319846ef8d87c316708bb695853661ec3b3b95208701d278"
+    }
+  ],
+  "output_sha256": "c56cd731d7c6ba5b12dabb70a4f222c95a518508b126a35c236519dbd3cd876f",
+  "receipt_version": "1.0.0",
+  "responsible_role": "release-reviewer",
+  "result": "passed",
+  "runtime": {
+    "docker": "Docker version 29.5.3, build d1c06ef",
+    "node": "v26.5.0",
+    "pnpm": "11.9.0",
+    "python": "3.12.13"
+  },
+  "scope": "p1a_non_physical_authorization_readiness",
+  "started_at": "2026-07-18T01:26:49.960696Z",
+  "summary": {
+    "accepted_tasks": 0,
+    "physical_actions_authorized": 0,
+    "plan": "docs/superpowers/plans/2026-07-17-openbrec-p1a-bench-conducted-plan.md",
+    "planned_tasks": 8,
+    "radiated_tx": "prohibited_in_p1a",
+    "residuals": 8
+  },
+  "warnings": []
+}

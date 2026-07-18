@@ -162,3 +162,7 @@ El único numerador es `tasks aceptadas / 8`:
 Estado al aprobar este plan: `0 / 8` (`0%`). P1a-01 no iniciada. La próxima
 acción posible es una autorización explícita de asset/custodia; este plan no la
 sustituye.
+
+El readiness no contable fue aceptado el 2026-07-17 sobre
+`922cc7fd2c505d8bfa10dd7367299adccd996b70`; su receipt limpio vive en
+`evidence/p1a/readiness/`. No se realizó ni autorizó ninguna acción física.
