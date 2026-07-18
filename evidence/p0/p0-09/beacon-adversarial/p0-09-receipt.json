@@ -1,0 +1,174 @@
+{
+  "command": [
+    "python",
+    "-m",
+    "openbrec.verify",
+    "beacon-adversarial",
+    "--root",
+    "/Users/facundo/desarrollo/OpenBREC-RF",
+    "--receipt",
+    "/var/folders/sx/4wqgpxv140j57cllvyb23h100000gn/T/openbrec-p0-exit-rroiq4ks/p0-09/beacon-adversarial/p0-09-receipt.json"
+  ],
+  "dirty": false,
+  "errors": [],
+  "finished_at": "2026-07-18T00:58:23.119686Z",
+  "gate": "beacon-adversarial",
+  "gate_version": "0.1.0",
+  "git_sha": "53fe18e4d1427cc355e423103cfe6b263ad0e3b3",
+  "inputs": [
+    {
+      "path": "fixtures/p0/beacons/deterministic-campaign.json",
+      "sha256": "8c406b067bb389a35f4ae8749702badc5b696a1300c024010f3785486b6f9a11"
+    },
+    {
+      "path": "openbrec/beacons.py",
+      "sha256": "36215c4717a6a67be961700865dc6d4c731f7179a7de9b866113bfc196cf1bb4"
+    },
+    {
+      "path": "schemas/addons/1.0.0/beacon-capability.schema.json",
+      "sha256": "1bc0e099cfd5bdddabb8744577c820e9e08d4b0c2acd1e6c1041f1d6ee4c67f2"
+    },
+    {
+      "path": "schemas/addons/1.0.0/beacon-health.schema.json",
+      "sha256": "ccebb342fb2c08734d4007874f453e1983f239f1d47be3edbab1440fd36c4e70"
+    },
+    {
+      "path": "schemas/addons/1.0.0/beacon-observation.schema.json",
+      "sha256": "e59db4a7705faff24f38abda999bfe8c46f822f867fa27f27816fa814f40e697"
+    },
+    {
+      "path": "schemas/addons/1.0.0/beacon-placement.schema.json",
+      "sha256": "380dcc751661486d25e64a1cdd9d04dbd54bbf79000c75ff1bac8544c7a97ad6"
+    },
+    {
+      "path": "schemas/addons/1.0.0/capture-authorization-event.schema.json",
+      "sha256": "dd3434ab6f43de8da976915ebfa99ec43214be781c25e665ac5e6100c8741f95"
+    },
+    {
+      "path": "schemas/addons/1.0.0/review-task-event.schema.json",
+      "sha256": "a7fbbcbb9cb993e5ff86ee4a32b2b5bb886e560f4963939f806393ec757a25ed"
+    },
+    {
+      "path": "schemas/core/1.0.0/preservation-record.schema.json",
+      "sha256": "eadfcbc8def432c111c87e3dcbc9a240edea46310f40bc46cc58236998d67bb3"
+    }
+  ],
+  "lockfiles": [
+    {
+      "path": "uv.lock",
+      "sha256": "2d1b79df4cd5878ec7f4674a133c54ca7b16dfa559560ba3a93911e620f435d5"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "sha256": "ed7659f050b279f37e5cf84fb065fc528e15b3204d374681f3a70ad081d1c25a"
+    },
+    {
+      "path": "apps/web/pnpm-lock.yaml",
+      "sha256": "12a1ed34e601b49a319846ef8d87c316708bb695853661ec3b3b95208701d278"
+    }
+  ],
+  "output_sha256": "bacd8fa11019a13a5bfb78cef8a28b0516951d501a13e557069bc97540f2e7c7",
+  "receipt_version": "1.0.0",
+  "responsible_role": "privacy-safety-reviewer",
+  "result": "passed",
+  "runtime": {
+    "docker": "Docker version 29.5.3, build d1c06ef",
+    "node": "v26.5.0",
+    "pnpm": "11.9.0",
+    "python": "3.12.13"
+  },
+  "scope": "spoofing_ood_and_shared_cause_disposition",
+  "started_at": "2026-07-18T00:58:22.850916Z",
+  "summary": {
+    "artifacts_visible": 7,
+    "cases_reconciled": 12,
+    "claim_scope": "deterministic_simulation_only",
+    "dispositions": [
+      {
+        "attack": "animal_sound",
+        "case_id": "hostile-animal",
+        "disposition": "sensor_artifact_likely",
+        "shared_cause": false
+      },
+      {
+        "attack": "clock_uncertain",
+        "case_id": "hostile-clock",
+        "disposition": "unknown",
+        "shared_cause": false
+      },
+      {
+        "attack": "equipment_heat",
+        "case_id": "hostile-hot-equipment",
+        "disposition": "sensor_artifact_likely",
+        "shared_cause": true
+      },
+      {
+        "attack": "node_moved",
+        "case_id": "hostile-node-moved",
+        "disposition": "unknown",
+        "shared_cause": false
+      },
+      {
+        "attack": "pir_masking",
+        "case_id": "hostile-pir-masking",
+        "disposition": "insufficient_coverage",
+        "shared_cause": false
+      },
+      {
+        "attack": "radio_voice",
+        "case_id": "hostile-radio",
+        "disposition": "sensor_artifact_likely",
+        "shared_cause": false
+      },
+      {
+        "attack": "raw_waveform_injection",
+        "case_id": "hostile-raw-waveform",
+        "disposition": "unknown",
+        "shared_cause": false
+      },
+      {
+        "attack": "rescuer_motion",
+        "case_id": "hostile-rescuer-motion",
+        "disposition": "single_modality_candidate",
+        "shared_cause": false
+      },
+      {
+        "attack": "correlated_heat_motion_sound",
+        "case_id": "hostile-shared-cause",
+        "disposition": "sensor_artifact_likely",
+        "shared_cause": true
+      },
+      {
+        "attack": "sun_heat",
+        "case_id": "hostile-sun",
+        "disposition": "sensor_artifact_likely",
+        "shared_cause": false
+      },
+      {
+        "attack": "tool_impact",
+        "case_id": "hostile-tools",
+        "disposition": "sensor_artifact_likely",
+        "shared_cause": false
+      },
+      {
+        "attack": "spoofed_sound",
+        "case_id": "hostile-voice-playback",
+        "disposition": "sensor_artifact_likely",
+        "shared_cause": false
+      }
+    ],
+    "false_absence_inferences": 0,
+    "false_presence_confirmations": 0,
+    "hostile_cases": 12,
+    "limitations": [
+      "synthetic spoofing and confounders only",
+      "no physical detection performance claim"
+    ],
+    "ood_or_unknown_visible": 3,
+    "raw_material_fact_promotions": 0,
+    "result_sha256": "b9c9a8677f1af5703a28af7b8aaf1e7b511c36ad274f1dcdb8368eeb8323548b",
+    "shared_cause_counted_independent": 0,
+    "unreconciled": 0
+  },
+  "warnings": []
+}

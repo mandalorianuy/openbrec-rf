@@ -1,0 +1,243 @@
+{
+  "command": [
+    "python",
+    "-m",
+    "openbrec.verify",
+    "beacon-replay",
+    "--root",
+    "/Users/facundo/desarrollo/OpenBREC-RF",
+    "--receipt",
+    "/var/folders/sx/4wqgpxv140j57cllvyb23h100000gn/T/openbrec-p0-exit-rroiq4ks/p0-09/beacon-replay/p0-09-receipt.json"
+  ],
+  "dirty": false,
+  "errors": [],
+  "finished_at": "2026-07-18T00:58:22.641423Z",
+  "gate": "beacon-replay",
+  "gate_version": "0.1.0",
+  "git_sha": "53fe18e4d1427cc355e423103cfe6b263ad0e3b3",
+  "inputs": [
+    {
+      "path": "fixtures/p0/beacons/deterministic-campaign.json",
+      "sha256": "8c406b067bb389a35f4ae8749702badc5b696a1300c024010f3785486b6f9a11"
+    },
+    {
+      "path": "openbrec/beacons.py",
+      "sha256": "36215c4717a6a67be961700865dc6d4c731f7179a7de9b866113bfc196cf1bb4"
+    },
+    {
+      "path": "schemas/addons/1.0.0/beacon-capability.schema.json",
+      "sha256": "1bc0e099cfd5bdddabb8744577c820e9e08d4b0c2acd1e6c1041f1d6ee4c67f2"
+    },
+    {
+      "path": "schemas/addons/1.0.0/beacon-health.schema.json",
+      "sha256": "ccebb342fb2c08734d4007874f453e1983f239f1d47be3edbab1440fd36c4e70"
+    },
+    {
+      "path": "schemas/addons/1.0.0/beacon-observation.schema.json",
+      "sha256": "e59db4a7705faff24f38abda999bfe8c46f822f867fa27f27816fa814f40e697"
+    },
+    {
+      "path": "schemas/addons/1.0.0/beacon-placement.schema.json",
+      "sha256": "380dcc751661486d25e64a1cdd9d04dbd54bbf79000c75ff1bac8544c7a97ad6"
+    },
+    {
+      "path": "schemas/addons/1.0.0/capture-authorization-event.schema.json",
+      "sha256": "dd3434ab6f43de8da976915ebfa99ec43214be781c25e665ac5e6100c8741f95"
+    },
+    {
+      "path": "schemas/addons/1.0.0/review-task-event.schema.json",
+      "sha256": "a7fbbcbb9cb993e5ff86ee4a32b2b5bb886e560f4963939f806393ec757a25ed"
+    },
+    {
+      "path": "schemas/core/1.0.0/preservation-record.schema.json",
+      "sha256": "eadfcbc8def432c111c87e3dcbc9a240edea46310f40bc46cc58236998d67bb3"
+    }
+  ],
+  "lockfiles": [
+    {
+      "path": "uv.lock",
+      "sha256": "2d1b79df4cd5878ec7f4674a133c54ca7b16dfa559560ba3a93911e620f435d5"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "sha256": "ed7659f050b279f37e5cf84fb065fc528e15b3204d374681f3a70ad081d1c25a"
+    },
+    {
+      "path": "apps/web/pnpm-lock.yaml",
+      "sha256": "12a1ed34e601b49a319846ef8d87c316708bb695853661ec3b3b95208701d278"
+    }
+  ],
+  "output_sha256": "8adedc94dbf4944e3cf0e7dd4d168f3e034943932884767cb349c079afa7c3e8",
+  "receipt_version": "1.0.0",
+  "responsible_role": "beacon-science-maintainer",
+  "result": "passed",
+  "runtime": {
+    "docker": "Docker version 29.5.3, build d1c06ef",
+    "node": "v26.5.0",
+    "pnpm": "11.9.0",
+    "python": "3.12.13"
+  },
+  "scope": "deterministic_multimodal_candidate_fusion",
+  "started_at": "2026-07-18T00:58:22.354239Z",
+  "summary": {
+    "absence_inferences": 0,
+    "automatic_presence_confirmations": 0,
+    "baseline_invalidations_visible": 1,
+    "beacons": 3,
+    "campaign": "fixtures/p0/beacons/deterministic-campaign.json",
+    "claim_scope": "deterministic_simulation_only",
+    "colocated_independence_violations": 0,
+    "distinct_projection_hashes": 1,
+    "environment_classes": [
+      "synthetic_quiet_lab",
+      "synthetic_tool_noise",
+      "synthetic_heat_motion"
+    ],
+    "fusion_cases": 5,
+    "fusion_outputs": [
+      "corroborated_candidate",
+      "insufficient_coverage",
+      "sensor_artifact_likely",
+      "single_modality_candidate",
+      "unknown"
+    ],
+    "limitations": [
+      "synthetic campaign only",
+      "no hardware, RF, field, sensitivity or false-alert performance claim",
+      "no human presence or absence conclusion"
+    ],
+    "missing_capabilities_visible": 5,
+    "modalities": [
+      "acoustic_features",
+      "pir_motion",
+      "thermal_low_resolution"
+    ],
+    "node_moves_visible": 1,
+    "observations_denominator": 12,
+    "observations_reconciled": 12,
+    "omitted_environment_classes": [
+      "real_rubble",
+      "weather",
+      "structural_vibration",
+      "crowded_response_site"
+    ],
+    "order_variations": 10,
+    "projection": [
+      {
+        "baseline_valid": true,
+        "case_id": "fusion-generator-artifact",
+        "coverage_status": "sufficient",
+        "independence_groups": [
+          "shared:generator-1"
+        ],
+        "limitations": [
+          "candidate only",
+          "never confirms presence or absence"
+        ],
+        "output": "sensor_artifact_likely",
+        "placement_valid": true,
+        "source_beacons": [
+          "beacon-a1b2c3d4",
+          "beacon-a1b2c3d5"
+        ],
+        "source_observation_ids": [
+          "31000000-0000-4000-8000-000000000111",
+          "31000000-0000-4000-8000-000000000112"
+        ]
+      },
+      {
+        "baseline_valid": true,
+        "case_id": "fusion-independent",
+        "coverage_status": "sufficient",
+        "independence_groups": [
+          "beacon-a1b2c3d4:stimulus-a",
+          "beacon-a1b2c3d5:stimulus-b"
+        ],
+        "limitations": [
+          "candidate only",
+          "never confirms presence or absence"
+        ],
+        "output": "corroborated_candidate",
+        "placement_valid": true,
+        "source_beacons": [
+          "beacon-a1b2c3d4",
+          "beacon-a1b2c3d5"
+        ],
+        "source_observation_ids": [
+          "31000000-0000-4000-8000-000000000101",
+          "31000000-0000-4000-8000-000000000104"
+        ]
+      },
+      {
+        "baseline_valid": true,
+        "case_id": "fusion-insufficient",
+        "coverage_status": "insufficient",
+        "independence_groups": [
+          "coverage:masked",
+          "coverage:occluded"
+        ],
+        "limitations": [
+          "candidate only",
+          "never confirms presence or absence"
+        ],
+        "output": "insufficient_coverage",
+        "placement_valid": true,
+        "source_beacons": [
+          "beacon-a1b2c3d4",
+          "beacon-a1b2c3d5"
+        ],
+        "source_observation_ids": [
+          "31000000-0000-4000-8000-000000000109",
+          "31000000-0000-4000-8000-000000000110"
+        ]
+      },
+      {
+        "baseline_valid": false,
+        "case_id": "fusion-moved-node",
+        "coverage_status": "sufficient",
+        "independence_groups": [
+          "beacon-a1b2c3d5:post-move"
+        ],
+        "limitations": [
+          "candidate only",
+          "never confirms presence or absence"
+        ],
+        "output": "unknown",
+        "placement_valid": false,
+        "source_beacons": [
+          "beacon-a1b2c3d5"
+        ],
+        "source_observation_ids": [
+          "31000000-0000-4000-8000-000000000108"
+        ]
+      },
+      {
+        "baseline_valid": true,
+        "case_id": "fusion-single-colocated",
+        "coverage_status": "sufficient",
+        "independence_groups": [
+          "beacon-a1b2c3d4:stimulus-a"
+        ],
+        "limitations": [
+          "candidate only",
+          "never confirms presence or absence"
+        ],
+        "output": "single_modality_candidate",
+        "placement_valid": true,
+        "source_beacons": [
+          "beacon-a1b2c3d4"
+        ],
+        "source_observation_ids": [
+          "31000000-0000-4000-8000-000000000101",
+          "31000000-0000-4000-8000-000000000102",
+          "31000000-0000-4000-8000-000000000103"
+        ]
+      }
+    ],
+    "projection_sha256": "5cfbc7ef1247c41d49d3028d469509fc41ffd77a27c2eeed04cf019d8df6d4be",
+    "raw_or_transport_bytes_promoted": 0,
+    "result_sha256": "81af9595ddf2a5212026cbd0addf990357e0956f234e5a2baf0bf71131d6d8a5",
+    "unreconciled": 0
+  },
+  "warnings": []
+}

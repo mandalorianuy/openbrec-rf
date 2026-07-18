@@ -1,0 +1,60 @@
+{
+  "command": [
+    "python",
+    "-m",
+    "openbrec.verify",
+    "secret-scan",
+    "--root",
+    "/Users/facundo/desarrollo/OpenBREC-RF",
+    "--receipt",
+    "/var/folders/sx/4wqgpxv140j57cllvyb23h100000gn/T/openbrec-p0-exit-rroiq4ks/p0-09/secret-scan/p0-09-receipt.json"
+  ],
+  "dirty": false,
+  "errors": [],
+  "finished_at": "2026-07-18T00:58:42.973447Z",
+  "gate": "secret-scan",
+  "gate_version": "0.1.0",
+  "git_sha": "53fe18e4d1427cc355e423103cfe6b263ad0e3b3",
+  "inputs": [
+    {
+      "path": ".gitignore",
+      "sha256": "a9f55c8fcf3b91c3d3f7ac75bbb09f321b4b15abe158de2440a1662696d9f815"
+    },
+    {
+      "path": "openbrec/supply_chain.py",
+      "sha256": "c8967d8b17e8c8ade366ab43abca656412912f9633052507794fae68ecdd2024"
+    }
+  ],
+  "lockfiles": [
+    {
+      "path": "uv.lock",
+      "sha256": "2d1b79df4cd5878ec7f4674a133c54ca7b16dfa559560ba3a93911e620f435d5"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "sha256": "ed7659f050b279f37e5cf84fb065fc528e15b3204d374681f3a70ad081d1c25a"
+    },
+    {
+      "path": "apps/web/pnpm-lock.yaml",
+      "sha256": "12a1ed34e601b49a319846ef8d87c316708bb695853661ec3b3b95208701d278"
+    }
+  ],
+  "output_sha256": "028e31a659d4dba8d2d6774a82ebb98eda13bb243bb65289bbee9418987eee4a",
+  "receipt_version": "1.0.0",
+  "responsible_role": "privacy-safety-reviewer",
+  "result": "passed",
+  "runtime": {
+    "docker": "Docker version 29.5.3, build d1c06ef",
+    "node": "v26.5.0",
+    "pnpm": "11.9.0",
+    "python": "3.12.13"
+  },
+  "scope": "tracked_source_high_confidence_secrets",
+  "started_at": "2026-07-18T00:58:39.658448Z",
+  "summary": {
+    "files_scanned": 701,
+    "findings": 0,
+    "negative_secret_dummy": "detected"
+  },
+  "warnings": []
+}

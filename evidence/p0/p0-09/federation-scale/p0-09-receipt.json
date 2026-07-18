@@ -1,0 +1,114 @@
+{
+  "command": [
+    "python",
+    "-m",
+    "openbrec.verify",
+    "federation-scale",
+    "--root",
+    "/Users/facundo/desarrollo/OpenBREC-RF",
+    "--scenario",
+    "fixtures/p0/federation/50k-sites.json",
+    "--receipt",
+    "/var/folders/sx/4wqgpxv140j57cllvyb23h100000gn/T/openbrec-p0-exit-rroiq4ks/p0-09/federation-scale/p0-09-receipt.json"
+  ],
+  "dirty": false,
+  "errors": [],
+  "finished_at": "2026-07-18T00:58:14.345667Z",
+  "gate": "federation-scale",
+  "gate_version": "0.1.0",
+  "git_sha": "53fe18e4d1427cc355e423103cfe6b263ad0e3b3",
+  "inputs": [
+    {
+      "path": "fixtures/p0/federation/50k-sites.json",
+      "sha256": "c6b771e69d37c0545096f0487d29acbf1d52ea879132a2a91ad28cde0247b226"
+    },
+    {
+      "path": "openbrec/federation.py",
+      "sha256": "f8df10ae7c0f8894d5dac870495515e73dcf711e8de78434181d4bd5f3fa725d"
+    },
+    {
+      "path": "schemas/addons/1.0.0/federation-event.schema.json",
+      "sha256": "f38a02ec3b8158788c63153bb9cb02f6958a59c159a9cef476c9401a56eaabc4"
+    },
+    {
+      "path": "schemas/addons/1.0.0/federation-topology-event.schema.json",
+      "sha256": "6ac7ca7381ee241cce52f16de32eab9d90fed490e216ee0d7bf1031e7b71c792"
+    }
+  ],
+  "lockfiles": [
+    {
+      "path": "uv.lock",
+      "sha256": "2d1b79df4cd5878ec7f4674a133c54ca7b16dfa559560ba3a93911e620f435d5"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "sha256": "ed7659f050b279f37e5cf84fb065fc528e15b3204d374681f3a70ad081d1c25a"
+    },
+    {
+      "path": "apps/web/pnpm-lock.yaml",
+      "sha256": "12a1ed34e601b49a319846ef8d87c316708bb695853661ec3b3b95208701d278"
+    }
+  ],
+  "output_sha256": "d1bd41d144c870e6ef9950f2b809e58b00d2cb40302e2af6e0cde9b1a4481514",
+  "receipt_version": "1.0.0",
+  "responsible_role": "federation-maintainer",
+  "result": "passed",
+  "runtime": {
+    "docker": "Docker version 29.5.3, build d1c06ef",
+    "node": "v26.5.0",
+    "pnpm": "11.9.0",
+    "python": "3.12.13"
+  },
+  "scope": "generated_50k_hierarchy_and_recursive_autonomy",
+  "started_at": "2026-07-18T00:58:05.170045Z",
+  "summary": {
+    "assigned_sites": 50000,
+    "autonomous_cells": 60,
+    "autonomous_hierarchy_entities": 50126,
+    "carry_bundles": 60,
+    "carry_bundles_sha256": "d264906ccb8762d5a3781d1f5322723ed231fe8bac4e0a97a80a585c2cbdae2a",
+    "central_critical_path_dependencies": 0,
+    "claim_scope": "deterministic_simulation_only",
+    "false_operational_acceptance": 0,
+    "federation_events_denominator": 180,
+    "federation_events_reconciled": 180,
+    "federation_events_sha256": "8775475dbf73ccdf70a61c17326e72aa14a2cab79bca63de582609e4f714bf62",
+    "generated_sites": 50000,
+    "generated_topology_entities": 50126,
+    "hierarchy_operations_blocked_by_superior": 0,
+    "hierarchy_operations_denominator": 50126,
+    "hierarchy_operations_executed": 50126,
+    "hierarchy_operations_sha256": "873a30fcb4d2069638fb8e9681c407ac1def1ffae915d620c988728ecb8fd0c3",
+    "hub_can_decrypt_local_content": false,
+    "hub_can_order_tx": false,
+    "hub_cell_private_keys": 0,
+    "hubs": 2,
+    "inbound_listeners": 0,
+    "limitations": [
+      "generated topology is a correctness simulation, not a performance benchmark",
+      "no network, cloud, RF, hardware or field deployment was exercised"
+    ],
+    "local_operations_blocked_by_superior": 0,
+    "local_operations_denominator": 240,
+    "local_operations_executed": 240,
+    "local_operations_sha256": "1181c975f11f993713332c2de54d412716d5a1389f404836e483eb07e2e4932f",
+    "materialized_topology_events": 50126,
+    "minimal_disclosure_violations": 0,
+    "operational_areas": 5,
+    "outbound_gateways": 60,
+    "partition_duration_s": 86400,
+    "raw_payloads_exported": 0,
+    "response_cells": 60,
+    "result_sha256": "75373845865ca37ffca83748cd521ce0322705af3da096c89a98621befaf86c4",
+    "schema_validated_topology_shapes": 5,
+    "signature_verified_topology_shapes": 5,
+    "site_distribution_max": 834,
+    "site_distribution_min": 833,
+    "topology_sha256": "14e8db9086e0ab8ff36e132204d811c20b6eb23c01497b823969b2007600a229",
+    "unassigned_sites": 0,
+    "unavailable_hubs": 2,
+    "unique_site_ids": 50000,
+    "unreconciled": 0
+  },
+  "warnings": []
+}

@@ -1,0 +1,20 @@
+{
+  "acceptance_version": "1.0.0",
+  "accepted_at": "2026-07-17",
+  "implementation_role": "release-engineering",
+  "implementation_sha": "53fe18e4d1427cc355e423103cfe6b263ad0e3b3",
+  "progress": {
+    "accepted_tasks": 9,
+    "percent": 100.0,
+    "total_tasks": 9
+  },
+  "evidence": {
+    "gate_denominator": 27,
+    "gate_passed": 27,
+    "manifest_sha256": "e9ec422555bccec5766d98e18e7a875080eb88f80e7dfc04d870db263cf811c5",
+    "sbom_file_sha256": "3d0c37a58df3418fa26ab93b7fa79ff8f089f312afe875092fc326b0ec67b763"
+  },
+  "review_role": "release-reviewer",
+  "status": "accepted",
+  "task": "P0-09"
+}

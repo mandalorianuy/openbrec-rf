@@ -1,0 +1,226 @@
+{
+  "gate_denominator": 27,
+  "gate_passed": 27,
+  "gates": [
+    {
+      "exit_code": 0,
+      "gate": "addon-contracts",
+      "integrity_errors": [],
+      "receipt": "p0-09/addon-contracts/p0-09-receipt.json",
+      "receipt_integrity": "passed",
+      "stderr": ""
+    },
+    {
+      "exit_code": 0,
+      "gate": "addon-fixtures",
+      "integrity_errors": [],
+      "receipt": "p0-09/addon-fixtures/p0-09-receipt.json",
+      "receipt_integrity": "passed",
+      "stderr": ""
+    },
+    {
+      "exit_code": 0,
+      "gate": "schema-compat",
+      "integrity_errors": [],
+      "receipt": "p0-09/schema-compat/p0-09-receipt.json",
+      "receipt_integrity": "passed",
+      "stderr": ""
+    },
+    {
+      "exit_code": 0,
+      "gate": "contracts-gen",
+      "integrity_errors": [],
+      "receipt": "p0-09/contracts-gen/p0-09-receipt.json",
+      "receipt_integrity": "passed",
+      "stderr": ""
+    },
+    {
+      "exit_code": 0,
+      "gate": "energy-replay",
+      "integrity_errors": [],
+      "receipt": "p0-09/energy-replay/p0-09-receipt.json",
+      "receipt_integrity": "passed",
+      "stderr": ""
+    },
+    {
+      "exit_code": 0,
+      "gate": "determinism",
+      "integrity_errors": [],
+      "receipt": "p0-09/determinism/p0-09-receipt.json",
+      "receipt_integrity": "passed",
+      "stderr": ""
+    },
+    {
+      "exit_code": 0,
+      "gate": "human-message-security",
+      "integrity_errors": [],
+      "receipt": "p0-09/human-message-security/p0-09-receipt.json",
+      "receipt_integrity": "passed",
+      "stderr": ""
+    },
+    {
+      "exit_code": 0,
+      "gate": "sos-state-replay",
+      "integrity_errors": [],
+      "receipt": "p0-09/sos-state-replay/p0-09-receipt.json",
+      "receipt_integrity": "passed",
+      "stderr": ""
+    },
+    {
+      "exit_code": 0,
+      "gate": "transport-policy",
+      "integrity_errors": [],
+      "receipt": "p0-09/transport-policy/p0-09-receipt.json",
+      "receipt_integrity": "passed",
+      "stderr": ""
+    },
+    {
+      "exit_code": 0,
+      "gate": "transport-comparison",
+      "integrity_errors": [],
+      "receipt": "p0-09/transport-comparison/p0-09-receipt.json",
+      "receipt_integrity": "passed",
+      "stderr": ""
+    },
+    {
+      "exit_code": 0,
+      "gate": "malicious-transport",
+      "integrity_errors": [],
+      "receipt": "p0-09/malicious-transport/p0-09-receipt.json",
+      "receipt_integrity": "passed",
+      "stderr": ""
+    },
+    {
+      "exit_code": 0,
+      "gate": "federation-scale",
+      "integrity_errors": [],
+      "receipt": "p0-09/federation-scale/p0-09-receipt.json",
+      "receipt_integrity": "passed",
+      "stderr": ""
+    },
+    {
+      "exit_code": 0,
+      "gate": "federation-reconciliation",
+      "integrity_errors": [],
+      "receipt": "p0-09/federation-reconciliation/p0-09-receipt.json",
+      "receipt_integrity": "passed",
+      "stderr": ""
+    },
+    {
+      "exit_code": 0,
+      "gate": "terminal-ux",
+      "integrity_errors": [],
+      "receipt": "p0-09/terminal-ux/p0-09-receipt.json",
+      "receipt_integrity": "passed",
+      "stderr": ""
+    },
+    {
+      "exit_code": 0,
+      "gate": "ui-smoke",
+      "integrity_errors": [],
+      "receipt": "p0-09/ui-smoke/p0-09-receipt.json",
+      "receipt_integrity": "passed",
+      "stderr": ""
+    },
+    {
+      "exit_code": 0,
+      "gate": "accessibility",
+      "integrity_errors": [],
+      "receipt": "p0-09/accessibility/p0-09-receipt.json",
+      "receipt_integrity": "passed",
+      "stderr": ""
+    },
+    {
+      "exit_code": 0,
+      "gate": "beacon-replay",
+      "integrity_errors": [],
+      "receipt": "p0-09/beacon-replay/p0-09-receipt.json",
+      "receipt_integrity": "passed",
+      "stderr": ""
+    },
+    {
+      "exit_code": 0,
+      "gate": "beacon-adversarial",
+      "integrity_errors": [],
+      "receipt": "p0-09/beacon-adversarial/p0-09-receipt.json",
+      "receipt_integrity": "passed",
+      "stderr": ""
+    },
+    {
+      "exit_code": 0,
+      "gate": "retention-fault",
+      "integrity_errors": [],
+      "receipt": "p0-09/retention-fault/p0-09-receipt.json",
+      "receipt_integrity": "passed",
+      "stderr": ""
+    },
+    {
+      "exit_code": 0,
+      "gate": "p0-integrated",
+      "integrity_errors": [],
+      "receipt": "p0-09/p0-integrated/p0-09-receipt.json",
+      "receipt_integrity": "passed",
+      "stderr": ""
+    },
+    {
+      "exit_code": 0,
+      "gate": "secret-scan",
+      "integrity_errors": [],
+      "receipt": "p0-09/secret-scan/p0-09-receipt.json",
+      "receipt_integrity": "passed",
+      "stderr": ""
+    },
+    {
+      "exit_code": 0,
+      "gate": "sbom",
+      "integrity_errors": [],
+      "receipt": "p0-09/sbom/p0-09-receipt.json",
+      "receipt_integrity": "passed",
+      "stderr": ""
+    },
+    {
+      "exit_code": 0,
+      "gate": "licenses",
+      "integrity_errors": [],
+      "receipt": "p0-09/licenses/p0-09-receipt.json",
+      "receipt_integrity": "passed",
+      "stderr": ""
+    },
+    {
+      "exit_code": 0,
+      "gate": "vulnerability-scan",
+      "integrity_errors": [],
+      "receipt": "p0-09/vulnerability-scan/p0-09-receipt.json",
+      "receipt_integrity": "passed",
+      "stderr": ""
+    },
+    {
+      "exit_code": 0,
+      "gate": "p0-traceability",
+      "integrity_errors": [],
+      "receipt": "p0-09/p0-traceability/p0-09-receipt.json",
+      "receipt_integrity": "passed",
+      "stderr": ""
+    },
+    {
+      "exit_code": 0,
+      "gate": "p0-support-status",
+      "integrity_errors": [],
+      "receipt": "p0-09/p0-support-status/p0-09-receipt.json",
+      "receipt_integrity": "passed",
+      "stderr": ""
+    },
+    {
+      "exit_code": 0,
+      "gate": "p0-residuals",
+      "integrity_errors": [],
+      "receipt": "p0-09/p0-residuals/p0-09-receipt.json",
+      "receipt_integrity": "passed",
+      "stderr": ""
+    }
+  ],
+  "manifest_version": "1.0.0",
+  "result": "passed",
+  "subject_git_sha": "53fe18e4d1427cc355e423103cfe6b263ad0e3b3",
+  "task": "P0-09"
+}

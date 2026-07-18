@@ -1,0 +1,184 @@
+{
+  "command": [
+    "python",
+    "-m",
+    "openbrec.verify",
+    "energy-replay",
+    "--root",
+    "/Users/facundo/desarrollo/OpenBREC-RF",
+    "--scenario",
+    "fixtures/p0/energy/three-domains.json",
+    "--receipt",
+    "/var/folders/sx/4wqgpxv140j57cllvyb23h100000gn/T/openbrec-p0-exit-rroiq4ks/p0-09/energy-replay/p0-09-receipt.json"
+  ],
+  "dirty": false,
+  "errors": [],
+  "finished_at": "2026-07-18T00:58:01.298473Z",
+  "gate": "energy-replay",
+  "gate_version": "0.1.0",
+  "git_sha": "53fe18e4d1427cc355e423103cfe6b263ad0e3b3",
+  "inputs": [
+    {
+      "path": "fixtures/p0/energy/three-domains.json",
+      "sha256": "cafdb489953fed10eb80818d293d790dcefb4dee416ed25c20767ad2c82ed80b"
+    },
+    {
+      "path": "openbrec/energy.py",
+      "sha256": "bf242a447eb3eb73cd9c9209f30d3014dd4559047bac2240ac40bafcab87e926"
+    },
+    {
+      "path": "schemas/addons/1.0.0/energy-budget.schema.json",
+      "sha256": "f76d4c6506f53c04df7bd0b4b64f224b4b0964ee007368b4834e4d72b690a00d"
+    },
+    {
+      "path": "schemas/addons/1.0.0/energy-status.schema.json",
+      "sha256": "1b932e38676c22772c5612dbe099951fe31d5a4260d976d789933ed8d89eb42d"
+    }
+  ],
+  "lockfiles": [
+    {
+      "path": "uv.lock",
+      "sha256": "2d1b79df4cd5878ec7f4674a133c54ca7b16dfa559560ba3a93911e620f435d5"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "sha256": "ed7659f050b279f37e5cf84fb065fc528e15b3204d374681f3a70ad081d1c25a"
+    },
+    {
+      "path": "apps/web/pnpm-lock.yaml",
+      "sha256": "12a1ed34e601b49a319846ef8d87c316708bb695853661ec3b3b95208701d278"
+    }
+  ],
+  "output_sha256": "445faf56cf00132360acdacc0b1762fb05960a71b903c857affa16c5590c17a3",
+  "receipt_version": "1.0.0",
+  "responsible_role": "energy-maintainer",
+  "result": "passed",
+  "runtime": {
+    "docker": "Docker version 29.5.3, build d1c06ef",
+    "node": "v26.5.0",
+    "pnpm": "11.9.0",
+    "python": "3.12.13"
+  },
+  "scope": "three_domain_energy_replay",
+  "started_at": "2026-07-18T00:58:00.915071Z",
+  "summary": {
+    "brownout_state_preserved": true,
+    "budget_results": {
+      "energy-beacon-a": "unknown",
+      "energy-cell-a": "sufficient_under_model",
+      "energy-relay-a": "insufficient"
+    },
+    "claim_scope": "simulation_only",
+    "determinism_runs": 10,
+    "domain_evidence": {
+      "energy-beacon-a": {
+        "critical_load_Wh_upper": 3.647059,
+        "remaining_usable_Wh_lower": null,
+        "reserves_Wh": 4.0,
+        "result": "unknown",
+        "runtime_lower_bound_s": null,
+        "state_path": [
+          "unknown",
+          "unknown",
+          "survival"
+        ],
+        "storage_only_margin_Wh": null,
+        "usable_storage_Wh": 14.45
+      },
+      "energy-cell-a": {
+        "critical_load_Wh_upper": 51.555556,
+        "remaining_usable_Wh_lower": 101.4714,
+        "reserves_Wh": 20.0,
+        "result": "sufficient_under_model",
+        "runtime_lower_bound_s": 26945,
+        "state_path": [
+          "normal",
+          "normal",
+          "conserve",
+          "survival",
+          "critical"
+        ],
+        "storage_only_margin_Wh": 12.026956,
+        "usable_storage_Wh": 147.06
+      },
+      "energy-relay-a": {
+        "critical_load_Wh_upper": 19.045455,
+        "remaining_usable_Wh_lower": 31.671,
+        "reserves_Wh": 8.0,
+        "result": "insufficient",
+        "runtime_lower_bound_s": 22433,
+        "state_path": [
+          "normal",
+          "conserve",
+          "conserve",
+          "normal",
+          "normal"
+        ],
+        "storage_only_margin_Wh": -2.135818,
+        "usable_storage_Wh": 63.342
+      }
+    },
+    "domains": 3,
+    "matrix": [
+      {
+        "locale": "C",
+        "order": "forward",
+        "timezone": "UTC"
+      },
+      {
+        "locale": "C.UTF-8",
+        "order": "reverse",
+        "timezone": "Pacific/Auckland"
+      },
+      {
+        "locale": "C",
+        "order": "forward",
+        "timezone": "UTC"
+      },
+      {
+        "locale": "C.UTF-8",
+        "order": "reverse",
+        "timezone": "Pacific/Auckland"
+      },
+      {
+        "locale": "C",
+        "order": "forward",
+        "timezone": "UTC"
+      },
+      {
+        "locale": "C.UTF-8",
+        "order": "reverse",
+        "timezone": "Pacific/Auckland"
+      },
+      {
+        "locale": "C",
+        "order": "forward",
+        "timezone": "UTC"
+      },
+      {
+        "locale": "C.UTF-8",
+        "order": "reverse",
+        "timezone": "Pacific/Auckland"
+      },
+      {
+        "locale": "C",
+        "order": "forward",
+        "timezone": "UTC"
+      },
+      {
+        "locale": "C.UTF-8",
+        "order": "reverse",
+        "timezone": "Pacific/Auckland"
+      }
+    ],
+    "result_sha256": "ab3427bee8d71163cfdbcbe8c900426e63364a333f8ec45a67dd85915fc66833",
+    "scenario": "fixtures/p0/energy/three-domains.json",
+    "source_loss_local_reserve_preserved": true,
+    "unique_result_hashes": [
+      "ab3427bee8d71163cfdbcbe8c900426e63364a333f8ec45a67dd85915fc66833"
+    ],
+    "unknown_soc_domains": 1,
+    "unreconciled": 0
+  },
+  "warnings": []
+}

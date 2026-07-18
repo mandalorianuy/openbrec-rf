@@ -1,0 +1,124 @@
+{
+  "command": [
+    "python",
+    "-m",
+    "openbrec.verify",
+    "ui-smoke",
+    "--root",
+    "/Users/facundo/desarrollo/OpenBREC-RF",
+    "--receipt",
+    "/var/folders/sx/4wqgpxv140j57cllvyb23h100000gn/T/openbrec-p0-exit-rroiq4ks/p0-09/ui-smoke/p0-09-receipt.json"
+  ],
+  "dirty": false,
+  "errors": [],
+  "finished_at": "2026-07-18T00:58:19.020828Z",
+  "gate": "ui-smoke",
+  "gate_version": "0.1.0",
+  "git_sha": "53fe18e4d1427cc355e423103cfe6b263ad0e3b3",
+  "inputs": [
+    {
+      "path": "apps/web/src/main.tsx",
+      "sha256": "c9016388f9f54efa0a94b9b4cd7e08b2e737b10031c4c310fb25fe67e3a4bca1"
+    },
+    {
+      "path": "apps/web/src/style.css",
+      "sha256": "b8ba8244f9c4a48c7842aa1bcdf72bde91c950ed5620a9fe7eeee8fc89813f42"
+    },
+    {
+      "path": "apps/web/index.html",
+      "sha256": "26b45d9eb317a5b44504e2a265a7a54afad4a052dd65a5bff7406a1db82a41f7"
+    },
+    {
+      "path": "apps/web/package.json",
+      "sha256": "356bd0afb3581051f7c66399090ace1a13e0050fa40d67d649c5187ae279140b"
+    },
+    {
+      "path": "apps/web/pnpm-lock.yaml",
+      "sha256": "12a1ed34e601b49a319846ef8d87c316708bb695853661ec3b3b95208701d278"
+    },
+    {
+      "path": "apps/web/public/favicon.svg",
+      "sha256": "db9f7ae64886265c1f91ef1c137cbc2e072ae642979a02e6500b62db66a3970b"
+    },
+    {
+      "path": "apps/web/public/m0-projection.json",
+      "sha256": "96115b7bd0664fef7cb2eafbe7fcb2619b0c67d39af9fd0adf3be0c0ba710c02"
+    },
+    {
+      "path": "apps/web/public/p0-terminal.json",
+      "sha256": "6c29527b8f7a2775386e3b11cf453b3f65d018956e46f7dec0c637cfbf765675"
+    },
+    {
+      "path": "apps/web/public/sw.js",
+      "sha256": "8d60b86775f4812047d70dad2f2ed5cf3723ae6c8ec7cc4785e82c7ccbb22145"
+    },
+    {
+      "path": "apps/web/scripts/ui-smoke.mjs",
+      "sha256": "015fdcf5ee1b12f379c7331d01e63896573953a1099916a9b52f11e25a98360a"
+    },
+    {
+      "path": "docker-compose.yml",
+      "sha256": "a5ceaa5f210a26f45ec71d08e592667c6c78be58cf05fcd5591ad0035218eda7"
+    },
+    {
+      "path": "fixtures/replay/core/m0-six-node.json",
+      "sha256": "a7bf52892af0d64311184807b1dee9d7028123ccee8b5b4261eff46406c0e729"
+    },
+    {
+      "path": "fixtures/p0/terminal/offline-terminal.json",
+      "sha256": "6c29527b8f7a2775386e3b11cf453b3f65d018956e46f7dec0c637cfbf765675"
+    }
+  ],
+  "lockfiles": [
+    {
+      "path": "uv.lock",
+      "sha256": "2d1b79df4cd5878ec7f4674a133c54ca7b16dfa559560ba3a93911e620f435d5"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "sha256": "ed7659f050b279f37e5cf84fb065fc528e15b3204d374681f3a70ad081d1c25a"
+    },
+    {
+      "path": "apps/web/pnpm-lock.yaml",
+      "sha256": "12a1ed34e601b49a319846ef8d87c316708bb695853661ec3b3b95208701d278"
+    }
+  ],
+  "output_sha256": "95f76a3ceda660f67a5cf8a4dd293983aa3a87fd870516091eb741921b8e3f58",
+  "receipt_version": "1.0.0",
+  "responsible_role": "runtime-maintainer",
+  "result": "passed",
+  "runtime": {
+    "docker": "Docker version 29.5.3, build d1c06ef",
+    "node": "v26.5.0",
+    "pnpm": "11.9.0",
+    "python": "3.12.13"
+  },
+  "scope": "explainable_offline_pwa",
+  "started_at": "2026-07-18T00:58:15.980586Z",
+  "summary": {
+    "browser": "chromium",
+    "build_exit_code": 0,
+    "cancellation_history_preserved": true,
+    "console_errors": 0,
+    "critical_actions_text_labeled": true,
+    "critical_targets_44px": true,
+    "inference_events": 3,
+    "ingress_bind": "127.0.0.1",
+    "initial_queued": 1,
+    "keyboard_operable": true,
+    "nodes_visible": 6,
+    "offline_reload": "passed",
+    "projection": "apps/web/public/m0-projection.json",
+    "projection_sha256": "8f8dec4f9372cc0e7d7249bbc0f31c5b68e54eabaf376d5d237aed9240d4c557",
+    "queued_after_offline_action": 2,
+    "queued_after_text": 2,
+    "reduced_motion_supported": true,
+    "selected_zone_after_reload": "zone-bravo",
+    "selected_zone_before_reload": "zone-alpha",
+    "semantic_layers": 3,
+    "terminal_actions": 4,
+    "terminal_projection": "apps/web/public/p0-terminal.json",
+    "terminal_projection_sha256": "5f5a0f0f45a65a1e0105cb854de4c212231f6dc8deff4f6390025d00c3c707d9"
+  },
+  "warnings": []
+}
