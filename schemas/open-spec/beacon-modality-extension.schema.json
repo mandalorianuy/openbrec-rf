@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openbrec.org/schemas/open-spec/beacon-modality-extension/1.0.0-draft.1",
+  "title": "OpenBRECBeaconModalityExtension",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "extension_id", "modality_namespace", "status", "observation_schema_ref", "privacy_review_ref", "threat_review_ref", "dataset_manifest_refs", "inherits_presence_claims", "capabilities_absent", "limitations"],
+  "properties": {
+    "schema_version": {"const": "1.0.0-draft.1"},
+    "extension_id": {"type": "string", "pattern": "^beacon\\.extension\\.[a-z0-9][a-z0-9._-]{2,63}$"},
+    "modality_namespace": {"type": "string", "pattern": "^ext\\.[a-z0-9][a-z0-9._-]{1,31}$"},
+    "status": {"enum": ["experimental", "unverified"]},
+    "observation_schema_ref": {"type": "string", "minLength": 3},
+    "privacy_review_ref": {"type": "string", "minLength": 3},
+    "threat_review_ref": {"type": "string", "minLength": 3},
+    "dataset_manifest_refs": {"type": "array", "items": {"type": "string", "minLength": 3}, "minItems": 1, "uniqueItems": true},
+    "inherits_presence_claims": {"const": false},
+    "capabilities_absent": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+    "limitations": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1, "uniqueItems": true}
+  }
+}

@@ -8,16 +8,13 @@ from jsonschema import Draft202012Validator, FormatChecker
 
 from openbrec.canonical import canonical_hash
 
-
 PLAN_PATH = Path("docs/superpowers/plans/2026-07-18-openbrec-open-spec-plan.md")
 POLICY_PATH = Path("config/open-spec/governance.json")
 PROFILES_PATH = Path(
     "specs/openbrec/1.0.0-draft.1/messaging-interoperability-profiles.json"
 )
 CONTENT_SCHEMA_PATH = Path("schemas/open-spec/human-message-content.schema.json")
-EVENT_SCHEMA_PATH = Path(
-    "schemas/open-spec/human-message-lifecycle-event.schema.json"
-)
+EVENT_SCHEMA_PATH = Path("schemas/open-spec/human-message-lifecycle-event.schema.json")
 FIXTURES_PATH = Path("fixtures/open-spec/messaging/interoperability-examples.json")
 RESIDUALS_PATH = Path("docs/governance/open-spec-messaging-residuals.json")
 P0_CRYPTO_RECEIPT_PATH = Path(
@@ -69,18 +66,18 @@ def _read_json(path: Path, label: str) -> tuple[dict[str, Any] | None, list[str]
 def _validate_policy(value: dict[str, Any]) -> list[str]:
     errors: list[str] = []
     if value.get("progress") != {
-        "accepted_tasks": 4,
+        "accepted_tasks": 5,
         "total_tasks": 8,
-        "percent": 50.0,
+        "percent": 62.5,
     }:
-        errors.append("open-spec progress must be 4 / 8")
+        errors.append("open-spec progress must be 5 / 8")
     tasks = value.get("tasks")
     if not isinstance(tasks, list) or len(tasks) != 8:
         return [*errors, "open-spec policy must contain eight tasks"]
-    if [task.get("status") for task in tasks[:4]] != ["accepted"] * 4:
-        errors.append("OS-01 through OS-04 must be accepted")
-    if any(task.get("status") != "not_started" for task in tasks[4:]):
-        errors.append("OS-05 through OS-08 must remain not_started")
+    if [task.get("status") for task in tasks[:5]] != ["accepted"] * 5:
+        errors.append("OS-01 through OS-05 must be accepted")
+    if any(task.get("status") != "not_started" for task in tasks[5:]):
+        errors.append("OS-06 through OS-08 must remain not_started")
     if tasks[3].get("gate") != "open-spec-messaging":
         errors.append("OS-04 must use the open-spec-messaging gate")
     return errors
@@ -106,7 +103,9 @@ def _validate_profiles(value: dict[str, Any]) -> list[str]:
     rows = value.get("message_profiles")
     if not isinstance(rows, list) or len(rows) != 4:
         errors.append("messaging profiles must define four message types")
-    elif {row.get("message_type") for row in rows if isinstance(row, dict)} != MESSAGE_TYPES:
+    elif {
+        row.get("message_type") for row in rows if isinstance(row, dict)
+    } != MESSAGE_TYPES:
         errors.append("messaging profiles must cover text, status, SOS and location")
     else:
         for index, row in enumerate(rows):
@@ -114,7 +113,9 @@ def _validate_profiles(value: dict[str, Any]) -> list[str]:
                 errors.append(f"message_profiles[{index}] must allow alternatives")
             for field in ("content_contract", "acceptance_criteria", "limitations"):
                 if not row.get(field):
-                    errors.append(f"message_profiles[{index}].{field} must not be empty")
+                    errors.append(
+                        f"message_profiles[{index}].{field} must not be empty"
+                    )
 
     security = value.get("application_security")
     if not isinstance(security, dict):
@@ -170,10 +171,14 @@ def _validate_profiles(value: dict[str, Any]) -> list[str]:
                 errors.append(f"life-safety preservation invariant missing: {field}")
         if preservation.get("unverified_distress_becomes_authenticated") is not False:
             errors.append("unverified distress cannot become authenticated")
-        if preservation.get("privacy_minimization_may_destroy_possible_distress") is not False:
+        if (
+            preservation.get("privacy_minimization_may_destroy_possible_distress")
+            is not False
+        ):
             errors.append("privacy minimization cannot destroy possible distress")
         if set(preservation.get("allowed_destinations", [])) != {
-            "EvidenceVault", "ReviewQuarantine"
+            "EvidenceVault",
+            "ReviewQuarantine",
         }:
             errors.append("possible distress must route to vault or quarantine")
     return errors
@@ -191,7 +196,9 @@ def _validate_schemas_and_fixtures(
         except Exception as exc:
             errors.append(f"human message {label} schema is invalid: {exc}")
         if schema.get("additionalProperties") is not False:
-            errors.append(f"human message {label} schema must reject additional properties")
+            errors.append(
+                f"human message {label} schema must reject additional properties"
+            )
     if errors:
         return errors, 0
     contents = fixtures.get("contents")
@@ -321,7 +328,9 @@ def _replay_summary(fixtures: dict[str, Any]) -> tuple[list[str], dict[str, Any]
     if rejected != 1:
         errors.append("false operator acceptance was not rejected")
     if preserved != len(cases) or authenticated:
-        errors.append("unverified distress preservation is incomplete or falsely authenticated")
+        errors.append(
+            "unverified distress preservation is incomplete or falsely authenticated"
+        )
     return errors, {
         "replay_orders": len(orders),
         "replay_hashes": len(hashes),
@@ -332,8 +341,7 @@ def _replay_summary(fixtures: dict[str, Any]) -> tuple[list[str], dict[str, Any]
         "false_operator_acceptances": projection["false_operator_acceptances"],
         "rejected_false_acceptances": rejected,
         "cancel_events_preserved": sum(
-            event["event_type"] == "sos.cancel_requested"
-            for event in events
+            event["event_type"] == "sos.cancel_requested" for event in events
         ),
         "unverified_distress_cases": len(cases),
         "unverified_distress_preserved": preserved,
@@ -354,13 +362,21 @@ def _validate_residuals(value: dict[str, Any]) -> list[str]:
             errors.append(f"residuals[{index}] must be an object")
             continue
         if row.get("state") not in {
-            "resolved", "controlled", "planned", "evidence_required"
+            "resolved",
+            "controlled",
+            "planned",
+            "evidence_required",
         }:
             errors.append(f"residuals[{index}] state is invalid")
         if row.get("blocks_open_spec") is not False:
             errors.append(f"residuals[{index}] cannot silently block Open Spec")
         for field in (
-            "id", "owner", "risk", "disposition", "gate_or_task", "stop_condition"
+            "id",
+            "owner",
+            "risk",
+            "disposition",
+            "gate_or_task",
+            "stop_condition",
         ):
             if not row.get(field):
                 errors.append(f"residuals[{index}].{field} is required")
@@ -381,32 +397,53 @@ def run_open_spec_messaging_gate(
     policy_path = root / POLICY_PATH
     p0_receipt_path = root / P0_CRYPTO_RECEIPT_PATH
     inputs = [
-        plan_path, policy_path, profiles_path, content_schema_path,
-        event_schema_path, fixtures_path, residuals_path, p0_receipt_path,
+        plan_path,
+        policy_path,
+        profiles_path,
+        content_schema_path,
+        event_schema_path,
+        fixtures_path,
+        residuals_path,
+        p0_receipt_path,
     ]
     try:
         plan = plan_path.read_text(encoding="utf-8")
     except OSError as exc:
         plan = ""
-        errors.append(f"open-spec plan unreadable: {exc.strerror or type(exc).__name__}")
+        errors.append(
+            f"open-spec plan unreadable: {exc.strerror or type(exc).__name__}"
+        )
     normalized_plan = " ".join(plan.split())
     for marker in (
-        "4 / 8", "OS-04 — aceptada", "OS-05 — no iniciada",
-        "texto breve, estado, SOS y ubicación", "unverified_distress",
+        "5 / 8",
+        "OS-04 — aceptada",
+        "OS-05 — aceptada",
+        "OS-06 — no iniciada",
+        "texto breve, estado, SOS y ubicación",
+        "unverified_distress",
     ):
         if marker not in normalized_plan:
             errors.append(f"open-spec plan missing OS-04 boundary: {marker}")
 
     policy, policy_errors = _read_json(policy_path, "open-spec policy")
     profiles, profile_errors = _read_json(profiles_path, "messaging profiles")
-    content_schema, content_errors = _read_json(content_schema_path, "message content schema")
-    event_schema, event_errors = _read_json(event_schema_path, "message lifecycle schema")
+    content_schema, content_errors = _read_json(
+        content_schema_path, "message content schema"
+    )
+    event_schema, event_errors = _read_json(
+        event_schema_path, "message lifecycle schema"
+    )
     fixtures, fixture_errors = _read_json(fixtures_path, "messaging fixtures")
     residuals, residual_errors = _read_json(residuals_path, "messaging residuals")
     p0_receipt, p0_errors = _read_json(p0_receipt_path, "P0 crypto receipt")
     errors.extend(
-        policy_errors + profile_errors + content_errors + event_errors
-        + fixture_errors + residual_errors + p0_errors
+        policy_errors
+        + profile_errors
+        + content_errors
+        + event_errors
+        + fixture_errors
+        + residual_errors
+        + p0_errors
     )
     if policy is not None:
         errors.extend(_validate_policy(policy))
@@ -426,20 +463,24 @@ def run_open_spec_messaging_gate(
         errors.extend(_validate_residuals(residuals))
     if p0_receipt is not None:
         if p0_receipt.get("result") != "passed" or p0_receipt.get("dirty") is not False:
-            errors.append("P0 application cryptography evidence must be clean and passed")
+            errors.append(
+                "P0 application cryptography evidence must be clean and passed"
+            )
 
     return (
         errors,
         [],
         {
             "spec_version": policy.get("spec_version") if policy else None,
-            "spec_tasks_accepted": 4,
+            "spec_tasks_accepted": 5,
             "spec_tasks_total": 8,
-            "message_profiles": len(profiles.get("message_profiles", [])) if profiles else 0,
+            "message_profiles": (
+                len(profiles.get("message_profiles", [])) if profiles else 0
+            ),
             "conforming_contents": conforming,
             **replay_summary,
             "physical_delivery_blocks_publication": False,
-            "next_task": "OS-05",
+            "next_task": "OS-06",
             "next_task_started": False,
         },
         inputs,

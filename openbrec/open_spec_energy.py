@@ -7,15 +7,10 @@ from typing import Any
 
 from jsonschema import Draft202012Validator, FormatChecker
 
-
 PLAN_PATH = Path("docs/superpowers/plans/2026-07-18-openbrec-open-spec-plan.md")
 POLICY_PATH = Path("config/open-spec/governance.json")
-PROFILES_PATH = Path(
-    "specs/openbrec/1.0.0-draft.1/energy-architecture-profiles.json"
-)
-ARCHITECTURE_SCHEMA_PATH = Path(
-    "schemas/open-spec/energy-architecture.schema.json"
-)
+PROFILES_PATH = Path("specs/openbrec/1.0.0-draft.1/energy-architecture-profiles.json")
+ARCHITECTURE_SCHEMA_PATH = Path("schemas/open-spec/energy-architecture.schema.json")
 FIXTURES_PATH = Path("fixtures/open-spec/energy/architecture-examples.json")
 RESIDUALS_PATH = Path("docs/governance/open-spec-energy-residuals.json")
 
@@ -79,18 +74,18 @@ def _read_json(path: Path, label: str) -> tuple[dict[str, Any] | None, list[str]
 def _validate_policy(value: dict[str, Any]) -> list[str]:
     errors: list[str] = []
     if value.get("progress") != {
-        "accepted_tasks": 4,
+        "accepted_tasks": 5,
         "total_tasks": 8,
-        "percent": 50.0,
+        "percent": 62.5,
     }:
-        errors.append("open-spec progress must be 4 / 8")
+        errors.append("open-spec progress must be 5 / 8")
     tasks = value.get("tasks")
     if not isinstance(tasks, list) or len(tasks) != 8:
         return [*errors, "open-spec policy must contain eight tasks"]
-    if [task.get("status") for task in tasks[:4]] != ["accepted"] * 4:
-        errors.append("OS-01 through OS-04 must be accepted")
-    if any(task.get("status") != "not_started" for task in tasks[4:]):
-        errors.append("OS-05 through OS-08 must remain not_started")
+    if [task.get("status") for task in tasks[:5]] != ["accepted"] * 5:
+        errors.append("OS-01 through OS-05 must be accepted")
+    if any(task.get("status") != "not_started" for task in tasks[5:]):
+        errors.append("OS-06 through OS-08 must remain not_started")
     if tasks[1].get("gate") != "open-spec-energy":
         errors.append("OS-02 must use the open-spec-energy gate")
     return errors
@@ -166,9 +161,11 @@ def _validate_profiles(value: dict[str, Any]) -> list[str]:
                     errors.append(f"architectures[{index}].{field} must not be empty")
 
     mappings = value.get("role_mappings")
-    if not isinstance(mappings, list) or {
-        row.get("category") for row in mappings if isinstance(row, dict)
-    } != ROLE_CATEGORIES:
+    if (
+        not isinstance(mappings, list)
+        or {row.get("category") for row in mappings if isinstance(row, dict)}
+        != ROLE_CATEGORIES
+    ):
         errors.append("energy role mappings must cover all nine OpenBREC categories")
     else:
         for index, row in enumerate(mappings):
@@ -183,9 +180,11 @@ def _validate_profiles(value: dict[str, Any]) -> list[str]:
                     errors.append(f"role_mappings[{index}].{field} must not be empty")
 
     adapters = value.get("source_adapters")
-    if not isinstance(adapters, list) or {
-        row.get("source_type") for row in adapters if isinstance(row, dict)
-    } != SOURCE_TYPES:
+    if (
+        not isinstance(adapters, list)
+        or {row.get("source_type") for row in adapters if isinstance(row, dict)}
+        != SOURCE_TYPES
+    ):
         errors.append("source adapters must cover eight interchangeable source types")
     else:
         for index, row in enumerate(adapters):
@@ -251,7 +250,9 @@ def _validate_schema_and_fixtures(
                 - Decimal(str(budget["conversion_storage_losses_Wh"]))
             )
             if Decimal(str(budget["net_energy_lower_bound_Wh"])) != expected_net:
-                errors.append(f"examples[{index}] sustainable net energy is inconsistent")
+                errors.append(
+                    f"examples[{index}] sustainable net energy is inconsistent"
+                )
             if expected_net < 0:
                 errors.append(
                     f"examples[{index}] sustainable claim has negative lower bound"
@@ -314,11 +315,12 @@ def run_open_spec_energy_gate(
         )
     normalized_plan = " ".join(plan.split())
     for marker in (
-        "4 / 8",
+        "5 / 8",
         "OS-02 — aceptada",
         "OS-03 — aceptada",
         "OS-04 — aceptada",
-        "OS-05 — no iniciada",
+        "OS-05 — aceptada",
+        "OS-06 — no iniciada",
         "Solar es opcional",
         "sustainable_under_profile",
     ):
@@ -345,9 +347,7 @@ def run_open_spec_energy_gate(
         errors.extend(_validate_profiles(profiles))
     conforming = 0
     if schema is not None and fixtures is not None:
-        fixture_validation, conforming = _validate_schema_and_fixtures(
-            schema, fixtures
-        )
+        fixture_validation, conforming = _validate_schema_and_fixtures(schema, fixtures)
         errors.extend(fixture_validation)
     if residuals is not None:
         errors.extend(_validate_residuals(residuals))
@@ -357,14 +357,16 @@ def run_open_spec_energy_gate(
         [],
         {
             "spec_version": policy.get("spec_version") if policy else None,
-            "spec_tasks_accepted": 4,
+            "spec_tasks_accepted": 5,
             "spec_tasks_total": 8,
             "architectures": len(profiles.get("architectures", [])) if profiles else 0,
             "role_mappings": len(profiles.get("role_mappings", [])) if profiles else 0,
-            "source_adapters": len(profiles.get("source_adapters", [])) if profiles else 0,
+            "source_adapters": (
+                len(profiles.get("source_adapters", [])) if profiles else 0
+            ),
             "conforming_examples": conforming,
             "physical_evidence_blocks_publication": False,
-            "next_task": "OS-05",
+            "next_task": "OS-06",
             "next_task_started": False,
         },
         inputs,

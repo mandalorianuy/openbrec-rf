@@ -4,8 +4,8 @@
 - Plan activo aprobado: `docs/superpowers/plans/2026-07-18-openbrec-open-spec-plan.md`
 - Último plan completado: `docs/superpowers/plans/2026-07-17-openbrec-p0-simulated-addons-plan.md`
 - Baseline cerrado: `docs/superpowers/plans/2026-07-17-openbrec-m0-executable-plan.md`
-- Estado real: M0/P0 completos; Open Spec `4 / 8` (`50.0%`); P1a física `0 / 8` (`0%`)
-- Regla de avance: OS-05 es la siguiente task; P1a es evidencia opcional y no bloquea la spec
+- Estado real: M0/P0 completos; Open Spec `5 / 8` (`62.5%`); P1a física `0 / 8` (`0%`)
+- Regla de avance: OS-06 es la siguiente task; P1a es evidencia opcional y no bloquea la spec
 
 ## Decisiones de gobernanza cerradas
 
@@ -20,6 +20,7 @@
 - [x] OS-02 publica energía/solar abierta, reemplazable y gobernada por claims acotados el 2026-07-18.
 - [x] OS-03 publica selección multi-bearer abierta, overlay común y riesgo regulatorio acotado el 2026-07-18.
 - [x] OS-04 publica contenido humano interoperable, lifecycle SOS y preservación de distress el 2026-07-18.
+- [x] OS-05 publica beacons abiertos, extensiones gobernadas, abstención y datasets reutilizables el 2026-07-18.
 
 ## Now — M0 Fundación
 
@@ -311,7 +312,7 @@ P0 está cerrado.
 
 ## Now — Open Spec
 
-Progreso de aceptación: Open Spec `4 / 8` (`50.0%`). Los contratos y perfiles
+Progreso de aceptación: Open Spec `5 / 8` (`62.5%`). Los contratos y perfiles
 abiertos avanzan sin exigir hardware propio; los evidence packs sólo elevan el
 nivel de evidencia de una implementación exacta.
 
@@ -320,7 +321,7 @@ nivel de evidencia de una implementación exacta.
   adapters, cargas L0–L3, solar opcional y claims acotados.
 - [x] `OS-03`: cinco perfiles multi-bearer abiertos, selección por misión y sin ganador universal.
 - [x] `OS-04`: mensajería, estado, SOS y ubicación interoperables.
-- [ ] `OS-05`: beacons y extensiones modales.
+- [x] `OS-05`: beacons y extensiones modales.
 - [ ] `OS-06`: federación recursiva y autonomía local.
 - [ ] `OS-07`: planos, BOMs y guías de reutilización.
 - [ ] `OS-08`: conformance kit y publicación.
@@ -333,7 +334,13 @@ garantiza rescate. Distress inválido o expirado se preserva como
 Los fixtures son simulados y no prueban entrega RF, comprensión humana, custodia
 de claves, precisión de ubicación ni resultado de rescate.
 
-La próxima task es OS-05 y no fue iniciada en OS-04.
+OS-05 fija una modalidad como mínimo conformante y tres como referencia opcional.
+Acústica opera por features locales; movimiento y térmica no prueban ocupación,
+identidad, diagnóstico ni ausencia. Las extensiones requieren namespace, schema,
+dataset y reviews propios. Los fixtures sintéticos prueban conformance, abstención
+y replay determinístico, no performance física ni representatividad.
+
+La próxima task es OS-06 y no fue iniciada en OS-05.
 
 ## Optional validation lane — P1a banco y conducted
 

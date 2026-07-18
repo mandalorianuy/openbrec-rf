@@ -1,0 +1,96 @@
+{
+  "profile_set_version": "1.0.0-draft.1",
+  "profile_set_id": "openbrec.beacons",
+  "open_boundary": {
+    "minimum_modalities": 1,
+    "reference_modalities": 3,
+    "trimodal_required": false,
+    "requires_owned_hardware": false,
+    "physical_detection_blocks_spec": false,
+    "modalities_are_replaceable_adapters": true,
+    "cloud_dependency_allowed_in_critical_path": false
+  },
+  "observation_policy": {
+    "normative_chain": "Observation -> Evidence -> FusionResult -> OperatorAnnotation",
+    "parallel_fact_chain_allowed": false,
+    "silence_means_absence": false,
+    "missing_sensor_means_absence": false,
+    "single_candidate_means_presence": false,
+    "unknown_and_abstention_required": true,
+    "missing_capabilities_visible": true,
+    "observation_schema_ref": "schemas/addons/1.0.0/beacon-observation.schema.json",
+    "fusion_is_deterministic_without_ml": true,
+    "ml_must_version_model_and_allow_unknown": true
+  },
+  "core_modality_profiles": [
+    {
+      "modality": "acoustic_features",
+      "required_for_spec": false,
+      "alternatives_allowed": true,
+      "normal_mode": "local_features_only",
+      "continuous_audio_storage": false,
+      "speech_to_text": false,
+      "voiceprint": false,
+      "observations": ["human_compatible_vocalization_candidate", "animal_compatible_vocalization_candidate", "impact_candidate", "repetitive_signal_candidate", "unknown"],
+      "limitations": ["candidate classes are not identities", "noise and reverberation can dominate", "no absence inference from silence"]
+    },
+    {
+      "modality": "movement_change",
+      "required_for_spec": false,
+      "alternatives_allowed": true,
+      "normal_mode": "event_features_only",
+      "occupancy_claim": false,
+      "immobility_absence_claim": false,
+      "observations": ["motion_window_candidate", "self_motion_candidate", "unknown"],
+      "limitations": ["movement may be environmental, animal or responder generated", "no count or identity", "no absence inference from no trigger"]
+    },
+    {
+      "modality": "thermal_low_resolution",
+      "required_for_spec": false,
+      "alternatives_allowed": true,
+      "normal_mode": "local_features_only",
+      "identifiable_image": false,
+      "medical_temperature": false,
+      "observations": ["heat_source_candidate", "moving_heat_candidate", "fire_hazard_candidate", "unknown"],
+      "limitations": ["heat sources have multiple causes", "no body or identity label", "no medical measurement"]
+    }
+  ],
+  "fusion_policy": {
+    "modalities_on_same_beacon_are_independent": false,
+    "shared_cause_must_be_declared": true,
+    "corroboration_requires_distinct_beacons_and_independence_groups": true,
+    "placement_baseline_and_clock_uncertainty_required": true,
+    "triangulation_available_by_default": false,
+    "automatic_rescue_decision_allowed": false
+  },
+  "raw_capture_policy": {
+    "default": "disabled",
+    "local_only_by_default": true,
+    "explicit_authorization_required": true,
+    "encryption_required": true,
+    "bounded_duration_required": true,
+    "audit_required": true,
+    "life_safety_hold_before_deletion": true,
+    "automatic_federation": false,
+    "live_stream_allowed_initially": false,
+    "material_reference_only_in_observations": true
+  },
+  "extension_policy": {
+    "schema_ref": "schemas/open-spec/beacon-modality-extension.schema.json",
+    "examples": ["vibration", "air_quality", "co2", "uwb", "mmwave", "camera"],
+    "independent_namespace_required": true,
+    "observation_schema_required": true,
+    "privacy_and_threat_review_required": true,
+    "claims_are_not_inherited": true,
+    "bandwidth_specific_transport_addon_allowed": true
+  },
+  "dataset_policy": {
+    "schema_ref": "schemas/open-spec/beacon-dataset-manifest.schema.json",
+    "reusable_manifests_required": true,
+    "provenance_and_license_required": true,
+    "negative_results_required": true,
+    "omitted_environments_required": true,
+    "representativeness_must_be_explicitly_false_without_evidence": true,
+    "real_human_capture_requires_separate_authorization": true
+  }
+}

@@ -7,7 +7,6 @@ from typing import Any
 
 from jsonschema import Draft202012Validator, FormatChecker
 
-
 PLAN_PATH = Path("docs/superpowers/plans/2026-07-18-openbrec-open-spec-plan.md")
 POLICY_PATH = Path("config/open-spec/governance.json")
 PROFILES_PATH = Path(
@@ -15,9 +14,7 @@ PROFILES_PATH = Path(
 )
 DECISION_SCHEMA_PATH = Path("schemas/open-spec/transport-decision.schema.json")
 FIXTURES_PATH = Path("fixtures/open-spec/transports/decision-examples.json")
-SOURCE_REVIEW_PATH = Path(
-    "docs/research/2026-07-18-multi-bearer-source-review.json"
-)
+SOURCE_REVIEW_PATH = Path("docs/research/2026-07-18-multi-bearer-source-review.json")
 RESIDUALS_PATH = Path("docs/governance/open-spec-transport-residuals.json")
 
 BEARERS = {
@@ -63,18 +60,18 @@ def _read_json(path: Path, label: str) -> tuple[dict[str, Any] | None, list[str]
 def _validate_policy(value: dict[str, Any]) -> list[str]:
     errors: list[str] = []
     if value.get("progress") != {
-        "accepted_tasks": 4,
+        "accepted_tasks": 5,
         "total_tasks": 8,
-        "percent": 50.0,
+        "percent": 62.5,
     }:
-        errors.append("open-spec progress must be 4 / 8")
+        errors.append("open-spec progress must be 5 / 8")
     tasks = value.get("tasks")
     if not isinstance(tasks, list) or len(tasks) != 8:
         return [*errors, "open-spec policy must contain eight tasks"]
-    if [task.get("status") for task in tasks[:4]] != ["accepted"] * 4:
-        errors.append("OS-01 through OS-04 must be accepted")
-    if any(task.get("status") != "not_started" for task in tasks[4:]):
-        errors.append("OS-05 through OS-08 must remain not_started")
+    if [task.get("status") for task in tasks[:5]] != ["accepted"] * 5:
+        errors.append("OS-01 through OS-05 must be accepted")
+    if any(task.get("status") != "not_started" for task in tasks[5:]):
+        errors.append("OS-06 through OS-08 must remain not_started")
     if tasks[2].get("gate") != "open-spec-transports":
         errors.append("OS-03 must use the open-spec-transports gate")
     return errors
@@ -93,7 +90,9 @@ def _validate_profiles(value: dict[str, Any]) -> list[str]:
         if boundary.get("requires_owned_hardware") is not False:
             errors.append("owned hardware cannot gate transport profiles")
         if boundary.get("physical_rf_validation_blocks_spec") is not False:
-            errors.append("physical RF validation cannot block the transport specification")
+            errors.append(
+                "physical RF validation cannot block the transport specification"
+            )
         if boundary.get("protocols_are_replaceable_adapters") is not True:
             errors.append("transport protocols must remain replaceable adapters")
 
@@ -127,9 +126,11 @@ def _validate_profiles(value: dict[str, Any]) -> list[str]:
                 errors.append(f"application overlay must keep {field} false")
 
     modes = value.get("regulatory_modes")
-    if not isinstance(modes, list) or {
-        row.get("mode") for row in modes if isinstance(row, dict)
-    } != REGULATORY_MODES:
+    if (
+        not isinstance(modes, list)
+        or {row.get("mode") for row in modes if isinstance(row, dict)}
+        != REGULATORY_MODES
+    ):
         errors.append("all four regulatory decision modes are required")
 
     profiles = value.get("profiles")
@@ -195,10 +196,16 @@ def _validate_schema_fixtures(
             errors.append(f"examples[{index}] cannot claim physical evidence")
         if example["regulatory_mode"] == "emergency_assumed_risk":
             decision = example["assumed_risk_decision"]
-            starts = datetime.fromisoformat(decision["starts_at"].replace("Z", "+00:00"))
-            expires = datetime.fromisoformat(decision["expires_at"].replace("Z", "+00:00"))
+            starts = datetime.fromisoformat(
+                decision["starts_at"].replace("Z", "+00:00")
+            )
+            expires = datetime.fromisoformat(
+                decision["expires_at"].replace("Z", "+00:00")
+            )
             if expires <= starts:
-                errors.append(f"examples[{index}] assumed-risk decision must expire after it starts")
+                errors.append(
+                    f"examples[{index}] assumed-risk decision must expire after it starts"
+                )
     if bearers != BEARERS:
         errors.append("transport fixtures must exercise every bearer")
     if modes != REGULATORY_MODES:
@@ -215,10 +222,14 @@ def _validate_source_review(value: dict[str, Any]) -> list[str]:
     sources = value.get("sources")
     if not isinstance(sources, list) or len(sources) < 7:
         return [*errors, "at least seven primary transport source records are required"]
-    technologies = {
-        row.get("technology") for row in sources if isinstance(row, dict)
-    }
-    if technologies != {"meshtastic", "meshcore", "reticulum", "lorawan", "carry_bundle"}:
+    technologies = {row.get("technology") for row in sources if isinstance(row, dict)}
+    if technologies != {
+        "meshtastic",
+        "meshcore",
+        "reticulum",
+        "lorawan",
+        "carry_bundle",
+    }:
         errors.append("source review must cover all five transport families")
     for index, row in enumerate(sources):
         if not isinstance(row, dict):
@@ -245,13 +256,21 @@ def _validate_residuals(value: dict[str, Any]) -> list[str]:
             errors.append(f"residuals[{index}] must be an object")
             continue
         if row.get("state") not in {
-            "resolved", "controlled", "planned", "evidence_required"
+            "resolved",
+            "controlled",
+            "planned",
+            "evidence_required",
         }:
             errors.append(f"residuals[{index}] state is invalid")
         if row.get("blocks_open_spec") is not False:
             errors.append(f"residuals[{index}] cannot silently block Open Spec")
         for field in (
-            "id", "owner", "risk", "disposition", "gate_or_task", "stop_condition"
+            "id",
+            "owner",
+            "risk",
+            "disposition",
+            "gate_or_task",
+            "stop_condition",
         ):
             if not row.get(field):
                 errors.append(f"residuals[{index}].{field} is required")
@@ -271,31 +290,51 @@ def run_open_spec_transport_gate(
     plan_path = root / PLAN_PATH
     policy_path = root / POLICY_PATH
     inputs = [
-        plan_path, policy_path, profiles_path, decision_schema_path,
-        fixtures_path, source_review_path, residuals_path,
+        plan_path,
+        policy_path,
+        profiles_path,
+        decision_schema_path,
+        fixtures_path,
+        source_review_path,
+        residuals_path,
     ]
     try:
         plan = plan_path.read_text(encoding="utf-8")
     except OSError as exc:
         plan = ""
-        errors.append(f"open-spec plan unreadable: {exc.strerror or type(exc).__name__}")
+        errors.append(
+            f"open-spec plan unreadable: {exc.strerror or type(exc).__name__}"
+        )
     normalized_plan = " ".join(plan.split())
     for marker in (
-        "4 / 8", "OS-03 — aceptada", "OS-04 — aceptada", "OS-05 — no iniciada",
-        "sin ganador universal", "emergency_assumed_risk",
+        "5 / 8",
+        "OS-03 — aceptada",
+        "OS-04 — aceptada",
+        "OS-05 — aceptada",
+        "OS-06 — no iniciada",
+        "sin ganador universal",
+        "emergency_assumed_risk",
     ):
         if marker not in normalized_plan:
             errors.append(f"open-spec plan missing OS-03 boundary: {marker}")
 
     policy, policy_errors = _read_json(policy_path, "open-spec policy")
     profiles, profile_errors = _read_json(profiles_path, "transport profiles")
-    schema, schema_errors = _read_json(decision_schema_path, "transport decision schema")
+    schema, schema_errors = _read_json(
+        decision_schema_path, "transport decision schema"
+    )
     fixtures, fixture_errors = _read_json(fixtures_path, "transport fixtures")
-    source_review, source_errors = _read_json(source_review_path, "transport source review")
+    source_review, source_errors = _read_json(
+        source_review_path, "transport source review"
+    )
     residuals, residual_errors = _read_json(residuals_path, "transport residuals")
     errors.extend(
-        policy_errors + profile_errors + schema_errors + fixture_errors
-        + source_errors + residual_errors
+        policy_errors
+        + profile_errors
+        + schema_errors
+        + fixture_errors
+        + source_errors
+        + residual_errors
     )
     if policy is not None:
         errors.extend(_validate_policy(policy))
@@ -315,16 +354,18 @@ def run_open_spec_transport_gate(
         [],
         {
             "spec_version": policy.get("spec_version") if policy else None,
-            "spec_tasks_accepted": 4,
+            "spec_tasks_accepted": 5,
             "spec_tasks_total": 8,
             "bearer_profiles": len(profiles.get("profiles", [])) if profiles else 0,
             "conforming_examples": conforming,
-            "source_records": len(source_review.get("sources", [])) if source_review else 0,
+            "source_records": (
+                len(source_review.get("sources", [])) if source_review else 0
+            ),
             "global_winner_selected": bool(
                 profiles and profiles.get("selection_policy", {}).get("global_winner")
             ),
             "physical_rf_validation_blocks_publication": False,
-            "next_task": "OS-05",
+            "next_task": "OS-06",
             "next_task_started": False,
         },
         inputs,

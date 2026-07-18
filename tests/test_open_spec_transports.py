@@ -10,7 +10,6 @@ from pathlib import Path
 
 from jsonschema import Draft202012Validator, FormatChecker
 
-
 ROOT = Path(__file__).resolve().parents[1]
 PLAN = ROOT / "docs/superpowers/plans/2026-07-18-openbrec-open-spec-plan.md"
 POLICY = ROOT / "config/open-spec/governance.json"
@@ -65,20 +64,21 @@ class OpenSpecTransportTests(unittest.TestCase):
         ):
             self.assertIn(option, result.stdout)
 
-    def test_os_03_remains_accepted_after_os_04_closure(self) -> None:
+    def test_os_03_remains_accepted_after_os_05_closure(self) -> None:
         source = PLAN.read_text(encoding="utf-8")
-        self.assertIn("4 / 8", source)
+        self.assertIn("5 / 8", source)
         self.assertIn("OS-03 — aceptada", source)
         self.assertIn("OS-04 — aceptada", source)
-        self.assertIn("OS-05 — no iniciada", source)
+        self.assertIn("OS-05 — aceptada", source)
+        self.assertIn("OS-06 — no iniciada", source)
         policy = self.load_json(POLICY)
         self.assertEqual(
             policy["progress"],
-            {"accepted_tasks": 4, "total_tasks": 8, "percent": 50.0},
+            {"accepted_tasks": 5, "total_tasks": 8, "percent": 62.5},
         )
         tasks = policy["tasks"]
-        self.assertEqual([task["status"] for task in tasks[:4]], ["accepted"] * 4)
-        self.assertTrue(all(task["status"] == "not_started" for task in tasks[4:]))
+        self.assertEqual([task["status"] for task in tasks[:5]], ["accepted"] * 5)
+        self.assertTrue(all(task["status"] == "not_started" for task in tasks[5:]))
 
     def test_five_profiles_are_open_and_have_no_global_winner(self) -> None:
         value = self.load_json(PROFILES)
@@ -139,7 +139,9 @@ class OpenSpecTransportTests(unittest.TestCase):
     def test_source_review_uses_primary_sources_and_requires_repinning(self) -> None:
         review = self.load_json(SOURCE_REVIEW)
         self.assertEqual(review["reviewed_at"], "2026-07-18")
-        self.assertEqual(review["version_policy"], "pin_per_implementation_and_rereview")
+        self.assertEqual(
+            review["version_policy"], "pin_per_implementation_and_rereview"
+        )
         sources = review["sources"]
         self.assertGreaterEqual(len(sources), 7)
         self.assertEqual(
@@ -152,7 +154,9 @@ class OpenSpecTransportTests(unittest.TestCase):
             self.assertTrue(row["implementation_action"])
             self.assertFalse(row["proves_field_performance"])
 
-    def test_decision_schema_is_closed_and_fixtures_cover_all_bearers_and_modes(self) -> None:
+    def test_decision_schema_is_closed_and_fixtures_cover_all_bearers_and_modes(
+        self,
+    ) -> None:
         schema = self.load_json(DECISION_SCHEMA)
         Draft202012Validator.check_schema(schema)
         self.assertFalse(schema["additionalProperties"])
@@ -162,8 +166,14 @@ class OpenSpecTransportTests(unittest.TestCase):
         selected: set[str] = set()
         modes: set[str] = set()
         for index, example in enumerate(examples):
-            errors = sorted(validator.iter_errors(example), key=lambda error: list(error.path))
-            self.assertEqual(errors, [], f"examples[{index}]: " + "; ".join(e.message for e in errors))
+            errors = sorted(
+                validator.iter_errors(example), key=lambda error: list(error.path)
+            )
+            self.assertEqual(
+                errors,
+                [],
+                f"examples[{index}]: " + "; ".join(e.message for e in errors),
+            )
             selected.add(example["selected_bearer"])
             modes.add(example["regulatory_mode"])
             self.assertIn(example["evidence_level"], {"specified", "simulated"})
@@ -216,32 +226,40 @@ class OpenSpecTransportTests(unittest.TestCase):
         self.assertEqual(register["task"], "OS-03")
         self.assertGreaterEqual(len(register["residuals"]), 9)
         for row in register["residuals"]:
-            self.assertIn(row["state"], {"resolved", "controlled", "planned", "evidence_required"})
+            self.assertIn(
+                row["state"], {"resolved", "controlled", "planned", "evidence_required"}
+            )
             self.assertFalse(row["blocks_open_spec"])
-            for field in ("owner", "risk", "disposition", "gate_or_task", "stop_condition"):
+            for field in (
+                "owner",
+                "risk",
+                "disposition",
+                "gate_or_task",
+                "stop_condition",
+            ):
                 self.assertTrue(row[field])
 
     def test_gate_accepts_profiles_without_physical_assets(self) -> None:
         result = self.run_verify("open-spec-transports")
         self.assertEqual(result.returncode, 0, result.stderr)
         summary = json.loads(result.stdout)["summary"]
-        self.assertEqual(summary["spec_tasks_accepted"], 4)
+        self.assertEqual(summary["spec_tasks_accepted"], 5)
         self.assertEqual(summary["spec_tasks_total"], 8)
         self.assertEqual(summary["bearer_profiles"], 5)
         self.assertEqual(summary["conforming_examples"], 5)
         self.assertEqual(summary["source_records"], 7)
         self.assertFalse(summary["global_winner_selected"])
         self.assertFalse(summary["physical_rf_validation_blocks_publication"])
-        self.assertEqual(summary["next_task"], "OS-05")
+        self.assertEqual(summary["next_task"], "OS-06")
         self.assertFalse(summary["next_task_started"])
 
     def test_board_readme_and_ci_publish_os_03_gate(self) -> None:
         board = (ROOT / "DELIVERY_BOARD.md").read_text(encoding="utf-8")
         readme = (ROOT / "README.md").read_text(encoding="utf-8")
         workflow = (ROOT / ".github/workflows/validate.yml").read_text(encoding="utf-8")
-        self.assertIn("Open Spec `4 / 8`", board)
+        self.assertIn("Open Spec `5 / 8`", board)
         self.assertIn("[x] `OS-03`", board)
-        self.assertIn("OS-05", board)
+        self.assertIn("OS-06", board)
         self.assertIn("openbrec.verify open-spec-transports", readme)
         self.assertIn("multi-bearer-transport-profiles.json", readme)
         self.assertIn("  open-spec-transports:", workflow)

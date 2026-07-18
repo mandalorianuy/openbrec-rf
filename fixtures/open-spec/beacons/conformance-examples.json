@@ -1,0 +1,94 @@
+{
+  "fixture_set_version": "1.0.0-draft.1",
+  "claim_scope": "synthetic_conformance_only",
+  "deployment_examples": [
+    {
+      "deployment_id": "beacon-example-acoustic",
+      "composition": "single_modality",
+      "modalities": ["acoustic_features"],
+      "capabilities_absent": ["movement_change", "thermal_low_resolution", "triangulation"],
+      "triangulation_available": false,
+      "presence_confirmation_available": false,
+      "evidence_level": "specified"
+    },
+    {
+      "deployment_id": "beacon-example-trimodal",
+      "composition": "trimodal_reference",
+      "modalities": ["acoustic_features", "movement_change", "thermal_low_resolution"],
+      "capabilities_absent": ["calibrated_localization", "physical_detection_evidence"],
+      "triangulation_available": false,
+      "presence_confirmation_available": false,
+      "evidence_level": "simulated"
+    },
+    {
+      "deployment_id": "beacon-example-vibration",
+      "composition": "extension_modality",
+      "modalities": ["ext.vibration"],
+      "capabilities_absent": ["core_modality_corroboration", "physical_detection_evidence"],
+      "triangulation_available": false,
+      "presence_confirmation_available": false,
+      "evidence_level": "specified"
+    }
+  ],
+  "extensions": [
+    {
+      "schema_version": "1.0.0-draft.1",
+      "extension_id": "beacon.extension.vibration",
+      "modality_namespace": "ext.vibration",
+      "status": "unverified",
+      "observation_schema_ref": "schemas/extensions/vibration-observation.schema.json",
+      "privacy_review_ref": "reviews/extensions/vibration-privacy.md",
+      "threat_review_ref": "reviews/extensions/vibration-threat.md",
+      "dataset_manifest_refs": ["dataset.vibration.synthetic-v1"],
+      "inherits_presence_claims": false,
+      "capabilities_absent": ["physical calibration", "field representativeness"],
+      "limitations": ["example registration only", "no sensor or presence claim"]
+    }
+  ],
+  "dataset_manifests": [
+    {
+      "schema_version": "1.0.0-draft.1",
+      "dataset_id": "dataset.beacon.synthetic-multimodal",
+      "dataset_version": "1.0.0",
+      "modality": "beacon.multimodal",
+      "license": "CC0-1.0",
+      "provenance": {"source_type": "synthetic_generated", "generator_or_source": "openbrec-os05-fixture-generator", "created_at": "2026-07-18T17:00:00Z"},
+      "contains_real_human_data": false,
+      "authorization_ref": null,
+      "environment_classes": ["quiet_synthetic", "noise_synthetic", "heat_motion_synthetic"],
+      "omitted_environment_classes": ["rubble_physical", "wind_rain", "real_people", "real_animals"],
+      "negative_results_included": true,
+      "representativeness_claimed": false,
+      "physical_performance_claimed": false,
+      "artifact_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+      "limitations": ["synthetic conformance only", "not a sensitivity or specificity benchmark"]
+    },
+    {
+      "schema_version": "1.0.0-draft.1",
+      "dataset_id": "dataset.vibration.synthetic-v1",
+      "dataset_version": "1.0.0",
+      "modality": "ext.vibration",
+      "license": "CC0-1.0",
+      "provenance": {"source_type": "synthetic_generated", "generator_or_source": "openbrec-extension-example", "created_at": "2026-07-18T17:01:00Z"},
+      "contains_real_human_data": false,
+      "authorization_ref": null,
+      "environment_classes": ["impulse_synthetic", "periodic_synthetic"],
+      "omitted_environment_classes": ["structures_physical", "heavy_machinery", "real_people"],
+      "negative_results_included": true,
+      "representativeness_claimed": false,
+      "physical_performance_claimed": false,
+      "artifact_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+      "limitations": ["registration example only", "no physical extension implementation"]
+    }
+  ],
+  "replay_cases": [
+    {"case_id": "case-single-acoustic", "modalities": ["acoustic_features"], "beacon_ids": ["beacon-a"], "independence_groups": ["site-a"], "coverage": "sufficient", "baseline_valid": true, "placement_valid": true, "out_of_distribution": false, "known_artifact": false, "raw_material_present": false, "capabilities_absent": ["movement_change", "thermal_low_resolution"], "expected_output": "single_modality_candidate"},
+    {"case_id": "case-acoustic-unknown", "modalities": ["acoustic_features"], "beacon_ids": ["beacon-a"], "independence_groups": ["site-a"], "coverage": "sufficient", "baseline_valid": true, "placement_valid": true, "out_of_distribution": true, "known_artifact": false, "raw_material_present": false, "capabilities_absent": ["movement_change", "thermal_low_resolution"], "expected_output": "unknown"},
+    {"case_id": "case-insufficient-coverage", "modalities": ["movement_change"], "beacon_ids": ["beacon-b"], "independence_groups": ["site-b"], "coverage": "insufficient", "baseline_valid": true, "placement_valid": true, "out_of_distribution": false, "known_artifact": false, "raw_material_present": false, "capabilities_absent": ["acoustic_features", "thermal_low_resolution"], "expected_output": "insufficient_coverage"},
+    {"case_id": "case-invalid-baseline", "modalities": ["thermal_low_resolution"], "beacon_ids": ["beacon-c"], "independence_groups": ["site-c"], "coverage": "sufficient", "baseline_valid": false, "placement_valid": true, "out_of_distribution": false, "known_artifact": false, "raw_material_present": false, "capabilities_absent": ["valid_baseline"], "expected_output": "unknown"},
+    {"case_id": "case-invalid-placement", "modalities": ["movement_change"], "beacon_ids": ["beacon-b"], "independence_groups": ["site-b"], "coverage": "sufficient", "baseline_valid": true, "placement_valid": false, "out_of_distribution": false, "known_artifact": false, "raw_material_present": false, "capabilities_absent": ["valid_placement"], "expected_output": "unknown"},
+    {"case_id": "case-known-artifact", "modalities": ["thermal_low_resolution"], "beacon_ids": ["beacon-c"], "independence_groups": ["site-c"], "coverage": "sufficient", "baseline_valid": true, "placement_valid": true, "out_of_distribution": false, "known_artifact": true, "raw_material_present": false, "capabilities_absent": [], "expected_output": "sensor_artifact_likely"},
+    {"case_id": "case-independent-corroboration", "modalities": ["acoustic_features", "thermal_low_resolution"], "beacon_ids": ["beacon-a", "beacon-c"], "independence_groups": ["site-a", "site-c"], "coverage": "sufficient", "baseline_valid": true, "placement_valid": true, "out_of_distribution": false, "known_artifact": false, "raw_material_present": false, "capabilities_absent": [], "expected_output": "corroborated_candidate"},
+    {"case_id": "case-shared-cause", "modalities": ["movement_change", "thermal_low_resolution"], "beacon_ids": ["beacon-b", "beacon-c"], "independence_groups": ["shared-responder", "shared-responder"], "coverage": "sufficient", "baseline_valid": true, "placement_valid": true, "out_of_distribution": false, "known_artifact": false, "raw_material_present": false, "capabilities_absent": [], "expected_output": "single_modality_candidate"}
+  ]
+}
