@@ -445,6 +445,26 @@ jobs:
           path: evidence/open-spec/os-04
           if-no-files-found: error
 
+  open-spec-beacons:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
+        with:
+          version: "0.11.1"
+      - run: uv sync --frozen
+      - run: uv run --offline python -m unittest tests.test_open_spec_beacons -v
+      - run: uv run --offline python -m openbrec.verify open-spec-beacons --receipt evidence/open-spec/os-05/os-05-receipt.json
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: open-spec-os-05-receipt
+          path: evidence/open-spec/os-05
+          if-no-files-found: error
+
   p1a-assets-blocked:
     needs: [p1a-readiness]
     runs-on: ubuntu-latest

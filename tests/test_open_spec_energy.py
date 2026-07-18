@@ -10,14 +10,10 @@ from pathlib import Path
 
 from jsonschema import Draft202012Validator, FormatChecker
 
-
 ROOT = Path(__file__).resolve().parents[1]
 PLAN = ROOT / "docs/superpowers/plans/2026-07-18-openbrec-open-spec-plan.md"
 POLICY = ROOT / "config/open-spec/governance.json"
-PROFILES = (
-    ROOT
-    / "specs/openbrec/1.0.0-draft.1/energy-architecture-profiles.json"
-)
+PROFILES = ROOT / "specs/openbrec/1.0.0-draft.1/energy-architecture-profiles.json"
 ARCHITECTURE_SCHEMA = ROOT / "schemas/open-spec/energy-architecture.schema.json"
 FIXTURES = ROOT / "fixtures/open-spec/energy/architecture-examples.json"
 RESIDUALS = ROOT / "docs/governance/open-spec-energy-residuals.json"
@@ -72,24 +68,30 @@ class OpenSpecEnergyTests(unittest.TestCase):
     def test_energy_gate_is_registered_with_normative_inputs(self) -> None:
         result = self.run_verify("open-spec-energy", "--help")
         self.assertEqual(result.returncode, 0, result.stderr)
-        for option in ("--profiles", "--architecture-schema", "--fixtures", "--residuals"):
+        for option in (
+            "--profiles",
+            "--architecture-schema",
+            "--fixtures",
+            "--residuals",
+        ):
             self.assertIn(option, result.stdout)
 
-    def test_os_02_remains_accepted_after_os_04_closure(self) -> None:
+    def test_os_02_remains_accepted_after_os_05_closure(self) -> None:
         source = PLAN.read_text(encoding="utf-8")
-        self.assertIn("4 / 8", source)
+        self.assertIn("5 / 8", source)
         self.assertIn("OS-02 — aceptada", source)
         self.assertIn("OS-03 — aceptada", source)
         self.assertIn("OS-04 — aceptada", source)
-        self.assertIn("OS-05 — no iniciada", source)
+        self.assertIn("OS-05 — aceptada", source)
+        self.assertIn("OS-06 — no iniciada", source)
         policy = self.load_json(POLICY)
         self.assertEqual(
             policy["progress"],
-            {"accepted_tasks": 4, "total_tasks": 8, "percent": 50.0},
+            {"accepted_tasks": 5, "total_tasks": 8, "percent": 62.5},
         )
         tasks = policy["tasks"]
-        self.assertEqual([task["status"] for task in tasks[:4]], ["accepted"] * 4)
-        self.assertTrue(all(task["status"] == "not_started" for task in tasks[4:]))
+        self.assertEqual([task["status"] for task in tasks[:5]], ["accepted"] * 5)
+        self.assertTrue(all(task["status"] == "not_started" for task in tasks[5:]))
 
     def test_energy_profiles_keep_solar_hardware_and_topology_optional(self) -> None:
         value = self.load_json(PROFILES)
@@ -139,7 +141,9 @@ class OpenSpecEnergyTests(unittest.TestCase):
             value["degradation_policy"]["shed_order"],
             ["L3_DEFERRABLE", "L2_MISSION_SUPPORT", "L1_MISSION_CRITICAL"],
         )
-        self.assertTrue(value["degradation_policy"]["preserve_l0_until_hardware_cutoff"])
+        self.assertTrue(
+            value["degradation_policy"]["preserve_l0_until_hardware_cutoff"]
+        )
         self.assertTrue(value["degradation_policy"]["hardware_safety_overrides_l0"])
 
     def test_architecture_schema_is_normative_and_examples_conform(self) -> None:
@@ -151,7 +155,9 @@ class OpenSpecEnergyTests(unittest.TestCase):
         examples = fixtures["examples"]
         self.assertEqual(len(examples), 4)
         for example in examples:
-            errors = sorted(validator.iter_errors(example), key=lambda error: list(error.path))
+            errors = sorted(
+                validator.iter_errors(example), key=lambda error: list(error.path)
+            )
             self.assertEqual(errors, [], "\n".join(error.message for error in errors))
             self.assertIn(example["evidence_level"], {"specified", "simulated"})
             self.assertNotIn("indefinite", json.dumps(example).lower())
@@ -166,9 +172,9 @@ class OpenSpecEnergyTests(unittest.TestCase):
         )
         for row in examples:
             budget = row["modeled_budget"]
-            required = (
-                budget["critical_load_Wh"] + budget["reserves_Wh"]
-            ) * budget["margin_factor"]
+            required = (budget["critical_load_Wh"] + budget["reserves_Wh"]) * budget[
+                "margin_factor"
+            ]
             self.assertEqual(
                 budget["storage_only_pass"],
                 budget["usable_storage_Wh"] >= required,
@@ -202,23 +208,23 @@ class OpenSpecEnergyTests(unittest.TestCase):
         result = self.run_verify("open-spec-energy")
         self.assertEqual(result.returncode, 0, result.stderr)
         summary = json.loads(result.stdout)["summary"]
-        self.assertEqual(summary["spec_tasks_accepted"], 4)
+        self.assertEqual(summary["spec_tasks_accepted"], 5)
         self.assertEqual(summary["spec_tasks_total"], 8)
         self.assertEqual(summary["architectures"], 4)
         self.assertEqual(summary["role_mappings"], 9)
         self.assertEqual(summary["source_adapters"], 8)
         self.assertEqual(summary["conforming_examples"], 4)
         self.assertFalse(summary["physical_evidence_blocks_publication"])
-        self.assertEqual(summary["next_task"], "OS-05")
+        self.assertEqual(summary["next_task"], "OS-06")
         self.assertFalse(summary["next_task_started"])
 
     def test_board_readme_and_ci_publish_os_02_gate(self) -> None:
         board = (ROOT / "DELIVERY_BOARD.md").read_text(encoding="utf-8")
         readme = (ROOT / "README.md").read_text(encoding="utf-8")
         workflow = (ROOT / ".github/workflows/validate.yml").read_text(encoding="utf-8")
-        self.assertIn("Open Spec `4 / 8`", board)
+        self.assertIn("Open Spec `5 / 8`", board)
         self.assertIn("[x] `OS-02`", board)
-        self.assertIn("OS-05", board)
+        self.assertIn("OS-06", board)
         self.assertIn("openbrec.verify open-spec-energy", readme)
         self.assertIn("energy-architecture-profiles.json", readme)
         self.assertIn("  open-spec-energy:", workflow)

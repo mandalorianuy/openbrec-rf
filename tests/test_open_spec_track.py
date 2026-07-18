@@ -9,14 +9,10 @@ from pathlib import Path
 
 from jsonschema import Draft202012Validator
 
-
 ROOT = Path(__file__).resolve().parents[1]
 PLAN = ROOT / "docs/superpowers/plans/2026-07-18-openbrec-open-spec-plan.md"
 POLICY = ROOT / "config/open-spec/governance.json"
-PROFILES = (
-    ROOT
-    / "specs/openbrec/1.0.0-draft.1/reference-capability-profiles.json"
-)
+PROFILES = ROOT / "specs/openbrec/1.0.0-draft.1/reference-capability-profiles.json"
 CLAIM_SCHEMA = ROOT / "schemas/open-spec/evidence-claim.schema.json"
 DISPOSITION = ROOT / "docs/governance/p1a-01-spec-disposition.json"
 RESIDUALS = ROOT / "docs/governance/open-spec-residuals.json"
@@ -51,15 +47,16 @@ class OpenSpecTrackTests(unittest.TestCase):
         self.assertIn("--claim-schema", result.stdout)
         self.assertIn("--disposition", result.stdout)
 
-    def test_spec_plan_is_primary_and_accepts_through_os_04(self) -> None:
+    def test_spec_plan_is_primary_and_accepts_through_os_05(self) -> None:
         source = PLAN.read_text(encoding="utf-8")
         self.assertIn("Autoridad principal: Open Spec", source)
-        self.assertIn("4 / 8", source)
+        self.assertIn("5 / 8", source)
         self.assertIn("OS-01 — aceptada", source)
         self.assertIn("OS-02 — aceptada", source)
         self.assertIn("OS-03 — aceptada", source)
         self.assertIn("OS-04 — aceptada", source)
-        self.assertIn("OS-05 — no iniciada", source)
+        self.assertIn("OS-05 — aceptada", source)
+        self.assertIn("OS-06 — no iniciada", source)
         self.assertIn("P1a es un carril opcional", source)
 
     def test_policy_separates_publication_from_physical_claims(self) -> None:
@@ -67,16 +64,20 @@ class OpenSpecTrackTests(unittest.TestCase):
         self.assertEqual(value["main_lane"], "open_spec")
         self.assertEqual(
             value["progress"],
-            {"accepted_tasks": 4, "total_tasks": 8, "percent": 50.0},
+            {"accepted_tasks": 5, "total_tasks": 8, "percent": 62.5},
         )
         self.assertFalse(value["publication"]["requires_owned_hardware"])
         self.assertFalse(value["publication"]["requires_physical_evidence"])
         self.assertTrue(value["physical_claims"]["require_evidence_pack"])
-        self.assertEqual(value["physical_validation_lane"]["progress"]["accepted_tasks"], 0)
+        self.assertEqual(
+            value["physical_validation_lane"]["progress"]["accepted_tasks"], 0
+        )
         tasks = value["tasks"]
-        self.assertEqual([task["id"] for task in tasks], [f"OS-{index:02d}" for index in range(1, 9)])
-        self.assertTrue(all(task["status"] == "accepted" for task in tasks[:4]))
-        self.assertTrue(all(task["status"] == "not_started" for task in tasks[4:]))
+        self.assertEqual(
+            [task["id"] for task in tasks], [f"OS-{index:02d}" for index in range(1, 9)]
+        )
+        self.assertTrue(all(task["status"] == "accepted" for task in tasks[:5]))
+        self.assertTrue(all(task["status"] == "not_started" for task in tasks[5:]))
 
     def test_reference_profiles_are_open_and_hardware_agnostic(self) -> None:
         value = json.loads(PROFILES.read_text(encoding="utf-8"))
@@ -91,13 +92,21 @@ class OpenSpecTrackTests(unittest.TestCase):
             self.assertTrue(profile["reference_candidates"])
             self.assertTrue(profile["acceptance_criteria"])
 
-    def test_evidence_claim_contract_is_normative_and_does_not_promote_spec_only(self) -> None:
+    def test_evidence_claim_contract_is_normative_and_does_not_promote_spec_only(
+        self,
+    ) -> None:
         schema = json.loads(CLAIM_SCHEMA.read_text(encoding="utf-8"))
         Draft202012Validator.check_schema(schema)
         level = schema["properties"]["evidence_level"]
         self.assertEqual(
             level["enum"],
-            ["unverified", "specified", "simulated", "lab_validated", "field_validated"],
+            [
+                "unverified",
+                "specified",
+                "simulated",
+                "lab_validated",
+                "field_validated",
+            ],
         )
         self.assertIn("physical_evidence", schema["properties"])
         self.assertFalse(schema["additionalProperties"])
@@ -106,11 +115,15 @@ class OpenSpecTrackTests(unittest.TestCase):
         value = json.loads(DISPOSITION.read_text(encoding="utf-8"))
         self.assertEqual(value["decision"], "preserved_as_optional_validation_lane")
         self.assertFalse(value["blocks_open_spec"])
-        self.assertEqual(value["physical_validation_status"], "blocked_external_evidence")
+        self.assertEqual(
+            value["physical_validation_status"], "blocked_external_evidence"
+        )
         for path in value["preserved_artifacts"]:
             self.assertTrue((ROOT / path).is_file(), path)
 
-    def test_open_spec_residuals_have_owner_gate_and_nonblocking_disposition(self) -> None:
+    def test_open_spec_residuals_have_owner_gate_and_nonblocking_disposition(
+        self,
+    ) -> None:
         value = json.loads(RESIDUALS.read_text(encoding="utf-8"))
         self.assertEqual(value["lane"], "open_spec")
         self.assertGreaterEqual(len(value["residuals"]), 3)
@@ -125,13 +138,15 @@ class OpenSpecTrackTests(unittest.TestCase):
         result = self.run_verify("open-spec")
         self.assertEqual(result.returncode, 0, result.stderr)
         summary = json.loads(result.stdout)["summary"]
-        self.assertEqual(summary["spec_tasks_accepted"], 4)
+        self.assertEqual(summary["spec_tasks_accepted"], 5)
         self.assertEqual(summary["spec_tasks_total"], 8)
         self.assertEqual(summary["reference_profiles"], 9)
         self.assertEqual(summary["physical_validation_tasks_accepted"], 0)
         self.assertFalse(summary["physical_evidence_blocks_publication"])
 
-    def test_gate_rejects_policy_that_makes_hardware_a_publication_requirement(self) -> None:
+    def test_gate_rejects_policy_that_makes_hardware_a_publication_requirement(
+        self,
+    ) -> None:
         value = json.loads(POLICY.read_text(encoding="utf-8"))
         value["publication"]["requires_physical_evidence"] = True
         with tempfile.TemporaryDirectory(dir=ROOT) as temporary:
@@ -139,16 +154,18 @@ class OpenSpecTrackTests(unittest.TestCase):
             policy.write_text(json.dumps(value), encoding="utf-8")
             result = self.run_verify("open-spec", "--policy", str(policy))
         self.assertNotEqual(result.returncode, 0, result.stdout)
-        self.assertIn("physical evidence cannot block open-spec publication", result.stderr)
+        self.assertIn(
+            "physical evidence cannot block open-spec publication", result.stderr
+        )
 
     def test_board_readme_and_ci_use_spec_first_authority(self) -> None:
         board = (ROOT / "DELIVERY_BOARD.md").read_text(encoding="utf-8")
         readme = (ROOT / "README.md").read_text(encoding="utf-8")
         workflow = (ROOT / ".github/workflows/validate.yml").read_text(encoding="utf-8")
         self.assertIn(str(PLAN.relative_to(ROOT)), board)
-        self.assertIn("Open Spec `4 / 8`", board)
+        self.assertIn("Open Spec `5 / 8`", board)
         self.assertIn("P1a física `0 / 8`", board)
-        self.assertIn("OS-05", board)
+        self.assertIn("OS-06", board)
         self.assertIn("spec-first", readme)
         self.assertIn("openbrec.verify open-spec", readme)
         self.assertIn("  open-spec:", workflow)

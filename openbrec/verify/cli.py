@@ -100,6 +100,14 @@ from openbrec.open_spec_messaging import (
     RESIDUALS_PATH as OPEN_SPEC_MESSAGE_RESIDUALS_PATH,
     run_open_spec_messaging_gate,
 )
+from openbrec.open_spec_beacons import (
+    DATASET_SCHEMA_PATH as OPEN_SPEC_BEACON_DATASET_SCHEMA_PATH,
+    EXTENSION_SCHEMA_PATH as OPEN_SPEC_BEACON_EXTENSION_SCHEMA_PATH,
+    FIXTURES_PATH as OPEN_SPEC_BEACON_FIXTURES_PATH,
+    PROFILES_PATH as OPEN_SPEC_BEACON_PROFILES_PATH,
+    RESIDUALS_PATH as OPEN_SPEC_BEACON_RESIDUALS_PATH,
+    run_open_spec_beacon_gate,
+)
 
 DRAFT_2020_12 = "https://json-schema.org/draft/2020-12/schema"
 VERIFY_VERSION = "0.1.0"
@@ -266,6 +274,7 @@ def _responsible_role(gate: str) -> str:
         "open-spec-energy",
         "open-spec-transports",
         "open-spec-messaging",
+        "open-spec-beacons",
     }:
         return "release-reviewer"
     if gate in {"beacon-adversarial", "retention-fault"}:
@@ -779,6 +788,7 @@ def _parser() -> argparse.ArgumentParser:
         "open-spec-energy",
         "open-spec-transports",
         "open-spec-messaging",
+        "open-spec-beacons",
         "all",
     ):
         subparser = subparsers.add_parser(gate)
@@ -811,43 +821,84 @@ def _parser() -> argparse.ArgumentParser:
             subparser.add_argument("--schema", default=str(P1A_SCHEMA_PATH))
             subparser.add_argument("--residuals", default=str(P1A_RESIDUALS_PATH))
         if gate == "p1a-assets":
-            subparser.add_argument("--evidence-dir", default=str(P1A_ASSET_EVIDENCE_DIR))
+            subparser.add_argument(
+                "--evidence-dir", default=str(P1A_ASSET_EVIDENCE_DIR)
+            )
             subparser.add_argument("--schema", default=str(P1A_ASSET_SCHEMA_PATH))
         if gate == "open-spec":
             subparser.add_argument("--policy", default=str(OPEN_SPEC_POLICY_PATH))
             subparser.add_argument("--profiles", default=str(OPEN_SPEC_PROFILES_PATH))
-            subparser.add_argument("--claim-schema", default=str(OPEN_SPEC_CLAIM_SCHEMA_PATH))
-            subparser.add_argument("--disposition", default=str(OPEN_SPEC_DISPOSITION_PATH))
+            subparser.add_argument(
+                "--claim-schema", default=str(OPEN_SPEC_CLAIM_SCHEMA_PATH)
+            )
+            subparser.add_argument(
+                "--disposition", default=str(OPEN_SPEC_DISPOSITION_PATH)
+            )
         if gate == "open-spec-energy":
-            subparser.add_argument("--profiles", default=str(OPEN_SPEC_ENERGY_PROFILES_PATH))
+            subparser.add_argument(
+                "--profiles", default=str(OPEN_SPEC_ENERGY_PROFILES_PATH)
+            )
             subparser.add_argument(
                 "--architecture-schema",
                 default=str(OPEN_SPEC_ENERGY_ARCHITECTURE_SCHEMA_PATH),
             )
-            subparser.add_argument("--fixtures", default=str(OPEN_SPEC_ENERGY_FIXTURES_PATH))
-            subparser.add_argument("--residuals", default=str(OPEN_SPEC_ENERGY_RESIDUALS_PATH))
+            subparser.add_argument(
+                "--fixtures", default=str(OPEN_SPEC_ENERGY_FIXTURES_PATH)
+            )
+            subparser.add_argument(
+                "--residuals", default=str(OPEN_SPEC_ENERGY_RESIDUALS_PATH)
+            )
         if gate == "open-spec-transports":
-            subparser.add_argument("--profiles", default=str(OPEN_SPEC_TRANSPORT_PROFILES_PATH))
+            subparser.add_argument(
+                "--profiles", default=str(OPEN_SPEC_TRANSPORT_PROFILES_PATH)
+            )
             subparser.add_argument(
                 "--decision-schema",
                 default=str(OPEN_SPEC_TRANSPORT_DECISION_SCHEMA_PATH),
             )
-            subparser.add_argument("--fixtures", default=str(OPEN_SPEC_TRANSPORT_FIXTURES_PATH))
+            subparser.add_argument(
+                "--fixtures", default=str(OPEN_SPEC_TRANSPORT_FIXTURES_PATH)
+            )
             subparser.add_argument(
                 "--source-review",
                 default=str(OPEN_SPEC_TRANSPORT_SOURCE_REVIEW_PATH),
             )
-            subparser.add_argument("--residuals", default=str(OPEN_SPEC_TRANSPORT_RESIDUALS_PATH))
+            subparser.add_argument(
+                "--residuals", default=str(OPEN_SPEC_TRANSPORT_RESIDUALS_PATH)
+            )
         if gate == "open-spec-messaging":
-            subparser.add_argument("--profiles", default=str(OPEN_SPEC_MESSAGE_PROFILES_PATH))
+            subparser.add_argument(
+                "--profiles", default=str(OPEN_SPEC_MESSAGE_PROFILES_PATH)
+            )
             subparser.add_argument(
                 "--content-schema", default=str(OPEN_SPEC_MESSAGE_CONTENT_SCHEMA_PATH)
             )
             subparser.add_argument(
                 "--event-schema", default=str(OPEN_SPEC_MESSAGE_EVENT_SCHEMA_PATH)
             )
-            subparser.add_argument("--fixtures", default=str(OPEN_SPEC_MESSAGE_FIXTURES_PATH))
-            subparser.add_argument("--residuals", default=str(OPEN_SPEC_MESSAGE_RESIDUALS_PATH))
+            subparser.add_argument(
+                "--fixtures", default=str(OPEN_SPEC_MESSAGE_FIXTURES_PATH)
+            )
+            subparser.add_argument(
+                "--residuals", default=str(OPEN_SPEC_MESSAGE_RESIDUALS_PATH)
+            )
+        if gate == "open-spec-beacons":
+            subparser.add_argument(
+                "--profiles", default=str(OPEN_SPEC_BEACON_PROFILES_PATH)
+            )
+            subparser.add_argument(
+                "--extension-schema",
+                default=str(OPEN_SPEC_BEACON_EXTENSION_SCHEMA_PATH),
+            )
+            subparser.add_argument(
+                "--dataset-schema", default=str(OPEN_SPEC_BEACON_DATASET_SCHEMA_PATH)
+            )
+            subparser.add_argument(
+                "--fixtures", default=str(OPEN_SPEC_BEACON_FIXTURES_PATH)
+            )
+            subparser.add_argument(
+                "--residuals", default=str(OPEN_SPEC_BEACON_RESIDUALS_PATH)
+            )
         if gate == "p0-all":
             subparser.add_argument("--evidence-dir", default="evidence/p0")
             subparser.add_argument("--plan-only", action="store_true")
@@ -999,8 +1050,7 @@ def _run_p0_all(root: Path, evidence_dir: str) -> tuple[int, dict[str, Any]]:
             "result": "passed" if passed else "failed",
             "gate_denominator": len(P0_ALL_GATES),
             "gate_passed": sum(
-                item["exit_code"] == 0
-                and item["receipt_integrity"] == "passed"
+                item["exit_code"] == 0 and item["receipt_integrity"] == "passed"
                 for item in gate_results
             ),
             "gates": gate_results,
@@ -1206,9 +1256,11 @@ def main(argv: Sequence[str] | None = None) -> int:
                 ]
             )
         except (OSError, ValueError) as exc:
-            errors, warnings, summary = [str(exc)], [], {
-                "workload": str(getattr(args, "workload", TRANSPORT_WORKLOAD_PATH))
-            }
+            errors, warnings, summary = (
+                [str(exc)],
+                [],
+                {"workload": str(getattr(args, "workload", TRANSPORT_WORKLOAD_PATH))},
+            )
         scope = {
             "transport-comparison": "versioned_common_envelope_transport_models",
             "malicious-transport": "hostile_transport_disposition_and_safety_boundary",
@@ -1228,16 +1280,15 @@ def main(argv: Sequence[str] | None = None) -> int:
                     scenario_path,
                     root / "openbrec/federation.py",
                     root / "schemas/addons/1.0.0/federation-event.schema.json",
-                    root
-                    / "schemas/addons/1.0.0/federation-topology-event.schema.json",
+                    root / "schemas/addons/1.0.0/federation-topology-event.schema.json",
                 ]
             )
         except (OSError, ValueError) as exc:
-            errors, warnings, summary = [str(exc)], [], {
-                "scenario": str(
-                    getattr(args, "scenario", FEDERATION_SCENARIO_PATH)
-                )
-            }
+            errors, warnings, summary = (
+                [str(exc)],
+                [],
+                {"scenario": str(getattr(args, "scenario", FEDERATION_SCENARIO_PATH))},
+            )
         scope = {
             "federation-scale": "generated_50k_hierarchy_and_recursive_autonomy",
             "federation-reconciliation": "append_only_partition_and_hostile_hub_reconciliation",
@@ -1277,8 +1328,7 @@ def main(argv: Sequence[str] | None = None) -> int:
                 root / "schemas/addons/1.0.0/beacon-health.schema.json",
                 root / "schemas/addons/1.0.0/beacon-observation.schema.json",
                 root / "schemas/addons/1.0.0/beacon-placement.schema.json",
-                root
-                / "schemas/addons/1.0.0/capture-authorization-event.schema.json",
+                root / "schemas/addons/1.0.0/capture-authorization-event.schema.json",
                 root / "schemas/addons/1.0.0/review-task-event.schema.json",
                 root / "schemas/core/1.0.0/preservation-record.schema.json",
             ]
@@ -1333,15 +1383,21 @@ def main(argv: Sequence[str] | None = None) -> int:
             )
             inputs.extend(gate_inputs)
         except (OSError, ValueError) as exc:
-            errors, warnings, summary = [str(exc)], [], {
-                "policy": args.policy,
-                "schema": args.schema,
-                "residuals": args.residuals,
-            }
+            errors, warnings, summary = (
+                [str(exc)],
+                [],
+                {
+                    "policy": args.policy,
+                    "schema": args.schema,
+                    "residuals": args.residuals,
+                },
+            )
         scope = "p1a_non_physical_authorization_readiness"
     elif args.gate == "p1a-assets":
         try:
-            evidence_dir = _resolve_inside(root, args.evidence_dir, label="evidence-dir")
+            evidence_dir = _resolve_inside(
+                root, args.evidence_dir, label="evidence-dir"
+            )
             schema_path = _resolve_inside(root, args.schema, label="schema")
             errors, warnings, summary, gate_inputs = run_asset_gate(
                 root,
@@ -1350,17 +1406,25 @@ def main(argv: Sequence[str] | None = None) -> int:
             )
             inputs.extend(gate_inputs)
         except (OSError, ValueError) as exc:
-            errors, warnings, summary = [str(exc)], [], {
-                "evidence_dir": args.evidence_dir,
-                "schema": args.schema,
-            }
+            errors, warnings, summary = (
+                [str(exc)],
+                [],
+                {
+                    "evidence_dir": args.evidence_dir,
+                    "schema": args.schema,
+                },
+            )
         scope = "p1a_exact_asset_identity_custody_and_inspection"
     elif args.gate == "open-spec":
         try:
             policy_path = _resolve_inside(root, args.policy, label="policy")
             profiles_path = _resolve_inside(root, args.profiles, label="profiles")
-            claim_schema_path = _resolve_inside(root, args.claim_schema, label="claim-schema")
-            disposition_path = _resolve_inside(root, args.disposition, label="disposition")
+            claim_schema_path = _resolve_inside(
+                root, args.claim_schema, label="claim-schema"
+            )
+            disposition_path = _resolve_inside(
+                root, args.disposition, label="disposition"
+            )
             errors, warnings, summary, gate_inputs = run_open_spec_gate(
                 root,
                 policy_path=policy_path,
@@ -1370,12 +1434,16 @@ def main(argv: Sequence[str] | None = None) -> int:
             )
             inputs.extend(gate_inputs)
         except (OSError, ValueError) as exc:
-            errors, warnings, summary = [str(exc)], [], {
-                "policy": args.policy,
-                "profiles": args.profiles,
-                "claim_schema": args.claim_schema,
-                "disposition": args.disposition,
-            }
+            errors, warnings, summary = (
+                [str(exc)],
+                [],
+                {
+                    "policy": args.policy,
+                    "profiles": args.profiles,
+                    "claim_schema": args.claim_schema,
+                    "disposition": args.disposition,
+                },
+            )
         scope = "open_spec_publication_and_optional_evidence_boundary"
     elif args.gate == "open-spec-energy":
         try:
@@ -1394,12 +1462,16 @@ def main(argv: Sequence[str] | None = None) -> int:
             )
             inputs.extend(gate_inputs)
         except (OSError, ValueError) as exc:
-            errors, warnings, summary = [str(exc)], [], {
-                "profiles": args.profiles,
-                "architecture_schema": args.architecture_schema,
-                "fixtures": args.fixtures,
-                "residuals": args.residuals,
-            }
+            errors, warnings, summary = (
+                [str(exc)],
+                [],
+                {
+                    "profiles": args.profiles,
+                    "architecture_schema": args.architecture_schema,
+                    "fixtures": args.fixtures,
+                    "residuals": args.residuals,
+                },
+            )
         scope = "open_spec_energy_architectures_claims_and_optional_solar"
     elif args.gate == "open-spec-transports":
         try:
@@ -1422,13 +1494,17 @@ def main(argv: Sequence[str] | None = None) -> int:
             )
             inputs.extend(gate_inputs)
         except (OSError, ValueError) as exc:
-            errors, warnings, summary = [str(exc)], [], {
-                "profiles": args.profiles,
-                "decision_schema": args.decision_schema,
-                "fixtures": args.fixtures,
-                "source_review": args.source_review,
-                "residuals": args.residuals,
-            }
+            errors, warnings, summary = (
+                [str(exc)],
+                [],
+                {
+                    "profiles": args.profiles,
+                    "decision_schema": args.decision_schema,
+                    "fixtures": args.fixtures,
+                    "source_review": args.source_review,
+                    "residuals": args.residuals,
+                },
+            )
         scope = "open_spec_multi_bearer_profiles_selection_and_regulatory_modes"
     elif args.gate == "open-spec-messaging":
         try:
@@ -1451,14 +1527,51 @@ def main(argv: Sequence[str] | None = None) -> int:
             )
             inputs.extend(gate_inputs)
         except (OSError, ValueError) as exc:
-            errors, warnings, summary = [str(exc)], [], {
-                "profiles": args.profiles,
-                "content_schema": args.content_schema,
-                "event_schema": args.event_schema,
-                "fixtures": args.fixtures,
-                "residuals": args.residuals,
-            }
+            errors, warnings, summary = (
+                [str(exc)],
+                [],
+                {
+                    "profiles": args.profiles,
+                    "content_schema": args.content_schema,
+                    "event_schema": args.event_schema,
+                    "fixtures": args.fixtures,
+                    "residuals": args.residuals,
+                },
+            )
         scope = "open_spec_human_messaging_security_and_distress_semantics"
+    elif args.gate == "open-spec-beacons":
+        try:
+            profiles_path = _resolve_inside(root, args.profiles, label="profiles")
+            extension_schema_path = _resolve_inside(
+                root, args.extension_schema, label="extension-schema"
+            )
+            dataset_schema_path = _resolve_inside(
+                root, args.dataset_schema, label="dataset-schema"
+            )
+            fixtures_path = _resolve_inside(root, args.fixtures, label="fixtures")
+            residuals_path = _resolve_inside(root, args.residuals, label="residuals")
+            errors, warnings, summary, gate_inputs = run_open_spec_beacon_gate(
+                root,
+                profiles_path=profiles_path,
+                extension_schema_path=extension_schema_path,
+                dataset_schema_path=dataset_schema_path,
+                fixtures_path=fixtures_path,
+                residuals_path=residuals_path,
+            )
+            inputs.extend(gate_inputs)
+        except (OSError, ValueError) as exc:
+            errors, warnings, summary = (
+                [str(exc)],
+                [],
+                {
+                    "profiles": args.profiles,
+                    "extension_schema": args.extension_schema,
+                    "dataset_schema": args.dataset_schema,
+                    "fixtures": args.fixtures,
+                    "residuals": args.residuals,
+                },
+            )
+        scope = "open_spec_beacon_modalities_extensions_abstention_and_datasets"
     elif args.gate == "review-quarantine":
         errors, warnings, summary = run_review_quarantine(root)
         scope = "exactly_one_primary_disposition"

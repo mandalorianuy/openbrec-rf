@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openbrec.org/schemas/open-spec/beacon-dataset-manifest/1.0.0-draft.1",
+  "title": "OpenBRECBeaconDatasetManifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "dataset_id", "dataset_version", "modality", "license", "provenance", "contains_real_human_data", "authorization_ref", "environment_classes", "omitted_environment_classes", "negative_results_included", "representativeness_claimed", "physical_performance_claimed", "artifact_sha256", "limitations"],
+  "properties": {
+    "schema_version": {"const": "1.0.0-draft.1"},
+    "dataset_id": {"type": "string", "pattern": "^dataset\\.[a-z0-9][a-z0-9._-]{2,63}$"},
+    "dataset_version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+    "modality": {"type": "string", "pattern": "^[a-z][a-z0-9._-]{2,63}$"},
+    "license": {"type": "string", "minLength": 1},
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_type", "generator_or_source", "created_at"],
+      "properties": {
+        "source_type": {"enum": ["synthetic_generated", "bench_authorized", "field_authorized", "mixed_authorized"]},
+        "generator_or_source": {"type": "string", "minLength": 1},
+        "created_at": {"type": "string", "format": "date-time"}
+      }
+    },
+    "contains_real_human_data": {"type": "boolean"},
+    "authorization_ref": {"type": ["string", "null"], "minLength": 1},
+    "environment_classes": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1, "uniqueItems": true},
+    "omitted_environment_classes": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1, "uniqueItems": true},
+    "negative_results_included": {"const": true},
+    "representativeness_claimed": {"const": false},
+    "physical_performance_claimed": {"const": false},
+    "artifact_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "limitations": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1, "uniqueItems": true}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"contains_real_human_data": {"const": true}}, "required": ["contains_real_human_data"]},
+      "then": {"properties": {"authorization_ref": {"type": "string", "minLength": 1}}}
+    }
+  ]
+}

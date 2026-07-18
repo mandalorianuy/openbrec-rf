@@ -3,7 +3,7 @@
 - Estado: activo
 - Autoridad principal: Open Spec
 - Versión objetivo: `1.0.0-draft.1`
-- Progreso: `4 / 8` tasks aceptadas (`50.0%`)
+- Progreso: `5 / 8` tasks aceptadas (`62.5%`)
 - Carril físico: P1a opcional, `0 / 8`, no bloquea publicación
 
 ## Frontera normativa
@@ -37,8 +37,10 @@ invalida el contrato ni habilita claims físicos.
   append-only. Recepción técnica, lectura humana y aceptación operativa son
   estados separados; ninguna garantiza rescate. `unverified_distress` se
   preserva en vault/quarantine para review sin elevarlo a autenticado.
-- [ ] **OS-05 — no iniciada:** beacons acústico, movimiento, térmico y extensiones
-  con privacidad, abstención y datasets reutilizables.
+- [x] **OS-05 — aceptada:** perfiles abiertos acústico, movimiento y térmico con
+  mínimo de una modalidad y referencia tri-modal opcional; extensiones bajo
+  namespace/schema/reviews propios, abstención, privacidad, datasets con
+  provenance y resultados negativos. Ningún indicio confirma presencia o ausencia.
 - [ ] **OS-06 — no iniciada:** topologías recursivas, autonomía local, federación
   y operación de múltiples equipos/redes.
 - [ ] **OS-07 — no iniciada:** planos, BOMs de referencia, adaptadores y guías de
@@ -51,7 +53,7 @@ invalida el contrato ni habilita claims físicos.
 El numerador Open Spec cuenta tasks normativas aceptadas. No exige compra,
 custodia ni ensayo físico. Los carriles se reportan siempre separados:
 
-- Open Spec: `4 / 8` (`50.0%`).
+- Open Spec: `5 / 8` (`62.5%`).
 - P1a física opcional: `0 / 8` (`0%`).
 
 Un fixture sintético puede acreditar conformance o simulación, pero no
@@ -60,4 +62,4 @@ que documenta; nunca convierte un candidato en requisito universal.
 
 ## Próxima task
 
-OS-05 es la siguiente task gobernada. Este cierre no la inicia.
+OS-06 es la siguiente task gobernada. Este cierre no la inicia.

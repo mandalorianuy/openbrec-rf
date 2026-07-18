@@ -10,11 +10,12 @@ from pathlib import Path
 
 from jsonschema import Draft202012Validator, FormatChecker
 
-
 ROOT = Path(__file__).resolve().parents[1]
 PLAN = ROOT / "docs/superpowers/plans/2026-07-18-openbrec-open-spec-plan.md"
 POLICY = ROOT / "config/open-spec/governance.json"
-PROFILES = ROOT / "specs/openbrec/1.0.0-draft.1/messaging-interoperability-profiles.json"
+PROFILES = (
+    ROOT / "specs/openbrec/1.0.0-draft.1/messaging-interoperability-profiles.json"
+)
 CONTENT_SCHEMA = ROOT / "schemas/open-spec/human-message-content.schema.json"
 EVENT_SCHEMA = ROOT / "schemas/open-spec/human-message-lifecycle-event.schema.json"
 FIXTURES = ROOT / "fixtures/open-spec/messaging/interoperability-examples.json"
@@ -65,23 +66,26 @@ class OpenSpecMessagingTests(unittest.TestCase):
         ):
             self.assertIn(option, result.stdout)
 
-    def test_os_04_is_accepted_without_starting_os_05(self) -> None:
+    def test_os_04_remains_accepted_after_os_05_closure(self) -> None:
         source = PLAN.read_text(encoding="utf-8")
-        self.assertIn("4 / 8", source)
+        self.assertIn("5 / 8", source)
         self.assertIn("OS-04 — aceptada", source)
-        self.assertIn("OS-05 — no iniciada", source)
+        self.assertIn("OS-05 — aceptada", source)
+        self.assertIn("OS-06 — no iniciada", source)
         policy = self.load_json(POLICY)
         self.assertEqual(
             policy["progress"],
-            {"accepted_tasks": 4, "total_tasks": 8, "percent": 50.0},
+            {"accepted_tasks": 5, "total_tasks": 8, "percent": 62.5},
         )
         tasks = policy["tasks"]
-        self.assertEqual([task["status"] for task in tasks[:4]], ["accepted"] * 4)
-        self.assertTrue(all(task["status"] == "not_started" for task in tasks[4:]))
+        self.assertEqual([task["status"] for task in tasks[:5]], ["accepted"] * 5)
+        self.assertTrue(all(task["status"] == "not_started" for task in tasks[5:]))
 
     def test_profiles_cover_four_types_without_transport_coupling(self) -> None:
         value = self.load_json(PROFILES)
-        self.assertEqual({row["message_type"] for row in value["message_profiles"]}, MESSAGE_TYPES)
+        self.assertEqual(
+            {row["message_type"] for row in value["message_profiles"]}, MESSAGE_TYPES
+        )
         self.assertFalse(value["open_boundary"]["requires_specific_bearer"])
         self.assertFalse(value["open_boundary"]["requires_owned_hardware"])
         self.assertFalse(value["open_boundary"]["physical_delivery_blocks_spec"])
@@ -117,12 +121,18 @@ class OpenSpecMessagingTests(unittest.TestCase):
         self.assertTrue(distress["append_only"])
         self.assertTrue(distress["cancel_adds_event_never_erases"])
         self.assertTrue(distress["late_event_never_regresses_terminal_state"])
-        self.assertTrue(distress["operator_acceptance_requires_gateway_seen_and_authorized_signature"])
+        self.assertTrue(
+            distress[
+                "operator_acceptance_requires_gateway_seen_and_authorized_signature"
+            ]
+        )
         self.assertFalse(distress["gateway_received_means_rescue"])
         self.assertFalse(distress["operator_accepted_means_rescue"])
         self.assertFalse(distress["transport_may_set_derived_state"])
 
-    def test_life_safety_preservation_precedes_minimization_without_false_authentication(self) -> None:
+    def test_life_safety_preservation_precedes_minimization_without_false_authentication(
+        self,
+    ) -> None:
         preservation = self.load_json(PROFILES)["life_safety_preservation"]
         self.assertTrue(preservation["possible_distress_is_never_silently_discarded"])
         self.assertEqual(
@@ -133,7 +143,9 @@ class OpenSpecMessagingTests(unittest.TestCase):
         self.assertTrue(preservation["audit_required"])
         self.assertTrue(preservation["retention_review_required"])
         self.assertFalse(preservation["unverified_distress_becomes_authenticated"])
-        self.assertFalse(preservation["privacy_minimization_may_destroy_possible_distress"])
+        self.assertFalse(
+            preservation["privacy_minimization_may_destroy_possible_distress"]
+        )
 
     def test_content_and_event_schemas_are_closed_and_examples_conform(self) -> None:
         content_schema = self.load_json(CONTENT_SCHEMA)
@@ -143,20 +155,36 @@ class OpenSpecMessagingTests(unittest.TestCase):
         self.assertFalse(content_schema["additionalProperties"])
         self.assertFalse(event_schema["additionalProperties"])
         fixtures = self.load_json(FIXTURES)
-        content_validator = Draft202012Validator(content_schema, format_checker=FormatChecker())
-        event_validator = Draft202012Validator(event_schema, format_checker=FormatChecker())
+        content_validator = Draft202012Validator(
+            content_schema, format_checker=FormatChecker()
+        )
+        event_validator = Draft202012Validator(
+            event_schema, format_checker=FormatChecker()
+        )
         contents = fixtures["contents"]
         self.assertEqual({row["message_type"] for row in contents}, MESSAGE_TYPES)
         for index, row in enumerate(contents):
-            errors = sorted(content_validator.iter_errors(row), key=lambda error: list(error.path))
-            self.assertEqual(errors, [], f"contents[{index}]: " + "; ".join(e.message for e in errors))
+            errors = sorted(
+                content_validator.iter_errors(row), key=lambda error: list(error.path)
+            )
+            self.assertEqual(
+                errors,
+                [],
+                f"contents[{index}]: " + "; ".join(e.message for e in errors),
+            )
         for index, row in enumerate(fixtures["sos_replay"]["events"]):
-            errors = sorted(event_validator.iter_errors(row), key=lambda error: list(error.path))
-            self.assertEqual(errors, [], f"events[{index}]: " + "; ".join(e.message for e in errors))
+            errors = sorted(
+                event_validator.iter_errors(row), key=lambda error: list(error.path)
+            )
+            self.assertEqual(
+                errors, [], f"events[{index}]: " + "; ".join(e.message for e in errors)
+            )
 
     def test_location_requires_source_precision_time_and_staleness(self) -> None:
         location = next(
-            row for row in self.load_json(FIXTURES)["contents"] if row["message_type"] == "location"
+            row
+            for row in self.load_json(FIXTURES)["contents"]
+            if row["message_type"] == "location"
         )
         self.assertEqual(
             set(location["body"]),
@@ -180,7 +208,9 @@ class OpenSpecMessagingTests(unittest.TestCase):
         self.assertEqual(summary["cancel_events_preserved"], 1)
         self.assertEqual(summary["silent_discards"], 0)
 
-    def test_false_acceptance_and_unverified_distress_are_preserved_for_review(self) -> None:
+    def test_false_acceptance_and_unverified_distress_are_preserved_for_review(
+        self,
+    ) -> None:
         result = self.run_verify("open-spec-messaging")
         self.assertEqual(result.returncode, 0, result.stderr)
         summary = json.loads(result.stdout)["summary"]
@@ -199,35 +229,45 @@ class OpenSpecMessagingTests(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("cannot guarantee rescue", result.stderr)
 
-    def test_residuals_are_resolved_controlled_planned_or_evidence_required(self) -> None:
+    def test_residuals_are_resolved_controlled_planned_or_evidence_required(
+        self,
+    ) -> None:
         register = self.load_json(RESIDUALS)
         self.assertEqual(register["task"], "OS-04")
         self.assertGreaterEqual(len(register["residuals"]), 10)
         for row in register["residuals"]:
-            self.assertIn(row["state"], {"resolved", "controlled", "planned", "evidence_required"})
+            self.assertIn(
+                row["state"], {"resolved", "controlled", "planned", "evidence_required"}
+            )
             self.assertFalse(row["blocks_open_spec"])
-            for field in ("owner", "risk", "disposition", "gate_or_task", "stop_condition"):
+            for field in (
+                "owner",
+                "risk",
+                "disposition",
+                "gate_or_task",
+                "stop_condition",
+            ):
                 self.assertTrue(row[field])
 
     def test_gate_reports_os_04_acceptance_without_physical_claims(self) -> None:
         result = self.run_verify("open-spec-messaging")
         self.assertEqual(result.returncode, 0, result.stderr)
         summary = json.loads(result.stdout)["summary"]
-        self.assertEqual(summary["spec_tasks_accepted"], 4)
+        self.assertEqual(summary["spec_tasks_accepted"], 5)
         self.assertEqual(summary["spec_tasks_total"], 8)
         self.assertEqual(summary["message_profiles"], 4)
         self.assertEqual(summary["conforming_contents"], 4)
         self.assertFalse(summary["physical_delivery_blocks_publication"])
-        self.assertEqual(summary["next_task"], "OS-05")
+        self.assertEqual(summary["next_task"], "OS-06")
         self.assertFalse(summary["next_task_started"])
 
     def test_board_readme_and_ci_publish_os_04_gate(self) -> None:
         board = (ROOT / "DELIVERY_BOARD.md").read_text(encoding="utf-8")
         readme = (ROOT / "README.md").read_text(encoding="utf-8")
         workflow = (ROOT / ".github/workflows/validate.yml").read_text(encoding="utf-8")
-        self.assertIn("Open Spec `4 / 8`", board)
+        self.assertIn("Open Spec `5 / 8`", board)
         self.assertIn("[x] `OS-04`", board)
-        self.assertIn("OS-05", board)
+        self.assertIn("OS-06", board)
         self.assertIn("openbrec.verify open-spec-messaging", readme)
         self.assertIn("messaging-interoperability-profiles.json", readme)
         self.assertIn("  open-spec-messaging:", workflow)
