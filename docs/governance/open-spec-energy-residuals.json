@@ -1,0 +1,70 @@
+{
+  "register_version": "1.0.0",
+  "task": "OS-02",
+  "lane": "open_spec",
+  "residuals": [
+    {
+      "id": "OS-E-R001",
+      "state": "controlled",
+      "blocks_open_spec": false,
+      "owner": "energy-spec-maintainer",
+      "risk": "Solar may be interpreted as mandatory for every component or deployment.",
+      "gate_or_task": "open-spec-energy",
+      "stop_condition": "Reject any profile that requires solar, owned hardware or one universal topology."
+    },
+    {
+      "id": "OS-E-R002",
+      "state": "controlled",
+      "blocks_open_spec": false,
+      "owner": "energy-spec-maintainer",
+      "risk": "Auxiliary generation may be credited to the storage-only reserve.",
+      "gate_or_task": "open-spec-energy modeled budget invariant",
+      "stop_condition": "Storage-only pass must be computed only from usable storage, critical load, reserves and margin."
+    },
+    {
+      "id": "OS-E-R003",
+      "state": "controlled",
+      "blocks_open_spec": false,
+      "owner": "privacy-safety-reviewer",
+      "risk": "Load shedding may remove distress handling before convenience or mission-support loads.",
+      "gate_or_task": "open-spec-energy degradation policy",
+      "stop_condition": "Reject a policy that sheds L0 before hardware safety requires cutoff."
+    },
+    {
+      "id": "OS-E-R004",
+      "state": "evidence_required",
+      "blocks_open_spec": false,
+      "owner": "energy-validation-maintainer",
+      "risk": "Modeled capacity, solar yield or runtime may differ materially from an implementation.",
+      "gate_or_task": "P1a-06 and P1a-07 optional evidence lane",
+      "stop_condition": "Do not elevate a claim above simulated without exact configuration, load trace and physical evidence pack."
+    },
+    {
+      "id": "OS-E-R005",
+      "state": "controlled",
+      "blocks_open_spec": false,
+      "owner": "electrical-safety-reviewer",
+      "risk": "Batteries, generators or improvised source combinations can create fire, carbon monoxide, shock or backfeed hazards.",
+      "gate_or_task": "source adapter safety controls",
+      "stop_condition": "Reject a field claim without source-specific protections, competent local operation and stop procedures."
+    },
+    {
+      "id": "OS-E-R006",
+      "state": "planned",
+      "blocks_open_spec": false,
+      "owner": "conformance-maintainer",
+      "risk": "A bounded sustainable-under-profile claim may be presented as perpetual operation.",
+      "gate_or_task": "OS-08 conformance kit",
+      "stop_condition": "Reject unbounded lifetime language or a claim missing load, environment, maintenance and evidence window."
+    },
+    {
+      "id": "OS-E-R007",
+      "state": "planned",
+      "blocks_open_spec": false,
+      "owner": "operations-maintainer",
+      "risk": "A logistics replacement architecture may fail when inventory, actor or charging throughput is unavailable.",
+      "gate_or_task": "OS-07 reference builds and reuse guides",
+      "stop_condition": "Do not claim extended runtime until replacement interval, inventory, actor and missed-service fallback are declared."
+    }
+  ]
+}

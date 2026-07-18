@@ -1,0 +1,96 @@
+{
+  "fixture_set_version": "1.0.0-draft.1",
+  "purpose": "Normative synthetic conformance examples; no physical autonomy claim.",
+  "examples": [
+    {
+      "schema_version": "1.0.0-draft.1",
+      "architecture_instance_id": "energy-arch-remote-beacon",
+      "profile_id": "energy.architecture.component-local",
+      "topology": "component_local",
+      "scope": "component",
+      "evidence_level": "simulated",
+      "solar_mode": "per_component",
+      "source_adapters": ["replaceable_battery", "solar"],
+      "loads": [
+        {"load_id": "distress-store", "class": "L0_LIFE_SAFETY", "power_upper_W": 0.5, "duty_cycle": 1.0, "loss_effect": "distress preservation unavailable"},
+        {"load_id": "acoustic-features", "class": "L2_MISSION_SUPPORT", "power_upper_W": 1.2, "duty_cycle": 0.25, "loss_effect": "acoustic sensing gap"}
+      ],
+      "reserves": {"sos_Wh": 3, "transition_Wh": 1, "shutdown_Wh": 2},
+      "modeled_budget": {"window_h": 72, "usable_storage_Wh": 48, "critical_load_Wh": 24, "reserves_Wh": 6, "margin_factor": 1.25, "auxiliary_generation_Wh": 12, "storage_only_pass": true, "generation_lower_bound_Wh": 18, "all_load_upper_bound_Wh": 14, "conversion_storage_losses_Wh": 3, "net_energy_lower_bound_Wh": 1},
+      "autonomy_claim": {"claim_type": "sustainable_under_profile", "result": "sufficient_under_model", "bounded_to_profile": true},
+      "degradation_policy": {"states": ["normal", "conserve", "critical", "survival", "safe_shutdown"], "preserves_l0_until_hardware_cutoff": true, "hardware_safety_overrides_l0": true, "operates_without_parent": true},
+      "safety_controls": ["matched solar controller", "source fuse and disconnect", "battery protection and temperature limit"],
+      "alternatives": ["larger replaceable battery", "wired low-voltage feed", "scheduled battery rotation"],
+      "assumptions": ["synthetic 72-hour load window", "generation lower bound applies only to the declared solar profile"],
+      "gaps": ["physical load trace", "site irradiance", "exact hardware"]
+    },
+    {
+      "schema_version": "1.0.0-draft.1",
+      "architecture_instance_id": "energy-arch-response-cell-hub",
+      "profile_id": "energy.architecture.shared-site-hub",
+      "topology": "shared_site_hub",
+      "scope": "response_cell",
+      "evidence_level": "specified",
+      "solar_mode": "central",
+      "source_adapters": ["storage", "portable_station", "solar"],
+      "loads": [
+        {"load_id": "sos-terminal", "class": "L0_LIFE_SAFETY", "power_upper_W": 3, "duty_cycle": 1.0, "loss_effect": "local SOS interface unavailable"},
+        {"load_id": "cell-gateway", "class": "L1_MISSION_CRITICAL", "power_upper_W": 12, "duty_cycle": 0.8, "loss_effect": "cell store-and-forward unavailable"},
+        {"load_id": "extended-observability", "class": "L3_DEFERRABLE", "power_upper_W": 6, "duty_cycle": 0.5, "loss_effect": "diagnostic detail reduced"}
+      ],
+      "reserves": {"sos_Wh": 20, "transition_Wh": 10, "shutdown_Wh": 10},
+      "modeled_budget": {"window_h": 72, "usable_storage_Wh": 500, "critical_load_Wh": 360, "reserves_Wh": 40, "margin_factor": 1.25, "auxiliary_generation_Wh": 100, "storage_only_pass": true},
+      "autonomy_claim": {"claim_type": "storage_only_window", "result": "sufficient_under_model", "bounded_to_profile": true},
+      "degradation_policy": {"states": ["normal", "conserve", "critical", "survival", "safe_shutdown"], "preserves_l0_until_hardware_cutoff": true, "hardware_safety_overrides_l0": true, "operates_without_parent": true},
+      "safety_controls": ["protected distribution branches", "source arbitration without backfeed", "accessible disconnect and coordinated fusing"],
+      "alternatives": ["DC bus", "PoE", "portable station without solar"],
+      "assumptions": ["solar is not credited to the storage-only result", "all critical dependencies are included"],
+      "gaps": ["measured storage capacity", "conversion efficiency curve", "physical distribution loss"]
+    },
+    {
+      "schema_version": "1.0.0-draft.1",
+      "architecture_instance_id": "energy-arch-hybrid-field-kit",
+      "profile_id": "energy.architecture.hybrid-site-component",
+      "topology": "hybrid_site_component",
+      "scope": "deployment",
+      "evidence_level": "simulated",
+      "solar_mode": "hybrid",
+      "source_adapters": ["storage", "replaceable_battery", "solar", "generator"],
+      "loads": [
+        {"load_id": "distress-plane", "class": "L0_LIFE_SAFETY", "power_upper_W": 4, "duty_cycle": 1.0, "loss_effect": "distress plane unavailable"},
+        {"load_id": "local-relays", "class": "L1_MISSION_CRITICAL", "power_upper_W": 8, "duty_cycle": 0.75, "loss_effect": "local relay coverage reduced"},
+        {"load_id": "sensing-array", "class": "L2_MISSION_SUPPORT", "power_upper_W": 10, "duty_cycle": 0.4, "loss_effect": "sensing coverage reduced"}
+      ],
+      "reserves": {"sos_Wh": 10, "transition_Wh": 5, "shutdown_Wh": 5},
+      "modeled_budget": {"window_h": 48, "usable_storage_Wh": 240, "critical_load_Wh": 160, "reserves_Wh": 20, "margin_factor": 1.25, "auxiliary_generation_Wh": 60, "storage_only_pass": true},
+      "autonomy_claim": {"claim_type": "bounded_runtime", "result": "sufficient_under_model", "bounded_to_profile": true},
+      "degradation_policy": {"states": ["normal", "conserve", "critical", "survival", "safe_shutdown"], "preserves_l0_until_hardware_cutoff": true, "hardware_safety_overrides_l0": true, "operates_without_parent": true},
+      "safety_controls": ["local reserves for critical components", "generator outdoor CO controls", "central and component source loss isolation"],
+      "alternatives": ["all-storage deployment", "central solar only", "battery rotation for remote nodes"],
+      "assumptions": ["synthetic fault domains", "generator and solar are auxiliary"],
+      "gaps": ["physical transition behavior", "fuel logistics", "weather profile"]
+    },
+    {
+      "schema_version": "1.0.0-draft.1",
+      "architecture_instance_id": "energy-arch-terminal-rotation",
+      "profile_id": "energy.architecture.logistics-replacement",
+      "topology": "logistics_replacement",
+      "scope": "logistics_chain",
+      "evidence_level": "specified",
+      "solar_mode": "none",
+      "source_adapters": ["replaceable_battery", "vehicle_dc", "manual_replacement"],
+      "loads": [
+        {"load_id": "operator-sos", "class": "L0_LIFE_SAFETY", "power_upper_W": 1.5, "duty_cycle": 1.0, "loss_effect": "operator SOS unavailable"},
+        {"load_id": "map-display", "class": "L2_MISSION_SUPPORT", "power_upper_W": 3, "duty_cycle": 0.25, "loss_effect": "map display reduced"}
+      ],
+      "reserves": {"sos_Wh": 5, "transition_Wh": 1, "shutdown_Wh": 2},
+      "modeled_budget": {"window_h": 72, "usable_storage_Wh": 70, "critical_load_Wh": 72, "reserves_Wh": 8, "margin_factor": 1.25, "auxiliary_generation_Wh": 0, "storage_only_pass": false},
+      "autonomy_claim": {"claim_type": "unknown", "result": "unknown", "bounded_to_profile": true},
+      "degradation_policy": {"states": ["normal", "conserve", "critical", "survival", "safe_shutdown"], "preserves_l0_until_hardware_cutoff": true, "hardware_safety_overrides_l0": true, "operates_without_parent": true},
+      "safety_controls": ["compatible replacement inventory", "vehicle start reserve", "damaged battery quarantine"],
+      "alternatives": ["power-bank rotation", "portable charging station", "larger local storage"],
+      "assumptions": ["replacement is not credited until its schedule and actor are validated"],
+      "gaps": ["replacement interval", "inventory quantity", "charging throughput"]
+    }
+  ]
+}

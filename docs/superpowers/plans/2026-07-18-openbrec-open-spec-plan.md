@@ -3,7 +3,7 @@
 - Estado: activo
 - Autoridad principal: Open Spec
 - Versión objetivo: `1.0.0-draft.1`
-- Progreso: `1 / 8` tasks aceptadas (`12.5%`)
+- Progreso: `2 / 8` tasks aceptadas (`25.0%`)
 - Carril físico: P1a opcional, `0 / 8`, no bloquea publicación
 
 ## Frontera normativa
@@ -22,8 +22,10 @@ invalida el contrato ni habilita claims físicos.
 
 - [x] **OS-01 — aceptada:** separar spec/publicación de validación física;
   publicar nueve perfiles abiertos, niveles de evidencia y gate normativo.
-- [ ] **OS-02 — no iniciada:** arquitecturas de energía y solar por rol, cargas,
-  almacenamiento, degradación y alternativas desacopladas.
+- [x] **OS-02 — aceptada:** cuatro arquitecturas abiertas de energía por
+  componente, sitio compartido, híbrida y logística/reemplazo; nueve mappings de
+  rol, ocho source adapters, cargas L0–L3, degradación y claims acotados. Solar es
+  opcional y `sustainable_under_profile` nunca significa operación perpetua.
 - [ ] **OS-03 — no iniciada:** perfiles de transporte LoRaWAN, Meshtastic,
   MeshCore, Reticulum/RNode y carry bundle sin ganador universal.
 - [ ] **OS-04 — no iniciada:** mensajería, estado, SOS y ubicación con contratos
@@ -42,7 +44,7 @@ invalida el contrato ni habilita claims físicos.
 El numerador Open Spec cuenta tasks normativas aceptadas. No exige compra,
 custodia ni ensayo físico. Los carriles se reportan siempre separados:
 
-- Open Spec: `1 / 8` (`12.5%`).
+- Open Spec: `2 / 8` (`25.0%`).
 - P1a física opcional: `0 / 8` (`0%`).
 
 Un fixture sintético puede acreditar conformance o simulación, pero no
@@ -51,4 +53,4 @@ que documenta; nunca convierte un candidato en requisito universal.
 
 ## Próxima task
 
-OS-02 es la siguiente task gobernada. Este cierre no la inicia.
+OS-03 es la siguiente task gobernada. Este cierre no la inicia.

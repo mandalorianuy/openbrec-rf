@@ -18,7 +18,7 @@ OpenBREC RF es una plataforma open source, modular y offline-first para investig
 > El sistema produce **indicios**, no diagnósticos ni certezas de víctima. La ausencia de RF nunca descarta una persona atrapada.
 
 > [!NOTE]
-> Estado actual: M0 y P0 simulado completos. La autoridad actual es spec-first: Open Spec está `1 / 8`, mientras P1a física opcional permanece `0 / 8`. Publicar contratos y perfiles no requiere poseer hardware; evidence packs físicos sólo elevan claims de una implementación exacta. No es una plataforma operacional ni un perfil de campo.
+> Estado actual: M0 y P0 simulado completos. La autoridad actual es spec-first: Open Spec está `2 / 8`, mientras P1a física opcional permanece `0 / 8`. Publicar contratos y perfiles no requiere poseer hardware; evidence packs físicos sólo elevan claims de una implementación exacta. No es una plataforma operacional ni un perfil de campo.
 
 P1a-01 está `blocked_external_evidence`: su gate existe, pero faltan nueve assets
 reales autorizados, inspeccionados y bajo custodia. Se comprueba sin promover la
@@ -35,10 +35,13 @@ La frontera abierta se valida con:
 
 ```bash
 uv run --offline python -m openbrec.verify open-spec
+uv run --offline python -m openbrec.verify open-spec-energy
 ```
 
 Los nueve perfiles permiten componentes alternativos y comienzan `unverified`.
 Sólo `lab_validated` y `field_validated` requieren evidence packs físicos.
+La energía admite topologías por componente, central, híbrida o por reemplazo;
+solar es un addon opcional y ningún claim puede presentarse como perpetuo.
 
 ## Documentos principales
 
@@ -53,6 +56,7 @@ Sólo `lab_validated` y `field_validated` requieren evidence packs físicos.
 - [`docs/superpowers/plans/2026-07-17-openbrec-p1a-bench-conducted-plan.md`](docs/superpowers/plans/2026-07-17-openbrec-p1a-bench-conducted-plan.md) — plan P1a de banco/conducted y autorizaciones task-by-task.
 - [`docs/superpowers/plans/2026-07-18-openbrec-open-spec-plan.md`](docs/superpowers/plans/2026-07-18-openbrec-open-spec-plan.md) — autoridad spec-first, secuencia OS-01–OS-08 y separación de evidence packs físicos.
 - [`specs/openbrec/1.0.0-draft.1/reference-capability-profiles.json`](specs/openbrec/1.0.0-draft.1/reference-capability-profiles.json) — nueve roles abiertos con alternativas y criterios de aceptación.
+- [`specs/openbrec/1.0.0-draft.1/energy-architecture-profiles.json`](specs/openbrec/1.0.0-draft.1/energy-architecture-profiles.json) — cuatro topologías energéticas abiertas, source adapters y mappings por rol.
 - [`docs/governance/P0_RESIDUAL_REGISTER.md`](docs/governance/P0_RESIDUAL_REGISTER.md) — residuales, owners, gates y stop conditions P0.
 
 ## Perfiles planificados posteriores a M0
