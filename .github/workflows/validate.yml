@@ -552,6 +552,8 @@ jobs:
           assert receipt["result"] == "passed"
           assert receipt["summary"]["task_status"] == "blocked_external_evidence"
           assert receipt["summary"]["categories_awaiting_external_evidence"] == 9
+          assert receipt["summary"]["categories_invalid"] == 0
+          assert receipt["summary"]["categories_valid_for_gate"] == 0
           assert receipt["summary"]["accepted_tasks"] == 0
           assert receipt["summary"]["next_task_started"] is False
           PY

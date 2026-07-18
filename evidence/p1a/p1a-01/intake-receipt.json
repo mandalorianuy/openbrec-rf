@@ -11,14 +11,18 @@
   ],
   "dirty": false,
   "errors": [],
-  "finished_at": "2026-07-18T19:34:03.800153Z",
+  "finished_at": "2026-07-18T23:47:48.742773Z",
   "gate": "p1a-assets-intake",
   "gate_version": "0.1.0",
-  "git_sha": "2cd716134e92f07c54325acd04d837019f25d5f1",
+  "git_sha": "d41545eabab0045f903c51ce66a670a4072f377f",
   "inputs": [
     {
       "path": "docs/governance/p1a-01-asset-authorization-request.json",
       "sha256": "6d77fe88e55dbeb761666b42b012486c3c6e789d2cd1afd09f6e361bd219cf8a"
+    },
+    {
+      "path": "schemas/p1a/capability-manifest.schema.json",
+      "sha256": "09cdb5e03753b3674a8ce9d2572e5224903693c1fbfb633f4c7384116505be6f"
     }
   ],
   "lockfiles": [
@@ -35,7 +39,7 @@
       "sha256": "12a1ed34e601b49a319846ef8d87c316708bb695853661ec3b3b95208701d278"
     }
   ],
-  "output_sha256": "9908874f53863254ce650595c4606b08223c77e16155fea1e1112d8de9edf056",
+  "output_sha256": "34786b524234bf63e84f2282dcedd0b374b015970ea7c5d8517dd32472b2efb0",
   "receipt_version": "1.0.0",
   "responsible_role": "release-reviewer",
   "result": "passed",
@@ -46,12 +50,14 @@
     "python": "3.12.13"
   },
   "scope": "p1a_external_asset_evidence_intake_status",
-  "started_at": "2026-07-18T19:34:03.489264Z",
+  "started_at": "2026-07-18T23:47:48.385635Z",
   "summary": {
     "acceptance_gate": "uv run --offline python -m openbrec.verify p1a-assets --evidence-dir evidence/p1a/p1a-01",
     "accepted_tasks": 0,
     "categories_awaiting_external_evidence": 9,
+    "categories_invalid": 0,
     "categories_ready_for_gate": 0,
+    "categories_valid_for_gate": 0,
     "category_checklist": [
       {
         "authorization_present": false,
@@ -67,7 +73,8 @@
           "serial evidence hash",
           "physical inspection evidence"
         ],
-        "status": "awaiting_external_evidence"
+        "status": "awaiting_external_evidence",
+        "validation_errors": []
       },
       {
         "authorization_present": false,
@@ -83,7 +90,8 @@
           "serial evidence hash",
           "physical inspection evidence"
         ],
-        "status": "awaiting_external_evidence"
+        "status": "awaiting_external_evidence",
+        "validation_errors": []
       },
       {
         "authorization_present": false,
@@ -99,7 +107,8 @@
           "serial evidence hash",
           "physical inspection evidence"
         ],
-        "status": "awaiting_external_evidence"
+        "status": "awaiting_external_evidence",
+        "validation_errors": []
       },
       {
         "authorization_present": false,
@@ -115,7 +124,8 @@
           "serial evidence hash",
           "physical inspection evidence"
         ],
-        "status": "awaiting_external_evidence"
+        "status": "awaiting_external_evidence",
+        "validation_errors": []
       },
       {
         "authorization_present": false,
@@ -131,7 +141,8 @@
           "serial evidence hash",
           "physical inspection evidence"
         ],
-        "status": "awaiting_external_evidence"
+        "status": "awaiting_external_evidence",
+        "validation_errors": []
       },
       {
         "authorization_present": false,
@@ -147,7 +158,8 @@
           "serial evidence hash",
           "physical inspection evidence"
         ],
-        "status": "awaiting_external_evidence"
+        "status": "awaiting_external_evidence",
+        "validation_errors": []
       },
       {
         "authorization_present": false,
@@ -163,7 +175,8 @@
           "serial evidence hash",
           "physical inspection evidence"
         ],
-        "status": "awaiting_external_evidence"
+        "status": "awaiting_external_evidence",
+        "validation_errors": []
       },
       {
         "authorization_present": false,
@@ -179,7 +192,8 @@
           "serial evidence hash",
           "physical inspection evidence"
         ],
-        "status": "awaiting_external_evidence"
+        "status": "awaiting_external_evidence",
+        "validation_errors": []
       },
       {
         "authorization_present": false,
@@ -195,14 +209,15 @@
           "serial evidence hash",
           "physical inspection evidence"
         ],
-        "status": "awaiting_external_evidence"
+        "status": "awaiting_external_evidence",
+        "validation_errors": []
       }
     ],
     "category_denominator": 9,
     "evidence_dir": "evidence/p1a/p1a-01",
     "next_task": "P1a-01",
     "next_task_started": false,
-    "non_progress_notice": "This preflight reports intake readiness only and does not accept P1a-01.",
+    "non_progress_notice": "Validated submissions remain non-accepted until the 9/9 acceptance gate passes.",
     "percent": 0.0,
     "physical_actions_authorized": false,
     "purchase_authorized": false,

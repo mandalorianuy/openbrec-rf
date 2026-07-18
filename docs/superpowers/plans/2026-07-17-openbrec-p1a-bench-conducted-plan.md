@@ -180,9 +180,9 @@ permanece `blocked_external_evidence`; implementar el gate no acepta P1a-01.
 P1a-02 no iniciada.
 
 El preflight `p1a-assets-intake` traduce ese bloqueo en un checklist por
-categoría y CI conserva su receipt. Es una ayuda de ingreso no contable: aun con
-nueve submissions presentes, sólo `p1a-assets` puede aceptar la task después de
-validar identidad, autorización, custodia e inspección exactas.
+categoría, valida submissions parciales y CI conserva su receipt. Es una ayuda
+de ingreso no contable: aun con nueve submissions validadas individualmente,
+sólo `p1a-assets` puede aceptar la task después de validar el conjunto 9/9.
 
 El readiness no contable fue aceptado el 2026-07-17 sobre
 `922cc7fd2c505d8bfa10dd7367299adccd996b70`; su receipt limpio vive en
