@@ -1,0 +1,42 @@
+{
+  "acceptance_version": "1.0.0",
+  "task": "OS-03",
+  "status": "accepted",
+  "decision_at": "2026-07-18",
+  "subject_git_sha": "e7b6da4334f130e2399e4be0b8710c0343260256",
+  "receipt": {
+    "path": "evidence/open-spec/os-03/os-03-receipt.json",
+    "sha256": "a211541c49f6b9fb33088e61e89d2f3e0ad14c90d4cd1903a1fb6a0fb2e85663",
+    "result": "passed",
+    "dirty": false
+  },
+  "open_spec_progress": {
+    "accepted_tasks": 3,
+    "total_tasks": 8,
+    "percent": 37.5
+  },
+  "physical_validation_progress": {
+    "accepted_tasks": 0,
+    "total_tasks": 8,
+    "percent": 0.0,
+    "blocks_open_spec": false
+  },
+  "accepted": [
+    "five replaceable bearer profiles without a universal winner",
+    "bearer-independent signed OpenBREC overlay and transport trust boundary",
+    "per-mission decision contract covering alternatives and known gaps",
+    "four regulatory modes including bounded expiring emergency assumed risk",
+    "primary-source review with per-implementation pin and re-review policy",
+    "ten transport residuals resolved, controlled, planned or evidence-required"
+  ],
+  "not_accepted": [
+    "any exact hardware, firmware or network-server implementation",
+    "physical range, scale, hops, latency, airtime, energy or coexistence",
+    "regulatory authorization in any jurisdiction",
+    "BPv7 conformance or any unimplemented extension",
+    "OS-04 or later Open Spec tasks",
+    "P1a-01 through P1a-08"
+  ],
+  "next_task": "OS-04",
+  "next_task_started": false
+}

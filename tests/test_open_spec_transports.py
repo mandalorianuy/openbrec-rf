@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import subprocess
 import sys
@@ -18,6 +19,8 @@ DECISION_SCHEMA = ROOT / "schemas/open-spec/transport-decision.schema.json"
 FIXTURES = ROOT / "fixtures/open-spec/transports/decision-examples.json"
 SOURCE_REVIEW = ROOT / "docs/research/2026-07-18-multi-bearer-source-review.json"
 RESIDUALS = ROOT / "docs/governance/open-spec-transport-residuals.json"
+RECEIPT = ROOT / "evidence/open-spec/os-03/os-03-receipt.json"
+ACCEPTANCE = ROOT / "evidence/open-spec/os-03/acceptance.json"
 
 BEARERS = {
     "lorawan_private",
@@ -245,6 +248,26 @@ class OpenSpecTransportTests(unittest.TestCase):
         self.assertIn("tests.test_open_spec_transports", job)
         self.assertIn("openbrec.verify open-spec-transports", job)
         self.assertIn("evidence/open-spec/os-03", job)
+
+    def test_os_03_acceptance_is_scoped_and_does_not_start_os_04(self) -> None:
+        acceptance = self.load_json(ACCEPTANCE)
+        receipt = self.load_json(RECEIPT)
+        self.assertEqual(acceptance["task"], "OS-03")
+        self.assertEqual(acceptance["status"], "accepted")
+        self.assertEqual(acceptance["subject_git_sha"], receipt["git_sha"])
+        self.assertEqual(acceptance["receipt"]["result"], "passed")
+        self.assertFalse(acceptance["receipt"]["dirty"])
+        self.assertEqual(
+            acceptance["receipt"]["sha256"],
+            hashlib.sha256(RECEIPT.read_bytes()).hexdigest(),
+        )
+        self.assertEqual(
+            acceptance["open_spec_progress"],
+            {"accepted_tasks": 3, "total_tasks": 8, "percent": 37.5},
+        )
+        self.assertFalse(acceptance["physical_validation_progress"]["blocks_open_spec"])
+        self.assertEqual(acceptance["next_task"], "OS-04")
+        self.assertFalse(acceptance["next_task_started"])
 
 
 if __name__ == "__main__":

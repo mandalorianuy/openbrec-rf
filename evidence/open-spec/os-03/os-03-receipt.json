@@ -1,0 +1,85 @@
+{
+  "command": [
+    "python",
+    "-m",
+    "openbrec.verify",
+    "open-spec-transports",
+    "--receipt",
+    "evidence/open-spec/os-03/os-03-receipt.json"
+  ],
+  "dirty": false,
+  "errors": [],
+  "finished_at": "2026-07-18T16:05:59.972429Z",
+  "gate": "open-spec-transports",
+  "gate_version": "0.1.0",
+  "git_sha": "e7b6da4334f130e2399e4be0b8710c0343260256",
+  "inputs": [
+    {
+      "path": "docs/superpowers/plans/2026-07-18-openbrec-open-spec-plan.md",
+      "sha256": "50d7b64e0b3b62ab2a4f9a85c15a9717eaad3b5ab0b17f328556c8805ec81abd"
+    },
+    {
+      "path": "config/open-spec/governance.json",
+      "sha256": "21a622d904609c02b16c8c1e57a033c1f4720e25008920b8099a898ba568941b"
+    },
+    {
+      "path": "specs/openbrec/1.0.0-draft.1/multi-bearer-transport-profiles.json",
+      "sha256": "dd3aaa7c8bdbc9b8cc88f2862578790bc14bfc1085aed9cdd9d52c1f3afb59b0"
+    },
+    {
+      "path": "schemas/open-spec/transport-decision.schema.json",
+      "sha256": "344943f6ac92cfd84d39e643b561d6870878280e0c6cfcb3873597649f031d67"
+    },
+    {
+      "path": "fixtures/open-spec/transports/decision-examples.json",
+      "sha256": "06e18f6b8cefc78b68ac25e0692bcc4a0bac88060aeab4aec6dbf318772e84f9"
+    },
+    {
+      "path": "docs/research/2026-07-18-multi-bearer-source-review.json",
+      "sha256": "b5b7491684d7d133a33d4c0c7ed1bb6da90b0f32246833af1a1f9bb5718ff185"
+    },
+    {
+      "path": "docs/governance/open-spec-transport-residuals.json",
+      "sha256": "b030afbd57b1b591b6aea137c3d822b19c5cf82f868b431d13a204e0afc8faf7"
+    }
+  ],
+  "lockfiles": [
+    {
+      "path": "uv.lock",
+      "sha256": "2d1b79df4cd5878ec7f4674a133c54ca7b16dfa559560ba3a93911e620f435d5"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "sha256": "ed7659f050b279f37e5cf84fb065fc528e15b3204d374681f3a70ad081d1c25a"
+    },
+    {
+      "path": "apps/web/pnpm-lock.yaml",
+      "sha256": "12a1ed34e601b49a319846ef8d87c316708bb695853661ec3b3b95208701d278"
+    }
+  ],
+  "output_sha256": "433fe3e5d6c5e41a81258be48966a4d80194acf3bc3780f11bc1d8b565345028",
+  "receipt_version": "1.0.0",
+  "responsible_role": "release-reviewer",
+  "result": "passed",
+  "runtime": {
+    "docker": "Docker version 29.5.3, build d1c06ef",
+    "node": "v26.5.0",
+    "pnpm": "11.9.0",
+    "python": "3.12.13"
+  },
+  "scope": "open_spec_multi_bearer_profiles_selection_and_regulatory_modes",
+  "started_at": "2026-07-18T16:05:59.668289Z",
+  "summary": {
+    "bearer_profiles": 5,
+    "conforming_examples": 5,
+    "global_winner_selected": false,
+    "next_task": "OS-04",
+    "next_task_started": false,
+    "physical_rf_validation_blocks_publication": false,
+    "source_records": 7,
+    "spec_tasks_accepted": 3,
+    "spec_tasks_total": 8,
+    "spec_version": "1.0.0-draft.1"
+  },
+  "warnings": []
+}
