@@ -169,6 +169,52 @@ class P1AAssetGateTests(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0, result.stdout)
         self.assertIn("candidate_id does not match governed category", result.stderr)
 
+    def test_intake_preflight_validates_partial_submission_before_counting_it(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory(dir=REPO_ROOT) as temporary:
+            evidence_dir = Path(temporary)
+            self.write_complete_evidence(evidence_dir)
+            register_path = evidence_dir / "authorization-register.json"
+            register = json.loads(register_path.read_text(encoding="utf-8"))
+            register["authorizations"] = register["authorizations"][:1]
+            register_path.write_text(json.dumps(register), encoding="utf-8")
+            manifests = evidence_dir / "manifests"
+            for path in manifests.glob("*.json"):
+                if path.name != "lorawan_gateway.json":
+                    path.unlink()
+
+            manifest_path = manifests / "lorawan_gateway.json"
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            manifest["sku"] = "TBD"
+            manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+            invalid = self.run_verify(
+                "p1a-assets-intake",
+                "--evidence-dir",
+                str(evidence_dir.relative_to(REPO_ROOT)),
+            )
+            self.assertNotEqual(invalid.returncode, 0, invalid.stdout)
+            self.assertIn("placeholder identity", invalid.stderr)
+
+            manifest["sku"] = "SKU-01"
+            manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+            valid = self.run_verify(
+                "p1a-assets-intake",
+                "--evidence-dir",
+                str(evidence_dir.relative_to(REPO_ROOT)),
+            )
+
+        self.assertEqual(valid.returncode, 0, valid.stderr)
+        summary = json.loads(valid.stdout)["summary"]
+        self.assertEqual(summary["task_status"], "blocked_external_evidence")
+        self.assertEqual(summary["categories_valid_for_gate"], 1)
+        self.assertEqual(summary["categories_invalid"], 0)
+        self.assertEqual(summary["categories_awaiting_external_evidence"], 8)
+        row = summary["category_checklist"][0]
+        self.assertEqual(row["status"], "validated_for_acceptance_gate")
+        self.assertEqual(row["validation_errors"], [])
+        self.assertEqual(summary["accepted_tasks"], 0)
+
     def test_complete_exact_authorized_inventory_passes_structural_gate(self) -> None:
         with tempfile.TemporaryDirectory(dir=REPO_ROOT) as temporary:
             evidence_dir = Path(temporary)
@@ -281,6 +327,9 @@ class P1AAssetGateTests(unittest.TestCase):
         self.assertIn("openbrec.verify p1a-assets-intake", guide)
         self.assertIn("no acepta P1a-01", guide)
         self.assertIn("0 / 8", guide)
+        self.assertIn("invalid_submission", guide)
+        self.assertIn("validated_for_acceptance_gate", guide)
+        self.assertNotIn("sólo indica que existen ambos archivos", guide)
 
         workflow = (REPO_ROOT / ".github/workflows/validate.yml").read_text(
             encoding="utf-8"
@@ -289,6 +338,8 @@ class P1AAssetGateTests(unittest.TestCase):
         self.assertIn("openbrec.verify p1a-assets-intake", job)
         self.assertIn("p1a-01-intake-receipt", job)
         self.assertIn('task_status"] == "blocked_external_evidence"', job)
+        self.assertIn('categories_invalid"] == 0', job)
+        self.assertIn('categories_valid_for_gate"] == 0', job)
         self.assertIn('accepted_tasks"] == 0', job)
 
     def test_plan_and_board_record_blocked_status_without_progress(self) -> None:

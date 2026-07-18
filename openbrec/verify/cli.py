@@ -865,6 +865,7 @@ def _parser() -> argparse.ArgumentParser:
                 "--evidence-dir", default=str(P1A_ASSET_EVIDENCE_DIR)
             )
             subparser.add_argument("--request", default=str(P1A_ASSET_REQUEST_PATH))
+            subparser.add_argument("--schema", default=str(P1A_ASSET_SCHEMA_PATH))
         if gate == "open-spec":
             subparser.add_argument("--policy", default=str(OPEN_SPEC_POLICY_PATH))
             subparser.add_argument("--profiles", default=str(OPEN_SPEC_PROFILES_PATH))
@@ -1509,10 +1510,12 @@ def main(argv: Sequence[str] | None = None) -> int:
                 root, args.evidence_dir, label="evidence-dir"
             )
             request_path = _resolve_inside(root, args.request, label="request")
+            schema_path = _resolve_inside(root, args.schema, label="schema")
             errors, warnings, summary, gate_inputs = run_asset_intake(
                 root,
                 evidence_dir=evidence_dir,
                 request_path=request_path,
+                schema_path=schema_path,
             )
             inputs.extend(gate_inputs)
         except (OSError, ValueError) as exc:
@@ -1522,6 +1525,7 @@ def main(argv: Sequence[str] | None = None) -> int:
                 {
                     "evidence_dir": args.evidence_dir,
                     "request": args.request,
+                    "schema": args.schema,
                 },
             )
         scope = "p1a_external_asset_evidence_intake_status"

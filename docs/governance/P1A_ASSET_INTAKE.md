@@ -16,10 +16,14 @@ La salida enumera las nueve categorías gobernadas y, para cada una:
 - `candidate_id` esperado;
 - presencia de autorización y manifest;
 - evidencia externa faltante;
-- estado `awaiting_external_evidence` o `submitted_for_gate_review`.
+- errores de schema, identidad, custodia, inspección, firmware y correlación;
+- estado `awaiting_external_evidence`, `invalid_submission` o
+  `validated_for_acceptance_gate`.
 
-`submitted_for_gate_review` sólo indica que existen ambos archivos. No valida
-su contenido ni promueve soporte. El único gate de aceptación sigue siendo:
+El preflight valida incrementalmente cada par autorización/manifest. Una
+categoría `invalid_submission` hace fallar el comando; una categoría
+`validated_for_acceptance_gate` superó el control individual, pero no promueve
+soporte ni acepta la task. El único gate de aceptación 9/9 sigue siendo:
 
 ```bash
 uv run --offline python -m openbrec.verify p1a-assets \

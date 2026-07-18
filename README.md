@@ -28,7 +28,8 @@ task con el checklist no contable:
 uv run --offline python -m openbrec.verify p1a-assets-intake --evidence-dir evidence/p1a/p1a-01
 ```
 
-Cuando el checklist indique 9/9 submissions, el gate de aceptación es:
+Cuando el checklist indique 9/9 submissions validadas individualmente, el gate
+de aceptación es:
 
 ```bash
 uv run --offline python -m openbrec.verify p1a-assets --evidence-dir evidence/p1a/p1a-01

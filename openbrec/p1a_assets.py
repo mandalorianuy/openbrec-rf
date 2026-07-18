@@ -134,10 +134,20 @@ def run_asset_intake(
     *,
     evidence_dir: Path,
     request_path: Path,
+    schema_path: Path,
 ) -> tuple[list[str], list[str], dict[str, Any], list[Path]]:
-    """Report missing external evidence without accepting physical claims."""
+    """Validate partial evidence without accepting physical claims."""
     request, errors = _read_json(request_path, "asset authorization request")
-    inputs = [request_path]
+    schema, schema_errors = _read_json(schema_path, "capability manifest schema")
+    errors.extend(schema_errors)
+    validator: Draft202012Validator | None = None
+    if schema is not None:
+        try:
+            Draft202012Validator.check_schema(schema)
+            validator = Draft202012Validator(schema, format_checker=FormatChecker())
+        except Exception as exc:
+            errors.append(f"capability manifest schema is invalid: {exc}")
+    inputs = [request_path, schema_path]
     if request is None:
         return errors, [], {"task": "P1a-01"}, inputs
 
@@ -163,27 +173,44 @@ def run_asset_intake(
                 f"{category} candidate_id does not match governed category"
             )
 
-    authorization_categories: set[str] = set()
+    category_errors: dict[str, list[str]] = {
+        category: [] for category in CATEGORIES
+    }
+    authorization_by_category: dict[str, dict[str, Any]] = {}
     register_path = evidence_dir / "authorization-register.json"
     if register_path.is_file():
         inputs.append(register_path)
         register, register_errors = _read_json(register_path, "authorization register")
         errors.extend(register_errors)
+        if register is not None and register.get("register_version") != "1.0.0":
+            errors.append("authorization register_version must be 1.0.0")
+        if register is not None and register.get("task") != "P1a-01":
+            errors.append("authorization register task must be P1a-01")
         records = register.get("authorizations") if register is not None else []
         if not isinstance(records, list):
             errors.append("authorization register authorizations must be an array")
             records = []
-        for record in records:
-            if not isinstance(record, dict):
+        for index, raw in enumerate(records):
+            record_errors, record = _validate_authorization_record(raw, index)
+            errors.extend(record_errors)
+            if record is None:
                 continue
             category = record.get("category")
-            if (
-                category in CATEGORY_SET
-                and record.get("candidate_id") == CANDIDATE_BY_CATEGORY[category]
-            ):
-                authorization_categories.add(category)
+            if category not in CATEGORY_SET:
+                continue
+            category_errors[category].extend(record_errors)
+            if record.get("candidate_id") != CANDIDATE_BY_CATEGORY[category]:
+                message = f"{category} authorization candidate_id does not match category"
+                errors.append(message)
+                category_errors[category].append(message)
+            if category in authorization_by_category:
+                message = f"duplicate authorization category: {category}"
+                errors.append(message)
+                category_errors[category].append(message)
+            else:
+                authorization_by_category[category] = record
 
-    manifest_categories: set[str] = set()
+    manifest_by_category: dict[str, dict[str, Any]] = {}
     manifests_dir = evidence_dir / "manifests"
     manifest_paths = (
         sorted(manifests_dir.glob("*.json")) if manifests_dir.is_dir() else []
@@ -195,17 +222,72 @@ def run_asset_intake(
         if manifest is None:
             continue
         category = manifest.get("category")
-        if (
-            category in CATEGORY_SET
-            and manifest.get("candidate_id") == CANDIDATE_BY_CATEGORY[category]
+        if category not in CATEGORY_SET:
+            errors.append(f"{path.name} category is not governed")
+            continue
+        manifest_errors_for_category: list[str] = []
+        if validator is not None:
+            for issue in sorted(
+                validator.iter_errors(manifest), key=lambda item: list(item.path)
+            ):
+                location = ".".join(str(part) for part in issue.path) or "$"
+                manifest_errors_for_category.append(
+                    f"{path.name}:{location}: {issue.message}"
+                )
+        for field in ("manufacturer", "model", "sku", "hardware_revision"):
+            if _placeholder(manifest.get(field)):
+                manifest_errors_for_category.append(
+                    f"{path.name} has placeholder identity in {field}"
+                )
+        inspection = manifest.get("physical_inspection")
+        if isinstance(inspection, dict) and inspection.get("condition") == "unknown":
+            manifest_errors_for_category.append(
+                f"{path.name} inspection condition cannot remain unknown"
+            )
+        if category in FIRMWARE_CATEGORIES and not isinstance(
+            manifest.get("firmware_pin"), dict
         ):
-            manifest_categories.add(category)
+            manifest_errors_for_category.append(
+                f"{path.name} requires an immutable firmware pin"
+            )
+        if manifest.get("candidate_id") != CANDIDATE_BY_CATEGORY[category]:
+            manifest_errors_for_category.append(
+                f"{path.name} candidate_id does not match governed shortlist"
+            )
+        if category in manifest_by_category:
+            manifest_errors_for_category.append(
+                f"duplicate manifest category: {category}"
+            )
+        else:
+            manifest_by_category[category] = manifest
+        errors.extend(manifest_errors_for_category)
+        category_errors[category].extend(manifest_errors_for_category)
+
+    for category in CATEGORIES:
+        authorization = authorization_by_category.get(category)
+        manifest = manifest_by_category.get(category)
+        if authorization is None or manifest is None:
+            continue
+        custody = manifest.get("custody")
+        expected = {
+            "asset_id": manifest.get("asset_id"),
+            "candidate_id": manifest.get("candidate_id"),
+            "category": category,
+            "method": custody.get("method") if isinstance(custody, dict) else None,
+            "custodian": (
+                custody.get("custodian") if isinstance(custody, dict) else None
+            ),
+        }
+        if any(authorization.get(field) != value for field, value in expected.items()):
+            message = f"{category} authorization does not match manifest"
+            errors.append(message)
+            category_errors[category].append(message)
 
     checklist: list[dict[str, Any]] = []
     for category in CATEGORIES:
         request_row = requested_by_category.get(category, {})
-        authorization_present = category in authorization_categories
-        manifest_present = category in manifest_categories
+        authorization_present = category in authorization_by_category
+        manifest_present = category in manifest_by_category
         missing: list[str] = []
         if not authorization_present:
             missing.append("authorization_record")
@@ -215,33 +297,42 @@ def run_asset_intake(
             required = request_row.get("required_external_evidence", [])
             if isinstance(required, list):
                 missing.extend(item for item in required if isinstance(item, str))
+        validation_errors = category_errors[category]
+        if validation_errors:
+            status = "invalid_submission"
+        elif authorization_present and manifest_present:
+            status = "validated_for_acceptance_gate"
+        else:
+            status = "awaiting_external_evidence"
         checklist.append(
             {
                 "category": category,
                 "candidate_id": CANDIDATE_BY_CATEGORY[category],
                 "authorization_present": authorization_present,
                 "manifest_present": manifest_present,
-                "status": (
-                    "submitted_for_gate_review"
-                    if authorization_present and manifest_present
-                    else "awaiting_external_evidence"
-                ),
+                "status": status,
                 "missing_external_evidence": list(dict.fromkeys(missing)),
+                "validation_errors": validation_errors,
             }
         )
 
-    ready = sum(row["status"] == "submitted_for_gate_review" for row in checklist)
+    valid = sum(
+        row["status"] == "validated_for_acceptance_gate" for row in checklist
+    )
+    invalid = sum(row["status"] == "invalid_submission" for row in checklist)
     summary = {
         "task": "P1a-01",
         "task_status": (
             "ready_for_acceptance_gate"
-            if ready == len(CATEGORIES)
+            if valid == len(CATEGORIES) and invalid == 0
             else "blocked_external_evidence"
         ),
         "evidence_dir": str(evidence_dir.relative_to(root)),
         "category_denominator": len(CATEGORIES),
-        "categories_ready_for_gate": ready,
-        "categories_awaiting_external_evidence": len(CATEGORIES) - ready,
+        "categories_ready_for_gate": valid,
+        "categories_valid_for_gate": valid,
+        "categories_invalid": invalid,
+        "categories_awaiting_external_evidence": len(CATEGORIES) - valid - invalid,
         "accepted_tasks": 0,
         "total_tasks": 8,
         "percent": 0.0,
@@ -254,7 +345,7 @@ def run_asset_intake(
         "next_task_started": False,
         "category_checklist": checklist,
         "non_progress_notice": (
-            "This preflight reports intake readiness only and does not accept P1a-01."
+            "Validated submissions remain non-accepted until the 9/9 acceptance gate passes."
         ),
     }
     return errors, [], summary, inputs

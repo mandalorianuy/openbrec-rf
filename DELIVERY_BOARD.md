@@ -390,7 +390,8 @@ fabrica esos nueve assets: la solicitud trazable está en
 El comando `openbrec.verify p1a-assets-intake` publica un checklist determinístico
 por las nueve categorías y queda documentado en
 `docs/governance/P1A_ASSET_INTAKE.md`. Es un preflight no contable: no autoriza
-acciones físicas, no acepta P1a-01 y no cambia el numerador `0 / 8`.
+acciones físicas, valida submissions parciales antes de contarlas como listas
+para el gate, no acepta P1a-01 y no cambia el numerador `0 / 8`.
 
 Frontera: P0 no autoriza compra, hardware, TX, captura real, ensayo de 72 horas,
 campo ni claims físicos. Solar, storage, generadores, conducted/radiated radio,
