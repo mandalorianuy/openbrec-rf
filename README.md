@@ -20,6 +20,17 @@ OpenBREC RF es una plataforma open source, modular y offline-first para investig
 > [!NOTE]
 > Estado actual: M0 y P0 simulado completos. P0 cerró `9 / 9`; P1a tiene un plan de banco/conducted aprobado y permanece `0 / 8`. El readiness no autoriza compra, préstamo, hardware, ensayos, personas, captura ni TX; todo soporte físico continúa `unverified`. No es una plataforma operacional ni un perfil de campo.
 
+P1a-01 está `blocked_external_evidence`: su gate existe, pero faltan nueve assets
+reales autorizados, inspeccionados y bajo custodia. Se comprueba sin promover la
+task con:
+
+```bash
+uv run --offline python -m openbrec.verify p1a-assets --evidence-dir evidence/p1a/p1a-01
+```
+
+Mientras no exista el denominador 9/9, el fallo de ese comando es el resultado
+seguro esperado y el progreso P1a permanece `0 / 8`.
+
 ## Documentos principales
 
 - [`OPENBREC_RF_TECHNICAL_DESIGN.md`](OPENBREC_RF_TECHNICAL_DESIGN.md) — diseño técnico completo.

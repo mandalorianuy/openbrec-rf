@@ -1,0 +1,77 @@
+{
+  "request_version": "1.0.0",
+  "task": "P1a-01",
+  "status": "blocked_external_evidence",
+  "decision_at": "2026-07-17",
+  "progress": {
+    "accepted_tasks": 0,
+    "total_tasks": 8,
+    "percent": 0.0
+  },
+  "physical_actions_authorized": false,
+  "purchase_authorized": false,
+  "asset_requests": [
+    {
+      "category": "lorawan_gateway",
+      "candidate_id": "P1A-HW-01",
+      "state": "awaiting_explicit_authorization",
+      "required_external_evidence": ["exact asset identity", "asset owner authorization", "custodian", "serial evidence hash", "physical inspection evidence"]
+    },
+    {
+      "category": "lorawan_endpoint",
+      "candidate_id": "P1A-HW-02",
+      "state": "awaiting_explicit_authorization",
+      "required_external_evidence": ["exact asset identity", "asset owner authorization", "custodian", "serial evidence hash", "physical inspection evidence"]
+    },
+    {
+      "category": "meshtastic_node",
+      "candidate_id": "P1A-HW-03",
+      "state": "awaiting_explicit_authorization",
+      "required_external_evidence": ["exact asset identity", "asset owner authorization", "custodian", "serial evidence hash", "physical inspection evidence"]
+    },
+    {
+      "category": "meshcore_node",
+      "candidate_id": "P1A-HW-04",
+      "state": "awaiting_explicit_authorization",
+      "required_external_evidence": ["exact asset identity", "asset owner authorization", "custodian", "serial evidence hash", "physical inspection evidence"]
+    },
+    {
+      "category": "rnode",
+      "candidate_id": "P1A-HW-05",
+      "state": "awaiting_explicit_authorization",
+      "required_external_evidence": ["exact asset identity", "asset owner authorization", "custodian", "serial evidence hash", "physical inspection evidence"]
+    },
+    {
+      "category": "offline_terminal",
+      "candidate_id": "P1A-HW-06",
+      "state": "awaiting_explicit_authorization",
+      "required_external_evidence": ["exact asset identity", "asset owner authorization", "custodian", "serial evidence hash", "physical inspection evidence"]
+    },
+    {
+      "category": "trimodal_beacon",
+      "candidate_id": "P1A-HW-07",
+      "state": "awaiting_explicit_authorization",
+      "required_external_evidence": ["exact asset identity", "asset owner authorization", "custodian", "serial evidence hash", "physical inspection evidence"]
+    },
+    {
+      "category": "energy_storage",
+      "candidate_id": "P1A-HW-08",
+      "state": "awaiting_explicit_authorization",
+      "required_external_evidence": ["exact asset identity", "asset owner authorization", "custodian", "serial evidence hash", "physical inspection evidence"]
+    },
+    {
+      "category": "wired_cell_gateway",
+      "candidate_id": "P1A-HW-09",
+      "state": "awaiting_explicit_authorization",
+      "required_external_evidence": ["exact asset identity", "asset owner authorization", "custodian", "serial evidence hash", "physical inspection evidence"]
+    }
+  ],
+  "acceptance_gate": "uv run --offline python -m openbrec.verify p1a-assets --evidence-dir evidence/p1a/p1a-01",
+  "next_task_if_accepted": "P1a-02",
+  "next_task_started": false,
+  "stop_conditions": [
+    "No order, loan, inspection or custody registration without explicit per-asset authorization.",
+    "No placeholder identity, clear serial, unsupported support promotion or floating firmware.",
+    "No P1a-02 action before P1a-01 has nine accepted manifests."
+  ]
+}

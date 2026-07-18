@@ -332,6 +332,13 @@ planificadas, cero aceptadas, cero acciones físicas autorizadas y receipt en
 Plan activo: `docs/superpowers/plans/2026-07-17-openbrec-p1a-bench-conducted-plan.md`.
 Residuales activos: `docs/governance/p1a-residuals.json`.
 
+Estado P1a-01: `blocked_external_evidence`. El gate `p1a-assets` exige 9/9
+categorías exactas, autorización correlacionada, custodia, inspección, serial
+evidence hasheada y firmware pin donde aplica. El repositorio no contiene ni
+fabrica esos nueve assets: la solicitud trazable está en
+`docs/governance/p1a-01-asset-authorization-request.json`. Progreso: `0 / 8`
+(`0%`). P1a-02 no iniciada.
+
 Frontera: P0 no autoriza compra, hardware, TX, captura real, ensayo de 72 horas,
 campo ni claims físicos. Solar, storage, generadores, conducted/radiated radio,
 beacons físicos y validación humana pertenecen a planes posteriores.
