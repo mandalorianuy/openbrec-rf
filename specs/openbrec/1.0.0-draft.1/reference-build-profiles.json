@@ -1,0 +1,86 @@
+{
+  "profile_set_version": "1.0.0-draft.1",
+  "title": "OpenBREC open reference builds and reuse profiles",
+  "open_boundary": {
+    "owned_hardware_required": false,
+    "named_vendor_required": false,
+    "named_sku_required": false,
+    "physical_evidence_blocks_spec": false,
+    "reference_build_is_field_ready": false,
+    "reference_build_is_certified": false,
+    "capability_equivalent_substitution_allowed": true,
+    "existing_components_reusable": true
+  },
+  "support_statuses": ["supported", "experimental", "unverified", "unavailable"],
+  "delivery_routes": ["open_build", "reuse_existing", "hybrid"],
+  "reference_builds": [
+    {
+      "build_profile_id": "build.energy-site",
+      "addon": "energy",
+      "title": "Replaceable site energy domain",
+      "delivery_routes": ["open_build", "reuse_existing", "hybrid"],
+      "required_for_spec": false,
+      "substitution_allowed": true,
+      "guide_ref": "docs/open-spec/reference-builds/energy-site.md"
+    },
+    {
+      "build_profile_id": "build.machine-telemetry",
+      "addon": "machine_telemetry",
+      "title": "Private machine telemetry network",
+      "delivery_routes": ["open_build", "reuse_existing", "hybrid"],
+      "required_for_spec": false,
+      "substitution_allowed": true,
+      "guide_ref": "docs/open-spec/reference-builds/machine-telemetry.md"
+    },
+    {
+      "build_profile_id": "build.human-messaging",
+      "addon": "human_messaging",
+      "title": "Off-grid human messaging terminal",
+      "delivery_routes": ["open_build", "reuse_existing", "hybrid"],
+      "required_for_spec": false,
+      "substitution_allowed": true,
+      "guide_ref": "docs/open-spec/reference-builds/human-messaging.md"
+    },
+    {
+      "build_profile_id": "build.beacon-node",
+      "addon": "beacon_sensing",
+      "title": "Capability-driven beacon node",
+      "delivery_routes": ["open_build", "reuse_existing", "hybrid"],
+      "required_for_spec": false,
+      "substitution_allowed": true,
+      "guide_ref": "docs/open-spec/reference-builds/beacon-node.md"
+    },
+    {
+      "build_profile_id": "build.response-cell-gateway",
+      "addon": "recursive_federation",
+      "title": "Autonomous ResponseCell gateway",
+      "delivery_routes": ["open_build", "reuse_existing", "hybrid"],
+      "required_for_spec": false,
+      "substitution_allowed": true,
+      "guide_ref": "docs/open-spec/reference-builds/response-cell-gateway.md"
+    }
+  ],
+  "bom_policy": {
+    "capability_roles_only": true,
+    "minimum_substitution_classes": 2,
+    "single_source_requirement_allowed": false,
+    "electrical_and_mechanical_limits_required": true,
+    "hazards_and_stop_conditions_required": true
+  },
+  "reuse_process": [
+    "inventory available capabilities and constraints",
+    "select the smallest matching build profile",
+    "register a bounded versioned adapter",
+    "declare absent capabilities and fallbacks",
+    "run offline conformance checks",
+    "record evidence level and limitations",
+    "retain a disable and rollback path"
+  ],
+  "plane_separation": {
+    "human_plane_writes_observations": false,
+    "human_plane_writes_facts": false,
+    "machine_plane_accepts_sos": false,
+    "shared_enclosure_requires_coexistence_evidence": true,
+    "keys_queues_priorities_and_audit_separate": true
+  }
+}

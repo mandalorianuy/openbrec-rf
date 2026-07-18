@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openbrec.org/schemas/open-spec/reuse-adapter-manifest.schema.json",
+  "title": "OpenBREC Reuse Adapter Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["adapter_id", "addon", "title", "support_status", "integration_route", "interface_contract_ref", "version_constraint", "capability_mapping", "fallback", "disable_procedure", "limitations", "evidence_required_to_promote", "support_evidence_refs", "writes_facts_directly", "raw_payload_default"],
+  "properties": {
+    "adapter_id": {"type": "string", "pattern": "^adapter:[a-z0-9._-]+$"},
+    "addon": {"enum": ["energy", "machine_telemetry", "human_messaging", "beacon_sensing", "recursive_federation"]},
+    "title": {"type": "string", "minLength": 1},
+    "support_status": {"enum": ["supported", "experimental", "unverified", "unavailable"]},
+    "integration_route": {"enum": ["reuse_existing", "hybrid"]},
+    "interface_contract_ref": {"type": "string", "minLength": 1},
+    "version_constraint": {"type": "string", "minLength": 1},
+    "capability_mapping": {"type": "array", "minItems": 1, "items": {"type": "object", "additionalProperties": false, "required": ["source", "openbrec_capability"], "properties": {"source": {"type": "string", "minLength": 1}, "openbrec_capability": {"type": "string", "minLength": 1}}}},
+    "fallback": {"type": "string", "minLength": 1},
+    "disable_procedure": {"type": "string", "minLength": 1},
+    "limitations": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+    "evidence_required_to_promote": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+    "support_evidence_refs": {"type": "array", "items": {"type": "string", "minLength": 1}},
+    "writes_facts_directly": {"const": false},
+    "raw_payload_default": {"const": false}
+  }
+}

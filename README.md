@@ -18,7 +18,7 @@ OpenBREC RF es una plataforma open source, modular y offline-first para investig
 > El sistema produce **indicios**, no diagnósticos ni certezas de víctima. La ausencia de RF nunca descarta una persona atrapada.
 
 > [!NOTE]
-> Estado actual: M0 y P0 simulado completos. La autoridad actual es spec-first: Open Spec está `6 / 8`, mientras P1a física opcional permanece `0 / 8`. Publicar contratos y perfiles no requiere poseer hardware; evidence packs físicos sólo elevan claims de una implementación exacta. No es una plataforma operacional ni un perfil de campo.
+> Estado actual: M0 y P0 simulado completos. La autoridad actual es spec-first: Open Spec está `7 / 8`, mientras P1a física opcional permanece `0 / 8`. Publicar contratos y perfiles no requiere poseer hardware; evidence packs físicos sólo elevan claims de una implementación exacta. No es una plataforma operacional ni un perfil de campo.
 
 P1a-01 está `blocked_external_evidence`: su gate existe, pero faltan nueve assets
 reales autorizados, inspeccionados y bajo custodia. Se comprueba sin promover la
@@ -72,6 +72,8 @@ para review con acceso, auditoría y retención gobernados, sin autenticarlo.
 - [`specs/openbrec/1.0.0-draft.1/multi-bearer-transport-profiles.json`](specs/openbrec/1.0.0-draft.1/multi-bearer-transport-profiles.json) — cinco perfiles de transporte reemplazables, overlay común y modos regulatorios acotados.
 - [`specs/openbrec/1.0.0-draft.1/messaging-interoperability-profiles.json`](specs/openbrec/1.0.0-draft.1/messaging-interoperability-profiles.json) — texto, estado, SOS y ubicación con seguridad de aplicación y distress append-only.
 - [`specs/openbrec/1.0.0-draft.1/beacon-capability-profiles.json`](specs/openbrec/1.0.0-draft.1/beacon-capability-profiles.json) — acústica, movimiento, térmica y extensiones abiertas con abstención, privacidad y datasets reutilizables.
+- [`specs/openbrec/1.0.0-draft.1/reference-build-profiles.json`](specs/openbrec/1.0.0-draft.1/reference-build-profiles.json) — planos funcionales, BOMs por capacidades, adapters y rutas abiertas de construcción, reutilización e integración híbrida.
+- [`docs/open-spec/reference-builds/README.md`](docs/open-spec/reference-builds/README.md) — guías de construcción y reutilización sin vendor/SKU obligatorio ni claims físicos implícitos.
 - [`docs/governance/P0_RESIDUAL_REGISTER.md`](docs/governance/P0_RESIDUAL_REGISTER.md) — residuales, owners, gates y stop conditions P0.
 
 ## Perfiles planificados posteriores a M0

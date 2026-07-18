@@ -1,0 +1,44 @@
+{
+  "acceptance_version": "1.0.0",
+  "task": "OS-07",
+  "status": "accepted",
+  "decision_at": "2026-07-18",
+  "subject_git_sha": "d076ef6550104ee3afdfc94be25f0a29e03397a6",
+  "receipt": {
+    "path": "evidence/open-spec/os-07/os-07-receipt.json",
+    "sha256": "84d12edf3a1ac40b38237009ed5bbbe852e2f2a3d451249dfe33ecd110c0f46e",
+    "result": "passed",
+    "dirty": false
+  },
+  "open_spec_progress": {
+    "accepted_tasks": 7,
+    "total_tasks": 8,
+    "percent": 87.5
+  },
+  "physical_validation_progress": {
+    "accepted_tasks": 0,
+    "total_tasks": 8,
+    "percent": 0.0,
+    "blocks_open_spec": false
+  },
+  "accepted": [
+    "five capability-based reference builds covering energy, machine telemetry, human messaging, beacon sensing and recursive federation",
+    "open build, reuse existing and hybrid as equal delivery routes",
+    "closed JSON Schema contracts for reference builds and reuse adapters",
+    "capability-role BOMs with substitutable component classes and no single-source requirement",
+    "version-bounded adapters with limitations, fallback, disable and evidence fields",
+    "discovery-first construction and reuse guides with verification, rollback and maintenance boundaries",
+    "separation of machine telemetry and human messaging planes in shared deployments",
+    "governed residual register with controlled, planned and evidence-required dispositions"
+  ],
+  "not_accepted": [
+    "physical construction, hardware possession, procurement or vendor endorsement",
+    "field performance, range, capacity, interoperability, safety certification or regulatory compliance",
+    "promotion of any adapter to supported without evidence for the exact version and combination",
+    "72-hour energy autonomy, solar sustainability or RF coexistence claims",
+    "field-ready assembly, calibration or operational SOP readiness",
+    "OS-08 or any P1a physical-validation task"
+  ],
+  "next_task": "OS-08",
+  "next_task_started": false
+}

@@ -43,18 +43,18 @@ def _read_json(path: Path, label: str) -> tuple[dict[str, Any] | None, list[str]
 def _validate_policy(value: dict[str, Any]) -> list[str]:
     errors: list[str] = []
     if value.get("progress") != {
-        "accepted_tasks": 6,
+        "accepted_tasks": 7,
         "total_tasks": 8,
-        "percent": 75.0,
+        "percent": 87.5,
     }:
-        errors.append("open-spec progress must be 6 / 8")
+        errors.append("open-spec progress must be 7 / 8")
     tasks = value.get("tasks")
     if not isinstance(tasks, list) or len(tasks) != 8:
         return [*errors, "open-spec policy must contain eight tasks"]
-    if [task.get("status") for task in tasks[:6]] != ["accepted"] * 6:
-        errors.append("OS-01 through OS-06 must be accepted")
-    if any(task.get("status") != "not_started" for task in tasks[6:]):
-        errors.append("OS-07 and OS-08 must remain not_started")
+    if [task.get("status") for task in tasks[:7]] != ["accepted"] * 7:
+        errors.append("OS-01 through OS-07 must be accepted")
+    if any(task.get("status") != "not_started" for task in tasks[7:]):
+        errors.append("OS-08 must remain not_started")
     if tasks[5].get("gate") != "open-spec-federation":
         errors.append("OS-06 must use the open-spec-federation gate")
     return errors
@@ -441,7 +441,7 @@ def run_open_spec_federation_gate(
         [],
         {
             "spec_version": policy.get("spec_version") if policy else None,
-            "spec_tasks_accepted": 6,
+            "spec_tasks_accepted": 7,
             "spec_tasks_total": 8,
             "hierarchy_levels": len(profiles.get("hierarchy", [])) if profiles else 0,
             **fixture_summary,
@@ -455,7 +455,7 @@ def run_open_spec_federation_gate(
                 else None
             ),
             "physical_scale_blocks_publication": False,
-            "next_task": "OS-07",
+            "next_task": "OS-08",
             "next_task_started": False,
         },
         inputs,

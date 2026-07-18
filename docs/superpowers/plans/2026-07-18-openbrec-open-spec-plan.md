@@ -3,7 +3,7 @@
 - Estado: activo
 - Autoridad principal: Open Spec
 - Versión objetivo: `1.0.0-draft.1`
-- Progreso: `6 / 8` tasks aceptadas (`75.0%`)
+- Progreso: `7 / 8` tasks aceptadas (`87.5%`)
 - Carril físico: P1a opcional, `0 / 8`, no bloquea publicación
 
 ## Frontera normativa
@@ -46,8 +46,11 @@ invalida el contrato ni habilita claims físicos.
   con autonomía local en cada nivel, redes aisladas por celda, peering explícito,
   hubs opcionales no autoritativos y reconciliación append-only determinística.
   La simulación de 50.000 sitios prueba corrección, no capacidad ni readiness.
-- [ ] **OS-07 — no iniciada:** planos, BOMs de referencia, adaptadores y guías de
-  construcción/reutilización.
+- [x] **OS-07 — aceptada:** cinco planos funcionales y BOMs por capacidades para
+  energía, telemetría máquina, mensajería humana, beacons y federación; rutas
+  equivalentes `open_build`, `reuse_existing` e `hybrid`, once adapters
+  versionados y cinco guías. Ningún vendor, SKU o build es obligatorio ni
+  acredita performance física o readiness.
 - [ ] **OS-08 — no iniciada:** conformance kit, matriz de decisión, publicación y
   proceso comunitario de evidence packs.
 
@@ -56,7 +59,7 @@ invalida el contrato ni habilita claims físicos.
 El numerador Open Spec cuenta tasks normativas aceptadas. No exige compra,
 custodia ni ensayo físico. Los carriles se reportan siempre separados:
 
-- Open Spec: `6 / 8` (`75.0%`).
+- Open Spec: `7 / 8` (`87.5%`).
 - P1a física opcional: `0 / 8` (`0%`).
 
 Un fixture sintético puede acreditar conformance o simulación, pero no
@@ -65,4 +68,4 @@ que documenta; nunca convierte un candidato en requisito universal.
 
 ## Próxima task
 
-OS-07 es la siguiente task gobernada. Este cierre no la inicia.
+OS-08 es la siguiente task gobernada. Este cierre no la inicia.
