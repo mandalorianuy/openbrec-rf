@@ -1,0 +1,78 @@
+{
+  "profile_set_version": "1.0.0-draft.1",
+  "title": "OpenBREC recursive autonomous federation profiles",
+  "open_boundary": {
+    "central_service_in_critical_path": false,
+    "cloud_in_critical_path": false,
+    "single_incident_wide_lora_mesh": false,
+    "owned_hardware_required": false,
+    "physical_scale_blocks_spec": false,
+    "local_networks_per_response_cell": true
+  },
+  "minimum_federable_unit": "ResponseCell",
+  "hierarchy": [
+    {"level": "IncidentFederation", "parent": null, "can_operate_without_parent": true, "local_event_log": true, "local_trust_cache": true, "local_policy_cache": true, "distress_preservation": true, "role": "cross-area coordination"},
+    {"level": "OperationalArea", "parent": "IncidentFederation", "can_operate_without_parent": true, "local_event_log": true, "local_trust_cache": true, "local_policy_cache": true, "distress_preservation": true, "role": "area coordination"},
+    {"level": "ResponseCell", "parent": "OperationalArea", "can_operate_without_parent": true, "local_event_log": true, "local_trust_cache": true, "local_policy_cache": true, "distress_preservation": true, "role": "minimum federable operational unit"},
+    {"level": "Deployment", "parent": "ResponseCell", "can_operate_without_parent": true, "local_event_log": true, "local_trust_cache": true, "local_policy_cache": true, "distress_preservation": true, "role": "local team deployment"},
+    {"level": "Site", "parent": "Deployment", "can_operate_without_parent": true, "local_event_log": true, "local_trust_cache": true, "local_policy_cache": true, "distress_preservation": true, "role": "local search site"}
+  ],
+  "team_network_isolation": {
+    "identity_namespace": "separate_per_response_cell",
+    "keys": "separate_per_response_cell",
+    "event_log": "separate_per_response_cell",
+    "local_broker": "separate_per_response_cell",
+    "cross_cell_exchange": "explicit_peer_agreement_only",
+    "shared_incident_key_allowed": false,
+    "shared_incident_mqtt_root_allowed": false,
+    "local_mqtt_crosses_federation": false
+  },
+  "coordination_hubs": {
+    "required": false,
+    "minimum_redundancy_when_deployed": 2,
+    "backhaul_separate_from_local_lora": true,
+    "functions": ["store signed federation events", "replicate authorized summaries", "distribute signed policy intents"],
+    "holds_cell_keys": false,
+    "decrypts_local_content": false,
+    "creates_operator_acceptance": false,
+    "orders_radio_tx": false,
+    "overwrites_source_logs": false
+  },
+  "gateway_policy": {
+    "outbound_only_default": true,
+    "inbound_listener_default": false,
+    "minimal_authorized_summaries_only": true,
+    "raw_payload_export": false,
+    "fallbacks": ["primary_backhaul", "alternate_backhaul", "encrypted_carry_bundle", "defer_until_available"]
+  },
+  "stale_trust_policy": {
+    "local_operation_continues": true,
+    "distress_preserved": true,
+    "existing_local_log_remains_authoritative": true,
+    "restricted_actions": ["new_sensitive_federation", "new_enrollment", "remote_policy_change"],
+    "reason_visible": true
+  },
+  "reconciliation_policy": {
+    "append_only": true,
+    "deterministic": true,
+    "conflicts_visible": true,
+    "human_resolution_pending": true,
+    "last_write_wins": false,
+    "source_log_overwrite": false,
+    "silent_loss": false,
+    "handoff_replaces_original_log": false
+  },
+  "scale_reference": {
+    "fixture": "fixtures/p0/federation/50k-sites.json",
+    "scale_receipt": "evidence/p0/p0-09/federation-scale/p0-09-receipt.json",
+    "reconciliation_receipt": "evidence/p0/p0-09/federation-reconciliation/p0-09-receipt.json",
+    "sites": 50000,
+    "response_cells": 60,
+    "operational_areas": 5,
+    "coordination_hubs": 2,
+    "evidence_scope": "deterministic_simulation_correctness_only",
+    "capacity_claim": false,
+    "field_readiness_claim": false,
+    "representative_performance_claim": false
+  }
+}

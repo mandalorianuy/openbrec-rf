@@ -50,13 +50,14 @@ class OpenSpecTrackTests(unittest.TestCase):
     def test_spec_plan_is_primary_and_accepts_through_os_05(self) -> None:
         source = PLAN.read_text(encoding="utf-8")
         self.assertIn("Autoridad principal: Open Spec", source)
-        self.assertIn("5 / 8", source)
+        self.assertIn("6 / 8", source)
         self.assertIn("OS-01 — aceptada", source)
         self.assertIn("OS-02 — aceptada", source)
         self.assertIn("OS-03 — aceptada", source)
         self.assertIn("OS-04 — aceptada", source)
         self.assertIn("OS-05 — aceptada", source)
-        self.assertIn("OS-06 — no iniciada", source)
+        self.assertIn("OS-06 — aceptada", source)
+        self.assertIn("OS-07 — no iniciada", source)
         self.assertIn("P1a es un carril opcional", source)
 
     def test_policy_separates_publication_from_physical_claims(self) -> None:
@@ -64,7 +65,7 @@ class OpenSpecTrackTests(unittest.TestCase):
         self.assertEqual(value["main_lane"], "open_spec")
         self.assertEqual(
             value["progress"],
-            {"accepted_tasks": 5, "total_tasks": 8, "percent": 62.5},
+            {"accepted_tasks": 6, "total_tasks": 8, "percent": 75.0},
         )
         self.assertFalse(value["publication"]["requires_owned_hardware"])
         self.assertFalse(value["publication"]["requires_physical_evidence"])
@@ -76,8 +77,8 @@ class OpenSpecTrackTests(unittest.TestCase):
         self.assertEqual(
             [task["id"] for task in tasks], [f"OS-{index:02d}" for index in range(1, 9)]
         )
-        self.assertTrue(all(task["status"] == "accepted" for task in tasks[:5]))
-        self.assertTrue(all(task["status"] == "not_started" for task in tasks[5:]))
+        self.assertTrue(all(task["status"] == "accepted" for task in tasks[:6]))
+        self.assertTrue(all(task["status"] == "not_started" for task in tasks[6:]))
 
     def test_reference_profiles_are_open_and_hardware_agnostic(self) -> None:
         value = json.loads(PROFILES.read_text(encoding="utf-8"))
@@ -138,7 +139,7 @@ class OpenSpecTrackTests(unittest.TestCase):
         result = self.run_verify("open-spec")
         self.assertEqual(result.returncode, 0, result.stderr)
         summary = json.loads(result.stdout)["summary"]
-        self.assertEqual(summary["spec_tasks_accepted"], 5)
+        self.assertEqual(summary["spec_tasks_accepted"], 6)
         self.assertEqual(summary["spec_tasks_total"], 8)
         self.assertEqual(summary["reference_profiles"], 9)
         self.assertEqual(summary["physical_validation_tasks_accepted"], 0)
@@ -163,7 +164,7 @@ class OpenSpecTrackTests(unittest.TestCase):
         readme = (ROOT / "README.md").read_text(encoding="utf-8")
         workflow = (ROOT / ".github/workflows/validate.yml").read_text(encoding="utf-8")
         self.assertIn(str(PLAN.relative_to(ROOT)), board)
-        self.assertIn("Open Spec `5 / 8`", board)
+        self.assertIn("Open Spec `6 / 8`", board)
         self.assertIn("P1a física `0 / 8`", board)
         self.assertIn("OS-06", board)
         self.assertIn("spec-first", readme)

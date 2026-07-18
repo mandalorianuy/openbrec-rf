@@ -108,6 +108,13 @@ from openbrec.open_spec_beacons import (
     RESIDUALS_PATH as OPEN_SPEC_BEACON_RESIDUALS_PATH,
     run_open_spec_beacon_gate,
 )
+from openbrec.open_spec_federation import (
+    FIXTURES_PATH as OPEN_SPEC_FEDERATION_FIXTURES_PATH,
+    PEER_SCHEMA_PATH as OPEN_SPEC_FEDERATION_PEER_SCHEMA_PATH,
+    PROFILES_PATH as OPEN_SPEC_FEDERATION_PROFILES_PATH,
+    RESIDUALS_PATH as OPEN_SPEC_FEDERATION_RESIDUALS_PATH,
+    run_open_spec_federation_gate,
+)
 
 DRAFT_2020_12 = "https://json-schema.org/draft/2020-12/schema"
 VERIFY_VERSION = "0.1.0"
@@ -275,6 +282,7 @@ def _responsible_role(gate: str) -> str:
         "open-spec-transports",
         "open-spec-messaging",
         "open-spec-beacons",
+        "open-spec-federation",
     }:
         return "release-reviewer"
     if gate in {"beacon-adversarial", "retention-fault"}:
@@ -789,6 +797,7 @@ def _parser() -> argparse.ArgumentParser:
         "open-spec-transports",
         "open-spec-messaging",
         "open-spec-beacons",
+        "open-spec-federation",
         "all",
     ):
         subparser = subparsers.add_parser(gate)
@@ -898,6 +907,19 @@ def _parser() -> argparse.ArgumentParser:
             )
             subparser.add_argument(
                 "--residuals", default=str(OPEN_SPEC_BEACON_RESIDUALS_PATH)
+            )
+        if gate == "open-spec-federation":
+            subparser.add_argument(
+                "--profiles", default=str(OPEN_SPEC_FEDERATION_PROFILES_PATH)
+            )
+            subparser.add_argument(
+                "--peer-schema", default=str(OPEN_SPEC_FEDERATION_PEER_SCHEMA_PATH)
+            )
+            subparser.add_argument(
+                "--fixtures", default=str(OPEN_SPEC_FEDERATION_FIXTURES_PATH)
+            )
+            subparser.add_argument(
+                "--residuals", default=str(OPEN_SPEC_FEDERATION_RESIDUALS_PATH)
             )
         if gate == "p0-all":
             subparser.add_argument("--evidence-dir", default="evidence/p0")
@@ -1572,6 +1594,34 @@ def main(argv: Sequence[str] | None = None) -> int:
                 },
             )
         scope = "open_spec_beacon_modalities_extensions_abstention_and_datasets"
+    elif args.gate == "open-spec-federation":
+        try:
+            profiles_path = _resolve_inside(root, args.profiles, label="profiles")
+            peer_schema_path = _resolve_inside(
+                root, args.peer_schema, label="peer-schema"
+            )
+            fixtures_path = _resolve_inside(root, args.fixtures, label="fixtures")
+            residuals_path = _resolve_inside(root, args.residuals, label="residuals")
+            errors, warnings, summary, gate_inputs = run_open_spec_federation_gate(
+                root,
+                profiles_path=profiles_path,
+                peer_schema_path=peer_schema_path,
+                fixtures_path=fixtures_path,
+                residuals_path=residuals_path,
+            )
+            inputs.extend(gate_inputs)
+        except (OSError, ValueError) as exc:
+            errors, warnings, summary = (
+                [str(exc)],
+                [],
+                {
+                    "profiles": args.profiles,
+                    "peer_schema": args.peer_schema,
+                    "fixtures": args.fixtures,
+                    "residuals": args.residuals,
+                },
+            )
+        scope = "open_spec_recursive_autonomous_federation_and_reconciliation"
     elif args.gate == "review-quarantine":
         errors, warnings, summary = run_review_quarantine(root)
         scope = "exactly_one_primary_disposition"

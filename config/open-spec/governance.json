@@ -2,7 +2,7 @@
   "governance_version": "1.0.0",
   "spec_version": "1.0.0-draft.1",
   "main_lane": "open_spec",
-  "progress": {"accepted_tasks": 5, "total_tasks": 8, "percent": 62.5},
+  "progress": {"accepted_tasks": 6, "total_tasks": 8, "percent": 75.0},
   "publication": {
     "requires_owned_hardware": false,
     "requires_physical_evidence": false,
@@ -27,7 +27,7 @@
     {"id": "OS-03", "status": "accepted", "title": "Open multi-bearer transport profiles", "gate": "open-spec-transports"},
     {"id": "OS-04", "status": "accepted", "title": "Human messaging and SOS interoperability", "gate": "open-spec-messaging"},
     {"id": "OS-05", "status": "accepted", "title": "Open beacon capability profiles", "gate": "open-spec-beacons"},
-    {"id": "OS-06", "status": "not_started", "title": "Recursive autonomous federation", "gate": "open-spec-federation"},
+    {"id": "OS-06", "status": "accepted", "title": "Recursive autonomous federation", "gate": "open-spec-federation"},
     {"id": "OS-07", "status": "not_started", "title": "Reference builds and reuse guides", "gate": "open-spec-builds"},
     {"id": "OS-08", "status": "not_started", "title": "Conformance kit and publication", "gate": "open-spec-exit"}
   ]

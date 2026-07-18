@@ -1,0 +1,62 @@
+{
+  "fixture_version": "1.0.0-draft.1",
+  "simulated": true,
+  "peer_agreements": [
+    {
+      "agreement_id": "fpa:cell-01-cell-02", "incident_namespace": "incident:synthetic-50k",
+      "source_cell": "cell-01", "target_cell": "cell-02", "source_team_namespace": "team:alpha",
+      "target_team_namespace": "team:bravo", "allowed_event_types": ["distress_summary", "resource_request", "resource_assignment"],
+      "allowed_targets": ["cell-02"], "disclosure_basis": "mutual_aid",
+      "transport_profile_refs": ["carry-bundle", "reticulum-overlay"], "outbound_only": true,
+      "minimal_disclosure": true, "raw_payload_allowed": false, "authority_escalation": false,
+      "each_party_retains_source_log": true, "valid_from": "2026-07-18T00:00:00Z",
+      "valid_until": "2026-07-19T00:00:00Z", "revocation_ref": "revocations:incident:1",
+      "source_signing_key_ref": "keyref:cell-01:federation", "target_signing_key_ref": "keyref:cell-02:federation",
+      "limitations": ["summary events only", "does not grant operational authority"]
+    },
+    {
+      "agreement_id": "fpa:cell-03-area-02", "incident_namespace": "incident:synthetic-50k",
+      "source_cell": "cell-03", "target_cell": "area-02-gateway", "source_team_namespace": "team:charlie",
+      "target_team_namespace": "team:area-coordination", "allowed_event_types": ["cell_status", "capability_offer", "handoff_offer", "handoff_acceptance"],
+      "allowed_targets": ["area-02-gateway"], "disclosure_basis": "resource_coordination",
+      "transport_profile_refs": ["encrypted-carry-bundle"], "outbound_only": true,
+      "minimal_disclosure": true, "raw_payload_allowed": false, "authority_escalation": false,
+      "each_party_retains_source_log": true, "valid_from": "2026-07-18T00:00:00Z",
+      "valid_until": "2026-07-20T00:00:00Z", "revocation_ref": "revocations:incident:1",
+      "source_signing_key_ref": "keyref:cell-03:federation", "target_signing_key_ref": "keyref:area-02:federation",
+      "limitations": ["delayed carry is expected", "handoff never replaces source log"]
+    }
+  ],
+  "network_examples": [
+    {"cell": "cell-01", "team": "team:alpha", "identity_namespace": "id:cell-01", "key_namespace": "keys:cell-01", "mqtt_root": "cell-01/local"},
+    {"cell": "cell-02", "team": "team:bravo", "identity_namespace": "id:cell-02", "key_namespace": "keys:cell-02", "mqtt_root": "cell-02/local"},
+    {"cell": "cell-03", "team": "team:charlie", "identity_namespace": "id:cell-03", "key_namespace": "keys:cell-03", "mqtt_root": "cell-03/local"}
+  ],
+  "partition_cases": [
+    {"case_id": "partition-incident", "isolated_level": "IncidentFederation", "parent_available": false, "local_operations_attempted": 4, "local_operations_executed": 4, "local_operations_blocked_by_superior": 0, "distress_preserved": true},
+    {"case_id": "partition-area", "isolated_level": "OperationalArea", "parent_available": false, "local_operations_attempted": 4, "local_operations_executed": 4, "local_operations_blocked_by_superior": 0, "distress_preserved": true},
+    {"case_id": "partition-cell", "isolated_level": "ResponseCell", "parent_available": false, "local_operations_attempted": 4, "local_operations_executed": 4, "local_operations_blocked_by_superior": 0, "distress_preserved": true},
+    {"case_id": "partition-deployment", "isolated_level": "Deployment", "parent_available": false, "local_operations_attempted": 4, "local_operations_executed": 4, "local_operations_blocked_by_superior": 0, "distress_preserved": true},
+    {"case_id": "partition-site", "isolated_level": "Site", "parent_available": false, "local_operations_attempted": 4, "local_operations_executed": 4, "local_operations_blocked_by_superior": 0, "distress_preserved": true}
+  ],
+  "reconciliation_events": [
+    {"event_id": "evt-001", "source_cell": "cell-01", "event_type": "distress_summary", "logical_time": 1, "payload": {"status": "unverified_distress"}},
+    {"event_id": "evt-001", "source_cell": "cell-01", "event_type": "distress_summary", "logical_time": 1, "payload": {"status": "unverified_distress"}},
+    {"event_id": "evt-002", "source_cell": "cell-01", "event_type": "cell_status", "logical_time": 2, "payload": {"state": "operating"}},
+    {"event_id": "evt-002", "source_cell": "cell-01", "event_type": "cell_status", "logical_time": 2, "payload": {"state": "degraded"}},
+    {"event_id": "evt-003", "source_cell": "cell-02", "event_type": "handoff_offer", "logical_time": 3, "conflict_group": "handoff:site-77", "payload": {"target": "cell-03"}},
+    {"event_id": "evt-004", "source_cell": "cell-02", "event_type": "handoff_offer", "logical_time": 4, "conflict_group": "handoff:site-77", "payload": {"target": "cell-04"}},
+    {"event_id": "evt-005", "source_cell": "cell-03", "event_type": "resource_assignment", "logical_time": 5, "conflict_group": "resource:kit-9", "payload": {"target": "cell-01"}},
+    {"event_id": "evt-006", "source_cell": "cell-04", "event_type": "resource_assignment", "logical_time": 2, "conflict_group": "resource:kit-9", "payload": {"target": "cell-02"}},
+    {"event_id": "evt-007", "source_cell": "cell-03", "event_type": "capability_offer", "logical_time": 1, "payload": {"capability": "thermal"}},
+    {"event_id": "evt-008", "source_cell": "cell-04", "event_type": "revocation_update", "logical_time": 6, "payload": {"revision": 2}}
+  ],
+  "hostile_hub_cases": [
+    {"case_id": "hub-accept", "action": "create_operator_acceptance", "outcome": "rejected"},
+    {"case_id": "hub-decrypt", "action": "decrypt_local_content", "outcome": "rejected"},
+    {"case_id": "hub-tx", "action": "order_radio_tx", "outcome": "rejected"},
+    {"case_id": "hub-forge", "action": "forge_cell_event", "outcome": "rejected"},
+    {"case_id": "hub-overwrite", "action": "overwrite_source_log", "outcome": "rejected"},
+    {"case_id": "hub-unsigned-distress", "action": "inject_unsigned_distress", "outcome": "quarantined_distress_preserved"}
+  ]
+}

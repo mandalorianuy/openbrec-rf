@@ -1,0 +1,45 @@
+{
+  "acceptance_version": "1.0.0",
+  "task": "OS-06",
+  "status": "accepted",
+  "decision_at": "2026-07-18",
+  "subject_git_sha": "4c583da636034859b9e430fc44864ee770a53b7a",
+  "receipt": {
+    "path": "evidence/open-spec/os-06/os-06-receipt.json",
+    "sha256": "452be3fc6f1525a0006b5a2afe680f62c39b934c67e64c6ad5cbb76672d37ff6",
+    "result": "passed",
+    "dirty": false
+  },
+  "open_spec_progress": {
+    "accepted_tasks": 6,
+    "total_tasks": 8,
+    "percent": 75.0
+  },
+  "physical_validation_progress": {
+    "accepted_tasks": 0,
+    "total_tasks": 8,
+    "percent": 0.0,
+    "blocks_open_spec": false
+  },
+  "accepted": [
+    "five-level recursive hierarchy with local autonomy at every level",
+    "ResponseCell as the minimum federable operational unit",
+    "isolated team and network namespaces with explicit peer agreements",
+    "optional redundant coordination hubs without cell authority or keys",
+    "outbound-only minimal-disclosure federation and encrypted carry fallback",
+    "stale-trust operation that preserves local distress and restricts sensitive changes",
+    "append-only deterministic reconciliation with visible unresolved conflicts",
+    "50,000-site deterministic simulation correctness reference"
+  ],
+  "not_accepted": [
+    "capacity, throughput, latency or representative performance at 50,000 sites",
+    "physical RF coexistence, coverage, airtime or field readiness",
+    "a single incident-wide LoRa mesh, central service or cloud critical dependency",
+    "hub decryption, operator acceptance, radio TX authority or source-log overwrite",
+    "implementation-specific key custody, enrollment or operational SOP readiness",
+    "OS-07 or later Open Spec tasks",
+    "P1a-01 through P1a-08"
+  ],
+  "next_task": "OS-07",
+  "next_task_started": false
+}

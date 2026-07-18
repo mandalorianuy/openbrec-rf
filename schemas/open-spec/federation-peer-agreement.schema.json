@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openbrec.org/schemas/open-spec/federation-peer-agreement.schema.json",
+  "title": "OpenBREC Federation Peer Agreement",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "agreement_id", "incident_namespace", "source_cell", "target_cell",
+    "source_team_namespace", "target_team_namespace", "allowed_event_types",
+    "allowed_targets", "disclosure_basis", "transport_profile_refs",
+    "outbound_only", "minimal_disclosure", "raw_payload_allowed",
+    "authority_escalation", "each_party_retains_source_log", "valid_from",
+    "valid_until", "revocation_ref", "source_signing_key_ref", "target_signing_key_ref",
+    "limitations"
+  ],
+  "properties": {
+    "agreement_id": {"type": "string", "pattern": "^fpa:[a-z0-9._-]+$"},
+    "incident_namespace": {"type": "string", "minLength": 1},
+    "source_cell": {"type": "string", "minLength": 1},
+    "target_cell": {"type": "string", "minLength": 1},
+    "source_team_namespace": {"type": "string", "minLength": 1},
+    "target_team_namespace": {"type": "string", "minLength": 1},
+    "allowed_event_types": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"enum": ["distress_summary", "cell_status", "capability_offer", "resource_request", "resource_assignment", "handoff_offer", "handoff_acceptance", "policy_intent", "revocation_update"]}},
+    "allowed_targets": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "disclosure_basis": {"enum": ["life_safety", "mutual_aid", "resource_coordination", "explicit_operator_authorization"]},
+    "transport_profile_refs": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "outbound_only": {"const": true},
+    "minimal_disclosure": {"const": true},
+    "raw_payload_allowed": {"const": false},
+    "authority_escalation": {"const": false},
+    "each_party_retains_source_log": {"const": true},
+    "valid_from": {"type": "string", "format": "date-time"},
+    "valid_until": {"type": "string", "format": "date-time"},
+    "revocation_ref": {"type": "string", "minLength": 1},
+    "source_signing_key_ref": {"type": "string", "minLength": 1},
+    "target_signing_key_ref": {"type": "string", "minLength": 1},
+    "limitations": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}}
+  }
+}

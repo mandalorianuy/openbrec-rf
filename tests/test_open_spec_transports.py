@@ -66,19 +66,20 @@ class OpenSpecTransportTests(unittest.TestCase):
 
     def test_os_03_remains_accepted_after_os_05_closure(self) -> None:
         source = PLAN.read_text(encoding="utf-8")
-        self.assertIn("5 / 8", source)
+        self.assertIn("6 / 8", source)
         self.assertIn("OS-03 — aceptada", source)
         self.assertIn("OS-04 — aceptada", source)
         self.assertIn("OS-05 — aceptada", source)
-        self.assertIn("OS-06 — no iniciada", source)
+        self.assertIn("OS-06 — aceptada", source)
+        self.assertIn("OS-07 — no iniciada", source)
         policy = self.load_json(POLICY)
         self.assertEqual(
             policy["progress"],
-            {"accepted_tasks": 5, "total_tasks": 8, "percent": 62.5},
+            {"accepted_tasks": 6, "total_tasks": 8, "percent": 75.0},
         )
         tasks = policy["tasks"]
-        self.assertEqual([task["status"] for task in tasks[:5]], ["accepted"] * 5)
-        self.assertTrue(all(task["status"] == "not_started" for task in tasks[5:]))
+        self.assertEqual([task["status"] for task in tasks[:6]], ["accepted"] * 6)
+        self.assertTrue(all(task["status"] == "not_started" for task in tasks[6:]))
 
     def test_five_profiles_are_open_and_have_no_global_winner(self) -> None:
         value = self.load_json(PROFILES)
@@ -243,21 +244,21 @@ class OpenSpecTransportTests(unittest.TestCase):
         result = self.run_verify("open-spec-transports")
         self.assertEqual(result.returncode, 0, result.stderr)
         summary = json.loads(result.stdout)["summary"]
-        self.assertEqual(summary["spec_tasks_accepted"], 5)
+        self.assertEqual(summary["spec_tasks_accepted"], 6)
         self.assertEqual(summary["spec_tasks_total"], 8)
         self.assertEqual(summary["bearer_profiles"], 5)
         self.assertEqual(summary["conforming_examples"], 5)
         self.assertEqual(summary["source_records"], 7)
         self.assertFalse(summary["global_winner_selected"])
         self.assertFalse(summary["physical_rf_validation_blocks_publication"])
-        self.assertEqual(summary["next_task"], "OS-06")
+        self.assertEqual(summary["next_task"], "OS-07")
         self.assertFalse(summary["next_task_started"])
 
     def test_board_readme_and_ci_publish_os_03_gate(self) -> None:
         board = (ROOT / "DELIVERY_BOARD.md").read_text(encoding="utf-8")
         readme = (ROOT / "README.md").read_text(encoding="utf-8")
         workflow = (ROOT / ".github/workflows/validate.yml").read_text(encoding="utf-8")
-        self.assertIn("Open Spec `5 / 8`", board)
+        self.assertIn("Open Spec `6 / 8`", board)
         self.assertIn("[x] `OS-03`", board)
         self.assertIn("OS-06", board)
         self.assertIn("openbrec.verify open-spec-transports", readme)

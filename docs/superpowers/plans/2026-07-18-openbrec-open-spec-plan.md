@@ -3,7 +3,7 @@
 - Estado: activo
 - Autoridad principal: Open Spec
 - Versión objetivo: `1.0.0-draft.1`
-- Progreso: `5 / 8` tasks aceptadas (`62.5%`)
+- Progreso: `6 / 8` tasks aceptadas (`75.0%`)
 - Carril físico: P1a opcional, `0 / 8`, no bloquea publicación
 
 ## Frontera normativa
@@ -41,8 +41,11 @@ invalida el contrato ni habilita claims físicos.
   mínimo de una modalidad y referencia tri-modal opcional; extensiones bajo
   namespace/schema/reviews propios, abstención, privacidad, datasets con
   provenance y resultados negativos. Ningún indicio confirma presencia o ausencia.
-- [ ] **OS-06 — no iniciada:** topologías recursivas, autonomía local, federación
-  y operación de múltiples equipos/redes.
+- [x] **OS-06 — aceptada:** jerarquía recursiva
+  `IncidentFederation → OperationalArea → ResponseCell → Deployment → Site`,
+  con autonomía local en cada nivel, redes aisladas por celda, peering explícito,
+  hubs opcionales no autoritativos y reconciliación append-only determinística.
+  La simulación de 50.000 sitios prueba corrección, no capacidad ni readiness.
 - [ ] **OS-07 — no iniciada:** planos, BOMs de referencia, adaptadores y guías de
   construcción/reutilización.
 - [ ] **OS-08 — no iniciada:** conformance kit, matriz de decisión, publicación y
@@ -53,7 +56,7 @@ invalida el contrato ni habilita claims físicos.
 El numerador Open Spec cuenta tasks normativas aceptadas. No exige compra,
 custodia ni ensayo físico. Los carriles se reportan siempre separados:
 
-- Open Spec: `5 / 8` (`62.5%`).
+- Open Spec: `6 / 8` (`75.0%`).
 - P1a física opcional: `0 / 8` (`0%`).
 
 Un fixture sintético puede acreditar conformance o simulación, pero no
@@ -62,4 +65,4 @@ que documenta; nunca convierte un candidato en requisito universal.
 
 ## Próxima task
 
-OS-06 es la siguiente task gobernada. Este cierre no la inicia.
+OS-07 es la siguiente task gobernada. Este cierre no la inicia.

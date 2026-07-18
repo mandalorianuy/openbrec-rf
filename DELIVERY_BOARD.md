@@ -4,8 +4,8 @@
 - Plan activo aprobado: `docs/superpowers/plans/2026-07-18-openbrec-open-spec-plan.md`
 - Último plan completado: `docs/superpowers/plans/2026-07-17-openbrec-p0-simulated-addons-plan.md`
 - Baseline cerrado: `docs/superpowers/plans/2026-07-17-openbrec-m0-executable-plan.md`
-- Estado real: M0/P0 completos; Open Spec `5 / 8` (`62.5%`); P1a física `0 / 8` (`0%`)
-- Regla de avance: OS-06 es la siguiente task; P1a es evidencia opcional y no bloquea la spec
+- Estado real: M0/P0 completos; Open Spec `6 / 8` (`75.0%`); P1a física `0 / 8` (`0%`)
+- Regla de avance: OS-07 es la siguiente task; P1a es evidencia opcional y no bloquea la spec
 
 ## Decisiones de gobernanza cerradas
 
@@ -312,7 +312,7 @@ P0 está cerrado.
 
 ## Now — Open Spec
 
-Progreso de aceptación: Open Spec `5 / 8` (`62.5%`). Los contratos y perfiles
+Progreso de aceptación: Open Spec `6 / 8` (`75.0%`). Los contratos y perfiles
 abiertos avanzan sin exigir hardware propio; los evidence packs sólo elevan el
 nivel de evidencia de una implementación exacta.
 
@@ -322,7 +322,9 @@ nivel de evidencia de una implementación exacta.
 - [x] `OS-03`: cinco perfiles multi-bearer abiertos, selección por misión y sin ganador universal.
 - [x] `OS-04`: mensajería, estado, SOS y ubicación interoperables.
 - [x] `OS-05`: beacons y extensiones modales.
-- [ ] `OS-06`: federación recursiva y autonomía local.
+- [x] `OS-06`: federación recursiva y autonomía local; cinco niveles autónomos,
+  aislamiento por ResponseCell, peering explícito, hubs no autoritativos y
+  reconciliación determinística. La referencia 50k no acredita capacidad física.
 - [ ] `OS-07`: planos, BOMs y guías de reutilización.
 - [ ] `OS-08`: conformance kit y publicación.
 
@@ -340,7 +342,7 @@ identidad, diagnóstico ni ausencia. Las extensiones requieren namespace, schema
 dataset y reviews propios. Los fixtures sintéticos prueban conformance, abstención
 y replay determinístico, no performance física ni representatividad.
 
-La próxima task es OS-06 y no fue iniciada en OS-05.
+La próxima task es OS-07 y no fue iniciada en OS-06.
 
 ## Optional validation lane — P1a banco y conducted
 

@@ -66,18 +66,18 @@ def _read_json(path: Path, label: str) -> tuple[dict[str, Any] | None, list[str]
 def _validate_policy(value: dict[str, Any]) -> list[str]:
     errors: list[str] = []
     if value.get("progress") != {
-        "accepted_tasks": 5,
+        "accepted_tasks": 6,
         "total_tasks": 8,
-        "percent": 62.5,
+        "percent": 75.0,
     }:
-        errors.append("open-spec progress must be 5 / 8")
+        errors.append("open-spec progress must be 6 / 8")
     tasks = value.get("tasks")
     if not isinstance(tasks, list) or len(tasks) != 8:
         return [*errors, "open-spec policy must contain eight tasks"]
-    if [task.get("status") for task in tasks[:5]] != ["accepted"] * 5:
-        errors.append("OS-01 through OS-05 must be accepted")
-    if any(task.get("status") != "not_started" for task in tasks[5:]):
-        errors.append("OS-06 through OS-08 must remain not_started")
+    if [task.get("status") for task in tasks[:6]] != ["accepted"] * 6:
+        errors.append("OS-01 through OS-06 must be accepted")
+    if any(task.get("status") != "not_started" for task in tasks[6:]):
+        errors.append("OS-07 and OS-08 must remain not_started")
     if tasks[3].get("gate") != "open-spec-messaging":
         errors.append("OS-04 must use the open-spec-messaging gate")
     return errors
@@ -415,10 +415,11 @@ def run_open_spec_messaging_gate(
         )
     normalized_plan = " ".join(plan.split())
     for marker in (
-        "5 / 8",
+        "6 / 8",
         "OS-04 — aceptada",
         "OS-05 — aceptada",
-        "OS-06 — no iniciada",
+        "OS-06 — aceptada",
+        "OS-07 — no iniciada",
         "texto breve, estado, SOS y ubicación",
         "unverified_distress",
     ):
@@ -472,7 +473,7 @@ def run_open_spec_messaging_gate(
         [],
         {
             "spec_version": policy.get("spec_version") if policy else None,
-            "spec_tasks_accepted": 5,
+            "spec_tasks_accepted": 6,
             "spec_tasks_total": 8,
             "message_profiles": (
                 len(profiles.get("message_profiles", [])) if profiles else 0
@@ -480,7 +481,7 @@ def run_open_spec_messaging_gate(
             "conforming_contents": conforming,
             **replay_summary,
             "physical_delivery_blocks_publication": False,
-            "next_task": "OS-06",
+            "next_task": "OS-07",
             "next_task_started": False,
         },
         inputs,
