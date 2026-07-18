@@ -479,14 +479,16 @@ Referencias externas:
 
 ## 16. Gate de aprobación
 
-La matriz y su revisión multi-bearer fueron aprobadas el 2026-07-17. Después de
-demostrar M0 exit, se aprobó el plan P0 de nueve tasks completamente simuladas.
+La matriz y su revisión multi-bearer fueron aprobadas el 2026-07-17. M0 y P0
+cerraron sus exits; el plan P1a de ocho tasks quedó aprobado para secuenciación.
 La autorización efectiva sigue siendo task-by-task desde `DELIVERY_BOARD.md`:
-`P0-01` es elegible, pero este cambio no la inicia. P1a, compra, hardware, TX y
-campo requieren planes y autorizaciones posteriores.
+`P1a-01` es la siguiente task, pero este readiness no la inicia. Compra,
+préstamo, hardware, conducted, personas, captura y TX requieren las
+autorizaciones específicas del plan; TX radiado pertenece a P1b.
 
 ## 17. Historial de gobernanza
 
 | Fecha | Estado anterior | Estado nuevo | Evidencia/razón |
 |---|---|---|---|
 | 2026-07-17 | M0 era precondición; P0 no planificado | M0 aceptado; plan P0 simulado aprobado, `0 / 9` | Merge M0 `0dee758`; plan P0 y registro de residuales, sin implementación addon. |
+| 2026-07-17 | P0 cerrado; P1a sin plan activo | Plan P1a aprobado, readiness fail-closed, `0 / 8` | Ocho tasks, schema de manifest, política de autorización y residuales; ninguna acción física autorizada. |

@@ -1,0 +1,66 @@
+{
+  "policy_version": "1.0.0",
+  "phase": "P1a",
+  "decision_at": "2026-07-17",
+  "authority_scope": "repository_readiness_only",
+  "automatic_purchase": false,
+  "progress": {
+    "accepted_tasks": 0,
+    "total_tasks": 8,
+    "percent": 0.0
+  },
+  "authorized_repository_actions": [
+    "plan",
+    "contract",
+    "gate",
+    "synthetic_fixture",
+    "receipt"
+  ],
+  "actions": {
+    "purchase": {
+      "state": "not_authorized",
+      "authorization_required": true,
+      "required_evidence": ["budget_owner", "maximum_amount", "supplier_or_channel", "candidate_id"]
+    },
+    "loan": {
+      "state": "not_authorized",
+      "authorization_required": true,
+      "required_evidence": ["asset_owner", "custodian", "return_terms", "candidate_id"]
+    },
+    "hardware_use": {
+      "state": "not_authorized",
+      "authorization_required": true,
+      "required_evidence": ["capability_manifest", "custody_receipt", "safety_preflight"]
+    },
+    "conducted_test": {
+      "state": "not_authorized",
+      "authorization_required": true,
+      "required_evidence": ["exact_test_setup", "dummy_load_or_measured_enclosure", "operator", "stop_conditions"]
+    },
+    "human_study": {
+      "state": "not_authorized",
+      "authorization_required": true,
+      "required_evidence": ["protocol", "consent", "privacy_review", "responsible_reviewer"]
+    },
+    "real_capture": {
+      "state": "not_authorized",
+      "authorization_required": true,
+      "required_evidence": ["capture_authorization", "retention_policy", "review_owner", "deletion_or_preservation_path"]
+    },
+    "radiated_tx": {
+      "state": "prohibited_in_p1a",
+      "authorization_required": true,
+      "required_evidence": ["P1b_plan", "jurisdiction_profile_or_emergency_assumed_risk", "double_authorization", "kill_switch"]
+    }
+  },
+  "tasks": [
+    {"id": "P1a-01", "status": "not_started", "owner": "hardware-custody-owner", "depends_on": ["P0-09", "explicit_asset_authorization"], "evidence_dir": "evidence/p1a/p1a-01"},
+    {"id": "P1a-02", "status": "not_started", "owner": "radio-transport-maintainer", "depends_on": ["P1a-01"], "evidence_dir": "evidence/p1a/p1a-02"},
+    {"id": "P1a-03", "status": "not_started", "owner": "product-ux-reviewer", "depends_on": ["P1a-01", "explicit_human_study_authorization"], "evidence_dir": "evidence/p1a/p1a-03"},
+    {"id": "P1a-04", "status": "not_started", "owner": "beacon-science-maintainer", "depends_on": ["P1a-01", "explicit_capture_authorization"], "evidence_dir": "evidence/p1a/p1a-04"},
+    {"id": "P1a-05", "status": "not_started", "owner": "beacon-science-maintainer", "depends_on": ["P1a-04"], "evidence_dir": "evidence/p1a/p1a-05"},
+    {"id": "P1a-06", "status": "not_started", "owner": "energy-maintainer", "depends_on": ["P1a-01", "P1a-02", "P1a-04"], "evidence_dir": "evidence/p1a/p1a-06"},
+    {"id": "P1a-07", "status": "not_started", "owner": "energy-maintainer", "depends_on": ["P1a-06"], "evidence_dir": "evidence/p1a/p1a-07"},
+    {"id": "P1a-08", "status": "not_started", "owner": "core-replay-maintainer", "depends_on": ["P1a-02", "P1a-06"], "evidence_dir": "evidence/p1a/p1a-08"}
+  ]
+}

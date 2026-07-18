@@ -1,10 +1,11 @@
 # OpenBREC RF — Delivery Board
 
 - Autoridad de secuencia: este board
+- Plan activo aprobado: `docs/superpowers/plans/2026-07-17-openbrec-p1a-bench-conducted-plan.md`
 - Último plan completado: `docs/superpowers/plans/2026-07-17-openbrec-p0-simulated-addons-plan.md`
 - Baseline cerrado: `docs/superpowers/plans/2026-07-17-openbrec-m0-executable-plan.md`
-- Estado real: M0 y P0 completos; P0-01–P0-09 aceptadas (`9 / 9`, `100%`)
-- Regla de avance: P1a requiere plan y autorización separados; ninguna task se inicia automáticamente
+- Estado real: M0/P0 completos; readiness P1a implementado; P1a `0 / 8` (`0%`)
+- Regla de avance: sólo P1a-01 puede seguir, después de autorización explícita de asset/custodia; ninguna acción física se inicia automáticamente
 
 ## Decisiones de gobernanza cerradas
 
@@ -14,6 +15,7 @@
 - [x] Plan M0 aprobado para ejecución el 2026-07-17.
 - [x] Exit M0 aceptado y mergeado el 2026-07-17.
 - [x] Plan P0 completamente simulado aprobado el 2026-07-17.
+- [x] Plan P1a de banco/conducted y política fail-closed aprobados el 2026-07-17.
 
 ## Now — M0 Fundación
 
@@ -301,13 +303,29 @@ su implementación, validación, review y receipt; planificación o inicio no su
 - Residuales: P0-R001–P0-R015 tienen estado, owner, gate/plan y stop condition;
   ninguno queda vencido en P0-09.
 
-P0 está cerrado. La siguiente task gobernada es `P1a-01` (capability manifests
-y adquisición/préstamo de una unidad por categoría), pero no está iniciada ni
-autorizada: antes requiere un plan P1a aprobado y autorización explícita para
-hardware/adquisición.
+P0 está cerrado.
 
-Último plan: `docs/superpowers/plans/2026-07-17-openbrec-p0-simulated-addons-plan.md`.
-Residuales: `docs/governance/P0_RESIDUAL_REGISTER.md`.
+## Next — P1a banco y conducted
+
+Progreso de aceptación: `0 / 8` (`0%`). El paquete de readiness no suma una
+task P1a.
+
+- [ ] `P1a-01`: assets exactos, custodia y capability manifests.
+- [ ] `P1a-02`: LoRaWAN/Meshtastic/MeshCore/RNode conducted.
+- [ ] `P1a-03`: comprensión de terminal con 8+8 participantes.
+- [ ] `P1a-04`: un beacon tri-modal aislado.
+- [ ] `P1a-05`: tres beacons y fallos correlacionados.
+- [ ] `P1a-06`: caracterización energética exacta.
+- [ ] `P1a-07`: ensayo storage-only 72 horas.
+- [ ] `P1a-08`: tres ResponseCells por cable/IP.
+
+Readiness: plan de ocho tasks, schema de manifest exacto, política que deja
+compra/préstamo/hardware/conducted/personas/captura como `not_authorized`, TX
+radiado `prohibited_in_p1a` y ocho residuales gobernados. `P1a-01` queda como
+siguiente task, no iniciada: requiere autorización explícita de asset/custodia.
+
+Plan activo: `docs/superpowers/plans/2026-07-17-openbrec-p1a-bench-conducted-plan.md`.
+Residuales activos: `docs/governance/p1a-residuals.json`.
 
 Frontera: P0 no autoriza compra, hardware, TX, captura real, ensayo de 72 horas,
 campo ni claims físicos. Solar, storage, generadores, conducted/radiated radio,
