@@ -178,7 +178,8 @@ def run_readiness_gate(
         errors.append(f"plan unreadable: {exc}")
         plan = ""
     for marker in (
-        "Estado: aprobado para secuenciación",
+        "Estado: preservado como validación física opcional",
+        "no bloquea Open Spec",
         "0 / 8",
         "P1a-01 no iniciada",
         "compra/préstamo no autorizado",

@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openbrec.org/schemas/open-spec/evidence-claim/1.0.0",
+  "title": "OpenBREC evidence-scoped conformance claim",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["claim_version", "spec_version", "profile_id", "evidence_level", "claim_scope", "limitations"],
+  "properties": {
+    "claim_version": {"const": "1.0.0"},
+    "spec_version": {"type": "string", "minLength": 1},
+    "profile_id": {"type": "string", "pattern": "^[a-z0-9.-]+$"},
+    "evidence_level": {"enum": ["unverified", "specified", "simulated", "lab_validated", "field_validated"]},
+    "claim_scope": {"type": "string", "minLength": 1},
+    "implementation_id": {"type": "string", "minLength": 1},
+    "physical_evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["configuration_sha256", "evidence_pack_sha256", "tested_at"],
+      "properties": {
+        "configuration_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "evidence_pack_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "tested_at": {"type": "string", "format": "date-time"}
+      }
+    },
+    "limitations": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"evidence_level": {"enum": ["lab_validated", "field_validated"]}}, "required": ["evidence_level"]},
+      "then": {"required": ["implementation_id", "physical_evidence"]}
+    }
+  ]
+}

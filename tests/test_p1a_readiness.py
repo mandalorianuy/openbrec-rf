@@ -32,16 +32,19 @@ class P1AReadinessTests(unittest.TestCase):
         self.assertIn("--schema", result.stdout)
         self.assertIn("--residuals", result.stdout)
 
-    def test_plan_freezes_eight_tasks_without_starting_p1a_01(self) -> None:
+    def test_plan_preserves_eight_optional_tasks_without_starting_p1a_01(self) -> None:
         self.assertTrue(PLAN.is_file())
         source = PLAN.read_text(encoding="utf-8")
-        self.assertIn("Estado: aprobado para secuenciación", source)
+        self.assertIn("Estado: preservado como validación física opcional", source)
+        self.assertIn("no bloquea Open Spec", source)
         self.assertIn("0 / 8", source)
         for index in range(1, 9):
             self.assertIn(f"P1a-{index:02d}", source)
         self.assertIn("P1a-01 no iniciada", source)
         self.assertIn("compra/préstamo no autorizado", source)
         self.assertIn("TX radiado prohibido", source)
+        result = self.run_verify("p1a-readiness")
+        self.assertEqual(result.returncode, 0, result.stderr)
 
     def test_policy_denies_external_and_physical_actions_by_default(self) -> None:
         self.assertTrue(POLICY.is_file())

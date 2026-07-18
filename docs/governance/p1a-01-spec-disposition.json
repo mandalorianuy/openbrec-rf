@@ -1,0 +1,16 @@
+{
+  "disposition_version": "1.0.0",
+  "decision_at": "2026-07-18",
+  "decision": "preserved_as_optional_validation_lane",
+  "blocks_open_spec": false,
+  "physical_validation_status": "blocked_external_evidence",
+  "preserved_artifacts": [
+    "docs/superpowers/plans/2026-07-17-openbrec-p1a-bench-conducted-plan.md",
+    "docs/governance/p1a-01-asset-authorization-request.json",
+    "evidence/p1a/p1a-01/blocked-receipt.json",
+    "evidence/p1a/p1a-01/blocked-acceptance.json",
+    "schemas/p1a/capability-manifest.schema.json"
+  ],
+  "new_authority": "docs/superpowers/plans/2026-07-18-openbrec-open-spec-plan.md",
+  "rule": "Physical evidence changes only evidence_level for an exact implementation; it does not gate publication or make a reference candidate mandatory."
+}
