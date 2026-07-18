@@ -57,18 +57,18 @@ def _read_json(path: Path, label: str) -> tuple[dict[str, Any] | None, list[str]
 def _validate_policy(value: dict[str, Any]) -> list[str]:
     errors: list[str] = []
     if value.get("progress") != {
-        "accepted_tasks": 5,
+        "accepted_tasks": 6,
         "total_tasks": 8,
-        "percent": 62.5,
+        "percent": 75.0,
     }:
-        errors.append("open-spec progress must be 5 / 8")
+        errors.append("open-spec progress must be 6 / 8")
     tasks = value.get("tasks")
     if not isinstance(tasks, list) or len(tasks) != 8:
         return [*errors, "open-spec policy must contain eight tasks"]
-    if [task.get("status") for task in tasks[:5]] != ["accepted"] * 5:
-        errors.append("OS-01 through OS-05 must be accepted")
-    if any(task.get("status") != "not_started" for task in tasks[5:]):
-        errors.append("OS-06 through OS-08 must remain not_started")
+    if [task.get("status") for task in tasks[:6]] != ["accepted"] * 6:
+        errors.append("OS-01 through OS-06 must be accepted")
+    if any(task.get("status") != "not_started" for task in tasks[6:]):
+        errors.append("OS-07 and OS-08 must remain not_started")
     if tasks[4].get("gate") != "open-spec-beacons":
         errors.append("OS-05 must use the open-spec-beacons gate")
     return errors
@@ -467,7 +467,7 @@ def run_open_spec_beacon_gate(
         [],
         {
             "spec_version": policy.get("spec_version") if policy else None,
-            "spec_tasks_accepted": 5,
+            "spec_tasks_accepted": 6,
             "spec_tasks_total": 8,
             "core_modality_profiles": len(
                 profiles.get("core_modality_profiles", []) if profiles else []
@@ -479,7 +479,7 @@ def run_open_spec_beacon_gate(
             "dataset_manifests": datasets,
             **replay_summary,
             "physical_detection_blocks_publication": False,
-            "next_task": "OS-06",
+            "next_task": "OS-07",
             "next_task_started": False,
         },
         inputs,

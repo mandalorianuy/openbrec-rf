@@ -18,7 +18,7 @@ OpenBREC RF es una plataforma open source, modular y offline-first para investig
 > El sistema produce **indicios**, no diagnósticos ni certezas de víctima. La ausencia de RF nunca descarta una persona atrapada.
 
 > [!NOTE]
-> Estado actual: M0 y P0 simulado completos. La autoridad actual es spec-first: Open Spec está `5 / 8`, mientras P1a física opcional permanece `0 / 8`. Publicar contratos y perfiles no requiere poseer hardware; evidence packs físicos sólo elevan claims de una implementación exacta. No es una plataforma operacional ni un perfil de campo.
+> Estado actual: M0 y P0 simulado completos. La autoridad actual es spec-first: Open Spec está `6 / 8`, mientras P1a física opcional permanece `0 / 8`. Publicar contratos y perfiles no requiere poseer hardware; evidence packs físicos sólo elevan claims de una implementación exacta. No es una plataforma operacional ni un perfil de campo.
 
 P1a-01 está `blocked_external_evidence`: su gate existe, pero faltan nueve assets
 reales autorizados, inspeccionados y bajo custodia. Se comprueba sin promover la

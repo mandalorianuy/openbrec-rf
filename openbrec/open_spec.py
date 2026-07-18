@@ -56,11 +56,11 @@ def _validate_policy(value: dict[str, Any]) -> list[str]:
     if value.get("main_lane") != "open_spec":
         errors.append("main_lane must be open_spec")
     if value.get("progress") != {
-        "accepted_tasks": 5,
+        "accepted_tasks": 6,
         "total_tasks": 8,
-        "percent": 62.5,
+        "percent": 75.0,
     }:
-        errors.append("open-spec progress must be 5 / 8")
+        errors.append("open-spec progress must be 6 / 8")
     publication = value.get("publication")
     if not isinstance(publication, dict):
         errors.append("publication policy is required")
@@ -97,8 +97,8 @@ def _validate_policy(value: dict[str, Any]) -> list[str]:
         task.get("id") for task in tasks if isinstance(task, dict)
     ] != [f"OS-{index:02d}" for index in range(1, 9)]:
         errors.append("tasks must cover OS-01 through OS-08 in order")
-    elif any(task.get("status") != "accepted" for task in tasks[:5]) or any(
-        task.get("status") != "not_started" for task in tasks[5:]
+    elif any(task.get("status") != "accepted" for task in tasks[:6]) or any(
+        task.get("status") != "not_started" for task in tasks[6:]
     ):
         errors.append("only OS-01 through OS-05 may be accepted")
     return errors
@@ -224,13 +224,14 @@ def run_open_spec_gate(
         plan = ""
     for marker in (
         "Autoridad principal: Open Spec",
-        "5 / 8",
+        "6 / 8",
         "OS-01 — aceptada",
         "OS-02 — aceptada",
         "OS-03 — aceptada",
         "OS-04 — aceptada",
         "OS-05 — aceptada",
-        "OS-06 — no iniciada",
+        "OS-06 — aceptada",
+        "OS-07 — no iniciada",
         "P1a es un carril opcional",
     ):
         if marker not in plan:
@@ -266,12 +267,12 @@ def run_open_spec_gate(
         [],
         {
             "spec_version": policy.get("spec_version") if policy else None,
-            "spec_tasks_accepted": 5,
+            "spec_tasks_accepted": 6,
             "spec_tasks_total": 8,
             "reference_profiles": len(profiles.get("profiles", [])) if profiles else 0,
             "physical_validation_tasks_accepted": 0,
             "physical_evidence_blocks_publication": False,
-            "next_task": "OS-06",
+            "next_task": "OS-07",
             "next_task_started": False,
         },
         inputs,
