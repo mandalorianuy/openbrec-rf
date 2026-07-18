@@ -55,6 +55,8 @@ from openbrec.federation import run_federation_gate
 from openbrec.terminal import PUBLIC_PROJECTION_PATH as TERMINAL_PUBLIC_PATH
 from openbrec.terminal import P1A_PROTOCOL_PATH, SCENARIO_PATH as TERMINAL_SCENARIO_PATH
 from openbrec.terminal import run_accessibility_gate, run_terminal_gate
+from openbrec.beacons import CAMPAIGN_PATH as BEACON_CAMPAIGN_PATH
+from openbrec.beacons import run_beacon_gate
 
 DRAFT_2020_12 = "https://json-schema.org/draft/2020-12/schema"
 VERIFY_VERSION = "0.1.0"
@@ -69,6 +71,7 @@ P0_MESSAGE_GATES = {
 P0_TRANSPORT_GATES = {"transport-comparison", "malicious-transport"}
 P0_FEDERATION_GATES = {"federation-scale", "federation-reconciliation"}
 P0_TERMINAL_GATES = {"terminal-ux", "accessibility"}
+P0_BEACON_GATES = {"beacon-replay", "beacon-adversarial", "retention-fault"}
 PRIVACY_SAFETY_GATES = {
     "review-quarantine",
     "life-safety-preservation",
@@ -175,6 +178,10 @@ def _responsible_role(gate: str) -> str:
     if gate == "terminal-ux":
         return "product-ux-reviewer"
     if gate == "accessibility":
+        return "privacy-safety-reviewer"
+    if gate == "beacon-replay":
+        return "beacon-science-maintainer"
+    if gate in {"beacon-adversarial", "retention-fault"}:
         return "privacy-safety-reviewer"
     if gate in PRIVACY_SAFETY_GATES:
         return "privacy-safety-reviewer"
@@ -659,6 +666,9 @@ def _parser() -> argparse.ArgumentParser:
         "federation-reconciliation",
         "terminal-ux",
         "accessibility",
+        "beacon-replay",
+        "beacon-adversarial",
+        "retention-fault",
         "review-quarantine",
         "life-safety-preservation",
         "privacy",
@@ -1012,6 +1022,27 @@ def main(argv: Sequence[str] | None = None) -> int:
                 root / "apps/web/src/style.css",
                 root / "apps/web/public/sw.js",
                 root / "apps/web/scripts/ui-smoke.mjs",
+            ]
+        )
+    elif args.gate in P0_BEACON_GATES:
+        errors, warnings, summary = run_beacon_gate(root, args.gate)
+        scope = {
+            "beacon-replay": "deterministic_multimodal_candidate_fusion",
+            "beacon-adversarial": "spoofing_ood_and_shared_cause_disposition",
+            "retention-fault": "authorized_capture_preservation_and_disposition",
+        }[args.gate]
+        inputs.extend(
+            [
+                root / BEACON_CAMPAIGN_PATH,
+                root / "openbrec/beacons.py",
+                root / "schemas/addons/1.0.0/beacon-capability.schema.json",
+                root / "schemas/addons/1.0.0/beacon-health.schema.json",
+                root / "schemas/addons/1.0.0/beacon-observation.schema.json",
+                root / "schemas/addons/1.0.0/beacon-placement.schema.json",
+                root
+                / "schemas/addons/1.0.0/capture-authorization-event.schema.json",
+                root / "schemas/addons/1.0.0/review-task-event.schema.json",
+                root / "schemas/core/1.0.0/preservation-record.schema.json",
             ]
         )
     elif args.gate == "review-quarantine":

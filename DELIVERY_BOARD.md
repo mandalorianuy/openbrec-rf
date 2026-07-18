@@ -3,8 +3,8 @@
 - Autoridad de secuencia: este board
 - Plan activo aprobado: `docs/superpowers/plans/2026-07-17-openbrec-p0-simulated-addons-plan.md`
 - Baseline cerrado: `docs/superpowers/plans/2026-07-17-openbrec-m0-executable-plan.md`
-- Estado real: M0 completo; P0-01–P0-06 aceptadas (`6 / 9`, `66.7%`)
-- Regla de avance: sólo `P0-07` queda elegible; ninguna task se inicia automáticamente
+- Estado real: M0 completo; P0-01–P0-07 aceptadas (`7 / 9`, `77.8%`)
+- Regla de avance: sólo `P0-08` queda elegible; ninguna task se inicia automáticamente
 
 ## Decisiones de gobernanza cerradas
 
@@ -97,7 +97,7 @@ Registro obligatorio: `docs/governance/M0_RESIDUAL_REGISTER.md`.
 
 ## Now — P0 addons completamente simulados
 
-Progreso de aceptación: `6 / 9` (`66.7%`). Una task marcada sólo cambia después de
+Progreso de aceptación: `7 / 9` (`77.8%`). Una task marcada sólo cambia después de
 su implementación, validación, review y receipt; planificación o inicio no suman.
 
 - [x] `P0-01`: contratos addon, catálogo, fixtures y modelos generados.
@@ -106,7 +106,7 @@ su implementación, validación, review y receipt; planificación o inicio no su
 - [x] `P0-04`: comparación Meshtastic/MeshCore/Reticulum por TransportProfile.
 - [x] `P0-05`: federación 50k sites/60 cells/5 areas/2 hubs.
 - [x] `P0-06`: terminal offline para texto, estado, SOS y ubicación.
-- [ ] `P0-07`: beacons acústico/PIR/térmico, fusión, review y retención.
+- [x] `P0-07`: beacons acústico/PIR/térmico, fusión, review y retención.
 - [ ] `P0-08`: campaña integrada con fallos y adversarios.
 - [ ] `P0-09`: exit P0, support status por perfil y decisión P1a.
 
@@ -246,7 +246,29 @@ su implementación, validación, review y receipt; planificación o inicio no su
   resuelto para P0-06 y planificado sólo para P0-07; P0-R013 gobierna la falta
   de contrato normativo para el log genérico de interacción. TM-013 sigue High.
 
-Única task elegible: `P0-07`. No está iniciada por este cierre.
+### Evidencia P0-07
+
+- Campaña: tres beacons, 12 observaciones, tres health records, cuatro
+  placements y acoustic features/PIR/thermal low-resolution bajo provenance
+  sintética CC0-1.0; cuatro environment classes reales quedan omitidas visibles.
+- Fusión: cinco casos cubren single, corroborated, artifact, insufficient y
+  unknown; diez órdenes producen una sola proyección, 12/12 inputs se
+  reconcilian y causas/modalidades correlacionadas no cuentan independientes.
+- Adversarios: 12/12 casos de sonido, calor, movimiento, masking, node move,
+  reloj, raw injection y causa común tienen disposición explícita; cero
+  confirmación de presencia, ausencia, promoción raw o independencia falsa.
+- Retención: 7/7 casos reconciliados; cuatro materiales modelados trazan cuatro
+  receipts, tres life-safety se preservan y dos pasan a hold. Cero captura no
+  autorizada, material sin cifrado, over-cap o borrado sin review/receipt.
+- Receipts: `evidence/p0/p0-07/`, evaluados sobre
+  `b5ddce10f10615e8247bdb2947a4943d55bf24a3` con `dirty: false` e integridad
+  canónica aprobada.
+- Review: `docs/security/2026-07-17-p0-07-beacon-fusion-retention-review.md`.
+- Residuales: P0-R004 queda controlado para simulación y planificado para P1;
+  P0-R010 se resuelve; P0-R014 gobierna el contrato pendiente de hold/deletion
+  y disposition receipt. TM-011/TM-012 permanecen High.
+
+Única task elegible: `P0-08`. No está iniciada por este cierre.
 
 Plan: `docs/superpowers/plans/2026-07-17-openbrec-p0-simulated-addons-plan.md`.
 Residuales: `docs/governance/P0_RESIDUAL_REGISTER.md`.
