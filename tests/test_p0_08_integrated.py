@@ -126,14 +126,20 @@ class P008IntegratedCampaignTests(unittest.TestCase):
         workflow = (REPO_ROOT / ".github/workflows/validate.yml").read_text(
             encoding="utf-8"
         )
+        integrated_job = workflow.split("  integrated-simulation:", 1)[1].split(
+            "  supply-chain:", 1
+        )[0]
         self.assertIn(
             "openbrec.verify p0-integrated --scenario " + SCENARIO,
-            workflow,
+            integrated_job,
         )
         self.assertIn(
             "evidence/p0/p0-08/p0-integrated/p0-08-receipt.json",
-            workflow,
+            integrated_job,
         )
+        self.assertIn("actions/setup-node@v6", integrated_job)
+        self.assertIn("pnpm --dir apps/web install --frozen-lockfile", integrated_job)
+        self.assertIn("playwright install --with-deps chromium", integrated_job)
 
 
 if __name__ == "__main__":

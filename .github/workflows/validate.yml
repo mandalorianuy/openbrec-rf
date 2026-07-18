@@ -234,7 +234,14 @@ jobs:
       - uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
         with:
           version: "0.11.1"
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+          package-manager-cache: false
+      - run: corepack enable && corepack install --global pnpm@11.9.0
       - run: uv sync --frozen
+      - run: pnpm --dir apps/web install --frozen-lockfile
+      - run: pnpm --dir apps/web exec playwright install --with-deps chromium
       - run: uv run --offline python -m openbrec.verify p0-integrated --scenario fixtures/p0/integrated/campaign.json --receipt evidence/p0/p0-08/p0-integrated/p0-08-receipt.json
       - uses: actions/upload-artifact@v7
         if: always()
