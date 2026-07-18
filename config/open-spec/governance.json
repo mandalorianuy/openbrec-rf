@@ -2,7 +2,7 @@
   "governance_version": "1.0.0",
   "spec_version": "1.0.0-draft.1",
   "main_lane": "open_spec",
-  "progress": {"accepted_tasks": 1, "total_tasks": 8, "percent": 12.5},
+  "progress": {"accepted_tasks": 2, "total_tasks": 8, "percent": 25.0},
   "publication": {
     "requires_owned_hardware": false,
     "requires_physical_evidence": false,
@@ -23,7 +23,7 @@
   "evidence_levels": ["unverified", "specified", "simulated", "lab_validated", "field_validated"],
   "tasks": [
     {"id": "OS-01", "status": "accepted", "title": "Spec and evidence boundary", "gate": "open-spec"},
-    {"id": "OS-02", "status": "not_started", "title": "Open energy and solar architectures", "gate": "open-spec-energy"},
+    {"id": "OS-02", "status": "accepted", "title": "Open energy and solar architectures", "gate": "open-spec-energy"},
     {"id": "OS-03", "status": "not_started", "title": "Open multi-bearer transport profiles", "gate": "open-spec-transports"},
     {"id": "OS-04", "status": "not_started", "title": "Human messaging and SOS interoperability", "gate": "open-spec-messaging"},
     {"id": "OS-05", "status": "not_started", "title": "Open beacon capability profiles", "gate": "open-spec-beacons"},

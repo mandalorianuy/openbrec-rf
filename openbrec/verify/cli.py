@@ -77,6 +77,13 @@ from openbrec.open_spec import (
     PROFILES_PATH as OPEN_SPEC_PROFILES_PATH,
     run_open_spec_gate,
 )
+from openbrec.open_spec_energy import (
+    ARCHITECTURE_SCHEMA_PATH as OPEN_SPEC_ENERGY_ARCHITECTURE_SCHEMA_PATH,
+    FIXTURES_PATH as OPEN_SPEC_ENERGY_FIXTURES_PATH,
+    PROFILES_PATH as OPEN_SPEC_ENERGY_PROFILES_PATH,
+    RESIDUALS_PATH as OPEN_SPEC_ENERGY_RESIDUALS_PATH,
+    run_open_spec_energy_gate,
+)
 
 DRAFT_2020_12 = "https://json-schema.org/draft/2020-12/schema"
 VERIFY_VERSION = "0.1.0"
@@ -236,7 +243,7 @@ def _responsible_role(gate: str) -> str:
         return "core-replay-maintainer"
     if gate in P0_GOVERNANCE_GATES:
         return "release-reviewer"
-    if gate in {"p1a-readiness", "p1a-assets", "open-spec"}:
+    if gate in {"p1a-readiness", "p1a-assets", "open-spec", "open-spec-energy"}:
         return "release-reviewer"
     if gate in {"beacon-adversarial", "retention-fault"}:
         return "privacy-safety-reviewer"
@@ -746,6 +753,7 @@ def _parser() -> argparse.ArgumentParser:
         "p1a-readiness",
         "p1a-assets",
         "open-spec",
+        "open-spec-energy",
         "all",
     ):
         subparser = subparsers.add_parser(gate)
@@ -785,6 +793,14 @@ def _parser() -> argparse.ArgumentParser:
             subparser.add_argument("--profiles", default=str(OPEN_SPEC_PROFILES_PATH))
             subparser.add_argument("--claim-schema", default=str(OPEN_SPEC_CLAIM_SCHEMA_PATH))
             subparser.add_argument("--disposition", default=str(OPEN_SPEC_DISPOSITION_PATH))
+        if gate == "open-spec-energy":
+            subparser.add_argument("--profiles", default=str(OPEN_SPEC_ENERGY_PROFILES_PATH))
+            subparser.add_argument(
+                "--architecture-schema",
+                default=str(OPEN_SPEC_ENERGY_ARCHITECTURE_SCHEMA_PATH),
+            )
+            subparser.add_argument("--fixtures", default=str(OPEN_SPEC_ENERGY_FIXTURES_PATH))
+            subparser.add_argument("--residuals", default=str(OPEN_SPEC_ENERGY_RESIDUALS_PATH))
         if gate == "p0-all":
             subparser.add_argument("--evidence-dir", default="evidence/p0")
             subparser.add_argument("--plan-only", action="store_true")
@@ -1314,6 +1330,30 @@ def main(argv: Sequence[str] | None = None) -> int:
                 "disposition": args.disposition,
             }
         scope = "open_spec_publication_and_optional_evidence_boundary"
+    elif args.gate == "open-spec-energy":
+        try:
+            profiles_path = _resolve_inside(root, args.profiles, label="profiles")
+            architecture_schema_path = _resolve_inside(
+                root, args.architecture_schema, label="architecture-schema"
+            )
+            fixtures_path = _resolve_inside(root, args.fixtures, label="fixtures")
+            residuals_path = _resolve_inside(root, args.residuals, label="residuals")
+            errors, warnings, summary, gate_inputs = run_open_spec_energy_gate(
+                root,
+                profiles_path=profiles_path,
+                architecture_schema_path=architecture_schema_path,
+                fixtures_path=fixtures_path,
+                residuals_path=residuals_path,
+            )
+            inputs.extend(gate_inputs)
+        except (OSError, ValueError) as exc:
+            errors, warnings, summary = [str(exc)], [], {
+                "profiles": args.profiles,
+                "architecture_schema": args.architecture_schema,
+                "fixtures": args.fixtures,
+                "residuals": args.residuals,
+            }
+        scope = "open_spec_energy_architectures_claims_and_optional_solar"
     elif args.gate == "review-quarantine":
         errors, warnings, summary = run_review_quarantine(root)
         scope = "exactly_one_primary_disposition"

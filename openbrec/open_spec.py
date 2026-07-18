@@ -55,11 +55,11 @@ def _validate_policy(value: dict[str, Any]) -> list[str]:
     if value.get("main_lane") != "open_spec":
         errors.append("main_lane must be open_spec")
     if value.get("progress") != {
-        "accepted_tasks": 1,
+        "accepted_tasks": 2,
         "total_tasks": 8,
-        "percent": 12.5,
+        "percent": 25.0,
     }:
-        errors.append("open-spec progress must be 1 / 8")
+        errors.append("open-spec progress must be 2 / 8")
     publication = value.get("publication")
     if not isinstance(publication, dict):
         errors.append("publication policy is required")
@@ -92,10 +92,10 @@ def _validate_policy(value: dict[str, Any]) -> list[str]:
         f"OS-{index:02d}" for index in range(1, 9)
     ]:
         errors.append("tasks must cover OS-01 through OS-08 in order")
-    elif tasks[0].get("status") != "accepted" or any(
-        task.get("status") != "not_started" for task in tasks[1:]
+    elif any(task.get("status") != "accepted" for task in tasks[:2]) or any(
+        task.get("status") != "not_started" for task in tasks[2:]
     ):
-        errors.append("only OS-01 may be accepted")
+        errors.append("only OS-01 and OS-02 may be accepted")
     return errors
 
 
@@ -207,9 +207,10 @@ def run_open_spec_gate(
         plan = ""
     for marker in (
         "Autoridad principal: Open Spec",
-        "1 / 8",
+        "2 / 8",
         "OS-01 — aceptada",
-        "OS-02 — no iniciada",
+        "OS-02 — aceptada",
+        "OS-03 — no iniciada",
         "P1a es un carril opcional",
     ):
         if marker not in plan:
@@ -237,12 +238,12 @@ def run_open_spec_gate(
         [],
         {
             "spec_version": policy.get("spec_version") if policy else None,
-            "spec_tasks_accepted": 1,
+            "spec_tasks_accepted": 2,
             "spec_tasks_total": 8,
             "reference_profiles": len(profiles.get("profiles", [])) if profiles else 0,
             "physical_validation_tasks_accepted": 0,
             "physical_evidence_blocks_publication": False,
-            "next_task": "OS-02",
+            "next_task": "OS-03",
             "next_task_started": False,
         },
         inputs,

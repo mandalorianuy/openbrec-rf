@@ -1,0 +1,190 @@
+{
+  "profile_set_version": "1.0.0-draft.1",
+  "spec_version": "1.0.0-draft.1",
+  "license": "CERN-OHL-S-2.0 OR CC-BY-SA-4.0",
+  "open_boundary": {
+    "requires_owned_hardware": false,
+    "requires_solar": false,
+    "requires_single_architecture": false,
+    "physical_validation_blocks_spec": false,
+    "perpetual_claim_allowed": false
+  },
+  "load_classes": [
+    "L0_LIFE_SAFETY",
+    "L1_MISSION_CRITICAL",
+    "L2_MISSION_SUPPORT",
+    "L3_DEFERRABLE"
+  ],
+  "claim_policy": {
+    "allowed_claim_types": [
+      "unknown",
+      "bounded_runtime",
+      "storage_only_window",
+      "sustainable_under_profile"
+    ],
+    "storage_only_excludes_auxiliary_generation": true,
+    "sustainable_claim_requires_nonnegative_lower_bound_each_window": true,
+    "claims_are_scoped_to_load_environment_maintenance_and_window": true,
+    "physical_claims_require_exact_implementation_evidence": true
+  },
+  "degradation_policy": {
+    "states": ["normal", "conserve", "critical", "survival", "safe_shutdown"],
+    "shed_order": [
+      "L3_DEFERRABLE",
+      "L2_MISSION_SUPPORT",
+      "L1_MISSION_CRITICAL"
+    ],
+    "preserve_l0_until_hardware_cutoff": true,
+    "hardware_safety_overrides_l0": true,
+    "requires_hysteresis": true,
+    "requires_local_control_without_parent": true,
+    "unknown_measurement_degrades_claim": true
+  },
+  "architectures": [
+    {
+      "profile_id": "energy.architecture.component-local",
+      "topology": "component_local",
+      "required_for_spec": false,
+      "alternatives_allowed": true,
+      "purpose": "A component carries storage and may add its own generation.",
+      "solar_modes": ["none", "per_component"],
+      "minimum_contracts": [
+        "local reserve or bounded runtime",
+        "local degradation and safe shutdown",
+        "source loss reported without inferring absence"
+      ],
+      "alternatives": [
+        "replaceable battery",
+        "portable station",
+        "wired feed with local hold-up",
+        "solar controller plus storage"
+      ]
+    },
+    {
+      "profile_id": "energy.architecture.shared-site-hub",
+      "topology": "shared_site_hub",
+      "required_for_spec": false,
+      "alternatives_allowed": true,
+      "purpose": "A protected site domain supplies several components through declared paths.",
+      "solar_modes": ["none", "central"],
+      "minimum_contracts": [
+        "protected distribution branches",
+        "critical chain dependency map",
+        "component state on hub loss"
+      ],
+      "alternatives": [
+        "DC bus",
+        "PoE",
+        "portable power station",
+        "authorized AC distribution"
+      ]
+    },
+    {
+      "profile_id": "energy.architecture.hybrid-site-component",
+      "topology": "hybrid_site_component",
+      "required_for_spec": false,
+      "alternatives_allowed": true,
+      "purpose": "A shared hub supplies the site while critical or remote components keep local reserve or generation.",
+      "solar_modes": ["none", "central", "per_component", "hybrid"],
+      "minimum_contracts": [
+        "independent local energy policy",
+        "declared hub and component failure domains",
+        "reserve or replacement path for every critical dependency"
+      ],
+      "alternatives": [
+        "central storage plus replaceable node batteries",
+        "central solar plus remote node solar",
+        "portable hub plus component hold-up",
+        "mixed DC and autonomous nodes"
+      ]
+    },
+    {
+      "profile_id": "energy.architecture.logistics-replacement",
+      "topology": "logistics_replacement",
+      "required_for_spec": false,
+      "alternatives_allowed": true,
+      "purpose": "Runtime is extended through governed charging, swapping or replacement rather than installed generation.",
+      "solar_modes": ["none", "central", "per_component"],
+      "minimum_contracts": [
+        "bounded local runtime",
+        "inventory and replacement interval",
+        "missed replacement failure mode"
+      ],
+      "alternatives": [
+        "battery rotation",
+        "vehicle charging",
+        "portable charger",
+        "manual source replacement"
+      ]
+    }
+  ],
+  "source_adapters": [
+    {
+      "adapter_id": "energy.source.storage",
+      "source_type": "storage",
+      "required_for_spec": false,
+      "safety_controls": ["BMS or applicable protection", "fuse", "disconnect", "polarity and current limits"],
+      "evidence_requirements": ["usable Wh lower bound", "temperature and aging derating", "shutdown reserve"]
+    },
+    {
+      "adapter_id": "energy.source.portable-station",
+      "source_type": "portable_station",
+      "required_for_spec": false,
+      "safety_controls": ["continuous and peak limits", "eco cutoff declared", "pass-through separately qualified"],
+      "evidence_requirements": ["measured output profile", "restart behavior", "port and negotiation limits"]
+    },
+    {
+      "adapter_id": "energy.source.replaceable-battery",
+      "source_type": "replaceable_battery",
+      "required_for_spec": false,
+      "safety_controls": ["keyed connector", "no arbitrary parallel packs", "inspection and quarantine"],
+      "evidence_requirements": ["measured capacity or conservative bound", "swap interval", "hold-up behavior"]
+    },
+    {
+      "adapter_id": "energy.source.solar",
+      "source_type": "solar",
+      "required_for_spec": false,
+      "safety_controls": ["controller matched to storage", "overcurrent and disconnect", "wind water and cable controls"],
+      "evidence_requirements": ["generation lower bound", "shade climate orientation and derating", "worst no-generation interval"]
+    },
+    {
+      "adapter_id": "energy.source.generator",
+      "source_type": "generator",
+      "required_for_spec": false,
+      "safety_controls": ["outdoor operation", "carbon monoxide control", "fuel segregation", "local stop"],
+      "evidence_requirements": ["responsible operator", "runtime and fuel profile", "transition test"]
+    },
+    {
+      "adapter_id": "energy.source.grid",
+      "source_type": "grid",
+      "required_for_spec": false,
+      "safety_controls": ["authorized connection", "isolation and protection", "no unsanctioned backfeed"],
+      "evidence_requirements": ["input range", "outage behavior", "competent local design where applicable"]
+    },
+    {
+      "adapter_id": "energy.source.vehicle-dc",
+      "source_type": "vehicle_dc",
+      "required_for_spec": false,
+      "safety_controls": ["fused adapter", "vehicle start reserve", "ventilation and cable routing"],
+      "evidence_requirements": ["voltage and current range", "engine-off limit", "disconnect procedure"]
+    },
+    {
+      "adapter_id": "energy.source.manual-replacement",
+      "source_type": "manual_replacement",
+      "required_for_spec": false,
+      "safety_controls": ["trained actor", "polarity and compatibility check", "damaged source quarantine"],
+      "evidence_requirements": ["inventory", "replacement time", "missed-service fallback"]
+    }
+  ],
+  "role_mappings": [
+    {"category": "lorawan_gateway", "allowed_architectures": ["shared_site_hub", "hybrid_site_component", "component_local"], "critical_load_classes": ["L0_LIFE_SAFETY", "L1_MISSION_CRITICAL"], "degradable_load_classes": ["L2_MISSION_SUPPORT", "L3_DEFERRABLE"], "supply_alternatives": ["protected DC", "PoE", "local storage"]},
+    {"category": "lorawan_endpoint", "allowed_architectures": ["component_local", "hybrid_site_component", "logistics_replacement"], "critical_load_classes": ["L0_LIFE_SAFETY", "L1_MISSION_CRITICAL"], "degradable_load_classes": ["L2_MISSION_SUPPORT", "L3_DEFERRABLE"], "supply_alternatives": ["replaceable battery", "local solar", "scheduled recharge"]},
+    {"category": "meshtastic_node", "allowed_architectures": ["component_local", "hybrid_site_component", "logistics_replacement"], "critical_load_classes": ["L0_LIFE_SAFETY", "L1_MISSION_CRITICAL"], "degradable_load_classes": ["L2_MISSION_SUPPORT", "L3_DEFERRABLE"], "supply_alternatives": ["internal battery", "USB source", "local solar"]},
+    {"category": "meshcore_node", "allowed_architectures": ["component_local", "hybrid_site_component", "shared_site_hub"], "critical_load_classes": ["L0_LIFE_SAFETY", "L1_MISSION_CRITICAL"], "degradable_load_classes": ["L2_MISSION_SUPPORT", "L3_DEFERRABLE"], "supply_alternatives": ["internal battery", "protected DC", "local solar"]},
+    {"category": "rnode", "allowed_architectures": ["component_local", "hybrid_site_component", "logistics_replacement"], "critical_load_classes": ["L0_LIFE_SAFETY", "L1_MISSION_CRITICAL"], "degradable_load_classes": ["L2_MISSION_SUPPORT", "L3_DEFERRABLE"], "supply_alternatives": ["host power", "local battery", "scheduled recharge"]},
+    {"category": "offline_terminal", "allowed_architectures": ["logistics_replacement", "hybrid_site_component", "component_local"], "critical_load_classes": ["L0_LIFE_SAFETY", "L1_MISSION_CRITICAL"], "degradable_load_classes": ["L2_MISSION_SUPPORT", "L3_DEFERRABLE"], "supply_alternatives": ["swappable device", "power bank", "charging rotation"]},
+    {"category": "trimodal_beacon", "allowed_architectures": ["component_local", "hybrid_site_component", "logistics_replacement"], "critical_load_classes": ["L0_LIFE_SAFETY", "L1_MISSION_CRITICAL"], "degradable_load_classes": ["L2_MISSION_SUPPORT", "L3_DEFERRABLE"], "supply_alternatives": ["replaceable battery", "local solar", "wired low voltage"]},
+    {"category": "energy_storage", "allowed_architectures": ["shared_site_hub", "hybrid_site_component", "component_local", "logistics_replacement"], "critical_load_classes": ["L0_LIFE_SAFETY", "L1_MISSION_CRITICAL"], "degradable_load_classes": ["L2_MISSION_SUPPORT", "L3_DEFERRABLE"], "supply_alternatives": ["commercial battery", "portable station", "qualified storage system"]},
+    {"category": "wired_cell_gateway", "allowed_architectures": ["shared_site_hub", "hybrid_site_component", "component_local"], "critical_load_classes": ["L0_LIFE_SAFETY", "L1_MISSION_CRITICAL"], "degradable_load_classes": ["L2_MISSION_SUPPORT", "L3_DEFERRABLE"], "supply_alternatives": ["protected DC", "portable station", "grid with local reserve"]}
+  ]
+}

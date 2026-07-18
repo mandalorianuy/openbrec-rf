@@ -1,0 +1,146 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openbrec.org/schemas/open-spec/energy-architecture/1.0.0-draft.1",
+  "title": "OpenBREC Open Energy Architecture Instance",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "architecture_instance_id",
+    "profile_id",
+    "topology",
+    "scope",
+    "evidence_level",
+    "solar_mode",
+    "source_adapters",
+    "loads",
+    "reserves",
+    "modeled_budget",
+    "autonomy_claim",
+    "degradation_policy",
+    "safety_controls",
+    "alternatives",
+    "assumptions",
+    "gaps"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.0.0-draft.1"},
+    "architecture_instance_id": {"type": "string", "pattern": "^energy-arch-[a-z0-9-]{3,48}$"},
+    "profile_id": {
+      "enum": [
+        "energy.architecture.component-local",
+        "energy.architecture.shared-site-hub",
+        "energy.architecture.hybrid-site-component",
+        "energy.architecture.logistics-replacement"
+      ]
+    },
+    "topology": {"enum": ["component_local", "shared_site_hub", "hybrid_site_component", "logistics_replacement"]},
+    "scope": {"enum": ["component", "site", "response_cell", "deployment", "logistics_chain"]},
+    "evidence_level": {"enum": ["unverified", "specified", "simulated", "lab_validated", "field_validated"]},
+    "solar_mode": {"enum": ["none", "central", "per_component", "hybrid"]},
+    "source_adapters": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"enum": ["storage", "portable_station", "replaceable_battery", "solar", "generator", "grid", "vehicle_dc", "manual_replacement"]}
+    },
+    "loads": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["load_id", "class", "power_upper_W", "duty_cycle", "loss_effect"],
+        "properties": {
+          "load_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]{1,47}$"},
+          "class": {"enum": ["L0_LIFE_SAFETY", "L1_MISSION_CRITICAL", "L2_MISSION_SUPPORT", "L3_DEFERRABLE"]},
+          "power_upper_W": {"type": "number", "minimum": 0},
+          "duty_cycle": {"type": "number", "minimum": 0, "maximum": 1},
+          "loss_effect": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "reserves": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sos_Wh", "transition_Wh", "shutdown_Wh"],
+      "properties": {
+        "sos_Wh": {"type": "number", "minimum": 0},
+        "transition_Wh": {"type": "number", "minimum": 0},
+        "shutdown_Wh": {"type": "number", "minimum": 0}
+      }
+    },
+    "modeled_budget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["window_h", "usable_storage_Wh", "critical_load_Wh", "reserves_Wh", "margin_factor", "auxiliary_generation_Wh", "storage_only_pass"],
+      "properties": {
+        "window_h": {"type": "number", "exclusiveMinimum": 0},
+        "usable_storage_Wh": {"type": "number", "minimum": 0},
+        "critical_load_Wh": {"type": "number", "minimum": 0},
+        "reserves_Wh": {"type": "number", "minimum": 0},
+        "margin_factor": {"type": "number", "minimum": 1},
+        "auxiliary_generation_Wh": {"type": "number", "minimum": 0},
+        "storage_only_pass": {"type": "boolean"},
+        "generation_lower_bound_Wh": {"type": "number", "minimum": 0},
+        "all_load_upper_bound_Wh": {"type": "number", "minimum": 0},
+        "conversion_storage_losses_Wh": {"type": "number", "minimum": 0},
+        "net_energy_lower_bound_Wh": {"type": "number"}
+      }
+    },
+    "autonomy_claim": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["claim_type", "result", "bounded_to_profile"],
+      "properties": {
+        "claim_type": {"enum": ["unknown", "bounded_runtime", "storage_only_window", "sustainable_under_profile"]},
+        "result": {"enum": ["unknown", "insufficient", "sufficient_under_model", "supported_by_evidence"]},
+        "bounded_to_profile": {"const": true}
+      }
+    },
+    "degradation_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["states", "preserves_l0_until_hardware_cutoff", "hardware_safety_overrides_l0", "operates_without_parent"],
+      "properties": {
+        "states": {
+          "const": ["normal", "conserve", "critical", "survival", "safe_shutdown"]
+        },
+        "preserves_l0_until_hardware_cutoff": {"const": true},
+        "hardware_safety_overrides_l0": {"const": true},
+        "operates_without_parent": {"const": true}
+      }
+    },
+    "safety_controls": {"type": "array", "minItems": 3, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "alternatives": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "assumptions": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "gaps": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "implementation_id": {"type": "string", "minLength": 1},
+    "physical_evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["evidence_pack_sha256", "configuration_sha256", "tested_at"],
+      "properties": {
+        "evidence_pack_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "configuration_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "tested_at": {"type": "string", "format": "date-time"}
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"evidence_level": {"enum": ["lab_validated", "field_validated"]}}, "required": ["evidence_level"]},
+      "then": {"required": ["implementation_id", "physical_evidence"]}
+    },
+    {
+      "if": {"properties": {"autonomy_claim": {"properties": {"claim_type": {"const": "sustainable_under_profile"}}, "required": ["claim_type"]}}, "required": ["autonomy_claim"]},
+      "then": {
+        "properties": {
+          "modeled_budget": {
+            "required": ["generation_lower_bound_Wh", "all_load_upper_bound_Wh", "conversion_storage_losses_Wh", "net_energy_lower_bound_Wh"]
+          }
+        }
+      }
+    }
+  ]
+}
