@@ -1,0 +1,45 @@
+{
+  "acceptance_version": "1.0.0",
+  "task": "OS-05",
+  "status": "accepted",
+  "decision_at": "2026-07-18",
+  "subject_git_sha": "5fd5b3fa092fe996163bbcdabb0b711d90c92db5",
+  "receipt": {
+    "path": "evidence/open-spec/os-05/os-05-receipt.json",
+    "sha256": "9e78424ff65b6e66f586442a9291197f7d443e78b707049e5fb891949d5dc1f8",
+    "result": "passed",
+    "dirty": false
+  },
+  "open_spec_progress": {
+    "accepted_tasks": 5,
+    "total_tasks": 8,
+    "percent": 62.5
+  },
+  "physical_validation_progress": {
+    "accepted_tasks": 0,
+    "total_tasks": 8,
+    "percent": 0.0,
+    "blocks_open_spec": false
+  },
+  "accepted": [
+    "one modality as the minimum conforming beacon composition",
+    "three replaceable core modality profiles as an optional reference composition",
+    "core Observation to Evidence to FusionResult to OperatorAnnotation chain",
+    "abstention, unknown and visible missing capabilities",
+    "local feature processing and bounded authorized raw capture policy",
+    "closed extension and reusable dataset manifest contracts",
+    "deterministic safe replay across ten input orders",
+    "governed residuals without physical performance claims"
+  ],
+  "not_accepted": [
+    "physical sensitivity, specificity, range, localization or environmental performance",
+    "continuous audio capture, speech transcription, identity or biometric inference",
+    "dataset representativeness or real-human capture authorization",
+    "hardware selection, calibration, custody or field readiness",
+    "automatic presence, absence, victim count, diagnosis or rescue decision",
+    "OS-06 or later Open Spec tasks",
+    "P1a-01 through P1a-08"
+  ],
+  "next_task": "OS-06",
+  "next_task_started": false
+}
