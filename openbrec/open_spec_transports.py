@@ -63,18 +63,18 @@ def _read_json(path: Path, label: str) -> tuple[dict[str, Any] | None, list[str]
 def _validate_policy(value: dict[str, Any]) -> list[str]:
     errors: list[str] = []
     if value.get("progress") != {
-        "accepted_tasks": 3,
+        "accepted_tasks": 4,
         "total_tasks": 8,
-        "percent": 37.5,
+        "percent": 50.0,
     }:
-        errors.append("open-spec progress must be 3 / 8")
+        errors.append("open-spec progress must be 4 / 8")
     tasks = value.get("tasks")
     if not isinstance(tasks, list) or len(tasks) != 8:
         return [*errors, "open-spec policy must contain eight tasks"]
-    if [task.get("status") for task in tasks[:3]] != ["accepted"] * 3:
-        errors.append("OS-01 through OS-03 must be accepted")
-    if any(task.get("status") != "not_started" for task in tasks[3:]):
-        errors.append("OS-04 through OS-08 must remain not_started")
+    if [task.get("status") for task in tasks[:4]] != ["accepted"] * 4:
+        errors.append("OS-01 through OS-04 must be accepted")
+    if any(task.get("status") != "not_started" for task in tasks[4:]):
+        errors.append("OS-05 through OS-08 must remain not_started")
     if tasks[2].get("gate") != "open-spec-transports":
         errors.append("OS-03 must use the open-spec-transports gate")
     return errors
@@ -281,7 +281,7 @@ def run_open_spec_transport_gate(
         errors.append(f"open-spec plan unreadable: {exc.strerror or type(exc).__name__}")
     normalized_plan = " ".join(plan.split())
     for marker in (
-        "3 / 8", "OS-03 — aceptada", "OS-04 — no iniciada",
+        "4 / 8", "OS-03 — aceptada", "OS-04 — aceptada", "OS-05 — no iniciada",
         "sin ganador universal", "emergency_assumed_risk",
     ):
         if marker not in normalized_plan:
@@ -315,7 +315,7 @@ def run_open_spec_transport_gate(
         [],
         {
             "spec_version": policy.get("spec_version") if policy else None,
-            "spec_tasks_accepted": 3,
+            "spec_tasks_accepted": 4,
             "spec_tasks_total": 8,
             "bearer_profiles": len(profiles.get("profiles", [])) if profiles else 0,
             "conforming_examples": conforming,
@@ -324,7 +324,7 @@ def run_open_spec_transport_gate(
                 profiles and profiles.get("selection_policy", {}).get("global_winner")
             ),
             "physical_rf_validation_blocks_publication": False,
-            "next_task": "OS-04",
+            "next_task": "OS-05",
             "next_task_started": False,
         },
         inputs,

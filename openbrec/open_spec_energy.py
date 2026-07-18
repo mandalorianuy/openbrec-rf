@@ -79,18 +79,18 @@ def _read_json(path: Path, label: str) -> tuple[dict[str, Any] | None, list[str]
 def _validate_policy(value: dict[str, Any]) -> list[str]:
     errors: list[str] = []
     if value.get("progress") != {
-        "accepted_tasks": 3,
+        "accepted_tasks": 4,
         "total_tasks": 8,
-        "percent": 37.5,
+        "percent": 50.0,
     }:
-        errors.append("open-spec progress must be 3 / 8")
+        errors.append("open-spec progress must be 4 / 8")
     tasks = value.get("tasks")
     if not isinstance(tasks, list) or len(tasks) != 8:
         return [*errors, "open-spec policy must contain eight tasks"]
-    if [task.get("status") for task in tasks[:3]] != ["accepted"] * 3:
-        errors.append("OS-01 through OS-03 must be accepted")
-    if any(task.get("status") != "not_started" for task in tasks[3:]):
-        errors.append("OS-04 through OS-08 must remain not_started")
+    if [task.get("status") for task in tasks[:4]] != ["accepted"] * 4:
+        errors.append("OS-01 through OS-04 must be accepted")
+    if any(task.get("status") != "not_started" for task in tasks[4:]):
+        errors.append("OS-05 through OS-08 must remain not_started")
     if tasks[1].get("gate") != "open-spec-energy":
         errors.append("OS-02 must use the open-spec-energy gate")
     return errors
@@ -314,10 +314,11 @@ def run_open_spec_energy_gate(
         )
     normalized_plan = " ".join(plan.split())
     for marker in (
-        "3 / 8",
+        "4 / 8",
         "OS-02 — aceptada",
         "OS-03 — aceptada",
-        "OS-04 — no iniciada",
+        "OS-04 — aceptada",
+        "OS-05 — no iniciada",
         "Solar es opcional",
         "sustainable_under_profile",
     ):
@@ -356,14 +357,14 @@ def run_open_spec_energy_gate(
         [],
         {
             "spec_version": policy.get("spec_version") if policy else None,
-            "spec_tasks_accepted": 3,
+            "spec_tasks_accepted": 4,
             "spec_tasks_total": 8,
             "architectures": len(profiles.get("architectures", [])) if profiles else 0,
             "role_mappings": len(profiles.get("role_mappings", [])) if profiles else 0,
             "source_adapters": len(profiles.get("source_adapters", [])) if profiles else 0,
             "conforming_examples": conforming,
             "physical_evidence_blocks_publication": False,
-            "next_task": "OS-04",
+            "next_task": "OS-05",
             "next_task_started": False,
         },
         inputs,

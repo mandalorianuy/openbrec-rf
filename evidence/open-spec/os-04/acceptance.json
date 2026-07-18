@@ -1,0 +1,39 @@
+{
+  "acceptance_version": "1.0.0",
+  "task": "OS-04",
+  "status": "accepted",
+  "decision_at": "2026-07-18",
+  "subject_git_sha": "0d196881cf20d0dd1737f5e2cd3c18e9ecaa7330",
+  "receipt": {
+    "path": "evidence/open-spec/os-04/os-04-receipt.json",
+    "sha256": "e859b92e864643c93c7536629fd5e115c016fb09f025357b67d0e9c335915931",
+    "result": "passed",
+    "dirty": false
+  },
+  "open_spec_progress": {"accepted_tasks": 4, "total_tasks": 8, "percent": 50.0},
+  "physical_validation_progress": {
+    "accepted_tasks": 0,
+    "total_tasks": 8,
+    "percent": 0.0,
+    "blocks_open_spec": false
+  },
+  "accepted": [
+    "closed interoperable contents for brief text, status, SOS and location",
+    "bearer-independent application security and incident-scoped identity",
+    "append-only distress lifecycle with distinct technical, human and operational state",
+    "deterministic SOS semantic replay across ten input orders",
+    "zero false operator acceptance and zero silent distress discard",
+    "possible distress preservation without automatic authentication"
+  ],
+  "not_accepted": [
+    "RF delivery, latency, range or message success rate",
+    "human comprehension, accessibility or stress performance",
+    "hardware key custody, theft resistance or secure wipe",
+    "physical location accuracy",
+    "rescue outcome or guaranteed service",
+    "OS-05 or later Open Spec tasks",
+    "P1a-01 through P1a-08"
+  ],
+  "next_task": "OS-05",
+  "next_task_started": false
+}

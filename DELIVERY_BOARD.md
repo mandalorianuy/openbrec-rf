@@ -4,8 +4,8 @@
 - Plan activo aprobado: `docs/superpowers/plans/2026-07-18-openbrec-open-spec-plan.md`
 - Último plan completado: `docs/superpowers/plans/2026-07-17-openbrec-p0-simulated-addons-plan.md`
 - Baseline cerrado: `docs/superpowers/plans/2026-07-17-openbrec-m0-executable-plan.md`
-- Estado real: M0/P0 completos; Open Spec `3 / 8` (`37.5%`); P1a física `0 / 8` (`0%`)
-- Regla de avance: OS-04 es la siguiente task; P1a es evidencia opcional y no bloquea la spec
+- Estado real: M0/P0 completos; Open Spec `4 / 8` (`50.0%`); P1a física `0 / 8` (`0%`)
+- Regla de avance: OS-05 es la siguiente task; P1a es evidencia opcional y no bloquea la spec
 
 ## Decisiones de gobernanza cerradas
 
@@ -19,6 +19,7 @@
 - [x] OS-01 corrige la autoridad a spec-first y separa publicación de evidencia física el 2026-07-18.
 - [x] OS-02 publica energía/solar abierta, reemplazable y gobernada por claims acotados el 2026-07-18.
 - [x] OS-03 publica selección multi-bearer abierta, overlay común y riesgo regulatorio acotado el 2026-07-18.
+- [x] OS-04 publica contenido humano interoperable, lifecycle SOS y preservación de distress el 2026-07-18.
 
 ## Now — M0 Fundación
 
@@ -310,7 +311,7 @@ P0 está cerrado.
 
 ## Now — Open Spec
 
-Progreso de aceptación: Open Spec `3 / 8` (`37.5%`). Los contratos y perfiles
+Progreso de aceptación: Open Spec `4 / 8` (`50.0%`). Los contratos y perfiles
 abiertos avanzan sin exigir hardware propio; los evidence packs sólo elevan el
 nivel de evidencia de una implementación exacta.
 
@@ -318,20 +319,21 @@ nivel de evidencia de una implementación exacta.
 - [x] `OS-02`: cuatro topologías energéticas, nueve mappings de rol, ocho source
   adapters, cargas L0–L3, solar opcional y claims acotados.
 - [x] `OS-03`: cinco perfiles multi-bearer abiertos, selección por misión y sin ganador universal.
-- [ ] `OS-04`: mensajería, estado, SOS y ubicación interoperables.
+- [x] `OS-04`: mensajería, estado, SOS y ubicación interoperables.
 - [ ] `OS-05`: beacons y extensiones modales.
 - [ ] `OS-06`: federación recursiva y autonomía local.
 - [ ] `OS-07`: planos, BOMs y guías de reutilización.
 - [ ] `OS-08`: conformance kit y publicación.
 
 Plan activo: `docs/superpowers/plans/2026-07-18-openbrec-open-spec-plan.md`.
-OS-03 conserva LoRaWAN privado, Meshtastic, MeshCore, Reticulum/RNode y carry
-bundle como adapters reemplazables. La aplicación firma, prioriza, deduplica y
-evita loops por encima del bearer. `emergency_assumed_risk` exige decisión
-acotada, dual, expirable y kill switch; no equivale a autorización legal. Los
-fixtures son `specified`/`simulated` y no prueban RF, escala ni regulación real.
+OS-04 define cuatro contenidos cerrados y eventos SOS append-only. Separa
+recepción técnica, lectura humana, aceptación operativa y lifecycle; ninguna
+garantiza rescate. Distress inválido o expirado se preserva como
+`unverified_distress` para review, nunca se descarta ni autentica automáticamente.
+Los fixtures son simulados y no prueban entrega RF, comprensión humana, custodia
+de claves, precisión de ubicación ni resultado de rescate.
 
-La próxima task es OS-04 y no fue iniciada en OS-03.
+La próxima task es OS-05 y no fue iniciada en OS-04.
 
 ## Optional validation lane — P1a banco y conducted
 

@@ -92,6 +92,14 @@ from openbrec.open_spec_transports import (
     SOURCE_REVIEW_PATH as OPEN_SPEC_TRANSPORT_SOURCE_REVIEW_PATH,
     run_open_spec_transport_gate,
 )
+from openbrec.open_spec_messaging import (
+    CONTENT_SCHEMA_PATH as OPEN_SPEC_MESSAGE_CONTENT_SCHEMA_PATH,
+    EVENT_SCHEMA_PATH as OPEN_SPEC_MESSAGE_EVENT_SCHEMA_PATH,
+    FIXTURES_PATH as OPEN_SPEC_MESSAGE_FIXTURES_PATH,
+    PROFILES_PATH as OPEN_SPEC_MESSAGE_PROFILES_PATH,
+    RESIDUALS_PATH as OPEN_SPEC_MESSAGE_RESIDUALS_PATH,
+    run_open_spec_messaging_gate,
+)
 
 DRAFT_2020_12 = "https://json-schema.org/draft/2020-12/schema"
 VERIFY_VERSION = "0.1.0"
@@ -257,6 +265,7 @@ def _responsible_role(gate: str) -> str:
         "open-spec",
         "open-spec-energy",
         "open-spec-transports",
+        "open-spec-messaging",
     }:
         return "release-reviewer"
     if gate in {"beacon-adversarial", "retention-fault"}:
@@ -769,6 +778,7 @@ def _parser() -> argparse.ArgumentParser:
         "open-spec",
         "open-spec-energy",
         "open-spec-transports",
+        "open-spec-messaging",
         "all",
     ):
         subparser = subparsers.add_parser(gate)
@@ -828,6 +838,16 @@ def _parser() -> argparse.ArgumentParser:
                 default=str(OPEN_SPEC_TRANSPORT_SOURCE_REVIEW_PATH),
             )
             subparser.add_argument("--residuals", default=str(OPEN_SPEC_TRANSPORT_RESIDUALS_PATH))
+        if gate == "open-spec-messaging":
+            subparser.add_argument("--profiles", default=str(OPEN_SPEC_MESSAGE_PROFILES_PATH))
+            subparser.add_argument(
+                "--content-schema", default=str(OPEN_SPEC_MESSAGE_CONTENT_SCHEMA_PATH)
+            )
+            subparser.add_argument(
+                "--event-schema", default=str(OPEN_SPEC_MESSAGE_EVENT_SCHEMA_PATH)
+            )
+            subparser.add_argument("--fixtures", default=str(OPEN_SPEC_MESSAGE_FIXTURES_PATH))
+            subparser.add_argument("--residuals", default=str(OPEN_SPEC_MESSAGE_RESIDUALS_PATH))
         if gate == "p0-all":
             subparser.add_argument("--evidence-dir", default="evidence/p0")
             subparser.add_argument("--plan-only", action="store_true")
@@ -1410,6 +1430,35 @@ def main(argv: Sequence[str] | None = None) -> int:
                 "residuals": args.residuals,
             }
         scope = "open_spec_multi_bearer_profiles_selection_and_regulatory_modes"
+    elif args.gate == "open-spec-messaging":
+        try:
+            profiles_path = _resolve_inside(root, args.profiles, label="profiles")
+            content_schema_path = _resolve_inside(
+                root, args.content_schema, label="content-schema"
+            )
+            event_schema_path = _resolve_inside(
+                root, args.event_schema, label="event-schema"
+            )
+            fixtures_path = _resolve_inside(root, args.fixtures, label="fixtures")
+            residuals_path = _resolve_inside(root, args.residuals, label="residuals")
+            errors, warnings, summary, gate_inputs = run_open_spec_messaging_gate(
+                root,
+                profiles_path=profiles_path,
+                content_schema_path=content_schema_path,
+                event_schema_path=event_schema_path,
+                fixtures_path=fixtures_path,
+                residuals_path=residuals_path,
+            )
+            inputs.extend(gate_inputs)
+        except (OSError, ValueError) as exc:
+            errors, warnings, summary = [str(exc)], [], {
+                "profiles": args.profiles,
+                "content_schema": args.content_schema,
+                "event_schema": args.event_schema,
+                "fixtures": args.fixtures,
+                "residuals": args.residuals,
+            }
+        scope = "open_spec_human_messaging_security_and_distress_semantics"
     elif args.gate == "review-quarantine":
         errors, warnings, summary = run_review_quarantine(root)
         scope = "exactly_one_primary_disposition"
