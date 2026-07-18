@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openbrec.org/schemas/open-spec/reference-build-manifest.schema.json",
+  "title": "OpenBREC Reference Build Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["build_id", "addon", "title", "profile_version", "delivery_routes", "guide_ref", "evidence_level", "physical_performance_claimed", "field_readiness_claimed", "bom", "interfaces", "assembly_steps", "verification_steps", "safety_stop_conditions", "rollback_and_disassembly", "capabilities_absent", "limitations"],
+  "properties": {
+    "build_id": {"type": "string", "pattern": "^build:[a-z0-9._-]+$"},
+    "addon": {"enum": ["energy", "machine_telemetry", "human_messaging", "beacon_sensing", "recursive_federation"]},
+    "title": {"type": "string", "minLength": 1},
+    "profile_version": {"const": "1.0.0-draft.1"},
+    "delivery_routes": {"type": "array", "minItems": 3, "maxItems": 3, "uniqueItems": true, "items": {"enum": ["open_build", "reuse_existing", "hybrid"]}},
+    "guide_ref": {"type": "string", "pattern": "^docs/open-spec/reference-builds/.+\\.md$"},
+    "evidence_level": {"const": "specified"},
+    "physical_performance_claimed": {"const": false},
+    "field_readiness_claimed": {"const": false},
+    "bom": {
+      "type": "array", "minItems": 3,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["item_id", "capability_role", "quantity", "required", "selection_criteria", "substitution_classes", "single_source_required"],
+        "properties": {
+          "item_id": {"type": "string", "minLength": 1},
+          "capability_role": {"type": "string", "minLength": 1},
+          "quantity": {"type": "object", "additionalProperties": false, "required": ["minimum", "reference"], "properties": {"minimum": {"type": "integer", "minimum": 0}, "reference": {"type": "integer", "minimum": 1}}},
+          "required": {"type": "boolean"},
+          "selection_criteria": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+          "substitution_classes": {"type": "array", "minItems": 2, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+          "single_source_required": {"const": false}
+        }
+      }
+    },
+    "interfaces": {
+      "type": "array", "minItems": 1,
+      "items": {"type": "object", "additionalProperties": false, "required": ["name", "provides", "requires", "boundary", "isolation"], "properties": {"name": {"type": "string", "minLength": 1}, "provides": {"type": "array", "minItems": 1, "items": {"type": "string"}}, "requires": {"type": "array", "items": {"type": "string"}}, "boundary": {"type": "string", "minLength": 1}, "isolation": {"type": "string", "minLength": 1}}}
+    },
+    "assembly_steps": {"type": "array", "minItems": 3, "items": {"type": "string", "minLength": 1}},
+    "verification_steps": {"type": "array", "minItems": 3, "items": {"type": "string", "minLength": 1}},
+    "safety_stop_conditions": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+    "rollback_and_disassembly": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+    "capabilities_absent": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+    "limitations": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}}
+  }
+}

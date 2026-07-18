@@ -47,19 +47,20 @@ class OpenSpecFederationTests(unittest.TestCase):
         for option in ("--profiles", "--peer-schema", "--fixtures", "--residuals"):
             self.assertIn(option, result.stdout)
 
-    def test_os_06_is_accepted_without_starting_os_07(self) -> None:
+    def test_os_06_remains_accepted_after_os_07_closure(self) -> None:
         source = PLAN.read_text(encoding="utf-8")
-        self.assertIn("6 / 8", source)
+        self.assertIn("7 / 8", source)
         self.assertIn("OS-06 — aceptada", source)
-        self.assertIn("OS-07 — no iniciada", source)
+        self.assertIn("OS-07 — aceptada", source)
+        self.assertIn("OS-08 — no iniciada", source)
         policy = self.load_json(POLICY)
         self.assertEqual(
             policy["progress"],
-            {"accepted_tasks": 6, "total_tasks": 8, "percent": 75.0},
+            {"accepted_tasks": 7, "total_tasks": 8, "percent": 87.5},
         )
         tasks = policy["tasks"]
-        self.assertEqual([task["status"] for task in tasks[:6]], ["accepted"] * 6)
-        self.assertTrue(all(task["status"] == "not_started" for task in tasks[6:]))
+        self.assertEqual([task["status"] for task in tasks[:7]], ["accepted"] * 7)
+        self.assertTrue(all(task["status"] == "not_started" for task in tasks[7:]))
 
     def test_hierarchy_is_recursive_and_every_level_operates_isolated(self) -> None:
         profiles = self.load_json(PROFILES)
@@ -232,13 +233,13 @@ class OpenSpecFederationTests(unittest.TestCase):
             ):
                 self.assertTrue(row[field])
 
-    def test_summary_advances_only_to_os_07(self) -> None:
+    def test_summary_advances_only_to_os_08(self) -> None:
         result = self.run_verify("open-spec-federation")
         self.assertEqual(result.returncode, 0, result.stderr)
         summary = json.loads(result.stdout)["summary"]
-        self.assertEqual(summary["spec_tasks_accepted"], 6)
+        self.assertEqual(summary["spec_tasks_accepted"], 7)
         self.assertEqual(summary["spec_tasks_total"], 8)
-        self.assertEqual(summary["next_task"], "OS-07")
+        self.assertEqual(summary["next_task"], "OS-08")
         self.assertFalse(summary["next_task_started"])
         self.assertFalse(summary["physical_scale_blocks_publication"])
 
