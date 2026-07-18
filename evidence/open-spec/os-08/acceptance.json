@@ -1,0 +1,51 @@
+{
+  "acceptance_version": "1.0.0",
+  "task": "OS-08",
+  "status": "accepted",
+  "decision_at": "2026-07-18",
+  "subject_git_sha": "2d5e189482ad220ecf62c5abdb3f24fde4649ee0",
+  "receipt": {
+    "path": "evidence/open-spec/os-08/os-08-receipt.json",
+    "sha256": "ae00d546f9eb3f913f32256831b93e23d76a0d77df7e0dd6b5231b2497aac2f2",
+    "result": "passed",
+    "dirty": false
+  },
+  "open_spec_progress": {
+    "accepted_tasks": 8,
+    "total_tasks": 8,
+    "percent": 100.0
+  },
+  "physical_validation_progress": {
+    "accepted_tasks": 0,
+    "total_tasks": 8,
+    "percent": 0.0,
+    "blocks_open_spec": false
+  },
+  "accepted": [
+    "an aggregate offline conformance kit for OS-01 through OS-07",
+    "six community contribution classes and a closed submission schema",
+    "a five-level claim ladder that never infers physical evidence from conformance or simulation",
+    "six synthetic submission examples spanning every contribution class",
+    "a ten-function decision matrix across five addon families with every requested decision field",
+    "no aggregate score, universal bearer winner, mandatory vendor, SKU, hardware or paywall",
+    "append-only community review preserving rejected submissions and negative results",
+    "life-safety preservation before destructive minimization without false authentication",
+    "offline Apache-2.0 publication guidance and exact-version evidence rules",
+    "twelve residuals with resolved, controlled, planned or evidence-required dispositions"
+  ],
+  "not_accepted": [
+    "physical hardware possession, procurement, custody or inspection",
+    "lab or field validation for any component, bearer, build or adapter",
+    "RF coverage, coexistence, airtime capacity or regulatory authorization",
+    "72-hour energy autonomy, solar sustainability or electrical certification",
+    "human comprehension, operational rescue outcome or field readiness",
+    "victim presence, absence, identity, diagnosis, acoustic range or sensor performance",
+    "50,000-site throughput, latency, capacity or representative multi-team performance",
+    "promotion of any current adapter or hardware combination to supported",
+    "P1a-01 through P1a-08"
+  ],
+  "next_task": "P1a-01",
+  "next_task_lane": "optional_physical_validation",
+  "next_task_status": "blocked_external_evidence",
+  "next_task_started": false
+}
