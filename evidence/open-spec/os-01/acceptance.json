@@ -1,0 +1,39 @@
+{
+  "acceptance_version": "1.0.0",
+  "task": "OS-01",
+  "status": "accepted",
+  "decision_at": "2026-07-18",
+  "subject_git_sha": "21ba08cc4ab97debdbb0804265e956c58ea5e365",
+  "receipt": {
+    "path": "evidence/open-spec/os-01/os-01-receipt.json",
+    "sha256": "2f222aa53aac18a12e48881d407443ff3125efc205df74b36141026dc36bb6ab",
+    "result": "passed",
+    "dirty": false
+  },
+  "open_spec_progress": {
+    "accepted_tasks": 1,
+    "total_tasks": 8,
+    "percent": 12.5
+  },
+  "physical_validation_progress": {
+    "accepted_tasks": 0,
+    "total_tasks": 8,
+    "percent": 0.0,
+    "blocks_open_spec": false
+  },
+  "accepted": [
+    "Open Spec is the primary delivery lane",
+    "publication does not require owned hardware or physical evidence",
+    "nine reference capability profiles allow alternatives",
+    "physical claims require evidence scoped to an exact implementation",
+    "P1a artifacts remain preserved as optional validation evidence"
+  ],
+  "not_accepted": [
+    "any physical implementation claim",
+    "P1a-01 through P1a-08",
+    "OS-02 or later Open Spec tasks",
+    "field readiness or operational deployment"
+  ],
+  "next_task": "OS-02",
+  "next_task_started": false
+}

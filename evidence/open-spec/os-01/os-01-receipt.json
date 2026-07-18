@@ -1,0 +1,79 @@
+{
+  "command": [
+    "python",
+    "-m",
+    "openbrec.verify",
+    "open-spec",
+    "--receipt",
+    "evidence/open-spec/os-01/os-01-receipt.json"
+  ],
+  "dirty": false,
+  "errors": [],
+  "finished_at": "2026-07-18T14:56:41.535668Z",
+  "gate": "open-spec",
+  "gate_version": "0.1.0",
+  "git_sha": "21ba08cc4ab97debdbb0804265e956c58ea5e365",
+  "inputs": [
+    {
+      "path": "docs/superpowers/plans/2026-07-18-openbrec-open-spec-plan.md",
+      "sha256": "ddfa798e08e418f6d297622e1b5f0dde8d160eb644d3de77956b39d516c77e66"
+    },
+    {
+      "path": "config/open-spec/governance.json",
+      "sha256": "14798ff51c05ab42805a00ec7dd0ca013af219bd79b6ab9702c6ca397dc154bb"
+    },
+    {
+      "path": "specs/openbrec/1.0.0-draft.1/reference-capability-profiles.json",
+      "sha256": "60f63841b120ed355ead7673c0233b632517a7b696887232de370bc16a080849"
+    },
+    {
+      "path": "schemas/open-spec/evidence-claim.schema.json",
+      "sha256": "a33e2a6f706a96178d02dd7c810a2bc23d4178bf2c464cab29616245dd811b05"
+    },
+    {
+      "path": "docs/governance/p1a-01-spec-disposition.json",
+      "sha256": "88a70757db0060c757a6a3b959d071a5c5a9eae47e588b63bc9a884893b859f3"
+    },
+    {
+      "path": "docs/governance/open-spec-residuals.json",
+      "sha256": "0f6504f27375f30907804d71c39f3e354246a1c9f9d5dac79e784b79723f9f24"
+    }
+  ],
+  "lockfiles": [
+    {
+      "path": "uv.lock",
+      "sha256": "2d1b79df4cd5878ec7f4674a133c54ca7b16dfa559560ba3a93911e620f435d5"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "sha256": "ed7659f050b279f37e5cf84fb065fc528e15b3204d374681f3a70ad081d1c25a"
+    },
+    {
+      "path": "apps/web/pnpm-lock.yaml",
+      "sha256": "12a1ed34e601b49a319846ef8d87c316708bb695853661ec3b3b95208701d278"
+    }
+  ],
+  "output_sha256": "7cd1c99eebed2517738767b1bae2eafe78ab3d4d0c03e4a33fd33bd38c215e50",
+  "receipt_version": "1.0.0",
+  "responsible_role": "release-reviewer",
+  "result": "passed",
+  "runtime": {
+    "docker": "Docker version 29.5.3, build d1c06ef",
+    "node": "v26.5.0",
+    "pnpm": "11.9.0",
+    "python": "3.12.13"
+  },
+  "scope": "open_spec_publication_and_optional_evidence_boundary",
+  "started_at": "2026-07-18T14:56:40.545585Z",
+  "summary": {
+    "next_task": "OS-02",
+    "next_task_started": false,
+    "physical_evidence_blocks_publication": false,
+    "physical_validation_tasks_accepted": 0,
+    "reference_profiles": 9,
+    "spec_tasks_accepted": 1,
+    "spec_tasks_total": 8,
+    "spec_version": "1.0.0-draft.1"
+  },
+  "warnings": []
+}
