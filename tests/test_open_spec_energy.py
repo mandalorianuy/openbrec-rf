@@ -75,19 +75,20 @@ class OpenSpecEnergyTests(unittest.TestCase):
         for option in ("--profiles", "--architecture-schema", "--fixtures", "--residuals"):
             self.assertIn(option, result.stdout)
 
-    def test_os_02_is_accepted_without_starting_os_03(self) -> None:
+    def test_os_02_remains_accepted_after_os_03_closure(self) -> None:
         source = PLAN.read_text(encoding="utf-8")
-        self.assertIn("2 / 8", source)
+        self.assertIn("3 / 8", source)
         self.assertIn("OS-02 — aceptada", source)
-        self.assertIn("OS-03 — no iniciada", source)
+        self.assertIn("OS-03 — aceptada", source)
+        self.assertIn("OS-04 — no iniciada", source)
         policy = self.load_json(POLICY)
         self.assertEqual(
             policy["progress"],
-            {"accepted_tasks": 2, "total_tasks": 8, "percent": 25.0},
+            {"accepted_tasks": 3, "total_tasks": 8, "percent": 37.5},
         )
         tasks = policy["tasks"]
-        self.assertEqual([task["status"] for task in tasks[:2]], ["accepted", "accepted"])
-        self.assertTrue(all(task["status"] == "not_started" for task in tasks[2:]))
+        self.assertEqual([task["status"] for task in tasks[:3]], ["accepted"] * 3)
+        self.assertTrue(all(task["status"] == "not_started" for task in tasks[3:]))
 
     def test_energy_profiles_keep_solar_hardware_and_topology_optional(self) -> None:
         value = self.load_json(PROFILES)
@@ -200,23 +201,23 @@ class OpenSpecEnergyTests(unittest.TestCase):
         result = self.run_verify("open-spec-energy")
         self.assertEqual(result.returncode, 0, result.stderr)
         summary = json.loads(result.stdout)["summary"]
-        self.assertEqual(summary["spec_tasks_accepted"], 2)
+        self.assertEqual(summary["spec_tasks_accepted"], 3)
         self.assertEqual(summary["spec_tasks_total"], 8)
         self.assertEqual(summary["architectures"], 4)
         self.assertEqual(summary["role_mappings"], 9)
         self.assertEqual(summary["source_adapters"], 8)
         self.assertEqual(summary["conforming_examples"], 4)
         self.assertFalse(summary["physical_evidence_blocks_publication"])
-        self.assertEqual(summary["next_task"], "OS-03")
+        self.assertEqual(summary["next_task"], "OS-04")
         self.assertFalse(summary["next_task_started"])
 
     def test_board_readme_and_ci_publish_os_02_gate(self) -> None:
         board = (ROOT / "DELIVERY_BOARD.md").read_text(encoding="utf-8")
         readme = (ROOT / "README.md").read_text(encoding="utf-8")
         workflow = (ROOT / ".github/workflows/validate.yml").read_text(encoding="utf-8")
-        self.assertIn("Open Spec `2 / 8`", board)
+        self.assertIn("Open Spec `3 / 8`", board)
         self.assertIn("[x] `OS-02`", board)
-        self.assertIn("OS-03", board)
+        self.assertIn("OS-04", board)
         self.assertIn("openbrec.verify open-spec-energy", readme)
         self.assertIn("energy-architecture-profiles.json", readme)
         self.assertIn("  open-spec-energy:", workflow)
