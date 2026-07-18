@@ -1,0 +1,57 @@
+{
+  "review_id": "openbrec-os03-source-review-2026-07-18",
+  "reviewed_at": "2026-07-18",
+  "version_policy": "pin_per_implementation_and_rereview",
+  "scope": "architecture facts used by the open profiles; not comparative field performance",
+  "sources": [
+    {
+      "technology": "meshtastic",
+      "official_url": "https://meshtastic.org/docs/overview/mesh-algo/",
+      "observations": ["Broadcast traffic uses managed flooding.", "Current direct messages can use next-hop routing with fallback behavior."],
+      "implementation_action": "Pin firmware and re-evaluate routing, hop, airtime and compatibility behavior for each implementation.",
+      "proves_field_performance": false
+    },
+    {
+      "technology": "meshtastic",
+      "official_url": "https://meshtastic.org/docs/overview/encryption/",
+      "observations": ["The documented default channel key is publicly known.", "Channel messages do not provide the application authenticity OpenBREC requires; node identifiers are not actor identity."],
+      "implementation_action": "Forbid known defaults and authenticate the OpenBREC envelope independently of the bearer.",
+      "proves_field_performance": false
+    },
+    {
+      "technology": "meshcore",
+      "official_url": "https://github.com/meshcore-dev/MeshCore/blob/main/docs/faq.md",
+      "observations": ["Companions and repeaters have distinct forwarding roles.", "Direct-message discovery can flood before learning an explicit return path; path encoding varies by version and width."],
+      "implementation_action": "Pin compatible firmware, validate path-width behavior and never interpret a theoretical hop encoding as proven operational range.",
+      "proves_field_performance": false
+    },
+    {
+      "technology": "reticulum",
+      "official_url": "https://reticulum.network/manual/",
+      "observations": ["Reticulum is a network stack over heterogeneous interfaces, including RNode and IP or serial transports.", "Routing announcements and interfaces add configuration and overhead that must be profiled."],
+      "implementation_action": "Treat RNode as replaceable, pin the stack and test the selected interfaces and operator procedure.",
+      "proves_field_performance": false
+    },
+    {
+      "technology": "lorawan",
+      "official_url": "https://lora-alliance.org/resource_hub/lorawan-is-secure-but-implementation-matters/",
+      "observations": ["Security depends on unique keys, correct nonce handling and key custody.", "OTAA supports session-key derivation but does not remove implementation obligations."],
+      "implementation_action": "Require OTAA, unique roots, persistent nonces and counters, revocation and a declared network-server dependency.",
+      "proves_field_performance": false
+    },
+    {
+      "technology": "lorawan",
+      "official_url": "https://resources.lora-alliance.org/technical-specifications/ts001-1-0-4-lorawan-l2-1-0-4-specification",
+      "observations": ["LoRaWAN L2 is versioned and certification targets exact specification versions.", "Relay capability is a separate versioned specification rather than an implicit mesh property."],
+      "implementation_action": "Pin the exact regional parameters, L2 and relay specifications used by an implementation.",
+      "proves_field_performance": false
+    },
+    {
+      "technology": "carry_bundle",
+      "official_url": "https://www.rfc-editor.org/rfc/rfc9171.html",
+      "observations": ["BPv7 specifies delay-tolerant store-carry-forward networking over convergence-layer adapters.", "An OpenBREC carry bundle is not automatically a BPv7 implementation."],
+      "implementation_action": "Keep the native carry contract small; claim BPv7 compatibility only behind a separate conformance gate.",
+      "proves_field_performance": false
+    }
+  ]
+}

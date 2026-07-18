@@ -84,6 +84,14 @@ from openbrec.open_spec_energy import (
     RESIDUALS_PATH as OPEN_SPEC_ENERGY_RESIDUALS_PATH,
     run_open_spec_energy_gate,
 )
+from openbrec.open_spec_transports import (
+    DECISION_SCHEMA_PATH as OPEN_SPEC_TRANSPORT_DECISION_SCHEMA_PATH,
+    FIXTURES_PATH as OPEN_SPEC_TRANSPORT_FIXTURES_PATH,
+    PROFILES_PATH as OPEN_SPEC_TRANSPORT_PROFILES_PATH,
+    RESIDUALS_PATH as OPEN_SPEC_TRANSPORT_RESIDUALS_PATH,
+    SOURCE_REVIEW_PATH as OPEN_SPEC_TRANSPORT_SOURCE_REVIEW_PATH,
+    run_open_spec_transport_gate,
+)
 
 DRAFT_2020_12 = "https://json-schema.org/draft/2020-12/schema"
 VERIFY_VERSION = "0.1.0"
@@ -243,7 +251,13 @@ def _responsible_role(gate: str) -> str:
         return "core-replay-maintainer"
     if gate in P0_GOVERNANCE_GATES:
         return "release-reviewer"
-    if gate in {"p1a-readiness", "p1a-assets", "open-spec", "open-spec-energy"}:
+    if gate in {
+        "p1a-readiness",
+        "p1a-assets",
+        "open-spec",
+        "open-spec-energy",
+        "open-spec-transports",
+    }:
         return "release-reviewer"
     if gate in {"beacon-adversarial", "retention-fault"}:
         return "privacy-safety-reviewer"
@@ -754,6 +768,7 @@ def _parser() -> argparse.ArgumentParser:
         "p1a-assets",
         "open-spec",
         "open-spec-energy",
+        "open-spec-transports",
         "all",
     ):
         subparser = subparsers.add_parser(gate)
@@ -801,6 +816,18 @@ def _parser() -> argparse.ArgumentParser:
             )
             subparser.add_argument("--fixtures", default=str(OPEN_SPEC_ENERGY_FIXTURES_PATH))
             subparser.add_argument("--residuals", default=str(OPEN_SPEC_ENERGY_RESIDUALS_PATH))
+        if gate == "open-spec-transports":
+            subparser.add_argument("--profiles", default=str(OPEN_SPEC_TRANSPORT_PROFILES_PATH))
+            subparser.add_argument(
+                "--decision-schema",
+                default=str(OPEN_SPEC_TRANSPORT_DECISION_SCHEMA_PATH),
+            )
+            subparser.add_argument("--fixtures", default=str(OPEN_SPEC_TRANSPORT_FIXTURES_PATH))
+            subparser.add_argument(
+                "--source-review",
+                default=str(OPEN_SPEC_TRANSPORT_SOURCE_REVIEW_PATH),
+            )
+            subparser.add_argument("--residuals", default=str(OPEN_SPEC_TRANSPORT_RESIDUALS_PATH))
         if gate == "p0-all":
             subparser.add_argument("--evidence-dir", default="evidence/p0")
             subparser.add_argument("--plan-only", action="store_true")
@@ -1354,6 +1381,35 @@ def main(argv: Sequence[str] | None = None) -> int:
                 "residuals": args.residuals,
             }
         scope = "open_spec_energy_architectures_claims_and_optional_solar"
+    elif args.gate == "open-spec-transports":
+        try:
+            profiles_path = _resolve_inside(root, args.profiles, label="profiles")
+            decision_schema_path = _resolve_inside(
+                root, args.decision_schema, label="decision-schema"
+            )
+            fixtures_path = _resolve_inside(root, args.fixtures, label="fixtures")
+            source_review_path = _resolve_inside(
+                root, args.source_review, label="source-review"
+            )
+            residuals_path = _resolve_inside(root, args.residuals, label="residuals")
+            errors, warnings, summary, gate_inputs = run_open_spec_transport_gate(
+                root,
+                profiles_path=profiles_path,
+                decision_schema_path=decision_schema_path,
+                fixtures_path=fixtures_path,
+                source_review_path=source_review_path,
+                residuals_path=residuals_path,
+            )
+            inputs.extend(gate_inputs)
+        except (OSError, ValueError) as exc:
+            errors, warnings, summary = [str(exc)], [], {
+                "profiles": args.profiles,
+                "decision_schema": args.decision_schema,
+                "fixtures": args.fixtures,
+                "source_review": args.source_review,
+                "residuals": args.residuals,
+            }
+        scope = "open_spec_multi_bearer_profiles_selection_and_regulatory_modes"
     elif args.gate == "review-quarantine":
         errors, warnings, summary = run_review_quarantine(root)
         scope = "exactly_one_primary_disposition"

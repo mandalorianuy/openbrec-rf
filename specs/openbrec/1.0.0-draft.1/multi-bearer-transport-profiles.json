@@ -1,0 +1,153 @@
+{
+  "profile_set_version": "1.0.0-draft.1",
+  "status": "draft_open_spec",
+  "open_boundary": {
+    "requires_single_bearer": false,
+    "requires_owned_hardware": false,
+    "physical_rf_validation_blocks_spec": false,
+    "protocols_are_replaceable_adapters": true,
+    "no_protocol_is_the_network": true
+  },
+  "selection_policy": {
+    "global_winner": null,
+    "select_per_mission_and_path": true,
+    "multi_bearer_allowed": true,
+    "selection_dimensions": [
+      "mission", "mobility", "topology", "density", "payload_and_latency",
+      "energy", "privacy_and_security", "regulation", "available_hardware",
+      "rf_coexistence"
+    ],
+    "life_safety_priority": "preserve and route life-safety data before privacy minimization, while retaining access control and audit",
+    "physical_claim_policy": "scope every measured claim to the exact implementation and evidence pack"
+  },
+  "application_overlay": {
+    "envelope_authority": "openbrec_application",
+    "signed_integrity": true,
+    "stable_message_id_across_bearers": true,
+    "deduplicate_before_semantic_acceptance": true,
+    "anti_loop_required": true,
+    "priority_assigned_before_bearer": true,
+    "per_path_receipts": true,
+    "raw_frame_bridge_allowed": false,
+    "transport_ack_is_semantic_delivery": false,
+    "transport_ack_is_operator_acceptance": false,
+    "ttl_and_expiry_required": true,
+    "bearer_identity_is_actor_identity": false
+  },
+  "regulatory_modes": [
+    {
+      "mode": "receive_only",
+      "meaning": "No intentional RF transmission by this implementation profile.",
+      "required_record": "local capability and receive configuration"
+    },
+    {
+      "mode": "conducted_only",
+      "meaning": "TX is constrained to a cabled, dummy-load or measured shielded test path.",
+      "required_record": "bench boundary, attenuation and stop condition"
+    },
+    {
+      "mode": "jurisdiction_validated",
+      "meaning": "A responsible implementation records its current local regulatory basis.",
+      "required_record": "jurisdiction, reviewer, evidence date and exact RF parameters"
+    },
+    {
+      "mode": "emergency_assumed_risk",
+      "meaning": "A bounded, expiring life-safety decision accepts documented regulatory uncertainty; it is not legal authorization.",
+      "required_record": "dual authorization, exact RF envelope, geography, monitoring, expiry, stop condition and kill switch"
+    }
+  ],
+  "profiles": [
+    {
+      "profile_id": "transport.lorawan-private",
+      "bearer": "lorawan_private",
+      "preferred_planes": ["machine"],
+      "required_for_spec": false,
+      "alternatives_allowed": true,
+      "trust_boundary": "untrusted_transport",
+      "selection_dimensions": ["planned star topology", "low-rate telemetry", "gateway and network-server availability", "downlink and airtime budget"],
+      "failure_modes": ["gateway loss", "network-server loss", "counter rollback", "shared-spectrum congestion", "downlink scarcity"],
+      "protocol_constraints": {
+        "activation": "OTAA",
+        "unique_root_keys": true,
+        "persistent_nonces_and_frame_counters": true,
+        "network_server_dependency_declared": true,
+        "confirmed_downlinks_bounded": true,
+        "application_authenticity_still_required": true
+      }
+    },
+    {
+      "profile_id": "transport.meshtastic",
+      "bearer": "meshtastic",
+      "preferred_planes": ["human", "machine_low_rate"],
+      "required_for_spec": false,
+      "alternatives_allowed": true,
+      "trust_boundary": "untrusted_transport",
+      "selection_dimensions": ["mobile ad-hoc team", "rapid setup", "node density", "hop and airtime budget"],
+      "failure_modes": ["flood congestion", "hop exhaustion", "known default key", "channel impersonation", "metadata disclosure"],
+      "protocol_constraints": {
+        "routing_modes": ["managed_flooding", "direct_next_hop"],
+        "known_default_channel_key_forbidden": true,
+        "channel_authenticity_trusted": false,
+        "node_id_is_actor_identity": false,
+        "application_authenticity_required": true
+      }
+    },
+    {
+      "profile_id": "transport.meshcore",
+      "bearer": "meshcore",
+      "preferred_planes": ["human", "planned_emergency"],
+      "required_for_spec": false,
+      "alternatives_allowed": true,
+      "trust_boundary": "untrusted_transport",
+      "selection_dimensions": ["planned repeater placement", "urban obstruction", "companion mobility", "path compatibility"],
+      "failure_modes": ["repeater loss", "discovery flood congestion", "stale path", "path-width version incompatibility", "co-site interference"],
+      "protocol_constraints": {
+        "roles": ["companion", "repeater"],
+        "companions_repeat_traffic": false,
+        "flood_discovery_then_explicit_path": true,
+        "path_width_version_compatibility_required": true,
+        "maximum_hop_claim_requires_exact_version_and_evidence": true
+      }
+    },
+    {
+      "profile_id": "transport.reticulum-rnode",
+      "bearer": "reticulum_rnode",
+      "preferred_planes": ["human", "federation", "heterogeneous_backhaul"],
+      "required_for_spec": false,
+      "alternatives_allowed": true,
+      "trust_boundary": "untrusted_transport",
+      "selection_dimensions": ["operator expertise", "heterogeneous links", "routing overhead", "RNode or alternative interface availability"],
+      "failure_modes": ["configuration complexity", "announce overhead", "interface loss", "version drift", "insufficient operator training"],
+      "protocol_constraints": {
+        "heterogeneous_interfaces": true,
+        "application_priority_precedes_interface": true,
+        "rnode_is_one_replaceable_interface": true,
+        "reticulum_identity_does_not_replace_incident_authorization": true,
+        "field_performance_requires_exact_evidence": true
+      }
+    },
+    {
+      "profile_id": "transport.carry-bundle",
+      "bearer": "carry_bundle",
+      "preferred_planes": ["federation", "artifact_transfer", "offline_reconciliation"],
+      "required_for_spec": false,
+      "alternatives_allowed": true,
+      "trust_boundary": "untrusted_transport",
+      "selection_dimensions": ["partition duration", "physical custody", "bundle size", "expiry", "available wired or removable media"],
+      "failure_modes": ["carrier loss", "late delivery", "duplicate import", "custody ambiguity", "media compromise"],
+      "protocol_constraints": {
+        "store_carry_forward": true,
+        "expiry_deduplication_and_custody_required": true,
+        "bpv7_conformance_implied": false,
+        "removable_media_and_wired_transfer_allowed": true,
+        "application_envelope_unchanged": true
+      }
+    }
+  ],
+  "extension_registry": [
+    {"candidate": "BPv7 convergence layer", "status": "optional_mapping", "condition": "claim RFC 9171 conformance only after a conforming implementation gate"},
+    {"candidate": "Ethernet/Wi-Fi/IP", "status": "indicated", "condition": "use as replaceable high-throughput local or federation bearer"},
+    {"candidate": "Thread/IEEE 802.15.4", "status": "watch", "condition": "evaluate when low-power sensor payload requirements are specified"},
+    {"candidate": "cellular/satellite/LMR", "status": "watch", "condition": "evaluate jurisdiction, subscription, interoperability and data-volume requirements"}
+  ]
+}

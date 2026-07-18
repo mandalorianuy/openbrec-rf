@@ -1,0 +1,84 @@
+{
+  "fixture_set_version": "1.0.0-draft.1",
+  "evidence_boundary": "These examples prove schema conformance and selection reasoning only; they are not RF performance or regulatory evidence.",
+  "examples": [
+    {
+      "schema_version": "1.0.0-draft.1",
+      "decision_id": "transport-decision-lorawan-machine",
+      "mission_profile": "Planned low-rate sensor telemetry to a private site gateway",
+      "selected_bearer": "lorawan_private",
+      "planes": ["machine"],
+      "evidence_level": "specified",
+      "regulatory_mode": "jurisdiction_validated",
+      "selection_rationale": {
+        "mission": "machine health and observation summaries", "mobility": "mostly fixed endpoints", "topology": "planned star-of-stars", "density": "bounded endpoint inventory", "payload_and_latency": "small delay-tolerant uplinks", "energy": "low endpoint duty cycle", "privacy_and_security": "unique OTAA roots plus signed application envelope", "regulation": "implementation must record current local profile", "available_hardware": "gateway and endpoints are implementation choices", "rf_coexistence": "airtime budget is reserved from human traffic"
+      },
+      "rejected_alternatives": [{"bearer": "meshtastic", "reason": "shared flooding is unnecessary for the planned machine topology", "reconsider_when": "the gateway is unavailable and an ad-hoc human path is required"}],
+      "application_invariants": {"signed_envelope": true, "stable_message_id": true, "ttl": true, "deduplication": true, "anti_loop": true, "priority_before_bearer": true, "per_path_receipts": true, "raw_bridge_forbidden": true, "transport_ack_not_semantic_acceptance": true},
+      "known_gaps": ["exact regional parameters and network-server build are not selected"]
+    },
+    {
+      "schema_version": "1.0.0-draft.1",
+      "decision_id": "transport-decision-meshtastic-mobile",
+      "mission_profile": "Rapidly formed mobile search team carrying phones and LoRa companions",
+      "selected_bearer": "meshtastic",
+      "planes": ["human"],
+      "evidence_level": "simulated",
+      "regulatory_mode": "conducted_only",
+      "selection_rationale": {
+        "mission": "brief text, status, SOS and location", "mobility": "dynamic team", "topology": "unknown ad-hoc", "density": "small team until measured otherwise", "payload_and_latency": "brief prioritized traffic", "energy": "handheld duty cycle modeled only", "privacy_and_security": "known default keys forbidden and app signature authoritative", "regulation": "no radiated test claim", "available_hardware": "reusable compatible nodes may be used", "rf_coexistence": "congestion threshold must be measured before field use"
+      },
+      "rejected_alternatives": [{"bearer": "meshcore", "reason": "no planned repeater placement in this rapid-start scenario", "reconsider_when": "repeaters can be surveyed and installed"}],
+      "application_invariants": {"signed_envelope": true, "stable_message_id": true, "ttl": true, "deduplication": true, "anti_loop": true, "priority_before_bearer": true, "per_path_receipts": true, "raw_bridge_forbidden": true, "transport_ack_not_semantic_acceptance": true},
+      "known_gaps": ["physical congestion, range and current firmware compatibility remain unverified"]
+    },
+    {
+      "schema_version": "1.0.0-draft.1",
+      "decision_id": "transport-decision-meshcore-urban",
+      "mission_profile": "Planned urban response cell with strategically placed repeaters",
+      "selected_bearer": "meshcore",
+      "planes": ["human"],
+      "evidence_level": "specified",
+      "regulatory_mode": "emergency_assumed_risk",
+      "selection_rationale": {
+        "mission": "human team messaging across obstructed sectors", "mobility": "companions mobile and repeaters fixed", "topology": "surveyed repeater paths", "density": "multiple teams with separated channels and budgets", "payload_and_latency": "brief SOS-prioritized text", "energy": "repeaters have governed L0 reserve", "privacy_and_security": "OpenBREC signature and incident identities remain authoritative", "regulation": "incident command assumes a bounded documented uncertainty", "available_hardware": "compatible nodes recorded by implementation", "rf_coexistence": "path and airtime monitoring trigger shutdown"
+      },
+      "rejected_alternatives": [{"bearer": "meshtastic", "reason": "planned repeaters reduce routine flood forwarding in this scenario", "reconsider_when": "the topology becomes fully mobile"}],
+      "application_invariants": {"signed_envelope": true, "stable_message_id": true, "ttl": true, "deduplication": true, "anti_loop": true, "priority_before_bearer": true, "per_path_receipts": true, "raw_bridge_forbidden": true, "transport_ack_not_semantic_acceptance": true},
+      "assumed_risk_decision": {
+        "jurisdiction": "example-jurisdiction", "frequency_or_band": "implementation-defined exact sub-band", "tx_power_and_eirp": "implementation-defined bounded maximum", "antenna": "recorded model gain and feed loss", "airtime_budget": "per-cell and per-priority cap", "geography": "incident geofence", "responsible_actor": "incident communications lead", "reason": "immediate life-safety communication need with no validated alternative", "starts_at": "2026-07-18T12:00:00Z", "expires_at": "2026-07-18T18:00:00Z", "monitoring": "airtime, interference and message health continuously reviewed", "stop_condition": "validated alternative available, interference threshold exceeded or incident closed", "kill_switch": "local physical TX disable at every repeater", "dual_authorization": ["incident-commander", "communications-lead"]
+      },
+      "known_gaps": ["example records do not authorize real transmission or select a jurisdictional frequency"]
+    },
+    {
+      "schema_version": "1.0.0-draft.1",
+      "decision_id": "transport-decision-reticulum-federation",
+      "mission_profile": "Expert-operated heterogeneous federation between isolated response cells",
+      "selected_bearer": "reticulum_rnode",
+      "planes": ["human", "federation"],
+      "evidence_level": "specified",
+      "regulatory_mode": "receive_only",
+      "selection_rationale": {
+        "mission": "route authenticated summaries over heterogeneous interfaces", "mobility": "mixed fixed and mobile", "topology": "intermittent federation", "density": "bounded by cell gateways", "payload_and_latency": "small summaries with occasional larger artifacts", "energy": "interface-specific budget required", "privacy_and_security": "incident authorization remains above Reticulum identity", "regulation": "example enables no transmitter", "available_hardware": "RNode is optional among interfaces", "rf_coexistence": "interface choice occurs after application priority"
+      },
+      "rejected_alternatives": [{"bearer": "lorawan_private", "reason": "heterogeneous peer routing is needed rather than a single network-server domain", "reconsider_when": "a planned machine-only star topology is sufficient"}],
+      "application_invariants": {"signed_envelope": true, "stable_message_id": true, "ttl": true, "deduplication": true, "anti_loop": true, "priority_before_bearer": true, "per_path_receipts": true, "raw_bridge_forbidden": true, "transport_ack_not_semantic_acceptance": true},
+      "known_gaps": ["selected Reticulum version, interfaces and operator SOP remain unverified"]
+    },
+    {
+      "schema_version": "1.0.0-draft.1",
+      "decision_id": "transport-decision-carry-partition",
+      "mission_profile": "Long partition reconciled by a physically carried encrypted bundle",
+      "selected_bearer": "carry_bundle",
+      "planes": ["federation", "artifact_transfer"],
+      "evidence_level": "simulated",
+      "regulatory_mode": "receive_only",
+      "selection_rationale": {
+        "mission": "preserve and reconcile delayed summaries and evidence", "mobility": "human or vehicle carrier", "topology": "no contemporaneous link", "density": "independent of radio node density", "payload_and_latency": "larger payload and high tolerated delay", "energy": "no continuous RF energy", "privacy_and_security": "encrypted signed bundle with custody record", "regulation": "no RF transmission required", "available_hardware": "removable media or wired transfer", "rf_coexistence": "does not consume shared airtime"
+      },
+      "rejected_alternatives": [{"bearer": "reticulum_rnode", "reason": "no end-to-end interface currently exists", "reconsider_when": "a heterogeneous live path is restored"}],
+      "application_invariants": {"signed_envelope": true, "stable_message_id": true, "ttl": true, "deduplication": true, "anti_loop": true, "priority_before_bearer": true, "per_path_receipts": true, "raw_bridge_forbidden": true, "transport_ack_not_semantic_acceptance": true},
+      "known_gaps": ["physical custody and removable-media procedure require implementation evidence"]
+    }
+  ]
+}

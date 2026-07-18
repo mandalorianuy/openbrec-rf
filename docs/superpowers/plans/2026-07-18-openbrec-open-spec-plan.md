@@ -3,7 +3,7 @@
 - Estado: activo
 - Autoridad principal: Open Spec
 - Versión objetivo: `1.0.0-draft.1`
-- Progreso: `2 / 8` tasks aceptadas (`25.0%`)
+- Progreso: `3 / 8` tasks aceptadas (`37.5%`)
 - Carril físico: P1a opcional, `0 / 8`, no bloquea publicación
 
 ## Frontera normativa
@@ -26,8 +26,12 @@ invalida el contrato ni habilita claims físicos.
   componente, sitio compartido, híbrida y logística/reemplazo; nueve mappings de
   rol, ocho source adapters, cargas L0–L3, degradación y claims acotados. Solar es
   opcional y `sustainable_under_profile` nunca significa operación perpetua.
-- [ ] **OS-03 — no iniciada:** perfiles de transporte LoRaWAN, Meshtastic,
-  MeshCore, Reticulum/RNode y carry bundle sin ganador universal.
+- [x] **OS-03 — aceptada:** cinco perfiles reemplazables para LoRaWAN privado,
+  Meshtastic, MeshCore, Reticulum/RNode y carry bundle sin ganador universal;
+  overlay OpenBREC independiente, selección por misión/ruta y modos regulatorios
+  `receive_only`, `conducted_only`, `jurisdiction_validated` y
+  `emergency_assumed_risk`. El último es una decisión vital acotada, auditable,
+  expirable y con kill switch; no constituye autorización legal.
 - [ ] **OS-04 — no iniciada:** mensajería, estado, SOS y ubicación con contratos
   de interoperabilidad y seguridad de aplicación.
 - [ ] **OS-05 — no iniciada:** beacons acústico, movimiento, térmico y extensiones
@@ -44,7 +48,7 @@ invalida el contrato ni habilita claims físicos.
 El numerador Open Spec cuenta tasks normativas aceptadas. No exige compra,
 custodia ni ensayo físico. Los carriles se reportan siempre separados:
 
-- Open Spec: `2 / 8` (`25.0%`).
+- Open Spec: `3 / 8` (`37.5%`).
 - P1a física opcional: `0 / 8` (`0%`).
 
 Un fixture sintético puede acreditar conformance o simulación, pero no
@@ -53,4 +57,4 @@ que documenta; nunca convierte un candidato en requisito universal.
 
 ## Próxima task
 
-OS-03 es la siguiente task gobernada. Este cierre no la inicia.
+OS-04 es la siguiente task gobernada. Este cierre no la inicia.

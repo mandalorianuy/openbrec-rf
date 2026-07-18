@@ -1,0 +1,88 @@
+{
+  "register_version": "1.0.0",
+  "task": "OS-03",
+  "lane": "open_spec",
+  "reviewed_at": "2026-07-18",
+  "residuals": [
+    {
+      "id": "OS03-R001", "state": "controlled", "owner": "transport-profile-maintainer",
+      "risk": "Protocol behavior or security changes after the source review.",
+      "disposition": "Profiles require an exact implementation pin and source re-review.",
+      "gate_or_task": "open-spec-transports plus every implementation profile",
+      "stop_condition": "Reject a profile whose versions or reviewed source dates are absent or stale.",
+      "blocks_open_spec": false
+    },
+    {
+      "id": "OS03-R002", "state": "evidence_required", "owner": "radio-transport-maintainer",
+      "risk": "Congestion, airtime saturation, hops and latency are topology-dependent.",
+      "disposition": "No normative field-performance number; P1a-02 and later evidence packs must version scenario, load, topology and radio parameters.",
+      "gate_or_task": "P1a-02 conducted and later field evidence",
+      "stop_condition": "Do not promote performance beyond specified/simulated without exact evidence.",
+      "blocks_open_spec": false
+    },
+    {
+      "id": "OS03-R003", "state": "planned", "owner": "rf-coexistence-reviewer",
+      "risk": "Logically separated LoRa planes can still collide, desensitize receivers or fail together.",
+      "disposition": "Require channel, airtime, near-far, co-site, antenna and filter plan in each radiating implementation.",
+      "gate_or_task": "P1a-02 and implementation RF coexistence gate",
+      "stop_condition": "No field profile without bounded coexistence evidence and congestion policy.",
+      "blocks_open_spec": false
+    },
+    {
+      "id": "OS03-R004", "state": "controlled", "owner": "privacy-safety-reviewer",
+      "risk": "Transport node identifiers or metadata are mistaken for incident identity or authorization.",
+      "disposition": "The signed OpenBREC envelope and incident binding remain authoritative; bearer IDs never grant rights.",
+      "gate_or_task": "open-spec-transports and OS-04",
+      "stop_condition": "Reject semantic acceptance derived only from bearer identity or transport acknowledgement.",
+      "blocks_open_spec": false
+    },
+    {
+      "id": "OS03-R005", "state": "controlled", "owner": "security-maintainer",
+      "risk": "Known default keys, shared credentials, counter rollback or downgrade enable impersonation and replay.",
+      "disposition": "Forbid known defaults; require unique keys, persistent counters/nonces, revocation, pins and application signatures.",
+      "gate_or_task": "open-spec-transports and OS-04 security contracts",
+      "stop_condition": "Fail closed on default key, unsigned envelope, nonce/counter rollback or undeclared downgrade.",
+      "blocks_open_spec": false
+    },
+    {
+      "id": "OS03-R006", "state": "controlled", "owner": "federation-maintainer",
+      "risk": "Bridging native floods or raw frames creates amplification, loops and cross-plane leakage.",
+      "disposition": "Only authenticated OpenBREC envelopes cross adapters; stable IDs, TTL, deduplication, anti-loop and per-path receipts are mandatory.",
+      "gate_or_task": "open-spec-transports and OS-06",
+      "stop_condition": "Reject every raw-frame bridge or path lacking loop and duplicate controls.",
+      "blocks_open_spec": false
+    },
+    {
+      "id": "OS03-R007", "state": "controlled", "owner": "incident-communications-lead",
+      "risk": "Emergency assumed-risk mode is interpreted as unrestricted spectrum permission.",
+      "disposition": "Mode is bounded, dual-authorized, monitored, expiring and kill-switchable; it explicitly is not legal authorization.",
+      "gate_or_task": "transport-decision schema and incident preflight",
+      "stop_condition": "No activation without every assumed-risk field; stop at expiry, threshold, validated alternative or incident close.",
+      "blocks_open_spec": false
+    },
+    {
+      "id": "OS03-R008", "state": "controlled", "owner": "evidence-custodian",
+      "risk": "Carry bundles arrive late, duplicated, corrupted, lost or without custody clarity.",
+      "disposition": "Require signed content, expiry, stable IDs, deduplication, custody events and explicit late/conflict disposition.",
+      "gate_or_task": "open-spec-transports and OS-06 reconciliation",
+      "stop_condition": "Never silently discard or overwrite a late, duplicate or conflicting bundle.",
+      "blocks_open_spec": false
+    },
+    {
+      "id": "OS03-R009", "state": "controlled", "owner": "architecture-reviewer",
+      "risk": "Readers convert reference preferences or prior simulation into a universal winner.",
+      "disposition": "The normative set fixes global_winner to null and requires a per-mission decision with rejected alternatives and reconsideration triggers.",
+      "gate_or_task": "open-spec-transports",
+      "stop_condition": "Gate fails if one bearer becomes globally mandatory or physical validation blocks publication.",
+      "blocks_open_spec": false
+    },
+    {
+      "id": "OS03-R010", "state": "planned", "owner": "extension-registry-maintainer",
+      "risk": "Other useful bearers are excluded or an optional standards mapping is overclaimed.",
+      "disposition": "Maintain a replaceable extension registry; BPv7, IP, 802.15.4, cellular, satellite and LMR require their own scoped contracts and evidence.",
+      "gate_or_task": "OS-08 extension and conformance process",
+      "stop_condition": "No compatibility or conformance claim without a versioned adapter gate.",
+      "blocks_open_spec": false
+    }
+  ]
+}
