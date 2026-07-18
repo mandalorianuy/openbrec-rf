@@ -18,7 +18,7 @@ OpenBREC RF es una plataforma open source, modular y offline-first para investig
 > El sistema produce **indicios**, no diagnósticos ni certezas de víctima. La ausencia de RF nunca descarta una persona atrapada.
 
 > [!NOTE]
-> Estado actual: M0 y P0 simulado completos. P0 cerró `9 / 9` tasks y su exit ejecuta 27 gates con receipts en `evidence/p0/`: energía, mensajería/SOS, comparación Meshtastic/MeshCore/Reticulum, federación 50k, terminal offline, beacons y campaña integrada. Todo soporte físico continúa `unverified`; no se compró hardware, no hubo TX ni se inició P1a. No es una plataforma operacional ni un perfil de campo.
+> Estado actual: M0 y P0 simulado completos. P0 cerró `9 / 9`; P1a tiene un plan de banco/conducted aprobado y permanece `0 / 8`. El readiness no autoriza compra, préstamo, hardware, ensayos, personas, captura ni TX; todo soporte físico continúa `unverified`. No es una plataforma operacional ni un perfil de campo.
 
 ## Documentos principales
 
@@ -29,7 +29,8 @@ OpenBREC RF es una plataforma open source, modular y offline-first para investig
 - [`docs/08-ruview-evaluation.md`](docs/08-ruview-evaluation.md) — validación e integración de RuView.
 - [`docs/09-drone-deployment.md`](docs/09-drone-deployment.md) — drones, Drop Pods y scans móviles.
 - [`docs/10-rf-quieting.md`](docs/10-rf-quieting.md) — cortinas, carpas y aislamiento medido.
-- [`docs/superpowers/plans/2026-07-17-openbrec-p0-simulated-addons-plan.md`](docs/superpowers/plans/2026-07-17-openbrec-p0-simulated-addons-plan.md) — plan P0 activo, completamente simulado.
+- [`docs/superpowers/plans/2026-07-17-openbrec-p0-simulated-addons-plan.md`](docs/superpowers/plans/2026-07-17-openbrec-p0-simulated-addons-plan.md) — plan P0 completado, completamente simulado.
+- [`docs/superpowers/plans/2026-07-17-openbrec-p1a-bench-conducted-plan.md`](docs/superpowers/plans/2026-07-17-openbrec-p1a-bench-conducted-plan.md) — plan P1a de banco/conducted y autorizaciones task-by-task.
 - [`docs/governance/P0_RESIDUAL_REGISTER.md`](docs/governance/P0_RESIDUAL_REGISTER.md) — residuales, owners, gates y stop conditions P0.
 
 ## Perfiles planificados posteriores a M0

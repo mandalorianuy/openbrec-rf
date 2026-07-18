@@ -59,6 +59,12 @@ from openbrec.beacons import CAMPAIGN_PATH as BEACON_CAMPAIGN_PATH
 from openbrec.beacons import run_beacon_gate
 from openbrec.integrated import run_integrated_gate
 from openbrec.p0_exit import run_governance_gate
+from openbrec.p1a_readiness import (
+    POLICY_PATH as P1A_POLICY_PATH,
+    RESIDUALS_PATH as P1A_RESIDUALS_PATH,
+    SCHEMA_PATH as P1A_SCHEMA_PATH,
+    run_readiness_gate,
+)
 
 DRAFT_2020_12 = "https://json-schema.org/draft/2020-12/schema"
 VERIFY_VERSION = "0.1.0"
@@ -217,6 +223,8 @@ def _responsible_role(gate: str) -> str:
     if gate in P0_INTEGRATED_GATES:
         return "core-replay-maintainer"
     if gate in P0_GOVERNANCE_GATES:
+        return "release-reviewer"
+    if gate == "p1a-readiness":
         return "release-reviewer"
     if gate in {"beacon-adversarial", "retention-fault"}:
         return "privacy-safety-reviewer"
@@ -723,6 +731,7 @@ def _parser() -> argparse.ArgumentParser:
         "p0-support-status",
         "p0-residuals",
         "p0-all",
+        "p1a-readiness",
         "all",
     ):
         subparser = subparsers.add_parser(gate)
@@ -750,6 +759,10 @@ def _parser() -> argparse.ArgumentParser:
             subparser.add_argument("--output")
         if gate in P0_GOVERNANCE_GATES:
             subparser.add_argument("--artifact")
+        if gate == "p1a-readiness":
+            subparser.add_argument("--policy", default=str(P1A_POLICY_PATH))
+            subparser.add_argument("--schema", default=str(P1A_SCHEMA_PATH))
+            subparser.add_argument("--residuals", default=str(P1A_RESIDUALS_PATH))
         if gate == "p0-all":
             subparser.add_argument("--evidence-dir", default="evidence/p0")
             subparser.add_argument("--plan-only", action="store_true")
@@ -1222,6 +1235,25 @@ def main(argv: Sequence[str] | None = None) -> int:
             "p0-support-status": "profile_scoped_support_and_no_purchase_shortlist",
             "p0-residuals": "terminal_residual_governance",
         }[args.gate]
+    elif args.gate == "p1a-readiness":
+        try:
+            policy_path = _resolve_inside(root, args.policy, label="policy")
+            schema_path = _resolve_inside(root, args.schema, label="schema")
+            residuals_path = _resolve_inside(root, args.residuals, label="residuals")
+            errors, warnings, summary, gate_inputs = run_readiness_gate(
+                root,
+                policy_path=policy_path,
+                schema_path=schema_path,
+                residuals_path=residuals_path,
+            )
+            inputs.extend(gate_inputs)
+        except (OSError, ValueError) as exc:
+            errors, warnings, summary = [str(exc)], [], {
+                "policy": args.policy,
+                "schema": args.schema,
+                "residuals": args.residuals,
+            }
+        scope = "p1a_non_physical_authorization_readiness"
     elif args.gate == "review-quarantine":
         errors, warnings, summary = run_review_quarantine(root)
         scope = "exactly_one_primary_disposition"
