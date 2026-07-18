@@ -1,0 +1,64 @@
+{
+  "fixture_set_version": "1.0.0-draft.1",
+  "evidence_level": "simulated",
+  "evidence_boundary": "Proves contract conformance and deterministic semantic replay only; not RF delivery, human comprehension, key custody, location accuracy or rescue.",
+  "contents": [
+    {
+      "schema_version": "1.0.0-draft.1",
+      "content_id": "41000000-0000-4000-8000-000000000001",
+      "message_type": "text",
+      "language": "es-UY",
+      "body": {"text": "Equipo Alfa en acceso sur; paso bloqueado."}
+    },
+    {
+      "schema_version": "1.0.0-draft.1",
+      "content_id": "41000000-0000-4000-8000-000000000002",
+      "message_type": "status",
+      "language": "es-UY",
+      "body": {"state": "assistance_needed", "note": "Relevo y agua requeridos."}
+    },
+    {
+      "schema_version": "1.0.0-draft.1",
+      "content_id": "41000000-0000-4000-8000-000000000003",
+      "message_type": "sos",
+      "language": "es-UY",
+      "body": {
+        "summary": "Persona inmovilizada; acceso inestable.",
+        "needs": ["rescue", "medical"],
+        "people_count_known": true,
+        "people_count": 1,
+        "location": {"representation": "zone", "zone": "zone-sur", "precision_m": 35, "source": "manual", "captured_at": "2026-07-18T16:00:00Z", "stale": false}
+      }
+    },
+    {
+      "schema_version": "1.0.0-draft.1",
+      "content_id": "41000000-0000-4000-8000-000000000004",
+      "message_type": "location",
+      "language": "es-UY",
+      "body": {"representation": "zone", "zone": "zone-bravo", "precision_m": 45, "source": "last_known", "captured_at": "2026-07-18T15:55:00Z", "stale": true}
+    }
+  ],
+  "sos_replay": {
+    "message_id": "42000000-0000-4000-8000-000000000001",
+    "events": [
+      {"schema_version": "1.0.0-draft.1", "event_id": "43000000-0000-4000-8000-000000000001", "message_id": "42000000-0000-4000-8000-000000000001", "event_type": "sos.created", "occurred_at": "2026-07-18T16:00:00Z", "actor_type": "terminal", "actor_id": "device-aaaaaaaaaaaaaaaa", "actor_role": "distress_sender", "verification": "verified", "signature": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", "causation_event_ids": [], "limitations": ["creation does not prove delivery"]},
+      {"schema_version": "1.0.0-draft.1", "event_id": "43000000-0000-4000-8000-000000000002", "message_id": "42000000-0000-4000-8000-000000000001", "event_type": "sos.queued", "occurred_at": "2026-07-18T16:00:01Z", "actor_type": "terminal", "actor_id": "device-aaaaaaaaaaaaaaaa", "actor_role": "distress_sender", "verification": "verified", "signature": "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB", "causation_event_ids": ["43000000-0000-4000-8000-000000000001"], "limitations": ["queue does not prove transmission"]},
+      {"schema_version": "1.0.0-draft.1", "event_id": "43000000-0000-4000-8000-000000000003", "message_id": "42000000-0000-4000-8000-000000000001", "event_type": "transport.transmitted", "occurred_at": "2026-07-18T16:00:03Z", "actor_type": "adapter", "actor_id": "adapter-mesh-a", "actor_role": "transport_adapter", "verification": "verified", "signature": "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC", "causation_event_ids": ["43000000-0000-4000-8000-000000000002"], "limitations": ["transmission does not prove receipt"]},
+      {"schema_version": "1.0.0-draft.1", "event_id": "43000000-0000-4000-8000-000000000004", "message_id": "42000000-0000-4000-8000-000000000001", "event_type": "transport.relay_observed", "occurred_at": "2026-07-18T16:00:05Z", "actor_type": "adapter", "actor_id": "adapter-mesh-b", "actor_role": "transport_adapter", "verification": "verified", "signature": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", "causation_event_ids": ["43000000-0000-4000-8000-000000000003"], "limitations": ["relay does not prove gateway receipt"]},
+      {"schema_version": "1.0.0-draft.1", "event_id": "43000000-0000-4000-8000-000000000005", "message_id": "42000000-0000-4000-8000-000000000001", "event_type": "gateway.received", "occurred_at": "2026-07-18T16:00:08Z", "actor_type": "gateway", "actor_id": "gateway-cell-bravo", "actor_role": "trusted_gateway", "verification": "verified", "signature": "EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE", "causation_event_ids": ["43000000-0000-4000-8000-000000000003"], "limitations": ["technical receipt does not prove human reading"]},
+      {"schema_version": "1.0.0-draft.1", "event_id": "43000000-0000-4000-8000-000000000006", "message_id": "42000000-0000-4000-8000-000000000001", "event_type": "operator.seen", "occurred_at": "2026-07-18T16:00:20Z", "actor_type": "operator", "actor_id": "actor-bbbbbbbbbbbbbbbb", "actor_role": "distress_operator", "verification": "verified", "signature": "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF", "causation_event_ids": ["43000000-0000-4000-8000-000000000005"], "limitations": ["seen does not prove operational acceptance"]},
+      {"schema_version": "1.0.0-draft.1", "event_id": "43000000-0000-4000-8000-000000000007", "message_id": "42000000-0000-4000-8000-000000000001", "event_type": "operator.accepted", "occurred_at": "2026-07-18T16:00:30Z", "actor_type": "operator", "actor_id": "actor-bbbbbbbbbbbbbbbb", "actor_role": "distress_operator", "verification": "verified", "signature": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", "causation_event_ids": ["43000000-0000-4000-8000-000000000005", "43000000-0000-4000-8000-000000000006"], "reason": "operator assumes incident follow-up", "limitations": ["acceptance does not guarantee rescue"]},
+      {"schema_version": "1.0.0-draft.1", "event_id": "43000000-0000-4000-8000-000000000008", "message_id": "42000000-0000-4000-8000-000000000001", "event_type": "sos.cancel_requested", "occurred_at": "2026-07-18T16:01:00Z", "actor_type": "terminal", "actor_id": "device-aaaaaaaaaaaaaaaa", "actor_role": "distress_sender", "verification": "verified", "signature": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", "causation_event_ids": ["43000000-0000-4000-8000-000000000007"], "reason": "sender reports condition changed", "limitations": ["request does not erase distress history or prior receipts"]}
+    ],
+    "false_acceptance_attempt": {
+      "event": {"schema_version": "1.0.0-draft.1", "event_id": "43000000-0000-4000-8000-000000000099", "message_id": "42000000-0000-4000-8000-000000000099", "event_type": "operator.accepted", "occurred_at": "2026-07-18T16:00:10Z", "actor_type": "adapter", "actor_id": "hostile-transport", "actor_role": "transport_adapter", "verification": "verified", "signature": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", "causation_event_ids": [], "reason": "transport asserted acceptance", "limitations": ["must be rejected and preserved for review"]},
+      "expected_disposition": "ReviewQuarantine"
+    },
+    "unverified_distress": [
+      {"case_id": "invalid-signature", "reason": "invalid_signature", "destination": "ReviewQuarantine", "preserved": true, "authenticated": false},
+      {"case_id": "expired-distress", "reason": "expired", "destination": "EvidenceVault", "preserved": true, "authenticated": false},
+      {"case_id": "decrypt-failure", "reason": "decrypt_failure", "destination": "EvidenceVault", "preserved": true, "authenticated": false},
+      {"case_id": "missing-binding", "reason": "missing_binding", "destination": "ReviewQuarantine", "preserved": true, "authenticated": false}
+    ]
+  }
+}

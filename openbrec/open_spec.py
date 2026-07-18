@@ -55,11 +55,11 @@ def _validate_policy(value: dict[str, Any]) -> list[str]:
     if value.get("main_lane") != "open_spec":
         errors.append("main_lane must be open_spec")
     if value.get("progress") != {
-        "accepted_tasks": 3,
+        "accepted_tasks": 4,
         "total_tasks": 8,
-        "percent": 37.5,
+        "percent": 50.0,
     }:
-        errors.append("open-spec progress must be 3 / 8")
+        errors.append("open-spec progress must be 4 / 8")
     publication = value.get("publication")
     if not isinstance(publication, dict):
         errors.append("publication policy is required")
@@ -92,10 +92,10 @@ def _validate_policy(value: dict[str, Any]) -> list[str]:
         f"OS-{index:02d}" for index in range(1, 9)
     ]:
         errors.append("tasks must cover OS-01 through OS-08 in order")
-    elif any(task.get("status") != "accepted" for task in tasks[:3]) or any(
-        task.get("status") != "not_started" for task in tasks[3:]
+    elif any(task.get("status") != "accepted" for task in tasks[:4]) or any(
+        task.get("status") != "not_started" for task in tasks[4:]
     ):
-        errors.append("only OS-01 through OS-03 may be accepted")
+        errors.append("only OS-01 through OS-04 may be accepted")
     return errors
 
 
@@ -207,11 +207,12 @@ def run_open_spec_gate(
         plan = ""
     for marker in (
         "Autoridad principal: Open Spec",
-        "3 / 8",
+        "4 / 8",
         "OS-01 — aceptada",
         "OS-02 — aceptada",
         "OS-03 — aceptada",
-        "OS-04 — no iniciada",
+        "OS-04 — aceptada",
+        "OS-05 — no iniciada",
         "P1a es un carril opcional",
     ):
         if marker not in plan:
@@ -239,12 +240,12 @@ def run_open_spec_gate(
         [],
         {
             "spec_version": policy.get("spec_version") if policy else None,
-            "spec_tasks_accepted": 3,
+            "spec_tasks_accepted": 4,
             "spec_tasks_total": 8,
             "reference_profiles": len(profiles.get("profiles", [])) if profiles else 0,
             "physical_validation_tasks_accepted": 0,
             "physical_evidence_blocks_publication": False,
-            "next_task": "OS-04",
+            "next_task": "OS-05",
             "next_task_started": False,
         },
         inputs,

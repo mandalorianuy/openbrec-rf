@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openbrec.org/schemas/open-spec/human-message-content/1.0.0-draft.1",
+  "title": "OpenBREC Human Message Content",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "content_id", "message_type", "language", "body"],
+  "properties": {
+    "schema_version": {"const": "1.0.0-draft.1"},
+    "content_id": {"type": "string", "format": "uuid"},
+    "message_type": {"enum": ["text", "status", "sos", "location"]},
+    "language": {"type": "string", "pattern": "^[a-z]{2,3}(-[A-Z]{2})?$"},
+    "body": {"type": "object"}
+  },
+  "$defs": {
+    "location": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["representation", "precision_m", "source", "captured_at", "stale"],
+      "properties": {
+        "representation": {"enum": ["zone", "coordinates"]},
+        "zone": {"type": "string", "pattern": "^zone-[a-z0-9-]{2,48}$"},
+        "latitude": {"type": "number", "minimum": -90, "maximum": 90},
+        "longitude": {"type": "number", "minimum": -180, "maximum": 180},
+        "precision_m": {"type": "number", "minimum": 0},
+        "source": {"enum": ["gnss", "network", "manual", "last_known", "unknown"]},
+        "captured_at": {"type": "string", "format": "date-time"},
+        "stale": {"type": "boolean"}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"representation": {"const": "zone"}}, "required": ["representation"]},
+          "then": {"required": ["zone"], "not": {"anyOf": [{"required": ["latitude"]}, {"required": ["longitude"]}]}},
+          "else": {"required": ["latitude", "longitude"], "not": {"required": ["zone"]}}
+        }
+      ]
+    },
+    "text": {
+      "type": "object", "additionalProperties": false,
+      "required": ["text"],
+      "properties": {"text": {"type": "string", "minLength": 1, "maxLength": 280}}
+    },
+    "status": {
+      "type": "object", "additionalProperties": false,
+      "required": ["state"],
+      "properties": {
+        "state": {"enum": ["ok", "assistance_needed", "evacuating", "unavailable", "unknown"]},
+        "note": {"type": "string", "minLength": 1, "maxLength": 120}
+      }
+    },
+    "sos": {
+      "type": "object", "additionalProperties": false,
+      "required": ["summary", "needs", "people_count_known"],
+      "properties": {
+        "summary": {"type": "string", "minLength": 1, "maxLength": 160},
+        "needs": {
+          "type": "array", "minItems": 1, "uniqueItems": true,
+          "items": {"enum": ["rescue", "medical", "evacuation", "supplies", "communication", "unknown"]}
+        },
+        "people_count_known": {"type": "boolean"},
+        "people_count": {"type": "integer", "minimum": 1, "maximum": 9999},
+        "location": {"$ref": "#/$defs/location"}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"people_count_known": {"const": true}}, "required": ["people_count_known"]},
+          "then": {"required": ["people_count"]},
+          "else": {"not": {"required": ["people_count"]}}
+        }
+      ]
+    }
+  },
+  "allOf": [
+    {"if": {"properties": {"message_type": {"const": "text"}}, "required": ["message_type"]}, "then": {"properties": {"body": {"$ref": "#/$defs/text"}}}},
+    {"if": {"properties": {"message_type": {"const": "status"}}, "required": ["message_type"]}, "then": {"properties": {"body": {"$ref": "#/$defs/status"}}}},
+    {"if": {"properties": {"message_type": {"const": "sos"}}, "required": ["message_type"]}, "then": {"properties": {"body": {"$ref": "#/$defs/sos"}}}},
+    {"if": {"properties": {"message_type": {"const": "location"}}, "required": ["message_type"]}, "then": {"properties": {"body": {"$ref": "#/$defs/location"}}}}
+  ]
+}

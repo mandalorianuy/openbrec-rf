@@ -3,7 +3,7 @@
 - Estado: activo
 - Autoridad principal: Open Spec
 - Versión objetivo: `1.0.0-draft.1`
-- Progreso: `3 / 8` tasks aceptadas (`37.5%`)
+- Progreso: `4 / 8` tasks aceptadas (`50.0%`)
 - Carril físico: P1a opcional, `0 / 8`, no bloquea publicación
 
 ## Frontera normativa
@@ -32,8 +32,11 @@ invalida el contrato ni habilita claims físicos.
   `receive_only`, `conducted_only`, `jurisdiction_validated` y
   `emergency_assumed_risk`. El último es una decisión vital acotada, auditable,
   expirable y con kill switch; no constituye autorización legal.
-- [ ] **OS-04 — no iniciada:** mensajería, estado, SOS y ubicación con contratos
-  de interoperabilidad y seguridad de aplicación.
+- [x] **OS-04 — aceptada:** texto breve, estado, SOS y ubicación con contenidos
+  cerrados, seguridad de aplicación por encima del bearer y lifecycle SOS
+  append-only. Recepción técnica, lectura humana y aceptación operativa son
+  estados separados; ninguna garantiza rescate. `unverified_distress` se
+  preserva en vault/quarantine para review sin elevarlo a autenticado.
 - [ ] **OS-05 — no iniciada:** beacons acústico, movimiento, térmico y extensiones
   con privacidad, abstención y datasets reutilizables.
 - [ ] **OS-06 — no iniciada:** topologías recursivas, autonomía local, federación
@@ -48,7 +51,7 @@ invalida el contrato ni habilita claims físicos.
 El numerador Open Spec cuenta tasks normativas aceptadas. No exige compra,
 custodia ni ensayo físico. Los carriles se reportan siempre separados:
 
-- Open Spec: `3 / 8` (`37.5%`).
+- Open Spec: `4 / 8` (`50.0%`).
 - P1a física opcional: `0 / 8` (`0%`).
 
 Un fixture sintético puede acreditar conformance o simulación, pero no
@@ -57,4 +60,4 @@ que documenta; nunca convierte un candidato en requisito universal.
 
 ## Próxima task
 
-OS-04 es la siguiente task gobernada. Este cierre no la inicia.
+OS-05 es la siguiente task gobernada. Este cierre no la inicia.

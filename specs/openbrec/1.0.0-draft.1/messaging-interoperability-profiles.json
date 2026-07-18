@@ -1,0 +1,101 @@
+{
+  "profile_set_version": "1.0.0-draft.1",
+  "status": "draft_open_spec",
+  "open_boundary": {
+    "requires_specific_bearer": false,
+    "requires_owned_hardware": false,
+    "physical_delivery_blocks_spec": false,
+    "cloud_dependency_allowed_in_critical_path": false,
+    "message_content_is_not_observation_or_fusion_fact": true
+  },
+  "required_contract_refs": [
+    "https://openbrec.org/schemas/open-spec/human-message-content/1.0.0-draft.1",
+    "https://openbrec.org/schemas/open-spec/human-message-lifecycle-event/1.0.0-draft.1",
+    "https://openbrec.org/schemas/addons/human-message/1.0.0",
+    "https://openbrec.org/schemas/addons/transport-envelope/1.0.0"
+  ],
+  "message_profiles": [
+    {
+      "profile_id": "messaging.text-brief",
+      "message_type": "text",
+      "default_priority": "routine",
+      "content_contract": "short UTF-8 text with declared language and no delivery guarantee",
+      "alternatives_allowed": true,
+      "acceptance_criteria": ["valid closed content", "protected application envelope", "stable message ID", "explicit TTL"],
+      "limitations": ["bearer profile sets byte limit", "large files and media require another transport"]
+    },
+    {
+      "profile_id": "messaging.status",
+      "message_type": "status",
+      "default_priority": "urgent",
+      "content_contract": "bounded operational vocabulary plus optional short note",
+      "alternatives_allowed": true,
+      "acceptance_criteria": ["unknown remains available", "status is actor-reported", "timestamp and sender binding are protected"],
+      "limitations": ["status is not a medical diagnosis", "absence of updates is not negative evidence"]
+    },
+    {
+      "profile_id": "messaging.sos",
+      "message_type": "sos",
+      "default_priority": "distress",
+      "content_contract": "brief distress summary and needs with optional bounded location",
+      "alternatives_allowed": true,
+      "acceptance_criteria": ["single transport unit or profile disabled", "append-only lifecycle", "zero false operator acceptance", "unverified distress preserved"],
+      "limitations": ["creation, receipt, seen or acceptance never guarantee rescue", "cancellation never erases history"]
+    },
+    {
+      "profile_id": "messaging.location",
+      "message_type": "location",
+      "default_priority": "urgent",
+      "content_contract": "zone or coordinates with source, precision, capture time and staleness",
+      "alternatives_allowed": true,
+      "acceptance_criteria": ["precision is explicit", "source is explicit", "staleness is explicit", "location is sender-reported"],
+      "limitations": ["location is not a victim detection result", "stale or low-precision location remains visibly qualified"]
+    }
+  ],
+  "application_security": {
+    "trust_boundary": "untrusted_transport",
+    "incident_scoped_identity": true,
+    "actor_device_binding": true,
+    "encrypt_then_sign": true,
+    "all_routing_headers_authenticated": true,
+    "ttl_checked": true,
+    "boot_sequence_monotonic": true,
+    "nonce_reuse_fails_closed": true,
+    "revocation_and_rekey_offline": true,
+    "stable_message_id_across_bearers": true,
+    "bearer_id_is_actor_identity": false,
+    "transport_ack_is_delivery": false,
+    "transport_ack_is_operator_acceptance": false,
+    "algorithms": ["AEAD_AES_256_GCM", "Ed25519", "JCS_RFC8785", "SHA_256"],
+    "p0_crypto_evidence_ref": "evidence/p0/p0-03/human-message-security/p0-03-receipt.json"
+  },
+  "distress_policy": {
+    "event_types": [
+      "sos.created", "sos.queued", "transport.transmitted",
+      "transport.relay_observed", "gateway.received", "operator.seen",
+      "operator.accepted", "sos.cancel_requested", "sos.expired", "sos.failed"
+    ],
+    "append_only": true,
+    "cancel_adds_event_never_erases": true,
+    "late_event_never_regresses_terminal_state": true,
+    "operator_acceptance_requires_gateway_seen_and_authorized_signature": true,
+    "gateway_received_means_rescue": false,
+    "operator_accepted_means_rescue": false,
+    "transport_may_set_derived_state": false,
+    "derived_dimensions": ["technical_state", "human_state", "operational_state", "lifecycle_state"]
+  },
+  "life_safety_preservation": {
+    "possible_distress_is_never_silently_discarded": true,
+    "allowed_destinations": ["EvidenceVault", "ReviewQuarantine"],
+    "access_control_required": true,
+    "audit_required": true,
+    "retention_review_required": true,
+    "unverified_distress_becomes_authenticated": false,
+    "privacy_minimization_may_destroy_possible_distress": false,
+    "preservation_reasons": ["invalid_signature", "expired", "decrypt_failure", "missing_binding"]
+  },
+  "conformance_boundary": {
+    "fixtures_prove": ["schema conformance", "semantic replay", "zero silent discard", "zero false acceptance"],
+    "fixtures_do_not_prove": ["RF delivery", "human comprehension", "hardware key custody", "location accuracy", "rescue outcome"]
+  }
+}
