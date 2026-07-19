@@ -392,6 +392,9 @@ por las nueve categorías y queda documentado en
 `docs/governance/P1A_ASSET_INTAKE.md`. Es un preflight no contable: no autoriza
 acciones físicas, valida submissions parciales antes de contarlas como listas
 para el gate, no acepta P1a-01 y no cambia el numerador `0 / 8`.
+El registro de autorizaciones se valida con el schema cerrado
+`schemas/p1a/asset-authorization-register.schema.json` tanto en intake como en
+el gate final 9/9.
 
 Frontera: P0 no autoriza compra, hardware, TX, captura real, ensayo de 72 horas,
 campo ni claims físicos. Solar, storage, generadores, conducted/radiated radio,

@@ -28,6 +28,10 @@ task con el checklist no contable:
 uv run --offline python -m openbrec.verify p1a-assets-intake --evidence-dir evidence/p1a/p1a-01
 ```
 
+El registro de autorizaciones usa el contrato cerrado
+`schemas/p1a/asset-authorization-register.schema.json`; no admite aprobaciones
+implícitas ni campos desconocidos.
+
 Cuando el checklist indique 9/9 submissions validadas individualmente, el gate
 de aceptación es:
 

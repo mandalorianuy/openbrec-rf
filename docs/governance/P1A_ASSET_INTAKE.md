@@ -8,7 +8,8 @@ inspecciones ni uso de hardware, y mantiene el avance físico en `0 / 8`.
 
 ```bash
 uv run --offline python -m openbrec.verify p1a-assets-intake \
-  --evidence-dir evidence/p1a/p1a-01
+  --evidence-dir evidence/p1a/p1a-01 \
+  --authorization-schema schemas/p1a/asset-authorization-register.schema.json
 ```
 
 La salida enumera las nueve categorías gobernadas y, para cada una:
@@ -25,9 +26,16 @@ categoría `invalid_submission` hace fallar el comando; una categoría
 `validated_for_acceptance_gate` superó el control individual, pero no promueve
 soporte ni acepta la task. El único gate de aceptación 9/9 sigue siendo:
 
+El registro completo está gobernado por
+`schemas/p1a/asset-authorization-register.schema.json`. El contrato usa
+`additionalProperties: false`, correlaciona categoría/candidato y exige
+evidencia específica para `purchase` o `loan`; un campo implícito o desconocido
+invalida la submission.
+
 ```bash
 uv run --offline python -m openbrec.verify p1a-assets \
-  --evidence-dir evidence/p1a/p1a-01
+  --evidence-dir evidence/p1a/p1a-01 \
+  --authorization-schema schemas/p1a/asset-authorization-register.schema.json
 ```
 
 ## Evidencia que debe aportar el responsable físico

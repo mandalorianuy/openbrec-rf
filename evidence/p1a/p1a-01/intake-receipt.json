@@ -6,15 +6,17 @@
     "p1a-assets-intake",
     "--evidence-dir",
     "evidence/p1a/p1a-01",
+    "--authorization-schema",
+    "schemas/p1a/asset-authorization-register.schema.json",
     "--receipt",
     "evidence/p1a/p1a-01/intake-receipt.json"
   ],
   "dirty": false,
   "errors": [],
-  "finished_at": "2026-07-18T23:47:48.742773Z",
+  "finished_at": "2026-07-19T00:22:34.317008Z",
   "gate": "p1a-assets-intake",
   "gate_version": "0.1.0",
-  "git_sha": "d41545eabab0045f903c51ce66a670a4072f377f",
+  "git_sha": "71bae67d1a98380061a8708bb6913d495949c6e1",
   "inputs": [
     {
       "path": "docs/governance/p1a-01-asset-authorization-request.json",
@@ -23,6 +25,10 @@
     {
       "path": "schemas/p1a/capability-manifest.schema.json",
       "sha256": "09cdb5e03753b3674a8ce9d2572e5224903693c1fbfb633f4c7384116505be6f"
+    },
+    {
+      "path": "schemas/p1a/asset-authorization-register.schema.json",
+      "sha256": "9ed252a6cf73e29bffd878593c2c94955faf744713b71c705e059521a0859f41"
     }
   ],
   "lockfiles": [
@@ -50,7 +56,7 @@
     "python": "3.12.13"
   },
   "scope": "p1a_external_asset_evidence_intake_status",
-  "started_at": "2026-07-18T23:47:48.385635Z",
+  "started_at": "2026-07-19T00:22:34.008373Z",
   "summary": {
     "acceptance_gate": "uv run --offline python -m openbrec.verify p1a-assets --evidence-dir evidence/p1a/p1a-01",
     "accepted_tasks": 0,

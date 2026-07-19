@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openbrec.org/schemas/p1a/asset-authorization-register.schema.json",
+  "title": "OpenBREC P1a Asset Authorization Register",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["register_version", "task", "authorizations"],
+  "properties": {
+    "register_version": {"const": "1.0.0"},
+    "task": {"const": "P1a-01"},
+    "authorizations": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 9,
+      "items": {"$ref": "#/$defs/authorization"}
+    }
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "purchase": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["budget_owner", "maximum_amount", "currency", "supplier_or_channel", "purchase_receipt_sha256"],
+      "properties": {
+        "budget_owner": {"type": "string", "minLength": 1},
+        "maximum_amount": {"type": "number", "exclusiveMinimum": 0},
+        "currency": {"type": "string", "pattern": "^[A-Z]{3}$"},
+        "supplier_or_channel": {"type": "string", "minLength": 1},
+        "purchase_receipt_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "loan": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["asset_owner", "return_terms", "loan_receipt_sha256"],
+      "properties": {
+        "asset_owner": {"type": "string", "minLength": 1},
+        "return_terms": {"type": "string", "minLength": 1},
+        "loan_receipt_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "authorization": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["authorization_id", "candidate_id", "asset_id", "category", "method", "state", "authorized_at", "authorized_by", "custodian", "scope", "evidence_sha256"],
+      "properties": {
+        "authorization_id": {"type": "string", "minLength": 3, "maxLength": 128},
+        "candidate_id": {"enum": ["P1A-HW-01", "P1A-HW-02", "P1A-HW-03", "P1A-HW-04", "P1A-HW-05", "P1A-HW-06", "P1A-HW-07", "P1A-HW-08", "P1A-HW-09"]},
+        "asset_id": {"type": "string", "minLength": 1, "maxLength": 256},
+        "category": {"enum": ["lorawan_gateway", "lorawan_endpoint", "meshtastic_node", "meshcore_node", "rnode", "offline_terminal", "trimodal_beacon", "energy_storage", "wired_cell_gateway"]},
+        "method": {"enum": ["existing_asset", "loan", "purchase"]},
+        "state": {"const": "authorized_for_inventory_only"},
+        "authorized_at": {"type": "string", "format": "date-time"},
+        "authorized_by": {"type": "string", "minLength": 1},
+        "custodian": {"type": "string", "minLength": 1},
+        "scope": {
+          "type": "array",
+          "prefixItems": [
+            {"const": "physical_inspection"},
+            {"const": "custody_registration"}
+          ],
+          "items": false,
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "evidence_sha256": {"$ref": "#/$defs/sha256"},
+        "purchase": {"$ref": "#/$defs/purchase"},
+        "loan": {"$ref": "#/$defs/loan"}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"method": {"const": "purchase"}}, "required": ["method"]},
+          "then": {"required": ["purchase"]},
+          "else": {"not": {"required": ["purchase"]}}
+        },
+        {
+          "if": {"properties": {"method": {"const": "loan"}}, "required": ["method"]},
+          "then": {"required": ["loan"]},
+          "else": {"not": {"required": ["loan"]}}
+        },
+        {
+          "oneOf": [
+            {"properties": {"category": {"const": "lorawan_gateway"}, "candidate_id": {"const": "P1A-HW-01"}}},
+            {"properties": {"category": {"const": "lorawan_endpoint"}, "candidate_id": {"const": "P1A-HW-02"}}},
+            {"properties": {"category": {"const": "meshtastic_node"}, "candidate_id": {"const": "P1A-HW-03"}}},
+            {"properties": {"category": {"const": "meshcore_node"}, "candidate_id": {"const": "P1A-HW-04"}}},
+            {"properties": {"category": {"const": "rnode"}, "candidate_id": {"const": "P1A-HW-05"}}},
+            {"properties": {"category": {"const": "offline_terminal"}, "candidate_id": {"const": "P1A-HW-06"}}},
+            {"properties": {"category": {"const": "trimodal_beacon"}, "candidate_id": {"const": "P1A-HW-07"}}},
+            {"properties": {"category": {"const": "energy_storage"}, "candidate_id": {"const": "P1A-HW-08"}}},
+            {"properties": {"category": {"const": "wired_cell_gateway"}, "candidate_id": {"const": "P1A-HW-09"}}}
+          ]
+        }
+      ]
+    }
+  }
+}

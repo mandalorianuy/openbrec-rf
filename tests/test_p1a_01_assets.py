@@ -10,6 +10,9 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 SCHEMA = REPO_ROOT / "schemas/p1a/capability-manifest.schema.json"
+AUTHORIZATION_SCHEMA = (
+    REPO_ROOT / "schemas/p1a/asset-authorization-register.schema.json"
+)
 AUTHORIZATION_REQUEST = (
     REPO_ROOT / "docs/governance/p1a-01-asset-authorization-request.json"
 )
@@ -117,6 +120,16 @@ class P1AAssetGateTests(unittest.TestCase):
         self.assertIn("--evidence-dir", result.stdout)
         self.assertIn("--schema", result.stdout)
 
+    def test_authorization_register_has_a_closed_schema_cli_contract(self) -> None:
+        self.assertTrue(AUTHORIZATION_SCHEMA.is_file())
+        schema = json.loads(AUTHORIZATION_SCHEMA.read_text(encoding="utf-8"))
+        self.assertFalse(schema["additionalProperties"])
+        self.assertFalse(schema["$defs"]["authorization"]["additionalProperties"])
+        for gate in ("p1a-assets-intake", "p1a-assets"):
+            result = self.run_verify(gate, "--help")
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertIn("--authorization-schema", result.stdout)
+
     def test_repository_evidence_fails_closed_until_assets_exist(self) -> None:
         result = self.run_verify(
             "p1a-assets", "--evidence-dir", "evidence/p1a/p1a-01"
@@ -214,6 +227,24 @@ class P1AAssetGateTests(unittest.TestCase):
         self.assertEqual(row["status"], "validated_for_acceptance_gate")
         self.assertEqual(row["validation_errors"], [])
         self.assertEqual(summary["accepted_tasks"], 0)
+
+    def test_intake_rejects_unknown_authorization_fields(self) -> None:
+        with tempfile.TemporaryDirectory(dir=REPO_ROOT) as temporary:
+            evidence_dir = Path(temporary)
+            self.write_complete_evidence(evidence_dir)
+            register_path = evidence_dir / "authorization-register.json"
+            register = json.loads(register_path.read_text(encoding="utf-8"))
+            register["authorizations"] = register["authorizations"][:1]
+            register["authorizations"][0]["implicit_approval"] = True
+            register_path.write_text(json.dumps(register), encoding="utf-8")
+            result = self.run_verify(
+                "p1a-assets-intake",
+                "--evidence-dir",
+                str(evidence_dir.relative_to(REPO_ROOT)),
+            )
+        self.assertNotEqual(result.returncode, 0, result.stdout)
+        self.assertIn("Additional properties are not allowed", result.stderr)
+        self.assertIn("implicit_approval", result.stderr)
 
     def test_complete_exact_authorized_inventory_passes_structural_gate(self) -> None:
         with tempfile.TemporaryDirectory(dir=REPO_ROOT) as temporary:
@@ -329,6 +360,8 @@ class P1AAssetGateTests(unittest.TestCase):
         self.assertIn("0 / 8", guide)
         self.assertIn("invalid_submission", guide)
         self.assertIn("validated_for_acceptance_gate", guide)
+        self.assertIn("asset-authorization-register.schema.json", guide)
+        self.assertIn("additionalProperties", guide)
         self.assertNotIn("sólo indica que existen ambos archivos", guide)
 
         workflow = (REPO_ROOT / ".github/workflows/validate.yml").read_text(
@@ -336,6 +369,8 @@ class P1AAssetGateTests(unittest.TestCase):
         )
         job = workflow.split("  p1a-assets-blocked:", 1)[1]
         self.assertIn("openbrec.verify p1a-assets-intake", job)
+        self.assertIn("--authorization-schema", job)
+        self.assertIn("asset-authorization-register.schema.json", job)
         self.assertIn("p1a-01-intake-receipt", job)
         self.assertIn('task_status"] == "blocked_external_evidence"', job)
         self.assertIn('categories_invalid"] == 0', job)
