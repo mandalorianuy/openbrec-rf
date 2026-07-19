@@ -66,6 +66,7 @@ from openbrec.p1a_readiness import (
     run_readiness_gate,
 )
 from openbrec.p1a_assets import (
+    AUTHORIZATION_SCHEMA_PATH as P1A_AUTHORIZATION_SCHEMA_PATH,
     AUTHORIZATION_REQUEST_PATH as P1A_ASSET_REQUEST_PATH,
     DEFAULT_EVIDENCE_DIR as P1A_ASSET_EVIDENCE_DIR,
     SCHEMA_PATH as P1A_ASSET_SCHEMA_PATH,
@@ -860,12 +861,18 @@ def _parser() -> argparse.ArgumentParser:
                 "--evidence-dir", default=str(P1A_ASSET_EVIDENCE_DIR)
             )
             subparser.add_argument("--schema", default=str(P1A_ASSET_SCHEMA_PATH))
+            subparser.add_argument(
+                "--authorization-schema", default=str(P1A_AUTHORIZATION_SCHEMA_PATH)
+            )
         if gate == "p1a-assets-intake":
             subparser.add_argument(
                 "--evidence-dir", default=str(P1A_ASSET_EVIDENCE_DIR)
             )
             subparser.add_argument("--request", default=str(P1A_ASSET_REQUEST_PATH))
             subparser.add_argument("--schema", default=str(P1A_ASSET_SCHEMA_PATH))
+            subparser.add_argument(
+                "--authorization-schema", default=str(P1A_AUTHORIZATION_SCHEMA_PATH)
+            )
         if gate == "open-spec":
             subparser.add_argument("--policy", default=str(OPEN_SPEC_POLICY_PATH))
             subparser.add_argument("--profiles", default=str(OPEN_SPEC_PROFILES_PATH))
@@ -1488,10 +1495,14 @@ def main(argv: Sequence[str] | None = None) -> int:
                 root, args.evidence_dir, label="evidence-dir"
             )
             schema_path = _resolve_inside(root, args.schema, label="schema")
+            authorization_schema_path = _resolve_inside(
+                root, args.authorization_schema, label="authorization-schema"
+            )
             errors, warnings, summary, gate_inputs = run_asset_gate(
                 root,
                 evidence_dir=evidence_dir,
                 schema_path=schema_path,
+                authorization_schema_path=authorization_schema_path,
             )
             inputs.extend(gate_inputs)
         except (OSError, ValueError) as exc:
@@ -1501,6 +1512,7 @@ def main(argv: Sequence[str] | None = None) -> int:
                 {
                     "evidence_dir": args.evidence_dir,
                     "schema": args.schema,
+                    "authorization_schema": args.authorization_schema,
                 },
             )
         scope = "p1a_exact_asset_identity_custody_and_inspection"
@@ -1511,11 +1523,15 @@ def main(argv: Sequence[str] | None = None) -> int:
             )
             request_path = _resolve_inside(root, args.request, label="request")
             schema_path = _resolve_inside(root, args.schema, label="schema")
+            authorization_schema_path = _resolve_inside(
+                root, args.authorization_schema, label="authorization-schema"
+            )
             errors, warnings, summary, gate_inputs = run_asset_intake(
                 root,
                 evidence_dir=evidence_dir,
                 request_path=request_path,
                 schema_path=schema_path,
+                authorization_schema_path=authorization_schema_path,
             )
             inputs.extend(gate_inputs)
         except (OSError, ValueError) as exc:
@@ -1526,6 +1542,7 @@ def main(argv: Sequence[str] | None = None) -> int:
                     "evidence_dir": args.evidence_dir,
                     "request": args.request,
                     "schema": args.schema,
+                    "authorization_schema": args.authorization_schema,
                 },
             )
         scope = "p1a_external_asset_evidence_intake_status"

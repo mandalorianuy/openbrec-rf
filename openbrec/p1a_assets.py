@@ -9,6 +9,9 @@ from jsonschema import Draft202012Validator, FormatChecker
 
 
 SCHEMA_PATH = Path("schemas/p1a/capability-manifest.schema.json")
+AUTHORIZATION_SCHEMA_PATH = Path(
+    "schemas/p1a/asset-authorization-register.schema.json"
+)
 DEFAULT_EVIDENCE_DIR = Path("evidence/p1a/p1a-01")
 AUTHORIZATION_REQUEST_PATH = Path(
     "docs/governance/p1a-01-asset-authorization-request.json"
@@ -135,6 +138,7 @@ def run_asset_intake(
     evidence_dir: Path,
     request_path: Path,
     schema_path: Path,
+    authorization_schema_path: Path,
 ) -> tuple[list[str], list[str], dict[str, Any], list[Path]]:
     """Validate partial evidence without accepting physical claims."""
     request, errors = _read_json(request_path, "asset authorization request")
@@ -147,7 +151,20 @@ def run_asset_intake(
             validator = Draft202012Validator(schema, format_checker=FormatChecker())
         except Exception as exc:
             errors.append(f"capability manifest schema is invalid: {exc}")
-    inputs = [request_path, schema_path]
+    authorization_schema, authorization_schema_errors = _read_json(
+        authorization_schema_path, "asset authorization register schema"
+    )
+    errors.extend(authorization_schema_errors)
+    authorization_validator: Draft202012Validator | None = None
+    if authorization_schema is not None:
+        try:
+            Draft202012Validator.check_schema(authorization_schema)
+            authorization_validator = Draft202012Validator(
+                authorization_schema, format_checker=FormatChecker()
+            )
+        except Exception as exc:
+            errors.append(f"asset authorization register schema is invalid: {exc}")
+    inputs = [request_path, schema_path, authorization_schema_path]
     if request is None:
         return errors, [], {"task": "P1a-01"}, inputs
 
@@ -182,6 +199,26 @@ def run_asset_intake(
         inputs.append(register_path)
         register, register_errors = _read_json(register_path, "authorization register")
         errors.extend(register_errors)
+        if register is not None and authorization_validator is not None:
+            for issue in sorted(
+                authorization_validator.iter_errors(register),
+                key=lambda item: list(item.path),
+            ):
+                location = ".".join(str(part) for part in issue.path) or "$"
+                message = f"authorization-register:{location}: {issue.message}"
+                errors.append(message)
+                path_parts = list(issue.path)
+                if (
+                    len(path_parts) >= 2
+                    and path_parts[0] == "authorizations"
+                    and isinstance(path_parts[1], int)
+                ):
+                    records_for_error = register.get("authorizations", [])
+                    index = path_parts[1]
+                    if index < len(records_for_error):
+                        category = records_for_error[index].get("category")
+                        if category in category_errors:
+                            category_errors[category].append(message)
         if register is not None and register.get("register_version") != "1.0.0":
             errors.append("authorization register_version must be 1.0.0")
         if register is not None and register.get("task") != "P1a-01":
@@ -356,9 +393,10 @@ def run_asset_gate(
     *,
     evidence_dir: Path,
     schema_path: Path,
+    authorization_schema_path: Path,
 ) -> tuple[list[str], list[str], dict[str, Any], list[Path]]:
     errors: list[str] = []
-    inputs: list[Path] = [schema_path]
+    inputs: list[Path] = [schema_path, authorization_schema_path]
     schema, schema_errors = _read_json(schema_path, "capability manifest schema")
     errors.extend(schema_errors)
     validator: Draft202012Validator | None = None
@@ -369,6 +407,20 @@ def run_asset_gate(
         except Exception as exc:
             errors.append(f"capability manifest schema is invalid: {exc}")
 
+    authorization_schema, authorization_schema_errors = _read_json(
+        authorization_schema_path, "asset authorization register schema"
+    )
+    errors.extend(authorization_schema_errors)
+    authorization_validator: Draft202012Validator | None = None
+    if authorization_schema is not None:
+        try:
+            Draft202012Validator.check_schema(authorization_schema)
+            authorization_validator = Draft202012Validator(
+                authorization_schema, format_checker=FormatChecker()
+            )
+        except Exception as exc:
+            errors.append(f"asset authorization register schema is invalid: {exc}")
+
     register_path = evidence_dir / "authorization-register.json"
     register, register_errors = _read_json(register_path, "authorization register")
     errors.extend(register_errors)
@@ -377,6 +429,13 @@ def run_asset_gate(
 
     authorization_by_id: dict[str, dict[str, Any]] = {}
     if register is not None:
+        if authorization_validator is not None:
+            for issue in sorted(
+                authorization_validator.iter_errors(register),
+                key=lambda item: list(item.path),
+            ):
+                location = ".".join(str(part) for part in issue.path) or "$"
+                errors.append(f"authorization-register:{location}: {issue.message}")
         if register.get("register_version") != "1.0.0":
             errors.append("authorization register_version must be 1.0.0")
         if register.get("task") != "P1a-01":

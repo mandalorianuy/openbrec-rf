@@ -183,6 +183,9 @@ El preflight `p1a-assets-intake` traduce ese bloqueo en un checklist por
 categoría, valida submissions parciales y CI conserva su receipt. Es una ayuda
 de ingreso no contable: aun con nueve submissions validadas individualmente,
 sólo `p1a-assets` puede aceptar la task después de validar el conjunto 9/9.
+Ambos gates usan `schemas/p1a/asset-authorization-register.schema.json`, un
+contrato cerrado que rechaza campos implícitos y exige evidencia diferenciada
+para activos existentes, préstamos y compras.
 
 El readiness no contable fue aceptado el 2026-07-17 sobre
 `922cc7fd2c505d8bfa10dd7367299adccd996b70`; su receipt limpio vive en

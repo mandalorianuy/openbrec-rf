@@ -542,6 +542,7 @@ jobs:
         run: |
           uv run --offline python -m openbrec.verify p1a-assets-intake \
             --evidence-dir evidence/p1a/p1a-01 \
+            --authorization-schema schemas/p1a/asset-authorization-register.schema.json \
             --receipt "${RUNNER_TEMP}/p1a-01-intake-receipt.json"
           RECEIPT="${RUNNER_TEMP}/p1a-01-intake-receipt.json" uv run --offline python - <<'PY'
           import json
@@ -563,6 +564,7 @@ jobs:
           set +e
           uv run --offline python -m openbrec.verify p1a-assets \
             --evidence-dir evidence/p1a/p1a-01 \
+            --authorization-schema schemas/p1a/asset-authorization-register.schema.json \
             --receipt "${RUNNER_TEMP}/p1a-01-blocked-receipt.json"
           gate_status=$?
           set -e
