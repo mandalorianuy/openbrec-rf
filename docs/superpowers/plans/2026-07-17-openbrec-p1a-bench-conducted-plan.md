@@ -190,6 +190,12 @@ debe quedar ligado al receipt aplicable del registro. Intake y aceptación
 reportan cualquier duplicado o mismatch; este binding no prueba por sí mismo la
 autenticidad de la evidencia externa.
 
+La provenance temporal también debe ser coherente: ninguna inspección puede
+preceder su autorización y ninguna fuente puede figurar recuperada después de
+la fecha de review. `authorization_inspection_order_errors` y
+`advisory_source_order_errors` quedan visibles en los receipts; cero errores de
+orden sigue sin acreditar que las fechas o fuentes externas sean auténticas.
+
 El capability manifest vigente es v2.0.0 y requiere provenance de revisión de
 advisories por cada firmware pin. V1 queda archivado para migración pero falla el
 gate actual. Una disposición `block_firmware_use` puede preservar el inventario

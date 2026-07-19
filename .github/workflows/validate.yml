@@ -559,6 +559,8 @@ jobs:
           assert receipt["summary"]["duplicate_authorization_evidence_groups"] == 0
           assert receipt["summary"]["duplicate_custody_receipt_groups"] == 0
           assert receipt["summary"]["custody_receipt_mismatches"] == 0
+          assert receipt["summary"]["authorization_inspection_order_errors"] == 0
+          assert receipt["summary"]["advisory_source_order_errors"] == 0
           assert receipt["summary"]["firmware_advisory_blockers"] == 0
           assert receipt["summary"]["firmware_use_authorized"] is False
           assert receipt["summary"]["accepted_tasks"] == 0
@@ -587,6 +589,8 @@ jobs:
           assert receipt["summary"]["duplicate_authorization_evidence_groups"] == 0
           assert receipt["summary"]["duplicate_custody_receipt_groups"] == 0
           assert receipt["summary"]["custody_receipt_mismatches"] == 0
+          assert receipt["summary"]["authorization_inspection_order_errors"] == 0
+          assert receipt["summary"]["advisory_source_order_errors"] == 0
           assert any("authorization register" in error for error in receipt["errors"])
           assert any("nine exact manifests" in error for error in receipt["errors"])
           PY

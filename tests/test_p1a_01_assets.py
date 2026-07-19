@@ -44,6 +44,38 @@ class P1AAssetGateTests(unittest.TestCase):
             check=False,
         )
 
+    def run_intake_and_gate(
+        self, evidence_dir: Path
+    ) -> tuple[
+        subprocess.CompletedProcess[str],
+        dict[str, object],
+        subprocess.CompletedProcess[str],
+        dict[str, object],
+    ]:
+        intake_receipt = evidence_dir / "intake-receipt.json"
+        intake = self.run_verify(
+            "p1a-assets-intake",
+            "--evidence-dir",
+            str(evidence_dir.relative_to(REPO_ROOT)),
+            "--receipt",
+            str(intake_receipt.relative_to(REPO_ROOT)),
+        )
+        intake_summary = json.loads(intake_receipt.read_text(encoding="utf-8"))[
+            "summary"
+        ]
+        gate_receipt = evidence_dir / "gate-receipt.json"
+        gate = self.run_verify(
+            "p1a-assets",
+            "--evidence-dir",
+            str(evidence_dir.relative_to(REPO_ROOT)),
+            "--receipt",
+            str(gate_receipt.relative_to(REPO_ROOT)),
+        )
+        gate_summary = json.loads(gate_receipt.read_text(encoding="utf-8"))[
+            "summary"
+        ]
+        return intake, intake_summary, gate, gate_summary
+
     def write_complete_evidence(self, directory: Path) -> None:
         manifests = directory / "manifests"
         manifests.mkdir(parents=True)
@@ -485,6 +517,50 @@ class P1AAssetGateTests(unittest.TestCase):
         self.assertEqual(intake_summary["duplicate_authorization_evidence_groups"], 1)
         self.assertEqual(gate_summary["duplicate_authorization_evidence_groups"], 1)
 
+    def test_intake_and_gate_reject_inspection_before_authorization(self) -> None:
+        with tempfile.TemporaryDirectory(dir=REPO_ROOT) as temporary:
+            evidence_dir = Path(temporary)
+            self.write_complete_evidence(evidence_dir)
+            manifest_path = evidence_dir / "manifests" / "lorawan_gateway.json"
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            manifest["physical_inspection"]["inspected_at"] = (
+                "2026-07-17T10:59:59Z"
+            )
+            manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+
+            intake, intake_summary, gate, gate_summary = self.run_intake_and_gate(
+                evidence_dir
+            )
+
+        self.assertNotEqual(intake.returncode, 0, intake.stdout)
+        self.assertNotEqual(gate.returncode, 0, gate.stdout)
+        self.assertIn("physical inspection predates authorization", intake.stderr)
+        self.assertIn("physical inspection predates authorization", gate.stderr)
+        self.assertEqual(intake_summary["authorization_inspection_order_errors"], 1)
+        self.assertEqual(gate_summary["authorization_inspection_order_errors"], 1)
+
+    def test_intake_and_gate_reject_advisory_sources_after_review(self) -> None:
+        with tempfile.TemporaryDirectory(dir=REPO_ROOT) as temporary:
+            evidence_dir = Path(temporary)
+            self.write_complete_evidence(evidence_dir)
+            manifest_path = evidence_dir / "manifests" / "meshtastic_node.json"
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            manifest["firmware_pin"]["advisory_review"]["reviewed_at"] = (
+                "2026-07-16"
+            )
+            manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+
+            intake, intake_summary, gate, gate_summary = self.run_intake_and_gate(
+                evidence_dir
+            )
+
+        self.assertNotEqual(intake.returncode, 0, intake.stdout)
+        self.assertNotEqual(gate.returncode, 0, gate.stdout)
+        self.assertIn("advisory source was retrieved after review", intake.stderr)
+        self.assertIn("advisory source was retrieved after review", gate.stderr)
+        self.assertEqual(intake_summary["advisory_source_order_errors"], 1)
+        self.assertEqual(gate_summary["advisory_source_order_errors"], 1)
+
     def test_gate_rejects_duplicate_serial_evidence_across_assets(self) -> None:
         with tempfile.TemporaryDirectory(dir=REPO_ROOT) as temporary:
             evidence_dir = Path(temporary)
@@ -671,6 +747,15 @@ class P1AAssetGateTests(unittest.TestCase):
                 "authorization and custody receipt binding",
                 row["required_external_evidence"],
             )
+            self.assertIn(
+                "authorization before physical inspection",
+                row["required_external_evidence"],
+            )
+            if row["category"] in FIRMWARE_CATEGORIES:
+                self.assertIn(
+                    "advisory sources retrieved before review",
+                    row["required_external_evidence"],
+                )
         self.assertEqual(value["next_task_if_accepted"], "P1a-02")
         self.assertFalse(value["next_task_started"])
 
@@ -749,6 +834,33 @@ class P1AAssetGateTests(unittest.TestCase):
         self.assertIn('duplicate_authorization_evidence_groups"] == 0', job)
         self.assertIn('duplicate_custody_receipt_groups"] == 0', job)
         self.assertIn('custody_receipt_mismatches"] == 0', job)
+
+    def test_provenance_chronology_is_documented_and_published(self) -> None:
+        guide = INTAKE_GUIDE.read_text(encoding="utf-8")
+        plan = PLAN.read_text(encoding="utf-8")
+        board = (REPO_ROOT / "DELIVERY_BOARD.md").read_text(encoding="utf-8")
+        readme = (REPO_ROOT / "README.md").read_text(encoding="utf-8")
+        for source in (guide, plan, board, readme):
+            self.assertIn("authorization_inspection_order_errors", source)
+            self.assertIn("advisory_source_order_errors", source)
+
+        residuals = json.loads(RESIDUALS.read_text(encoding="utf-8"))
+        by_id = {row["id"]: row for row in residuals["residuals"]}
+        self.assertIn(
+            "inspection predates authorization",
+            by_id["P1A-R001"]["stop_condition"],
+        )
+        self.assertIn(
+            "source retrieved after review",
+            by_id["P1A-R003"]["stop_condition"],
+        )
+
+        workflow = (REPO_ROOT / ".github/workflows/validate.yml").read_text(
+            encoding="utf-8"
+        )
+        job = workflow.split("  p1a-assets-blocked:", 1)[1]
+        self.assertIn('authorization_inspection_order_errors"] == 0', job)
+        self.assertIn('advisory_source_order_errors"] == 0', job)
 
     def test_plan_and_board_record_blocked_status_without_progress(self) -> None:
         plan = PLAN.read_text(encoding="utf-8")

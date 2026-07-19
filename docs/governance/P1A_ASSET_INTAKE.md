@@ -55,6 +55,12 @@ de autorización aplicable (`evidence_sha256`, `loan_receipt_sha256` o
 reutilizarse entre categorías. Los receipts reportan por separado IDs/evidencia
 duplicados, receipts de custodia duplicados y bindings incompatibles.
 
+La cronología declarada también falla cerrada: `authorized_at` debe ser anterior
+o igual a `physical_inspection.inspected_at`, y cada fuente de advisory debe
+haber sido recuperada a más tardar en `reviewed_at`. Los receipts exponen
+`authorization_inspection_order_errors` y `advisory_source_order_errors`; estos
+controles prueban orden interno, no autenticidad ni fecha real.
+
 ## Firmware y advisories
 
 El contrato vigente es `manifest_version: 2.0.0` en

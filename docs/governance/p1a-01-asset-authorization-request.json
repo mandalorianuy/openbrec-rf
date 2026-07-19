@@ -15,55 +15,55 @@
       "category": "lorawan_gateway",
       "candidate_id": "P1A-HW-01",
       "state": "awaiting_explicit_authorization",
-      "required_external_evidence": ["exact asset identity", "asset owner authorization", "custodian", "authorization and custody receipt binding", "serial evidence hash", "physical inspection evidence"]
+      "required_external_evidence": ["exact asset identity", "asset owner authorization", "custodian", "authorization and custody receipt binding", "authorization before physical inspection", "serial evidence hash", "physical inspection evidence", "advisory sources retrieved before review"]
     },
     {
       "category": "lorawan_endpoint",
       "candidate_id": "P1A-HW-02",
       "state": "awaiting_explicit_authorization",
-      "required_external_evidence": ["exact asset identity", "asset owner authorization", "custodian", "authorization and custody receipt binding", "serial evidence hash", "physical inspection evidence"]
+      "required_external_evidence": ["exact asset identity", "asset owner authorization", "custodian", "authorization and custody receipt binding", "authorization before physical inspection", "serial evidence hash", "physical inspection evidence", "advisory sources retrieved before review"]
     },
     {
       "category": "meshtastic_node",
       "candidate_id": "P1A-HW-03",
       "state": "awaiting_explicit_authorization",
-      "required_external_evidence": ["exact asset identity", "asset owner authorization", "custodian", "authorization and custody receipt binding", "serial evidence hash", "physical inspection evidence"]
+      "required_external_evidence": ["exact asset identity", "asset owner authorization", "custodian", "authorization and custody receipt binding", "authorization before physical inspection", "serial evidence hash", "physical inspection evidence", "advisory sources retrieved before review"]
     },
     {
       "category": "meshcore_node",
       "candidate_id": "P1A-HW-04",
       "state": "awaiting_explicit_authorization",
-      "required_external_evidence": ["exact asset identity", "asset owner authorization", "custodian", "authorization and custody receipt binding", "serial evidence hash", "physical inspection evidence"]
+      "required_external_evidence": ["exact asset identity", "asset owner authorization", "custodian", "authorization and custody receipt binding", "authorization before physical inspection", "serial evidence hash", "physical inspection evidence", "advisory sources retrieved before review"]
     },
     {
       "category": "rnode",
       "candidate_id": "P1A-HW-05",
       "state": "awaiting_explicit_authorization",
-      "required_external_evidence": ["exact asset identity", "asset owner authorization", "custodian", "authorization and custody receipt binding", "serial evidence hash", "physical inspection evidence"]
+      "required_external_evidence": ["exact asset identity", "asset owner authorization", "custodian", "authorization and custody receipt binding", "authorization before physical inspection", "serial evidence hash", "physical inspection evidence", "advisory sources retrieved before review"]
     },
     {
       "category": "offline_terminal",
       "candidate_id": "P1A-HW-06",
       "state": "awaiting_explicit_authorization",
-      "required_external_evidence": ["exact asset identity", "asset owner authorization", "custodian", "authorization and custody receipt binding", "serial evidence hash", "physical inspection evidence"]
+      "required_external_evidence": ["exact asset identity", "asset owner authorization", "custodian", "authorization and custody receipt binding", "authorization before physical inspection", "serial evidence hash", "physical inspection evidence", "advisory sources retrieved before review"]
     },
     {
       "category": "trimodal_beacon",
       "candidate_id": "P1A-HW-07",
       "state": "awaiting_explicit_authorization",
-      "required_external_evidence": ["exact asset identity", "asset owner authorization", "custodian", "authorization and custody receipt binding", "serial evidence hash", "physical inspection evidence"]
+      "required_external_evidence": ["exact asset identity", "asset owner authorization", "custodian", "authorization and custody receipt binding", "authorization before physical inspection", "serial evidence hash", "physical inspection evidence", "advisory sources retrieved before review"]
     },
     {
       "category": "energy_storage",
       "candidate_id": "P1A-HW-08",
       "state": "awaiting_explicit_authorization",
-      "required_external_evidence": ["exact asset identity", "asset owner authorization", "custodian", "authorization and custody receipt binding", "serial evidence hash", "physical inspection evidence"]
+      "required_external_evidence": ["exact asset identity", "asset owner authorization", "custodian", "authorization and custody receipt binding", "authorization before physical inspection", "serial evidence hash", "physical inspection evidence"]
     },
     {
       "category": "wired_cell_gateway",
       "candidate_id": "P1A-HW-09",
       "state": "awaiting_explicit_authorization",
-      "required_external_evidence": ["exact asset identity", "asset owner authorization", "custodian", "authorization and custody receipt binding", "serial evidence hash", "physical inspection evidence"]
+      "required_external_evidence": ["exact asset identity", "asset owner authorization", "custodian", "authorization and custody receipt binding", "authorization before physical inspection", "serial evidence hash", "physical inspection evidence", "advisory sources retrieved before review"]
     }
   ],
   "acceptance_gate": "uv run --offline python -m openbrec.verify p1a-assets --evidence-dir evidence/p1a/p1a-01",

@@ -13,14 +13,14 @@
   ],
   "dirty": false,
   "errors": [],
-  "finished_at": "2026-07-19T01:37:51.274747Z",
+  "finished_at": "2026-07-19T02:05:42.728225Z",
   "gate": "p1a-assets-intake",
   "gate_version": "0.1.0",
-  "git_sha": "a390aab309ddb005bc781986c547fcb6ff8a85fc",
+  "git_sha": "574dde078bd88f232cea13b6b7925427e50ff8a9",
   "inputs": [
     {
       "path": "docs/governance/p1a-01-asset-authorization-request.json",
-      "sha256": "a50e5876a8fe316d2ce7c14174b095f7c0aec0b21954e36bdb28a7cba64df090"
+      "sha256": "8ce3ecf2c8af6d843a09f7f4540b95fe32df64eb30c8a8aaef1928e2f913bcff"
     },
     {
       "path": "schemas/p1a/capability-manifest.schema.json",
@@ -45,7 +45,7 @@
       "sha256": "12a1ed34e601b49a319846ef8d87c316708bb695853661ec3b3b95208701d278"
     }
   ],
-  "output_sha256": "dc73a8b73d9278cbb66f19b6abb023ad5053fe12262555fb2b70c53270b3f0fa",
+  "output_sha256": "79e226850402a0665aa9c77bbbd786de8760f10af1d9fb88b4eeb331db1d3b5f",
   "receipt_version": "1.0.0",
   "responsible_role": "release-reviewer",
   "result": "passed",
@@ -56,10 +56,12 @@
     "python": "3.12.13"
   },
   "scope": "p1a_external_asset_evidence_intake_status",
-  "started_at": "2026-07-19T01:37:50.626252Z",
+  "started_at": "2026-07-19T02:05:42.330282Z",
   "summary": {
     "acceptance_gate": "uv run --offline python -m openbrec.verify p1a-assets --evidence-dir evidence/p1a/p1a-01",
     "accepted_tasks": 0,
+    "advisory_source_order_errors": 0,
+    "authorization_inspection_order_errors": 0,
     "categories_awaiting_external_evidence": 9,
     "categories_invalid": 0,
     "categories_ready_for_gate": 0,
@@ -77,8 +79,10 @@
           "asset owner authorization",
           "custodian",
           "authorization and custody receipt binding",
+          "authorization before physical inspection",
           "serial evidence hash",
-          "physical inspection evidence"
+          "physical inspection evidence",
+          "advisory sources retrieved before review"
         ],
         "status": "awaiting_external_evidence",
         "validation_errors": []
@@ -95,8 +99,10 @@
           "asset owner authorization",
           "custodian",
           "authorization and custody receipt binding",
+          "authorization before physical inspection",
           "serial evidence hash",
-          "physical inspection evidence"
+          "physical inspection evidence",
+          "advisory sources retrieved before review"
         ],
         "status": "awaiting_external_evidence",
         "validation_errors": []
@@ -113,8 +119,10 @@
           "asset owner authorization",
           "custodian",
           "authorization and custody receipt binding",
+          "authorization before physical inspection",
           "serial evidence hash",
-          "physical inspection evidence"
+          "physical inspection evidence",
+          "advisory sources retrieved before review"
         ],
         "status": "awaiting_external_evidence",
         "validation_errors": []
@@ -131,8 +139,10 @@
           "asset owner authorization",
           "custodian",
           "authorization and custody receipt binding",
+          "authorization before physical inspection",
           "serial evidence hash",
-          "physical inspection evidence"
+          "physical inspection evidence",
+          "advisory sources retrieved before review"
         ],
         "status": "awaiting_external_evidence",
         "validation_errors": []
@@ -149,8 +159,10 @@
           "asset owner authorization",
           "custodian",
           "authorization and custody receipt binding",
+          "authorization before physical inspection",
           "serial evidence hash",
-          "physical inspection evidence"
+          "physical inspection evidence",
+          "advisory sources retrieved before review"
         ],
         "status": "awaiting_external_evidence",
         "validation_errors": []
@@ -167,8 +179,10 @@
           "asset owner authorization",
           "custodian",
           "authorization and custody receipt binding",
+          "authorization before physical inspection",
           "serial evidence hash",
-          "physical inspection evidence"
+          "physical inspection evidence",
+          "advisory sources retrieved before review"
         ],
         "status": "awaiting_external_evidence",
         "validation_errors": []
@@ -185,8 +199,10 @@
           "asset owner authorization",
           "custodian",
           "authorization and custody receipt binding",
+          "authorization before physical inspection",
           "serial evidence hash",
-          "physical inspection evidence"
+          "physical inspection evidence",
+          "advisory sources retrieved before review"
         ],
         "status": "awaiting_external_evidence",
         "validation_errors": []
@@ -203,6 +219,7 @@
           "asset owner authorization",
           "custodian",
           "authorization and custody receipt binding",
+          "authorization before physical inspection",
           "serial evidence hash",
           "physical inspection evidence"
         ],
@@ -221,8 +238,10 @@
           "asset owner authorization",
           "custodian",
           "authorization and custody receipt binding",
+          "authorization before physical inspection",
           "serial evidence hash",
-          "physical inspection evidence"
+          "physical inspection evidence",
+          "advisory sources retrieved before review"
         ],
         "status": "awaiting_external_evidence",
         "validation_errors": []
