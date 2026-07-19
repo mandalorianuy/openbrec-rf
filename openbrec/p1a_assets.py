@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import re
 from collections.abc import Iterable
+from datetime import date, datetime
 from pathlib import Path
 from typing import Any
 
@@ -48,6 +49,25 @@ PLACEHOLDERS = {
     "unknown",
 }
 SHA256 = re.compile(r"^[0-9a-f]{64}$")
+
+
+def _parse_date(value: Any) -> date | None:
+    if not isinstance(value, str):
+        return None
+    try:
+        return date.fromisoformat(value)
+    except ValueError:
+        return None
+
+
+def _parse_datetime(value: Any) -> datetime | None:
+    if not isinstance(value, str):
+        return None
+    try:
+        parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    return parsed if parsed.utcoffset() is not None else None
 
 
 def _read_json(path: Path, label: str) -> tuple[dict[str, Any] | None, list[str]]:
@@ -104,21 +124,22 @@ def _authorization_receipt_sha256(authorization: dict[str, Any]) -> str | None:
 
 def _firmware_review(
     manifest: dict[str, Any], label: str
-) -> tuple[list[str], str | None]:
+) -> tuple[list[str], str | None, int]:
     errors: list[str] = []
+    source_order_errors = 0
     if manifest.get("manifest_version") != "2.0.0":
         errors.append(f"{label} manifest_version must be 2.0.0")
     if manifest.get("category") not in FIRMWARE_CATEGORIES:
-        return errors, None
+        return errors, None, source_order_errors
 
     firmware_pin = manifest.get("firmware_pin")
     if not isinstance(firmware_pin, dict):
         errors.append(f"{label} requires an immutable firmware pin")
-        return errors, None
+        return errors, None, source_order_errors
     review = firmware_pin.get("advisory_review")
     if not isinstance(review, dict):
         errors.append(f"{label} requires advisory_review provenance")
-        return errors, None
+        return errors, None, source_order_errors
 
     for field in ("reviewer", "reason"):
         if _placeholder(review.get(field)):
@@ -127,16 +148,45 @@ def _firmware_review(
     if not isinstance(sources, list) or not sources:
         errors.append(f"{label} advisory_review requires at least one source")
     else:
+        reviewed_at = _parse_date(review.get("reviewed_at"))
         for index, source in enumerate(sources):
             if not isinstance(source, dict) or _placeholder(source.get("locator")):
                 errors.append(
                     f"{label} advisory_review.sources[{index}] requires an exact locator"
                 )
+                continue
+            retrieved_at = _parse_datetime(source.get("retrieved_at"))
+            if (
+                reviewed_at is not None
+                and retrieved_at is not None
+                and retrieved_at.date() > reviewed_at
+            ):
+                source_order_errors += 1
+                errors.append(
+                    f"{label} advisory source was retrieved after review"
+                )
     disposition = review.get("disposition")
     if disposition not in {"no_known_blocker", "block_firmware_use"}:
         errors.append(f"{label} advisory_review disposition is invalid")
-        return errors, None
-    return errors, disposition
+        return errors, None, source_order_errors
+    return errors, disposition, source_order_errors
+
+
+def _inspection_predates_authorization(
+    authorization: dict[str, Any], manifest: dict[str, Any]
+) -> bool:
+    authorized_at = _parse_datetime(authorization.get("authorized_at"))
+    inspection = manifest.get("physical_inspection")
+    inspected_at = (
+        _parse_datetime(inspection.get("inspected_at"))
+        if isinstance(inspection, dict)
+        else None
+    )
+    return (
+        authorized_at is not None
+        and inspected_at is not None
+        and inspected_at < authorized_at
+    )
 
 
 def _validate_authorization_record(
@@ -346,6 +396,7 @@ def run_asset_intake(
 
     manifest_by_category: dict[str, dict[str, Any]] = {}
     firmware_advisory_blocker_categories: list[str] = []
+    advisory_source_order_errors = 0
     manifests_dir = evidence_dir / "manifests"
     manifest_paths = (
         sorted(manifests_dir.glob("*.json")) if manifests_dir.is_dir() else []
@@ -379,7 +430,10 @@ def run_asset_intake(
             manifest_errors_for_category.append(
                 f"{path.name} inspection condition cannot remain unknown"
             )
-        firmware_errors, disposition = _firmware_review(manifest, path.name)
+        firmware_errors, disposition, source_order_errors = _firmware_review(
+            manifest, path.name
+        )
+        advisory_source_order_errors += source_order_errors
         manifest_errors_for_category.extend(firmware_errors)
         if disposition == "block_firmware_use":
             firmware_advisory_blocker_categories.append(category)
@@ -441,6 +495,7 @@ def run_asset_intake(
             category_errors[category].append(message)
 
     custody_receipt_mismatches = 0
+    authorization_inspection_order_errors = 0
     for category in CATEGORIES:
         authorization = authorization_by_category.get(category)
         manifest = manifest_by_category.get(category)
@@ -469,6 +524,11 @@ def run_asset_intake(
             message = (
                 f"{category} custody receipt does not match authorization evidence"
             )
+            errors.append(message)
+            category_errors[category].append(message)
+        if _inspection_predates_authorization(authorization, manifest):
+            authorization_inspection_order_errors += 1
+            message = f"{category} physical inspection predates authorization"
             errors.append(message)
             category_errors[category].append(message)
 
@@ -536,6 +596,10 @@ def run_asset_intake(
             duplicate_custody_receipt_groups
         ),
         "custody_receipt_mismatches": custody_receipt_mismatches,
+        "authorization_inspection_order_errors": (
+            authorization_inspection_order_errors
+        ),
+        "advisory_source_order_errors": advisory_source_order_errors,
         "firmware_advisory_blockers": len(
             firmware_advisory_blocker_categories
         ),
@@ -658,7 +722,9 @@ def run_asset_gate(
     support_statuses: dict[str, int] = {}
     authorization_mismatches = 0
     custody_receipt_mismatches = 0
+    authorization_inspection_order_errors = 0
     firmware_advisory_blocker_categories: list[str] = []
+    advisory_source_order_errors = 0
     for path in manifest_paths:
         manifest, manifest_errors = _read_json(path, "capability manifest")
         errors.extend(manifest_errors)
@@ -680,7 +746,10 @@ def run_asset_gate(
         inspection = manifest.get("physical_inspection")
         if isinstance(inspection, dict) and inspection.get("condition") == "unknown":
             errors.append(f"{path.name} inspection condition cannot remain unknown")
-        firmware_errors, disposition = _firmware_review(manifest, path.name)
+        firmware_errors, disposition, source_order_errors = _firmware_review(
+            manifest, path.name
+        )
+        advisory_source_order_errors += source_order_errors
         errors.extend(firmware_errors)
         if disposition == "block_firmware_use":
             firmware_advisory_blocker_categories.append(category)
@@ -713,6 +782,12 @@ def run_asset_gate(
             errors.append(
                 f"{path.name} custody receipt does not match authorization evidence"
             )
+        if (
+            authorization is not None
+            and _inspection_predates_authorization(authorization, manifest)
+        ):
+            authorization_inspection_order_errors += 1
+            errors.append(f"{path.name} physical inspection predates authorization")
         if category in CANDIDATE_BY_CATEGORY and manifest.get("candidate_id") != CANDIDATE_BY_CATEGORY[category]:
             errors.append(f"{path.name} candidate_id does not match governed shortlist")
 
@@ -752,6 +827,10 @@ def run_asset_gate(
         "support_statuses": support_statuses,
         "authorization_mismatches": authorization_mismatches,
         "custody_receipt_mismatches": custody_receipt_mismatches,
+        "authorization_inspection_order_errors": (
+            authorization_inspection_order_errors
+        ),
+        "advisory_source_order_errors": advisory_source_order_errors,
         "duplicate_asset_id_groups": len(duplicate_asset_id_groups),
         "duplicate_serial_evidence_groups": len(
             duplicate_serial_evidence_groups

@@ -399,6 +399,9 @@ entre categorías para impedir que una misma identidad física cuente dos veces.
 También exigen `authorization_id` y evidencia de autorización únicos por asset,
 y ligan `custody.receipt_sha256` al receipt aplicable del registro; duplicados o
 mismatches invalidan las categorías implicadas sin sumar progreso.
+Además, `authorization_inspection_order_errors` impide inspecciones anteriores a
+la autorización y `advisory_source_order_errors` impide fuentes recuperadas
+después del review. Es coherencia declarativa, no validación física.
 El manifest v2 exige provenance y disposición de advisory review; v1 queda
 archivado, y cualquier `block_firmware_use` mantiene detenido el uso del pin y
 P1a-02 sin alterar el numerador.

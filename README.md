@@ -35,6 +35,9 @@ implícitas ni campos desconocidos. El intake y el gate final también rechazan
 Cada `authorization_id` y evidencia de autorización es por asset; el
 `custody.receipt_sha256` del manifest debe coincidir con el receipt aplicable del
 registro y no puede reutilizarse entre categorías.
+Los receipts reportan `authorization_inspection_order_errors` y
+`advisory_source_order_errors`: una inspección no puede preceder su autorización
+ni una fuente de advisory su review declarado.
 Los assets programables usan capability manifest v2 con revisión de advisories
 trazable. El schema v1 permanece archivado para migración, no para aceptación.
 
