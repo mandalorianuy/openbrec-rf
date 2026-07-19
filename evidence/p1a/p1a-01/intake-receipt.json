@@ -13,10 +13,10 @@
   ],
   "dirty": false,
   "errors": [],
-  "finished_at": "2026-07-19T00:22:34.317008Z",
+  "finished_at": "2026-07-19T00:43:19.131398Z",
   "gate": "p1a-assets-intake",
   "gate_version": "0.1.0",
-  "git_sha": "71bae67d1a98380061a8708bb6913d495949c6e1",
+  "git_sha": "0a1b09d2df2fd6ee645ccbecf1621ac39e9808c9",
   "inputs": [
     {
       "path": "docs/governance/p1a-01-asset-authorization-request.json",
@@ -45,7 +45,7 @@
       "sha256": "12a1ed34e601b49a319846ef8d87c316708bb695853661ec3b3b95208701d278"
     }
   ],
-  "output_sha256": "34786b524234bf63e84f2282dcedd0b374b015970ea7c5d8517dd32472b2efb0",
+  "output_sha256": "17590aaceb82c2aea1f845623f949d50301cf2c43d994b1f978f456b5cc00078",
   "receipt_version": "1.0.0",
   "responsible_role": "release-reviewer",
   "result": "passed",
@@ -56,7 +56,7 @@
     "python": "3.12.13"
   },
   "scope": "p1a_external_asset_evidence_intake_status",
-  "started_at": "2026-07-19T00:22:34.008373Z",
+  "started_at": "2026-07-19T00:43:18.651837Z",
   "summary": {
     "acceptance_gate": "uv run --offline python -m openbrec.verify p1a-assets --evidence-dir evidence/p1a/p1a-01",
     "accepted_tasks": 0,
@@ -220,6 +220,8 @@
       }
     ],
     "category_denominator": 9,
+    "duplicate_asset_id_groups": 0,
+    "duplicate_serial_evidence_groups": 0,
     "evidence_dir": "evidence/p1a/p1a-01",
     "next_task": "P1a-01",
     "next_task_started": false,
