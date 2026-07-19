@@ -45,7 +45,9 @@ manifest de una unidad real. Deben incluir identidad exacta, dueño/autorizante,
 custodio, hash de evidencia del serial, inspección física y pin de firmware
 cuando corresponda. No se aceptan placeholders, seriales publicados en claro,
 datos sintéticos ni declaraciones de una familia comercial como sustituto de
-una unidad inspeccionada.
+una unidad inspeccionada. Esos identificadores no pueden reutilizarse entre
+categorías: aplica tanto a `asset_id` como a `serial_evidence_sha256`; el intake
+invalida todas las submissions implicadas y el gate 9/9 rechaza el conjunto.
 
 La solicitud fuente es
 `docs/governance/p1a-01-asset-authorization-request.json`; el contrato del
