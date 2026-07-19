@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import re
+from collections.abc import Iterable
 from pathlib import Path
 from typing import Any
 
@@ -66,6 +67,22 @@ def _read_json(path: Path, label: str) -> tuple[dict[str, Any] | None, list[str]
 
 def _placeholder(value: Any) -> bool:
     return isinstance(value, str) and value.strip().lower() in PLACEHOLDERS
+
+
+def _duplicate_manifest_groups(
+    manifests: Iterable[dict[str, Any]], field: str
+) -> list[tuple[str, tuple[str, ...]]]:
+    categories_by_value: dict[str, list[str]] = {}
+    for manifest in manifests:
+        value = manifest.get(field)
+        category = manifest.get("category")
+        if isinstance(value, str) and category in CATEGORY_SET:
+            categories_by_value.setdefault(value, []).append(category)
+    return [
+        (value, tuple(categories))
+        for value, categories in categories_by_value.items()
+        if len(categories) > 1
+    ]
 
 
 def _validate_authorization_record(
@@ -300,6 +317,28 @@ def run_asset_intake(
         errors.extend(manifest_errors_for_category)
         category_errors[category].extend(manifest_errors_for_category)
 
+    duplicate_asset_id_groups = _duplicate_manifest_groups(
+        manifest_by_category.values(), "asset_id"
+    )
+    duplicate_serial_evidence_groups = _duplicate_manifest_groups(
+        manifest_by_category.values(), "serial_evidence_sha256"
+    )
+    for _, categories in duplicate_asset_id_groups:
+        message = (
+            "asset_id is reused across categories: " + ", ".join(categories)
+        )
+        errors.append(message)
+        for category in categories:
+            category_errors[category].append(message)
+    for _, categories in duplicate_serial_evidence_groups:
+        message = (
+            "serial evidence is reused across categories: "
+            + ", ".join(categories)
+        )
+        errors.append(message)
+        for category in categories:
+            category_errors[category].append(message)
+
     for category in CATEGORIES:
         authorization = authorization_by_category.get(category)
         manifest = manifest_by_category.get(category)
@@ -370,6 +409,10 @@ def run_asset_intake(
         "categories_valid_for_gate": valid,
         "categories_invalid": invalid,
         "categories_awaiting_external_evidence": len(CATEGORIES) - valid - invalid,
+        "duplicate_asset_id_groups": len(duplicate_asset_id_groups),
+        "duplicate_serial_evidence_groups": len(
+            duplicate_serial_evidence_groups
+        ),
         "accepted_tasks": 0,
         "total_tasks": 8,
         "percent": 0.0,
@@ -514,9 +557,14 @@ def run_asset_gate(
     categories = [manifest.get("category") for manifest in manifests]
     if set(categories) != CATEGORY_SET or len(categories) != len(set(categories)):
         errors.append("manifest categories must match the nine-category denominator exactly once")
-    asset_ids = [manifest.get("asset_id") for manifest in manifests]
-    if len(asset_ids) != len(set(asset_ids)):
+    duplicate_asset_id_groups = _duplicate_manifest_groups(manifests, "asset_id")
+    if duplicate_asset_id_groups:
         errors.append("asset_id values must be unique")
+    duplicate_serial_evidence_groups = _duplicate_manifest_groups(
+        manifests, "serial_evidence_sha256"
+    )
+    if duplicate_serial_evidence_groups:
+        errors.append("serial evidence must be unique per physical asset")
 
     accepted_assets = len(manifests) if not errors else 0
     summary = {
@@ -528,6 +576,10 @@ def run_asset_gate(
         "accepted_assets": accepted_assets,
         "support_statuses": support_statuses,
         "authorization_mismatches": authorization_mismatches,
+        "duplicate_asset_id_groups": len(duplicate_asset_id_groups),
+        "duplicate_serial_evidence_groups": len(
+            duplicate_serial_evidence_groups
+        ),
         "physical_behavior_validated": False,
         "radiated_tx_authorized": False,
     }

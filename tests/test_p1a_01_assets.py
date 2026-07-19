@@ -246,6 +246,111 @@ class P1AAssetGateTests(unittest.TestCase):
         self.assertIn("Additional properties are not allowed", result.stderr)
         self.assertIn("implicit_approval", result.stderr)
 
+    def test_intake_rejects_duplicate_asset_id_across_categories(self) -> None:
+        with tempfile.TemporaryDirectory(dir=REPO_ROOT) as temporary:
+            evidence_dir = Path(temporary)
+            self.write_complete_evidence(evidence_dir)
+            register_path = evidence_dir / "authorization-register.json"
+            register = json.loads(register_path.read_text(encoding="utf-8"))
+            register["authorizations"] = register["authorizations"][:2]
+            duplicate_asset_id = register["authorizations"][0]["asset_id"]
+            register["authorizations"][1]["asset_id"] = duplicate_asset_id
+            register_path.write_text(json.dumps(register), encoding="utf-8")
+
+            manifests = evidence_dir / "manifests"
+            for path in manifests.glob("*.json"):
+                if path.name not in {"lorawan_gateway.json", "lorawan_endpoint.json"}:
+                    path.unlink()
+            endpoint_path = manifests / "lorawan_endpoint.json"
+            endpoint = json.loads(endpoint_path.read_text(encoding="utf-8"))
+            endpoint["asset_id"] = duplicate_asset_id
+            endpoint_path.write_text(json.dumps(endpoint), encoding="utf-8")
+
+            receipt_path = evidence_dir / "intake-receipt.json"
+
+            result = self.run_verify(
+                "p1a-assets-intake",
+                "--evidence-dir",
+                str(evidence_dir.relative_to(REPO_ROOT)),
+                "--receipt",
+                str(receipt_path.relative_to(REPO_ROOT)),
+            )
+            summary = json.loads(receipt_path.read_text(encoding="utf-8"))["summary"]
+
+        self.assertNotEqual(result.returncode, 0, result.stdout)
+        self.assertIn("asset_id is reused across categories", result.stderr)
+        self.assertEqual(summary["categories_invalid"], 2)
+        self.assertEqual(summary["duplicate_asset_id_groups"], 1)
+        self.assertEqual(
+            [row["status"] for row in summary["category_checklist"][:2]],
+            ["invalid_submission", "invalid_submission"],
+        )
+
+    def test_intake_rejects_duplicate_serial_evidence_across_categories(self) -> None:
+        with tempfile.TemporaryDirectory(dir=REPO_ROOT) as temporary:
+            evidence_dir = Path(temporary)
+            self.write_complete_evidence(evidence_dir)
+            register_path = evidence_dir / "authorization-register.json"
+            register = json.loads(register_path.read_text(encoding="utf-8"))
+            register["authorizations"] = register["authorizations"][:2]
+            register_path.write_text(json.dumps(register), encoding="utf-8")
+
+            manifests = evidence_dir / "manifests"
+            for path in manifests.glob("*.json"):
+                if path.name not in {"lorawan_gateway.json", "lorawan_endpoint.json"}:
+                    path.unlink()
+            gateway = json.loads(
+                (manifests / "lorawan_gateway.json").read_text(encoding="utf-8")
+            )
+            endpoint_path = manifests / "lorawan_endpoint.json"
+            endpoint = json.loads(endpoint_path.read_text(encoding="utf-8"))
+            endpoint["serial_evidence_sha256"] = gateway["serial_evidence_sha256"]
+            endpoint_path.write_text(json.dumps(endpoint), encoding="utf-8")
+
+            receipt_path = evidence_dir / "intake-receipt.json"
+
+            result = self.run_verify(
+                "p1a-assets-intake",
+                "--evidence-dir",
+                str(evidence_dir.relative_to(REPO_ROOT)),
+                "--receipt",
+                str(receipt_path.relative_to(REPO_ROOT)),
+            )
+            summary = json.loads(receipt_path.read_text(encoding="utf-8"))["summary"]
+
+        self.assertNotEqual(result.returncode, 0, result.stdout)
+        self.assertIn("serial evidence is reused across categories", result.stderr)
+        self.assertEqual(summary["categories_invalid"], 2)
+        self.assertEqual(summary["duplicate_serial_evidence_groups"], 1)
+
+    def test_gate_rejects_duplicate_serial_evidence_across_assets(self) -> None:
+        with tempfile.TemporaryDirectory(dir=REPO_ROOT) as temporary:
+            evidence_dir = Path(temporary)
+            self.write_complete_evidence(evidence_dir)
+            manifests = evidence_dir / "manifests"
+            gateway = json.loads(
+                (manifests / "lorawan_gateway.json").read_text(encoding="utf-8")
+            )
+            endpoint_path = manifests / "lorawan_endpoint.json"
+            endpoint = json.loads(endpoint_path.read_text(encoding="utf-8"))
+            endpoint["serial_evidence_sha256"] = gateway["serial_evidence_sha256"]
+            endpoint_path.write_text(json.dumps(endpoint), encoding="utf-8")
+
+            receipt_path = evidence_dir / "gate-receipt.json"
+
+            result = self.run_verify(
+                "p1a-assets",
+                "--evidence-dir",
+                str(evidence_dir),
+                "--receipt",
+                str(receipt_path.relative_to(REPO_ROOT)),
+            )
+            summary = json.loads(receipt_path.read_text(encoding="utf-8"))["summary"]
+
+        self.assertNotEqual(result.returncode, 0, result.stdout)
+        self.assertIn("serial evidence must be unique per physical asset", result.stderr)
+        self.assertEqual(summary["duplicate_serial_evidence_groups"], 1)
+
     def test_complete_exact_authorized_inventory_passes_structural_gate(self) -> None:
         with tempfile.TemporaryDirectory(dir=REPO_ROOT) as temporary:
             evidence_dir = Path(temporary)
@@ -362,6 +467,9 @@ class P1AAssetGateTests(unittest.TestCase):
         self.assertIn("validated_for_acceptance_gate", guide)
         self.assertIn("asset-authorization-register.schema.json", guide)
         self.assertIn("additionalProperties", guide)
+        self.assertIn("asset_id", guide)
+        self.assertIn("serial_evidence_sha256", guide)
+        self.assertIn("no pueden reutilizarse", guide)
         self.assertNotIn("sólo indica que existen ambos archivos", guide)
 
         workflow = (REPO_ROOT / ".github/workflows/validate.yml").read_text(

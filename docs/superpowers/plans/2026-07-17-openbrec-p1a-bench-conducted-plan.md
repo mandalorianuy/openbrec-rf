@@ -179,6 +179,11 @@ hasheada, `unverified` y firmware inmutable donde aplica. La evidencia del repo
 permanece `blocked_external_evidence`; implementar el gate no acepta P1a-01.
 P1a-02 no iniciada.
 
+Cada categoría debe representar una unidad física distinta. Intake y aceptación
+rechazan `asset_id` o `serial_evidence_sha256` reutilizados entre categorías y
+reportan los grupos duplicados en el receipt; este control tampoco acredita la
+existencia o autenticidad del asset.
+
 El preflight `p1a-assets-intake` traduce ese bloqueo en un checklist por
 categoría, valida submissions parciales y CI conserva su receipt. Es una ayuda
 de ingreso no contable: aun con nueve submissions validadas individualmente,
