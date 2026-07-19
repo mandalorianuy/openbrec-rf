@@ -13,14 +13,14 @@
   ],
   "dirty": false,
   "errors": [],
-  "finished_at": "2026-07-19T01:06:23.324086Z",
+  "finished_at": "2026-07-19T01:37:51.274747Z",
   "gate": "p1a-assets-intake",
   "gate_version": "0.1.0",
-  "git_sha": "f07a3726d9b147ec8b267e7f91a3cf60a9cc4ad8",
+  "git_sha": "a390aab309ddb005bc781986c547fcb6ff8a85fc",
   "inputs": [
     {
       "path": "docs/governance/p1a-01-asset-authorization-request.json",
-      "sha256": "6d77fe88e55dbeb761666b42b012486c3c6e789d2cd1afd09f6e361bd219cf8a"
+      "sha256": "a50e5876a8fe316d2ce7c14174b095f7c0aec0b21954e36bdb28a7cba64df090"
     },
     {
       "path": "schemas/p1a/capability-manifest.schema.json",
@@ -45,7 +45,7 @@
       "sha256": "12a1ed34e601b49a319846ef8d87c316708bb695853661ec3b3b95208701d278"
     }
   ],
-  "output_sha256": "afca77f6b5098880f49edda624e82f9e1e737612ebce4d2eff9dc25ee71c5f0e",
+  "output_sha256": "dc73a8b73d9278cbb66f19b6abb023ad5053fe12262555fb2b70c53270b3f0fa",
   "receipt_version": "1.0.0",
   "responsible_role": "release-reviewer",
   "result": "passed",
@@ -56,7 +56,7 @@
     "python": "3.12.13"
   },
   "scope": "p1a_external_asset_evidence_intake_status",
-  "started_at": "2026-07-19T01:06:22.938402Z",
+  "started_at": "2026-07-19T01:37:50.626252Z",
   "summary": {
     "acceptance_gate": "uv run --offline python -m openbrec.verify p1a-assets --evidence-dir evidence/p1a/p1a-01",
     "accepted_tasks": 0,
@@ -76,6 +76,7 @@
           "exact asset identity",
           "asset owner authorization",
           "custodian",
+          "authorization and custody receipt binding",
           "serial evidence hash",
           "physical inspection evidence"
         ],
@@ -93,6 +94,7 @@
           "exact asset identity",
           "asset owner authorization",
           "custodian",
+          "authorization and custody receipt binding",
           "serial evidence hash",
           "physical inspection evidence"
         ],
@@ -110,6 +112,7 @@
           "exact asset identity",
           "asset owner authorization",
           "custodian",
+          "authorization and custody receipt binding",
           "serial evidence hash",
           "physical inspection evidence"
         ],
@@ -127,6 +130,7 @@
           "exact asset identity",
           "asset owner authorization",
           "custodian",
+          "authorization and custody receipt binding",
           "serial evidence hash",
           "physical inspection evidence"
         ],
@@ -144,6 +148,7 @@
           "exact asset identity",
           "asset owner authorization",
           "custodian",
+          "authorization and custody receipt binding",
           "serial evidence hash",
           "physical inspection evidence"
         ],
@@ -161,6 +166,7 @@
           "exact asset identity",
           "asset owner authorization",
           "custodian",
+          "authorization and custody receipt binding",
           "serial evidence hash",
           "physical inspection evidence"
         ],
@@ -178,6 +184,7 @@
           "exact asset identity",
           "asset owner authorization",
           "custodian",
+          "authorization and custody receipt binding",
           "serial evidence hash",
           "physical inspection evidence"
         ],
@@ -195,6 +202,7 @@
           "exact asset identity",
           "asset owner authorization",
           "custodian",
+          "authorization and custody receipt binding",
           "serial evidence hash",
           "physical inspection evidence"
         ],
@@ -212,6 +220,7 @@
           "exact asset identity",
           "asset owner authorization",
           "custodian",
+          "authorization and custody receipt binding",
           "serial evidence hash",
           "physical inspection evidence"
         ],
@@ -220,7 +229,11 @@
       }
     ],
     "category_denominator": 9,
+    "custody_receipt_mismatches": 0,
     "duplicate_asset_id_groups": 0,
+    "duplicate_authorization_evidence_groups": 0,
+    "duplicate_authorization_id_groups": 0,
+    "duplicate_custody_receipt_groups": 0,
     "duplicate_serial_evidence_groups": 0,
     "evidence_dir": "evidence/p1a/p1a-01",
     "firmware_advisory_blocker_categories": [],

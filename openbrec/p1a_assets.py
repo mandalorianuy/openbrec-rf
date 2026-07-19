@@ -69,13 +69,13 @@ def _placeholder(value: Any) -> bool:
     return isinstance(value, str) and value.strip().lower() in PLACEHOLDERS
 
 
-def _duplicate_manifest_groups(
-    manifests: Iterable[dict[str, Any]], field: str
+def _duplicate_record_groups(
+    records: Iterable[dict[str, Any]], field: str
 ) -> list[tuple[str, tuple[str, ...]]]:
     categories_by_value: dict[str, list[str]] = {}
-    for manifest in manifests:
-        value = manifest.get(field)
-        category = manifest.get("category")
+    for record in records:
+        value = record.get(field)
+        category = record.get("category")
         if isinstance(value, str) and category in CATEGORY_SET:
             categories_by_value.setdefault(value, []).append(category)
     return [
@@ -83,6 +83,23 @@ def _duplicate_manifest_groups(
         for value, categories in categories_by_value.items()
         if len(categories) > 1
     ]
+
+
+def _authorization_receipt_sha256(authorization: dict[str, Any]) -> str | None:
+    method = authorization.get("method")
+    if method == "purchase":
+        purchase = authorization.get("purchase")
+        return (
+            purchase.get("purchase_receipt_sha256")
+            if isinstance(purchase, dict)
+            else None
+        )
+    if method == "loan":
+        loan = authorization.get("loan")
+        return loan.get("loan_receipt_sha256") if isinstance(loan, dict) else None
+    if method == "existing_asset":
+        return authorization.get("evidence_sha256")
+    return None
 
 
 def _firmware_review(
@@ -249,6 +266,7 @@ def run_asset_intake(
         category: [] for category in CATEGORIES
     }
     authorization_by_category: dict[str, dict[str, Any]] = {}
+    authorization_records: list[dict[str, Any]] = []
     register_path = evidence_dir / "authorization-register.json"
     if register_path.is_file():
         inputs.append(register_path)
@@ -290,6 +308,7 @@ def run_asset_intake(
             category = record.get("category")
             if category not in CATEGORY_SET:
                 continue
+            authorization_records.append(record)
             category_errors[category].extend(record_errors)
             if record.get("candidate_id") != CANDIDATE_BY_CATEGORY[category]:
                 message = f"{category} authorization candidate_id does not match category"
@@ -301,6 +320,29 @@ def run_asset_intake(
                 category_errors[category].append(message)
             else:
                 authorization_by_category[category] = record
+
+    duplicate_authorization_id_groups = _duplicate_record_groups(
+        authorization_records, "authorization_id"
+    )
+    duplicate_authorization_evidence_groups = _duplicate_record_groups(
+        authorization_records, "evidence_sha256"
+    )
+    for _, categories in duplicate_authorization_id_groups:
+        message = (
+            "authorization_id is reused across categories: "
+            + ", ".join(categories)
+        )
+        errors.append(message)
+        for category in categories:
+            category_errors[category].append(message)
+    for _, categories in duplicate_authorization_evidence_groups:
+        message = (
+            "authorization evidence is reused across categories: "
+            + ", ".join(categories)
+        )
+        errors.append(message)
+        for category in categories:
+            category_errors[category].append(message)
 
     manifest_by_category: dict[str, dict[str, Any]] = {}
     firmware_advisory_blocker_categories: list[str] = []
@@ -357,11 +399,22 @@ def run_asset_intake(
         errors.extend(manifest_errors_for_category)
         category_errors[category].extend(manifest_errors_for_category)
 
-    duplicate_asset_id_groups = _duplicate_manifest_groups(
+    duplicate_asset_id_groups = _duplicate_record_groups(
         manifest_by_category.values(), "asset_id"
     )
-    duplicate_serial_evidence_groups = _duplicate_manifest_groups(
+    duplicate_serial_evidence_groups = _duplicate_record_groups(
         manifest_by_category.values(), "serial_evidence_sha256"
+    )
+    duplicate_custody_receipt_groups = _duplicate_record_groups(
+        (
+            {
+                "category": manifest.get("category"),
+                "receipt_sha256": custody.get("receipt_sha256"),
+            }
+            for manifest in manifest_by_category.values()
+            if isinstance((custody := manifest.get("custody")), dict)
+        ),
+        "receipt_sha256",
     )
     for _, categories in duplicate_asset_id_groups:
         message = (
@@ -378,7 +431,16 @@ def run_asset_intake(
         errors.append(message)
         for category in categories:
             category_errors[category].append(message)
+    for _, categories in duplicate_custody_receipt_groups:
+        message = (
+            "custody receipt is reused across categories: "
+            + ", ".join(categories)
+        )
+        errors.append(message)
+        for category in categories:
+            category_errors[category].append(message)
 
+    custody_receipt_mismatches = 0
     for category in CATEGORIES:
         authorization = authorization_by_category.get(category)
         manifest = manifest_by_category.get(category)
@@ -396,6 +458,17 @@ def run_asset_intake(
         }
         if any(authorization.get(field) != value for field, value in expected.items()):
             message = f"{category} authorization does not match manifest"
+            errors.append(message)
+            category_errors[category].append(message)
+        expected_receipt = _authorization_receipt_sha256(authorization)
+        actual_receipt = (
+            custody.get("receipt_sha256") if isinstance(custody, dict) else None
+        )
+        if expected_receipt != actual_receipt:
+            custody_receipt_mismatches += 1
+            message = (
+                f"{category} custody receipt does not match authorization evidence"
+            )
             errors.append(message)
             category_errors[category].append(message)
 
@@ -453,6 +526,16 @@ def run_asset_intake(
         "duplicate_serial_evidence_groups": len(
             duplicate_serial_evidence_groups
         ),
+        "duplicate_authorization_id_groups": len(
+            duplicate_authorization_id_groups
+        ),
+        "duplicate_authorization_evidence_groups": len(
+            duplicate_authorization_evidence_groups
+        ),
+        "duplicate_custody_receipt_groups": len(
+            duplicate_custody_receipt_groups
+        ),
+        "custody_receipt_mismatches": custody_receipt_mismatches,
         "firmware_advisory_blockers": len(
             firmware_advisory_blocker_categories
         ),
@@ -519,6 +602,7 @@ def run_asset_gate(
         inputs.append(register_path)
 
     authorization_by_id: dict[str, dict[str, Any]] = {}
+    authorization_records: list[dict[str, Any]] = []
     if register is not None:
         if authorization_validator is not None:
             for issue in sorted(
@@ -540,11 +624,29 @@ def run_asset_gate(
             errors.extend(record_errors)
             if record is None:
                 continue
+            authorization_records.append(record)
             identifier = record.get("authorization_id")
             if identifier in authorization_by_id:
                 errors.append(f"duplicate authorization_id: {identifier}")
             elif isinstance(identifier, str):
                 authorization_by_id[identifier] = record
+
+    duplicate_authorization_id_groups = _duplicate_record_groups(
+        authorization_records, "authorization_id"
+    )
+    duplicate_authorization_evidence_groups = _duplicate_record_groups(
+        authorization_records, "evidence_sha256"
+    )
+    for _, categories in duplicate_authorization_id_groups:
+        errors.append(
+            "authorization_id is reused across categories: "
+            + ", ".join(categories)
+        )
+    for _, categories in duplicate_authorization_evidence_groups:
+        errors.append(
+            "authorization evidence is reused across categories: "
+            + ", ".join(categories)
+        )
 
     manifests_dir = evidence_dir / "manifests"
     manifest_paths = sorted(manifests_dir.glob("*.json")) if manifests_dir.is_dir() else []
@@ -555,6 +657,7 @@ def run_asset_gate(
     manifests: list[dict[str, Any]] = []
     support_statuses: dict[str, int] = {}
     authorization_mismatches = 0
+    custody_receipt_mismatches = 0
     firmware_advisory_blocker_categories: list[str] = []
     for path in manifest_paths:
         manifest, manifest_errors = _read_json(path, "capability manifest")
@@ -603,20 +706,40 @@ def run_asset_gate(
         ):
             authorization_mismatches += 1
             errors.append(f"{path.name} authorization does not match manifest")
+        elif _authorization_receipt_sha256(authorization) != custody.get(
+            "receipt_sha256"
+        ):
+            custody_receipt_mismatches += 1
+            errors.append(
+                f"{path.name} custody receipt does not match authorization evidence"
+            )
         if category in CANDIDATE_BY_CATEGORY and manifest.get("candidate_id") != CANDIDATE_BY_CATEGORY[category]:
             errors.append(f"{path.name} candidate_id does not match governed shortlist")
 
     categories = [manifest.get("category") for manifest in manifests]
     if set(categories) != CATEGORY_SET or len(categories) != len(set(categories)):
         errors.append("manifest categories must match the nine-category denominator exactly once")
-    duplicate_asset_id_groups = _duplicate_manifest_groups(manifests, "asset_id")
+    duplicate_asset_id_groups = _duplicate_record_groups(manifests, "asset_id")
     if duplicate_asset_id_groups:
         errors.append("asset_id values must be unique")
-    duplicate_serial_evidence_groups = _duplicate_manifest_groups(
+    duplicate_serial_evidence_groups = _duplicate_record_groups(
         manifests, "serial_evidence_sha256"
     )
     if duplicate_serial_evidence_groups:
         errors.append("serial evidence must be unique per physical asset")
+    duplicate_custody_receipt_groups = _duplicate_record_groups(
+        (
+            {
+                "category": manifest.get("category"),
+                "receipt_sha256": custody.get("receipt_sha256"),
+            }
+            for manifest in manifests
+            if isinstance((custody := manifest.get("custody")), dict)
+        ),
+        "receipt_sha256",
+    )
+    if duplicate_custody_receipt_groups:
+        errors.append("custody receipt evidence must be unique per physical asset")
 
     accepted_assets = len(manifests) if not errors else 0
     summary = {
@@ -628,9 +751,19 @@ def run_asset_gate(
         "accepted_assets": accepted_assets,
         "support_statuses": support_statuses,
         "authorization_mismatches": authorization_mismatches,
+        "custody_receipt_mismatches": custody_receipt_mismatches,
         "duplicate_asset_id_groups": len(duplicate_asset_id_groups),
         "duplicate_serial_evidence_groups": len(
             duplicate_serial_evidence_groups
+        ),
+        "duplicate_authorization_id_groups": len(
+            duplicate_authorization_id_groups
+        ),
+        "duplicate_authorization_evidence_groups": len(
+            duplicate_authorization_evidence_groups
+        ),
+        "duplicate_custody_receipt_groups": len(
+            duplicate_custody_receipt_groups
         ),
         "firmware_advisory_blockers": len(
             firmware_advisory_blocker_categories

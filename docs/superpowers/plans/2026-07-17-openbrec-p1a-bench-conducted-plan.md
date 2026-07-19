@@ -184,6 +184,12 @@ rechazan `asset_id` o `serial_evidence_sha256` reutilizados entre categorías y
 reportan los grupos duplicados en el receipt; este control tampoco acredita la
 existencia o autenticidad del asset.
 
+La autorización también es por unidad: `authorization_id` y evidencia de
+autorización no pueden reutilizarse, y el `custody.receipt_sha256` del manifest
+debe quedar ligado al receipt aplicable del registro. Intake y aceptación
+reportan cualquier duplicado o mismatch; este binding no prueba por sí mismo la
+autenticidad de la evidencia externa.
+
 El capability manifest vigente es v2.0.0 y requiere provenance de revisión de
 advisories por cada firmware pin. V1 queda archivado para migración pero falla el
 gate actual. Una disposición `block_firmware_use` puede preservar el inventario

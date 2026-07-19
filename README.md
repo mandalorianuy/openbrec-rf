@@ -32,6 +32,9 @@ El registro de autorizaciones usa el contrato cerrado
 `schemas/p1a/asset-authorization-register.schema.json`; no admite aprobaciones
 implícitas ni campos desconocidos. El intake y el gate final también rechazan
 `asset_id` o hashes de evidencia serial reutilizados entre categorías.
+Cada `authorization_id` y evidencia de autorización es por asset; el
+`custody.receipt_sha256` del manifest debe coincidir con el receipt aplicable del
+registro y no puede reutilizarse entre categorías.
 Los assets programables usan capability manifest v2 con revisión de advisories
 trazable. El schema v1 permanece archivado para migración, no para aceptación.
 
