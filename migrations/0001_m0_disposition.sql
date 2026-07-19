@@ -1,3 +1,9 @@
+-- Variante SQLite de la migración 0001, SOLO para tests y replay local
+-- (openbrec/disposition.py). No se despliega: la fuente de verdad del
+-- runtime es migrations/postgresql/0001_m0_disposition.sql.
+-- Drift intencional: sin key_id en review_quarantine/evidence_vault porque
+-- este store deriva una única clave por incidente (sin rotación).
+-- Ver migrations/README.md.
 CREATE TABLE IF NOT EXISTS ingress_units (
   unit_id TEXT PRIMARY KEY,
   input_sha256 TEXT NOT NULL,

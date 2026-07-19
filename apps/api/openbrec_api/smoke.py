@@ -130,7 +130,33 @@ def main() -> int:
         raise RuntimeError("worker did not process expected observation")
     if state.get("status") != "durably_processed":
         raise RuntimeError("worker acknowledged before durable disposition")
+    if state.get("fusion_state") not in {"indicator", "conflicted", "abstained"}:
+        raise RuntimeError("worker did not persist a fusion result")
     verify_postgres_durability()
+
+    observations_status, observations_body = request(
+        "api", 8000, "GET", "/v1/observations"
+    )
+    if observations_status != 200:
+        raise RuntimeError(f"observation read returned HTTP {observations_status}")
+    observation_ids = [
+        item["observation_id"] for item in json.loads(observations_body)["items"]
+    ]
+    if observation_ids != [OBSERVATION["observation_id"]]:
+        raise RuntimeError("read model did not return the ingested observation")
+    results_status, results_body = request("api", 8000, "GET", "/v1/fusion-results")
+    if results_status != 200:
+        raise RuntimeError(f"fusion read returned HTTP {results_status}")
+    results = json.loads(results_body)["items"]
+    if len(results) != 1 or results[0]["result_id"] != state.get("fusion_result_id"):
+        raise RuntimeError("read model did not return the worker fusion result")
+    if results[0]["supporting_evidence_ids"] != [OBSERVATION["observation_id"]]:
+        raise RuntimeError("fusion result lost its supporting evidence")
+    detail_status, _ = request(
+        "api", 8000, "GET", f"/v1/fusion-results/{results[0]['result_id']}"
+    )
+    if detail_status != 200:
+        raise RuntimeError(f"fusion detail returned HTTP {detail_status}")
 
     invalid_status, _ = request(
         "api", 8000, "POST", "/v1/observations", {**OBSERVATION, "quality": 2}
@@ -157,6 +183,7 @@ def main() -> int:
             {
                 "valid_observation": "processed",
                 "invalid_observation": "rejected",
+                "fusion_read": "passed",
                 "pwa_shell": "available",
                 "external_network": external_network,
                 "postgres_durable": "passed",

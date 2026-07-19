@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openbrec.org/schemas/addons/sdr-receive-profile/1.0.0",
+  "title": "SdrReceiveProfile",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "profile_type", "profile_id", "created_at", "mode", "regulatory_mode_ref", "use_cases", "bench_tx", "demodulate_third_party_traffic", "limitations"],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "profile_type": {"enum": ["sdr_receive_profile"]},
+    "profile_id": {"type": "string", "pattern": "^sdr-rx-[a-z0-9-]{3,64}$"},
+    "created_at": {"type": "string", "format": "date-time", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{6}Z$"},
+    "mode": {"const": "receive_only_in_field"},
+    "regulatory_mode_ref": {"enum": ["receive_only", "conducted_only", "jurisdiction_validated"]},
+    "use_cases": {"type": "array", "items": {"enum": ["decode_406_mhz", "direction_finding", "spectrum_occupancy"]}, "minItems": 1, "uniqueItems": true},
+    "decode_406_mhz": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["standard", "beacon_types"],
+      "properties": {
+        "standard": {"const": "Cospas-Sarsat"},
+        "beacon_types": {"type": "array", "items": {"enum": ["ELT", "EPIRB", "PLB"]}, "minItems": 1, "uniqueItems": true}
+      }
+    },
+    "direction_finding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["array_type", "example_hardware_replaceable"],
+      "properties": {
+        "array_type": {"const": "coherent_array"},
+        "example_hardware_replaceable": {"type": "string", "minLength": 1}
+      }
+    },
+    "bench_tx": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["allowed_only_if_regulatory_mode", "authorized_bench_required"],
+      "properties": {
+        "allowed_only_if_regulatory_mode": {"const": "conducted_only"},
+        "authorized_bench_required": {"const": true}
+      }
+    },
+    "demodulate_third_party_traffic": {"const": false},
+    "limitations": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1, "uniqueItems": true}
+  },
+  "examples": [
+    {"schema_version": "1.0.0", "profile_type": "sdr_receive_profile", "profile_id": "sdr-rx-406-cell", "created_at": "2026-07-17T15:00:00.000000Z", "mode": "receive_only_in_field", "regulatory_mode_ref": "receive_only", "use_cases": ["decode_406_mhz"], "decode_406_mhz": {"standard": "Cospas-Sarsat", "beacon_types": ["ELT", "EPIRB", "PLB"]}, "bench_tx": {"allowed_only_if_regulatory_mode": "conducted_only", "authorized_bench_required": true}, "demodulate_third_party_traffic": false, "limitations": ["specified profile only", "no transmission in the field"]},
+    {"schema_version": "1.0.0", "profile_type": "sdr_receive_profile", "profile_id": "sdr-rx-df-spectrum", "created_at": "2026-07-17T15:05:00.000000Z", "mode": "receive_only_in_field", "regulatory_mode_ref": "jurisdiction_validated", "use_cases": ["direction_finding", "spectrum_occupancy"], "direction_finding": {"array_type": "coherent_array", "example_hardware_replaceable": "krakensdr or equivalent coherent array"}, "bench_tx": {"allowed_only_if_regulatory_mode": "conducted_only", "authorized_bench_required": true}, "demodulate_third_party_traffic": false, "limitations": ["specified profile only", "df accuracy unverified in debris", "spectrum occupancy is situational context, not detection"]}
+  ]
+}

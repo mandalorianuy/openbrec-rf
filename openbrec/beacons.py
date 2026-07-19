@@ -13,17 +13,15 @@ from openbrec.contracts import (
     load_core_schemas,
     schema_registry,
 )
+from openbrec.fusion import (
+    CANDIDATE_LIMITATIONS,
+    FUSION_OUTPUTS,
+    classify_fusion_case,
+)
 
 
 CAMPAIGN_PATH = Path("fixtures/p0/beacons/deterministic-campaign.json")
 GATES = ("beacon-replay", "beacon-adversarial", "retention-fault")
-FUSION_OUTPUTS = {
-    "single_modality_candidate",
-    "corroborated_candidate",
-    "sensor_artifact_likely",
-    "insufficient_coverage",
-    "unknown",
-}
 FORBIDDEN_CLAIMS = {
     "person_present",
     "person_absent",
@@ -163,20 +161,7 @@ def load_campaign(root: Path) -> dict[str, Any]:
 
 
 def _fusion_output(case: dict[str, Any], observations: dict[str, dict[str, Any]]) -> str:
-    if case["known_artifact"]:
-        return "sensor_artifact_likely"
-    if case["coverage_status"] != "sufficient":
-        return "insufficient_coverage"
-    if not case["baseline_valid"] or not case["placement_valid"] or case["ood"]:
-        return "unknown"
-    beacons = {
-        observations[source_id]["sensor_id"]
-        for source_id in case["source_observation_ids"]
-    }
-    independent_groups = set(case["independence_groups"])
-    if len(beacons) >= 2 and len(independent_groups) >= 2:
-        return "corroborated_candidate"
-    return "single_modality_candidate"
+    return classify_fusion_case(case, observations)
 
 
 def _replay_projection(
@@ -203,10 +188,7 @@ def _replay_projection(
                 "coverage_status": case["coverage_status"],
                 "baseline_valid": case["baseline_valid"],
                 "placement_valid": case["placement_valid"],
-                "limitations": [
-                    "candidate only",
-                    "never confirms presence or absence",
-                ],
+                "limitations": list(CANDIDATE_LIMITATIONS),
             }
         )
     return sorted(projection, key=lambda item: item["case_id"])

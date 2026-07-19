@@ -1,0 +1,30 @@
+{
+  "experimental_only": true,
+  "frame_format": "adr018-binary",
+  "limitations": [
+    "version-pinned third-party tool",
+    "claims never elevated",
+    "unknown class mandatory"
+  ],
+  "model_version": {
+    "commit": "90667d0f1d9f4dc129d999c7998d4036cac2e1b8",
+    "format": "rvf-binary",
+    "hash": "5555555555555555555555555555555555555555555555555555555555555555"
+  },
+  "node_id": "ruview-node-01",
+  "observation_id": "34000000-0000-4000-8000-000000000001",
+  "outputs_are_victim_detected": false,
+  "quality": 0.6,
+  "record_type": "ruview_observation",
+  "schema_version": "1.0.0",
+  "source_commit": "90667d0f1d9f4dc129d999c7998d4036cac2e1b8",
+  "source_mode": "file-replay",
+  "stream_metrics": {
+    "effective_rate_hz": 95.5,
+    "jitter_seconds": 0.004,
+    "loss_ratio": 0.02
+  },
+  "timestamp": "2026-07-17T17:00:00.000000Z",
+  "unexpected_field": true,
+  "unknown_class_required": true
+}

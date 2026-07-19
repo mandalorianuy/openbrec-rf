@@ -39,18 +39,34 @@ def _at(value: str) -> datetime:
     return parsed.astimezone(UTC)
 
 
-def _derived_bytes(kind: str, key_id: str) -> bytes:
-    return hashlib.sha256(
-        f"openbrec-p0-simulated-only:{kind}:{key_id}".encode("utf-8")
-    ).digest()
+SIMULATED_KEY_DOMAIN = "openbrec-p0-simulated-only"
+
+
+def _simulated_only_derived_bytes(kind: str, key_id: str) -> bytes:
+    """Derive deterministic key material for the P0 lab simulation ONLY.
+
+    DANGER: every key produced here is publicly reproducible from its label,
+    so it provides zero confidentiality or authenticity outside the simulated
+    fixtures. Field, production, or any real-incident use is prohibited:
+    real deployments must provision, rotate and revoke keys through the
+    offline key lifecycle instead of deriving them from labels.
+    """
+    info = f"{SIMULATED_KEY_DOMAIN}:{kind}:{key_id}"
+    if not info.startswith(f"{SIMULATED_KEY_DOMAIN}:"):
+        raise MessagingScenarioError(
+            "simulated key derivation lost its lab-only domain marker"
+        )
+    return hashlib.sha256(info.encode("utf-8")).digest()
 
 
 def _signing_key(key_id: str) -> Ed25519PrivateKey:
-    return Ed25519PrivateKey.from_private_bytes(_derived_bytes("ed25519", key_id))
+    return Ed25519PrivateKey.from_private_bytes(
+        _simulated_only_derived_bytes("ed25519", key_id)
+    )
 
 
 def _encryption_key(key_id: str) -> bytes:
-    return _derived_bytes("aes-256-gcm", key_id)
+    return _simulated_only_derived_bytes("aes-256-gcm", key_id)
 
 
 def _assert_non_default_key(key_id: str) -> None:

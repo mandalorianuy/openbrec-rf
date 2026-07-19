@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openbrec.org/schemas/addons/clock-discipline-profile/1.0.0",
+  "title": "ClockDisciplineProfile",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "profile_type", "profile_id", "created_at", "time_sources", "observation_uncertainty_policy", "clock_jump_policy", "holdover", "limitations"],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "profile_type": {"enum": ["clock_discipline_profile"]},
+    "profile_id": {"type": "string", "pattern": "^clock-[a-z0-9-]{3,64}$"},
+    "created_at": {"type": "string", "format": "date-time", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{6}Z$"},
+    "time_sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["source", "role", "declared_uncertainty_seconds", "max_drift_seconds_per_day"],
+        "properties": {
+          "source": {"enum": ["gnss", "pps", "ntp_local", "manual"]},
+          "role": {"enum": ["primary", "backup", "last_resort"]},
+          "declared_uncertainty_seconds": {"type": "number", "minimum": 0},
+          "max_drift_seconds_per_day": {"type": "number", "minimum": 0}
+        }
+      }
+    },
+    "observation_uncertainty_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["required_field", "mandatory", "max_acceptable_uncertainty_seconds"],
+      "properties": {
+        "required_field": {"const": "clock_uncertainty_seconds"},
+        "mandatory": {"const": true},
+        "max_acceptable_uncertainty_seconds": {"type": "number", "minimum": 0}
+      }
+    },
+    "clock_jump_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["detection", "behavior", "silent_reorder_allowed", "operator_notice_required"],
+      "properties": {
+        "detection": {"type": "array", "items": {"enum": ["monotonic_violation", "source_disagreement", "operator_report"]}, "minItems": 1, "uniqueItems": true},
+        "behavior": {"const": "fail_visible"},
+        "silent_reorder_allowed": {"const": false},
+        "operator_notice_required": {"const": true}
+      }
+    },
+    "holdover": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["max_holdover_seconds", "behavior_after"],
+      "properties": {
+        "max_holdover_seconds": {"type": "integer", "minimum": 0},
+        "behavior_after": {"enum": ["degrade_to_manual_time", "declare_time_unknown"]}
+      }
+    },
+    "limitations": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1, "uniqueItems": true}
+  },
+  "examples": [
+    {"schema_version": "1.0.0", "profile_type": "clock_discipline_profile", "profile_id": "clock-cell-alpha", "created_at": "2026-07-17T13:10:00.000000Z", "time_sources": [{"source": "manual", "role": "primary", "declared_uncertainty_seconds": 60, "max_drift_seconds_per_day": 120}], "observation_uncertainty_policy": {"required_field": "clock_uncertainty_seconds", "mandatory": true, "max_acceptable_uncertainty_seconds": 300}, "clock_jump_policy": {"detection": ["monotonic_violation"], "behavior": "fail_visible", "silent_reorder_allowed": false, "operator_notice_required": true}, "holdover": {"max_holdover_seconds": 86400, "behavior_after": "declare_time_unknown"}, "limitations": ["manual time only", "specified profile without hardware validation"]},
+    {"schema_version": "1.0.0", "profile_type": "clock_discipline_profile", "profile_id": "clock-gnss-hub", "created_at": "2026-07-17T13:15:00.000000Z", "time_sources": [{"source": "gnss", "role": "primary", "declared_uncertainty_seconds": 0.05, "max_drift_seconds_per_day": 0.1}, {"source": "ntp_local", "role": "backup", "declared_uncertainty_seconds": 0.5, "max_drift_seconds_per_day": 2}, {"source": "manual", "role": "last_resort", "declared_uncertainty_seconds": 60, "max_drift_seconds_per_day": 120}], "observation_uncertainty_policy": {"required_field": "clock_uncertainty_seconds", "mandatory": true, "max_acceptable_uncertainty_seconds": 5}, "clock_jump_policy": {"detection": ["monotonic_violation", "source_disagreement", "operator_report"], "behavior": "fail_visible", "silent_reorder_allowed": false, "operator_notice_required": true}, "holdover": {"max_holdover_seconds": 3600, "behavior_after": "degrade_to_manual_time"}, "limitations": ["gnss loss degrades to backup source", "a clock jump never reorders stored evidence"]}
+  ]
+}

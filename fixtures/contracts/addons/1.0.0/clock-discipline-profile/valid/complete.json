@@ -1,0 +1,49 @@
+{
+  "clock_jump_policy": {
+    "behavior": "fail_visible",
+    "detection": [
+      "monotonic_violation",
+      "source_disagreement",
+      "operator_report"
+    ],
+    "operator_notice_required": true,
+    "silent_reorder_allowed": false
+  },
+  "created_at": "2026-07-17T13:15:00.000000Z",
+  "holdover": {
+    "behavior_after": "degrade_to_manual_time",
+    "max_holdover_seconds": 3600
+  },
+  "limitations": [
+    "gnss loss degrades to backup source",
+    "a clock jump never reorders stored evidence"
+  ],
+  "observation_uncertainty_policy": {
+    "mandatory": true,
+    "max_acceptable_uncertainty_seconds": 5,
+    "required_field": "clock_uncertainty_seconds"
+  },
+  "profile_id": "clock-gnss-hub",
+  "profile_type": "clock_discipline_profile",
+  "schema_version": "1.0.0",
+  "time_sources": [
+    {
+      "declared_uncertainty_seconds": 0.05,
+      "max_drift_seconds_per_day": 0.1,
+      "role": "primary",
+      "source": "gnss"
+    },
+    {
+      "declared_uncertainty_seconds": 0.5,
+      "max_drift_seconds_per_day": 2,
+      "role": "backup",
+      "source": "ntp_local"
+    },
+    {
+      "declared_uncertainty_seconds": 60,
+      "max_drift_seconds_per_day": 120,
+      "role": "last_resort",
+      "source": "manual"
+    }
+  ]
+}

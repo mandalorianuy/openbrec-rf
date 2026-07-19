@@ -10,6 +10,7 @@ build/
 coverage/
 .playwright-cli/
 output/playwright/
+.lab-secrets/
 data/private/
 datasets/raw/
 models/private/

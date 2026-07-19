@@ -20,6 +20,9 @@ EXPECTED_ADDON_SCHEMAS = {
     "beacon-observation",
     "beacon-placement",
     "capture-authorization-event",
+    "clock-discipline-profile",
+    "csi-link-observation",
+    "drone-deployment-event",
     "energy-budget",
     "energy-capability",
     "energy-status",
@@ -27,11 +30,19 @@ EXPECTED_ADDON_SCHEMAS = {
     "federation-topology-event",
     "human-message",
     "human-message-event",
+    "identity-key-lifecycle-profile",
+    "interop-emergency-standards-profile",
+    "offline-mapping-profile",
+    "passive-rf-observation",
     "review-task-event",
+    "rf-isolation-profile",
+    "ruview-observation",
+    "sdr-receive-profile",
     "terminal-capability",
     "transport-envelope",
     "transport-policy-decision",
     "transport-profile",
+    "victim-record",
 }
 
 
@@ -80,19 +91,19 @@ class P001AddonContractTests(unittest.TestCase):
     def test_addon_contract_gate_validates_metaschema_and_catalog(self) -> None:
         output = self.assert_passed(self.run_verify("addon-contracts"))
         self.assertEqual(output["scope"], "addon_metaschema_and_catalog")
-        self.assertEqual(output["summary"]["addon_schemas"], 18)
+        self.assertEqual(output["summary"]["addon_schemas"], 29)
         self.assertEqual(output["summary"]["support_status"], "experimental")
 
     def test_addon_fixture_gate_reconciles_positive_and_negative_cases(self) -> None:
         output = self.assert_passed(self.run_verify("addon-fixtures"))
         self.assertEqual(output["scope"], "addon_schema_fixture_matrix")
-        self.assertEqual(output["summary"]["schemas"], 18)
-        self.assertEqual(output["summary"]["valid_fixtures"], 36)
-        self.assertEqual(output["summary"]["invalid_fixtures"], 126)
+        self.assertEqual(output["summary"]["schemas"], 29)
+        self.assertEqual(output["summary"]["valid_fixtures"], 58)
+        self.assertEqual(output["summary"]["invalid_fixtures"], 203)
 
     def test_generated_consumers_include_all_addon_contracts(self) -> None:
         output = self.assert_passed(self.run_verify("contracts-gen", "--check"))
-        self.assertEqual(output["summary"]["addon_schemas"], 18)
+        self.assertEqual(output["summary"]["addon_schemas"], 29)
         python_models = (
             REPO_ROOT / "packages/contracts/generated/addons/python/models.py"
         )
@@ -108,7 +119,7 @@ class P001AddonContractTests(unittest.TestCase):
 
     def test_addon_compatibility_baseline_is_frozen(self) -> None:
         output = self.assert_passed(self.run_verify("schema-compat"))
-        self.assertEqual(output["summary"]["addon_schemas"], 18)
+        self.assertEqual(output["summary"]["addon_schemas"], 29)
         self.assertEqual(output["summary"]["addon_status"], "experimental")
 
     def test_contracts_enforce_life_safety_and_transport_boundaries(self) -> None:
@@ -144,6 +155,86 @@ class P001AddonContractTests(unittest.TestCase):
         beacon = copy.deepcopy(schema("beacon-observation")["examples"][0])
         beacon["measurements"][0]["metric"] = "person_present"
         self.assertTrue(errors("beacon-observation", beacon))
+
+        victim = copy.deepcopy(schema("victim-record")["examples"][0])
+        victim["confirmation"]["method"] = "fusion_automatic"
+        self.assertTrue(errors("victim-record", victim))
+        victim = copy.deepcopy(schema("victim-record")["examples"][0])
+        victim["silence_means_absence"] = True
+        self.assertTrue(errors("victim-record", victim))
+        victim = copy.deepcopy(schema("victim-record")["examples"][0])
+        victim["updates_append_only"] = False
+        self.assertTrue(errors("victim-record", victim))
+
+        identity = copy.deepcopy(
+            schema("identity-key-lifecycle-profile")["examples"][0]
+        )
+        identity["simulated_derivation"]["allowed_profiles"] = ["field"]
+        self.assertTrue(errors("identity-key-lifecycle-profile", identity))
+
+        clock = copy.deepcopy(schema("clock-discipline-profile")["examples"][0])
+        clock["clock_jump_policy"]["silent_reorder_allowed"] = True
+        self.assertTrue(errors("clock-discipline-profile", clock))
+
+        mapping = copy.deepcopy(schema("offline-mapping-profile")["examples"][1])
+        mapping["search_areas"][0]["pod"]["automatic"] = True
+        self.assertTrue(errors("offline-mapping-profile", mapping))
+
+        interop = copy.deepcopy(
+            schema("interop-emergency-standards-profile")["examples"][0]
+        )
+        interop["invariants"]["gateway_received_means_rescue"] = True
+        self.assertTrue(errors("interop-emergency-standards-profile", interop))
+        interop = copy.deepcopy(
+            schema("interop-emergency-standards-profile")["examples"][0]
+        )
+        interop["gateway_implemented"] = True
+        self.assertTrue(errors("interop-emergency-standards-profile", interop))
+
+        csi = copy.deepcopy(schema("csi-link-observation")["examples"][0])
+        csi["silence_means_absence"] = True
+        self.assertTrue(errors("csi-link-observation", csi))
+        csi = copy.deepcopy(schema("csi-link-observation")["examples"][0])
+        csi["automatic_person_detection_allowed"] = True
+        self.assertTrue(errors("csi-link-observation", csi))
+
+        passive = copy.deepcopy(schema("passive-rf-observation")["examples"][0])
+        passive["subject_ref"] = "aa:bb:cc:dd:ee:ff"
+        self.assertTrue(errors("passive-rf-observation", passive))
+        passive = copy.deepcopy(schema("passive-rf-observation")["examples"][0])
+        passive["payload_retained"] = True
+        self.assertTrue(errors("passive-rf-observation", passive))
+        passive = copy.deepcopy(schema("passive-rf-observation")["examples"][0])
+        passive["content_interception"] = True
+        self.assertTrue(errors("passive-rf-observation", passive))
+        passive = copy.deepcopy(schema("passive-rf-observation")["examples"][0])
+        passive["active_emulation"] = True
+        self.assertTrue(errors("passive-rf-observation", passive))
+
+        sdr = copy.deepcopy(schema("sdr-receive-profile")["examples"][0])
+        sdr["demodulate_third_party_traffic"] = True
+        self.assertTrue(errors("sdr-receive-profile", sdr))
+        sdr = copy.deepcopy(schema("sdr-receive-profile")["examples"][0])
+        sdr["mode"] = "transmit_in_field"
+        self.assertTrue(errors("sdr-receive-profile", sdr))
+
+        ruview = copy.deepcopy(schema("ruview-observation")["examples"][0])
+        ruview["outputs_are_victim_detected"] = True
+        self.assertTrue(errors("ruview-observation", ruview))
+
+        drone = copy.deepcopy(schema("drone-deployment-event")["examples"][0])
+        drone["release_mode"] = "automatic"
+        self.assertTrue(errors("drone-deployment-event", drone))
+        drone = copy.deepcopy(schema("drone-deployment-event")["examples"][0])
+        drone["flight_authority_in_core"] = True
+        self.assertTrue(errors("drone-deployment-event", drone))
+
+        isolation = copy.deepcopy(schema("rf-isolation-profile")["examples"][0])
+        isolation["measurements"] = []
+        self.assertTrue(errors("rf-isolation-profile", isolation))
+        isolation = copy.deepcopy(schema("rf-isolation-profile")["examples"][0])
+        isolation["never_enclose_possible_victim_sector_without_analysis"] = False
+        self.assertTrue(errors("rf-isolation-profile", isolation))
 
         for item, _path in addon_schemas:
             validator = Draft202012Validator(

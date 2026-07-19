@@ -1,0 +1,66 @@
+{
+  "created_at": "2026-07-17T13:25:00.000000Z",
+  "crs": {
+    "authority": "EPSG",
+    "code": 32721,
+    "declared": true
+  },
+  "layers": [
+    {
+      "kind": "base",
+      "layer_id": "base",
+      "source": "bundled_offline"
+    },
+    {
+      "kind": "search_area",
+      "layer_id": "search-area-n1",
+      "source": "operator_drawn"
+    },
+    {
+      "kind": "team_track",
+      "layer_id": "team-track-alpha",
+      "source": "imported_offline"
+    }
+  ],
+  "limitations": [
+    "pod is an operator annotation, never automatic",
+    "tracks use incident-scoped rotating hashes and limited retention"
+  ],
+  "pod_automatic_assignment_allowed": false,
+  "profile_id": "mapping-sector-north",
+  "profile_type": "offline_mapping_profile",
+  "schema_version": "1.0.0",
+  "search_areas": [
+    {
+      "area_id": "area-n01",
+      "geometry_ref": "urn:sha256:3333333333333333333333333333333333333333333333333333333333333333",
+      "pod": {
+        "annotation_id": "88888888-8888-4888-8888-888888888888",
+        "automatic": false,
+        "basis": "operator_annotation",
+        "value": 0.6
+      }
+    }
+  ],
+  "team_tracks": {
+    "actor_pseudonym": "incident_rotating_hash",
+    "enabled": true,
+    "precise_history_kept": false,
+    "retention_hours": 48
+  },
+  "tile_packages": [
+    {
+      "extent": {
+        "max_lat": -34.85,
+        "max_lon": -56.1,
+        "min_lat": -34.95,
+        "min_lon": -56.2
+      },
+      "format": "mbtiles",
+      "imported_at": "2026-07-17T13:25:00.000000Z",
+      "package_id": "tiles-sector-north",
+      "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+      "version": "1.1.0"
+    }
+  ]
+}

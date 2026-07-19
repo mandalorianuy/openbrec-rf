@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openbrec.org/schemas/addons/rf-isolation-profile/1.0.0",
+  "title": "RfIsolationProfile",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "record_type", "profile_id", "created_at", "configuration", "operator", "announced_window", "config_sha256", "photo_hashes", "measurements", "baseline_before_after_required", "never_enclose_possible_victim_sector_without_analysis", "limitations"],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "record_type": {"enum": ["rf_isolation_profile"]},
+    "profile_id": {"type": "string", "pattern": "^isolation-[a-z0-9-]{3,64}$"},
+    "created_at": {"type": "string", "format": "date-time", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{6}Z$"},
+    "configuration": {"enum": ["curtain", "partial_tent", "full_enclosure", "command_post"]},
+    "operator": {"type": "string", "minLength": 1},
+    "announced_window": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["start", "end"],
+      "properties": {
+        "start": {"type": "string", "format": "date-time", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{6}Z$"},
+        "end": {"type": "string", "format": "date-time", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{6}Z$"}
+      }
+    },
+    "config_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "photo_hashes": {"type": "array", "items": {"type": "string", "pattern": "^[0-9a-f]{64}$"}, "uniqueItems": true},
+    "measurements": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["frequency_hz", "attenuation_db", "uncertainty_db"],
+        "properties": {
+          "frequency_hz": {"type": "number", "exclusiveMinimum": 0},
+          "attenuation_db": {"type": "number"},
+          "uncertainty_db": {"type": "number", "minimum": 0}
+        }
+      }
+    },
+    "seams": {"type": "string", "minLength": 1},
+    "floor": {"type": "boolean"},
+    "feedthrough": {"type": "string", "minLength": 1},
+    "notes": {"type": "string", "minLength": 1},
+    "baseline_before_after_required": {"const": true},
+    "never_enclose_possible_victim_sector_without_analysis": {"const": true},
+    "limitations": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1, "uniqueItems": true}
+  },
+  "examples": [
+    {"schema_version": "1.0.0", "record_type": "rf_isolation_profile", "profile_id": "isolation-curtain-a", "created_at": "2026-07-17T18:10:00.000000Z", "configuration": "curtain", "operator": "operator-rf-1", "announced_window": {"start": "2026-07-17T18:00:00.000000Z", "end": "2026-07-17T19:00:00.000000Z"}, "config_sha256": "7777777777777777777777777777777777777777777777777777777777777777", "photo_hashes": [], "measurements": [{"frequency_hz": 2437000000, "attenuation_db": 18.2, "uncertainty_db": 2.4}], "baseline_before_after_required": true, "never_enclose_possible_victim_sector_without_analysis": true, "limitations": ["measured, not presumed", "no SAR literature precedent", "training field sample only"]},
+    {"schema_version": "1.0.0", "record_type": "rf_isolation_profile", "profile_id": "isolation-command-post-1", "created_at": "2026-07-17T18:20:00.000000Z", "configuration": "command_post", "operator": "operator-rf-2", "announced_window": {"start": "2026-07-17T18:15:00.000000Z", "end": "2026-07-17T20:00:00.000000Z"}, "config_sha256": "8888888888888888888888888888888888888888888888888888888888888888", "photo_hashes": ["9999999999999999999999999999999999999999999999999999999999999999"], "measurements": [{"frequency_hz": 2437000000, "attenuation_db": 18.2, "uncertainty_db": 2.4}, {"frequency_hz": 5500000000, "attenuation_db": 24.1, "uncertainty_db": 3.1}], "seams": "200mm overlap", "floor": false, "feedthrough": "none; battery inside", "notes": "baseline measured before and after the announced window", "baseline_before_after_required": true, "never_enclose_possible_victim_sector_without_analysis": true, "limitations": ["measured ensemble attenuation, never fabric claims", "independent emergency comms maintained", "no SAR literature precedent"]}
+  ]
+}

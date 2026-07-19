@@ -1,0 +1,28 @@
+{
+  "announced_window": {
+    "end": "2026-07-17T19:00:00.000000Z",
+    "start": "2026-07-17T18:00:00.000000Z"
+  },
+  "baseline_before_after_required": true,
+  "config_sha256": "7777777777777777777777777777777777777777777777777777777777777777",
+  "configuration": "curtain",
+  "created_at": "2026-07-17T18:10:00.000000Z",
+  "limitations": [
+    "measured, not presumed",
+    "no SAR literature precedent",
+    "training field sample only"
+  ],
+  "measurements": [
+    {
+      "attenuation_db": 18.2,
+      "frequency_hz": 2437000000,
+      "uncertainty_db": 2.4
+    }
+  ],
+  "never_enclose_possible_victim_sector_without_analysis": true,
+  "operator": "operator-rf-1",
+  "photo_hashes": [],
+  "profile_id": "isolation-curtain-a",
+  "record_type": "unknown-enum-value",
+  "schema_version": "1.0.0"
+}

@@ -479,6 +479,12 @@ def _compose_command(
 
 
 def _run_compose_build(root: Path) -> tuple[list[str], list[str], dict[str, Any]]:
+    if shutil.which("docker") is None:
+        return (
+            ["docker not installed; compose-build gate requires docker compose"],
+            [],
+            {"docker": "not_installed"},
+        )
     environment = _compose_environment()
     summary: dict[str, Any] = {
         "compose_config_exit_code": None,
@@ -524,6 +530,12 @@ def _run_compose_build(root: Path) -> tuple[list[str], list[str], dict[str, Any]
 
 
 def _run_offline_startup(root: Path) -> tuple[list[str], list[str], dict[str, Any]]:
+    if shutil.which("docker") is None:
+        return (
+            ["docker not installed; offline-startup gate requires docker compose"],
+            [],
+            {"docker": "not_installed"},
+        )
     environment = _compose_environment()
     base = ["--profile", "lab-sim"]
     errors: list[str] = []
@@ -614,6 +626,15 @@ def _run_offline_startup(root: Path) -> tuple[list[str], list[str], dict[str, An
 def _run_postgres_disposition(
     root: Path,
 ) -> tuple[list[str], list[str], dict[str, Any]]:
+    if shutil.which("docker") is None:
+        return (
+            [
+                "docker not installed; "
+                "postgres-disposition gate requires docker compose"
+            ],
+            [],
+            {"docker": "not_installed"},
+        )
     environment = _compose_environment()
     errors: list[str] = []
     warnings: list[str] = []

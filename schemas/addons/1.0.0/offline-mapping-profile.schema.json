@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openbrec.org/schemas/addons/offline-mapping-profile/1.0.0",
+  "title": "OfflineMappingProfile",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "profile_type", "profile_id", "created_at", "crs", "tile_packages", "layers", "team_tracks", "search_areas", "pod_automatic_assignment_allowed", "limitations"],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "profile_type": {"enum": ["offline_mapping_profile"]},
+    "profile_id": {"type": "string", "pattern": "^mapping-[a-z0-9-]{3,64}$"},
+    "created_at": {"type": "string", "format": "date-time", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{6}Z$"},
+    "crs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["authority", "code", "declared"],
+      "properties": {
+        "authority": {"const": "EPSG"},
+        "code": {"type": "integer", "minimum": 1},
+        "declared": {"const": true}
+      }
+    },
+    "tile_packages": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["package_id", "version", "format", "extent", "sha256", "imported_at"],
+        "properties": {
+          "package_id": {"type": "string", "pattern": "^tiles-[a-z0-9-]{3,64}$"},
+          "version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+          "format": {"enum": ["mbtiles", "pmtiles", "geopackage"]},
+          "extent": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["min_lon", "min_lat", "max_lon", "max_lat"],
+            "properties": {
+              "min_lon": {"type": "number", "minimum": -180, "maximum": 180},
+              "min_lat": {"type": "number", "minimum": -90, "maximum": 90},
+              "max_lon": {"type": "number", "minimum": -180, "maximum": 180},
+              "max_lat": {"type": "number", "minimum": -90, "maximum": 90}
+            }
+          },
+          "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+          "imported_at": {"type": "string", "format": "date-time", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{6}Z$"}
+        }
+      }
+    },
+    "layers": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["layer_id", "kind", "source"],
+        "properties": {
+          "layer_id": {"type": "string", "pattern": "^[a-z][a-z0-9._-]{2,63}$"},
+          "kind": {"enum": ["base", "search_area", "hazard", "team_track", "operator_annotation"]},
+          "source": {"enum": ["bundled_offline", "operator_drawn", "imported_offline"]}
+        }
+      }
+    },
+    "team_tracks": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["enabled", "actor_pseudonym", "retention_hours", "precise_history_kept"],
+      "properties": {
+        "enabled": {"type": "boolean"},
+        "actor_pseudonym": {"const": "incident_rotating_hash"},
+        "retention_hours": {"type": "integer", "minimum": 1, "maximum": 168},
+        "precise_history_kept": {"const": false}
+      }
+    },
+    "search_areas": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["area_id", "geometry_ref", "pod"],
+        "properties": {
+          "area_id": {"type": "string", "pattern": "^area-[a-z0-9-]{3,48}$"},
+          "geometry_ref": {"type": "string", "pattern": "^urn:sha256:[0-9a-f]{64}$"},
+          "pod": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["value", "basis", "automatic", "annotation_id"],
+            "properties": {
+              "value": {"type": "number", "minimum": 0, "maximum": 1},
+              "basis": {"const": "operator_annotation"},
+              "automatic": {"const": false},
+              "annotation_id": {"type": "string", "format": "uuid"}
+            }
+          }
+        }
+      }
+    },
+    "pod_automatic_assignment_allowed": {"const": false},
+    "limitations": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1, "uniqueItems": true}
+  },
+  "examples": [
+    {"schema_version": "1.0.0", "profile_type": "offline_mapping_profile", "profile_id": "mapping-cell-alpha", "created_at": "2026-07-17T13:20:00.000000Z", "crs": {"authority": "EPSG", "code": 4326, "declared": true}, "tile_packages": [{"package_id": "tiles-montevideo-base", "version": "1.0.0", "format": "pmtiles", "extent": {"min_lon": -56.5, "min_lat": -35.1, "max_lon": -55.9, "max_lat": -34.6}, "sha256": "1111111111111111111111111111111111111111111111111111111111111111", "imported_at": "2026-07-17T13:20:00.000000Z"}], "layers": [{"layer_id": "base", "kind": "base", "source": "bundled_offline"}], "team_tracks": {"enabled": false, "actor_pseudonym": "incident_rotating_hash", "retention_hours": 24, "precise_history_kept": false}, "search_areas": [], "pod_automatic_assignment_allowed": false, "limitations": ["offline tiles only", "specified profile without field validation"]},
+    {"schema_version": "1.0.0", "profile_type": "offline_mapping_profile", "profile_id": "mapping-sector-north", "created_at": "2026-07-17T13:25:00.000000Z", "crs": {"authority": "EPSG", "code": 32721, "declared": true}, "tile_packages": [{"package_id": "tiles-sector-north", "version": "1.1.0", "format": "mbtiles", "extent": {"min_lon": -56.2, "min_lat": -34.95, "max_lon": -56.1, "max_lat": -34.85}, "sha256": "2222222222222222222222222222222222222222222222222222222222222222", "imported_at": "2026-07-17T13:25:00.000000Z"}], "layers": [{"layer_id": "base", "kind": "base", "source": "bundled_offline"}, {"layer_id": "search-area-n1", "kind": "search_area", "source": "operator_drawn"}, {"layer_id": "team-track-alpha", "kind": "team_track", "source": "imported_offline"}], "team_tracks": {"enabled": true, "actor_pseudonym": "incident_rotating_hash", "retention_hours": 48, "precise_history_kept": false}, "search_areas": [{"area_id": "area-n01", "geometry_ref": "urn:sha256:3333333333333333333333333333333333333333333333333333333333333333", "pod": {"value": 0.6, "basis": "operator_annotation", "automatic": false, "annotation_id": "88888888-8888-4888-8888-888888888888"}}], "pod_automatic_assignment_allowed": false, "limitations": ["pod is an operator annotation, never automatic", "tracks use incident-scoped rotating hashes and limited retention"]}
+  ]
+}

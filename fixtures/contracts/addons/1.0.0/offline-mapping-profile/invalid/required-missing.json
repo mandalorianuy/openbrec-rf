@@ -1,0 +1,44 @@
+{
+  "created_at": "2026-07-17T13:20:00.000000Z",
+  "crs": {
+    "authority": "EPSG",
+    "code": 4326,
+    "declared": true
+  },
+  "layers": [
+    {
+      "kind": "base",
+      "layer_id": "base",
+      "source": "bundled_offline"
+    }
+  ],
+  "limitations": [
+    "offline tiles only",
+    "specified profile without field validation"
+  ],
+  "pod_automatic_assignment_allowed": false,
+  "profile_id": "mapping-cell-alpha",
+  "profile_type": "offline_mapping_profile",
+  "search_areas": [],
+  "team_tracks": {
+    "actor_pseudonym": "incident_rotating_hash",
+    "enabled": false,
+    "precise_history_kept": false,
+    "retention_hours": 24
+  },
+  "tile_packages": [
+    {
+      "extent": {
+        "max_lat": -34.6,
+        "max_lon": -55.9,
+        "min_lat": -35.1,
+        "min_lon": -56.5
+      },
+      "format": "pmtiles",
+      "imported_at": "2026-07-17T13:20:00.000000Z",
+      "package_id": "tiles-montevideo-base",
+      "sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+      "version": "1.0.0"
+    }
+  ]
+}

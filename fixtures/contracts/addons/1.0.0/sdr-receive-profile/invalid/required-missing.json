@@ -1,0 +1,27 @@
+{
+  "bench_tx": {
+    "allowed_only_if_regulatory_mode": "conducted_only",
+    "authorized_bench_required": true
+  },
+  "created_at": "2026-07-17T15:00:00.000000Z",
+  "decode_406_mhz": {
+    "beacon_types": [
+      "ELT",
+      "EPIRB",
+      "PLB"
+    ],
+    "standard": "Cospas-Sarsat"
+  },
+  "demodulate_third_party_traffic": false,
+  "limitations": [
+    "specified profile only",
+    "no transmission in the field"
+  ],
+  "mode": "receive_only_in_field",
+  "profile_id": "sdr-rx-406-cell",
+  "profile_type": "sdr_receive_profile",
+  "regulatory_mode_ref": "receive_only",
+  "use_cases": [
+    "decode_406_mhz"
+  ]
+}

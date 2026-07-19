@@ -2,15 +2,40 @@
 
 OpenBREC es una Open Spec y una plataforma de referencia para crear comunicaciones, energía y sensores offline durante operaciones BREC/USAR. No promete localizar personas: organiza evidencia, conserva incertidumbre y mantiene funciones críticas localmente cuando una red superior desaparece.
 
-## Elegí tu objetivo
+Estado actual en una línea: Open Spec `1.0.0-draft.1` completa (8 / 8), todo `specified` o `simulated`, cero validación física. Elegí tu rol y seguí el camino de lectura en orden.
 
-- **Entender el sistema:** leé el [README principal](../README.md) y la [arquitectura documental](DOCUMENTATION_ARCHITECTURE.md).
-- **Probar una ruta mínima sin hardware:** seguí el [Quickstart off-grid](guides/quickstart-offgrid.md).
-- **Construir o reutilizar componentes:** usá [Construcción y reutilización](guides/building-reuse.md) y elegí un [reference build](reference-builds/README.md).
-- **Planificar una operación:** empezá por [Planificación del deployment](guides/deployment-planning.md).
-- **Integrar un transporte:** compará [Meshtastic, MeshCore, Reticulum, LoRaWAN y adapters futuros](guides/transports.md).
-- **Operar o diagnosticar:** consultá [Validación y troubleshooting](guides/validation-troubleshooting.md).
-- **Implementar la norma:** abrí la [Open Spec normativa](open-spec/README.md) y [Conformance](open-spec/CONFORMANCE.md).
+## Equipo de rescate / operador
+
+1. El concepto y sus límites: [README principal](../README.md) y [Arquitectura](architecture.md).
+2. Cómo encaja en un operativo real: [Integración con doctrina USAR](guides/usar-doctrine-integration.md) (ICS-205, INSARAG, ciclo operacional).
+3. La base regulatoria antes de transmitir: [Marco regulatorio de RF](guides/regulatory.md).
+4. Las rutas de solución: [Kit mínimo personal/equipo](reference-builds/personal-team-kit.md), [ResponseCell](reference-builds/response-cell.md) y [Deployment federado](reference-builds/federated-deployment.md).
+5. [Qué no demuestra](#antes-de-usar-en-una-operación-real): ninguna ejecución sintética demuestra readiness operativa.
+
+## Desarrollador que implementa la spec
+
+1. La vista unificada: [Arquitectura](architecture.md).
+2. La norma: [Open Spec](open-spec/README.md) y [Conformance](open-spec/CONFORMANCE.md).
+3. El camino completo del implementador: [Cómo implementar la spec](guides/implementing-the-spec.md) (contratos, fixtures, adapters, conformidad, estados de evidencia).
+4. Los contratos y fixtures de máquina: [`schemas/`](../schemas/), [`specs/openbrec/`](../specs/openbrec/) y [`fixtures/`](../fixtures/).
+5. La referencia ejecutable: [`openbrec/`](../openbrec/) y [`apps/`](../apps/).
+
+## Integrador de hardware / transportes
+
+1. Construir por capacidades, no por marcas: [Construcción y reutilización](guides/building-reuse.md).
+2. Elegir el bearer: [Transportes](guides/transports.md) (Meshtastic, MeshCore, Reticulum, LoRaWAN, carry bundle).
+3. Dimensionar la energía: [Energía](guides/energy.md).
+4. Componer una ruta: [reference builds](reference-builds/README.md).
+5. Sensing RF experimental (addons reintegrados por ADR-004): [CSI](guides/csi-sensing.md), [RF pasiva](guides/passive-rf.md), [SDR receive-only](guides/sdr-beacons.md), [drones](guides/drone-geometry.md) y [RF quieting](guides/rf-quieting.md) — todo `specified`/`simulated`, salvo excepciones declaradas en cada guía; los estados exactos por tecnología están en la [investigación SOTA](research/rf-sensing-state-of-the-art.md).
+6. Si ejecutás una prueba física: [evidence packs](evidence-packs/README.md) — todo adapter nuevo nace `unverified` y sólo un pack exacto lo eleva.
+
+## Evaluador / investigador
+
+1. El estado honesto: [README principal](../README.md).
+2. Cómo está armado: [Arquitectura](architecture.md).
+3. Los estados de evidencia y su autoridad: [arquitectura documental](DOCUMENTATION_ARCHITECTURE.md) y [Conformance](open-spec/CONFORMANCE.md).
+4. Riesgos y límites: [threat model](security/OpenBREC-RF-threat-model.md) y reviews en [`docs/security/`](security/).
+5. Historia y rumbo: [ROADMAP.md](../ROADMAP.md) (vigente) y [DELIVERY_BOARD.md](../DELIVERY_BOARD.md) (audit trail).
 
 ## Selección rápida de perfil
 
@@ -30,3 +55,5 @@ OpenBREC es una Open Spec y una plataforma de referencia para crear comunicacion
 ## Antes de usar en una operación real
 
 Una ejecución sintética no demuestra cobertura, autonomía, sensibilidad, seguridad eléctrica, cumplimiento regulatorio ni readiness de campo. Para elevar un claim, producí un [evidence pack](evidence-packs/README.md) de la combinación exacta. La ausencia de radio, movimiento, calor o detección nunca demuestra ausencia de personas.
+
+¿Dudas puntuales? [FAQ](faq.md) · [Glosario](glossary.md)

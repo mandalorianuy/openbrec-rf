@@ -10,7 +10,8 @@ sin cloud ni acceso a servicios del proyecto.
 
 Los paths normativos incluyen la versión de spec. Un cambio incompatible exige
 una nueva versión y vectores de compatibilidad. Los adapters fijan upstream y se
-revalidan cuando firmware, schema o protocolo cambia.
+revalidan cuando firmware, schema o protocolo cambia. Todo cambio normativo se
+propone y registra por el [proceso RFC](RFC-PROCESS.md).
 
 ## Release gate
 

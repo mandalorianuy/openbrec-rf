@@ -1,0 +1,64 @@
+{
+  "cap_mapping": {
+    "field_map": [
+      {
+        "cap_element": "identifier",
+        "source_field": "message_id",
+        "transform": "copy"
+      },
+      {
+        "cap_element": "sender",
+        "source_field": "cell_id",
+        "transform": "incident_rotating_hash"
+      },
+      {
+        "cap_element": "sent",
+        "source_field": "created_at",
+        "transform": "iso8601_utc"
+      },
+      {
+        "cap_element": "info.category",
+        "source_field": "message_type",
+        "transform": "controlled_vocabulary"
+      },
+      {
+        "cap_element": "area.areaDesc",
+        "source_field": "zone_id",
+        "transform": "copy"
+      },
+      {
+        "cap_element": "info.description",
+        "source_field": "payload_summary",
+        "transform": "copy"
+      }
+    ],
+    "standard": "OASIS-CAP-1.2"
+  },
+  "created_at": "2026-07-17T13:35:00.000000Z",
+  "direction": "export_only",
+  "edxl_de_wrapper": {
+    "distribution_type_declared_by": "receiving_agency",
+    "role": "wrapper_only",
+    "standard": "EDXL-DE-1.0"
+  },
+  "gateway_implemented": false,
+  "invariants": {
+    "cap_ack_means_operational_acceptance": false,
+    "gateway_received_means_rescue": false,
+    "human_confirmation_required": true
+  },
+  "limitations": [
+    "specified mapping only",
+    "no gateway implemented",
+    "CAP Ack is transport receipt, not operational acceptance",
+    "silence after export never means absence or rescue failure"
+  ],
+  "profile_id": "interop-full-edxl-export",
+  "profile_type": "interop_emergency_standards_profile",
+  "schema_version": "1.0.0",
+  "source_message_types": [
+    "sos",
+    "location",
+    "status"
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "created_at": "2026-07-17T13:00:00.000000Z",
+  "custody": {
+    "backup_required": true,
+    "compromise_response": "revoke_and_reenroll",
+    "storage": "encrypted_file"
+  },
+  "enrollment": {
+    "actor_device_binding": {
+      "actor_id": "actor-1111111111111111",
+      "binding_proof": "ed25519_device_attestation",
+      "bound_at": "2026-07-17T13:00:00.000000Z",
+      "device_id": "device-2222222222222222"
+    },
+    "method": "offline_manual_entry"
+  },
+  "key_algorithms": {
+    "aead": "AES-256-GCM",
+    "signing": "Ed25519"
+  },
+  "limitations": [
+    "specified profile only",
+    "no field-proven key ceremony"
+  ],
+  "profile_id": "identity-keys-cell-alpha",
+  "profile_type": "identity_key_lifecycle_profile",
+  "revocation": {
+    "distribution": "gossip_within_cell",
+    "mechanism": "offline_revocation_list",
+    "offline_capable": true
+  },
+  "rotation": {
+    "scope": "per_incident",
+    "triggers": [
+      "incident_start"
+    ]
+  },
+  "simulated_derivation": {
+    "allowed_profiles": [
+      "lab-sim"
+    ],
+    "domain_marker": "openbrec-p0-simulated-only",
+    "prohibited_outside_allowed_profiles": true
+  }
+}

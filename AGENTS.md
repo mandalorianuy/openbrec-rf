@@ -20,7 +20,7 @@ Construir OpenBREC RF de forma incremental, reproducible, segura y verificable.
 - Firmware: ESP-IDF, C/C++.
 - Infra: Docker Compose; k3s opcional y posterior.
 - Observabilidad: OpenTelemetry + Prometheus, activable por perfil.
-- Tests: pytest, hypothesis, Playwright, ESP-IDF Unity.
+- Tests: `unittest` de stdlib (`python -m unittest discover tests`) y gates `python -m openbrec.verify`; Playwright solo para el smoke de la PWA cuando pnpm/node están instalados. pytest/hypothesis son opción futura, no estado actual; ESP-IDF Unity aplicará cuando exista firmware.
 
 ## Reglas de implementación
 - No inventar soporte de hardware. Los contratos `1.0.0-draft.1` conservan sus tokens legacy por compatibilidad; la documentación pública los traduce al vocabulario `specified`, `simulated`, `bench-validated`, `field-validated`, `unsupported` o `unverified` sin elevar claims.

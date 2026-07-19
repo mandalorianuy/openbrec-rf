@@ -12,6 +12,8 @@ import psycopg
 from openbrec.runtime import ACCEPTED_OBSERVATION_TOPIC, ContractValidationError
 from openbrec.runtime import PROCESSED_OBSERVATION_TOPIC, validate_observation
 from openbrec.canonical import canonicalize
+from openbrec.fusion import FusionError, fuse_observations
+from openbrec.fusion_store import FusionStoreError, PostgresFusionStore
 from openbrec.postgres_disposition import PostgresDispositionStore
 from openbrec.semantic import SemanticValidationError, validate_event
 
@@ -35,7 +37,11 @@ def process_observation(
 
 
 def process_event(
-    payload: Any, *, store: Any, worker_id: str = "fusion-worker-1"
+    payload: Any,
+    *,
+    store: Any,
+    fusion_store: Any = None,
+    worker_id: str = "fusion-worker-1",
 ) -> dict[str, str]:
     root = Path(__file__).resolve().parents[3]
     event = validate_event(payload, root)
@@ -45,11 +51,22 @@ def process_event(
         policy=event["handling_policy"],
         source_offset=event["sequence"],
     )
-    return {
+    processed = {
         "status": "durably_processed",
         "worker_id": worker_id,
         "observation_id": str(observation["observation_id"]),
     }
+    if fusion_store is not None:
+        fusion_store.record_observation(observation)
+        zone_id = observation.get("zone_id")
+        evidence = fusion_store.observations_in_window(
+            zone_id, observation["window_start"], observation["window_end"]
+        )
+        fusion = fuse_observations(evidence, zone_id=zone_id)
+        fusion_store.record_fusion_result(fusion)
+        processed["fusion_result_id"] = fusion["result_id"]
+        processed["fusion_state"] = fusion["state"]
+    return processed
 
 
 async def run_worker() -> None:
@@ -61,6 +78,8 @@ async def run_worker() -> None:
     )
     repository_root = Path(__file__).resolve().parents[3]
     store = PostgresDispositionStore.from_environment(repository_root=repository_root)
+    fusion_store = PostgresFusionStore.from_environment()
+    fusion_store.connect()
     connected = asyncio.Event()
     loop = asyncio.get_running_loop()
     client = mqtt.Client(
@@ -79,12 +98,16 @@ async def run_worker() -> None:
     def on_message(client, userdata, message) -> None:
         try:
             payload = json.loads(message.payload.decode("utf-8"))
-            processed = process_event(payload, store=store, worker_id=worker_id)
+            processed = process_event(
+                payload, store=store, fusion_store=fusion_store, worker_id=worker_id
+            )
         except (
             UnicodeDecodeError,
             json.JSONDecodeError,
             ContractValidationError,
             SemanticValidationError,
+            FusionError,
+            FusionStoreError,
             psycopg.Error,
             ValueError,
         ):
@@ -106,6 +129,7 @@ async def run_worker() -> None:
     finally:
         ready_file.unlink(missing_ok=True)
         store.close()
+        fusion_store.close()
         client.disconnect()
         client.loop_stop()
 

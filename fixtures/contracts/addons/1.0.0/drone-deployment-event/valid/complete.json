@@ -1,0 +1,30 @@
+{
+  "deployment_id": "training-001",
+  "drone_id": "uas-01",
+  "drop_sample_states_excluded_from_fusion": [
+    "RELEASED",
+    "IMPACT",
+    "SETTLING"
+  ],
+  "event_id": "evt-drop-002",
+  "event_type": "node_position_estimate",
+  "flight_authority_in_core": false,
+  "limitations": [
+    "estimate only, not a surveyed position",
+    "autopilot keeps all flight authority",
+    "release always human-confirmed"
+  ],
+  "motors_active": true,
+  "payload_id": "drop-node-04",
+  "position": {
+    "accuracy_m": 1.5,
+    "alt_m": 22.4,
+    "lat": -34.3350641,
+    "lon": -54.754415
+  },
+  "quality": 0.92,
+  "record_type": "drone_deployment_event",
+  "release_mode": "human_confirmed_dual_operator",
+  "schema_version": "1.0.0",
+  "timestamp": "2026-07-17T18:05:00.000000Z"
+}

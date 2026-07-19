@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import shutil
 import subprocess
 import sys
 import unittest
@@ -9,6 +10,11 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 SCENARIO = "fixtures/p0/integrated/campaign.json"
+PNPM_AVAILABLE = shutil.which("pnpm") is not None
+PNPM_MISSING_REASON = (
+    "pnpm not installed; skipping integrated gate "
+    "(the accessibility component requires the browser toolchain)"
+)
 
 
 class P008IntegratedCampaignTests(unittest.TestCase):
@@ -71,6 +77,7 @@ class P008IntegratedCampaignTests(unittest.TestCase):
         )
         self.assertIsInstance(campaign["expected_result_sha256"], str)
 
+    @unittest.skipUnless(PNPM_AVAILABLE, PNPM_MISSING_REASON)
     def test_gate_composes_all_accepted_addon_gates(self) -> None:
         summary = self.assert_gate_passed()
 
@@ -85,6 +92,7 @@ class P008IntegratedCampaignTests(unittest.TestCase):
             {"energy", "communication", "messages", "beacon", "review"},
         )
 
+    @unittest.skipUnless(PNPM_AVAILABLE, PNPM_MISSING_REASON)
     def test_faults_are_reconciled_without_false_safety_claims(self) -> None:
         summary = self.assert_gate_passed()
 
@@ -100,6 +108,7 @@ class P008IntegratedCampaignTests(unittest.TestCase):
         self.assertEqual(summary["sos_priority_inversions"], 0)
         self.assertEqual(summary["distress_preserved_for_review"], 4)
 
+    @unittest.skipUnless(PNPM_AVAILABLE, PNPM_MISSING_REASON)
     def test_every_cell_operates_during_partition_and_degrades_visibly(self) -> None:
         summary = self.assert_gate_passed()
 
@@ -114,6 +123,7 @@ class P008IntegratedCampaignTests(unittest.TestCase):
             set(summary["degradation_states"]), {"energy", "radio", "sensing"}
         )
 
+    @unittest.skipUnless(PNPM_AVAILABLE, PNPM_MISSING_REASON)
     def test_campaign_is_deterministic_and_frozen(self) -> None:
         campaign = json.loads((REPO_ROOT / SCENARIO).read_text(encoding="utf-8"))
         summary = self.assert_gate_passed()

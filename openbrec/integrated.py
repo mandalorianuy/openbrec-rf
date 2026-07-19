@@ -222,12 +222,26 @@ def run_integrated_gate(
         "cells_blocked_by_superior",
     ):
         if summary[field]:
-            errors.append(f"integrated safety invariant failed: {field}")
+            detail = f"integrated safety invariant failed: {field}"
+            if field == "component_gates_failed":
+                detail += f" ({', '.join(summary['failed_component_gates'])})"
+            errors.append(detail)
     if summary["degraded_domains"] != summary["degraded_domains_visible"]:
         errors.append("integrated degradation was hidden")
     if summary["distinct_projection_hashes"] != 1:
         errors.append("integrated campaign is not deterministic")
     expected = scenario["expected_result_sha256"]
     if expected != "TBD" and expected != summary["result_sha256"]:
-        errors.append("integrated result does not match frozen expected hash")
+        failed_components = summary["failed_component_gates"]
+        if failed_components:
+            errors.append(
+                "integrated result does not match frozen expected hash; "
+                f"failed component gates: {', '.join(failed_components)}"
+            )
+        else:
+            errors.append(
+                "integrated result does not match frozen expected hash; "
+                "all component gates passed, so a component summary changed: "
+                "diff each component gate summary against its frozen fixture"
+            )
     return errors, [], summary

@@ -1,0 +1,26 @@
+{
+  "bench_tx": {
+    "allowed_only_if_regulatory_mode": "conducted_only",
+    "authorized_bench_required": true
+  },
+  "created_at": "2026-07-17T15:05:00.000000Z",
+  "demodulate_third_party_traffic": false,
+  "direction_finding": {
+    "array_type": "coherent_array",
+    "example_hardware_replaceable": "krakensdr or equivalent coherent array"
+  },
+  "limitations": [
+    "specified profile only",
+    "df accuracy unverified in debris",
+    "spectrum occupancy is situational context, not detection"
+  ],
+  "mode": "receive_only_in_field",
+  "profile_id": "sdr-rx-df-spectrum",
+  "profile_type": "sdr_receive_profile",
+  "regulatory_mode_ref": "jurisdiction_validated",
+  "schema_version": "1.0.0",
+  "use_cases": [
+    "direction_finding",
+    "spectrum_occupancy"
+  ]
+}

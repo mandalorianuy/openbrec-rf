@@ -1,0 +1,39 @@
+{
+  "announced_window": {
+    "end": "2026-07-17T20:00:00.000000Z",
+    "start": "2026-07-17T18:15:00.000000Z"
+  },
+  "baseline_before_after_required": true,
+  "config_sha256": "8888888888888888888888888888888888888888888888888888888888888888",
+  "configuration": "command_post",
+  "created_at": "2026-07-17T18:20:00.000000Z",
+  "feedthrough": "none; battery inside",
+  "floor": false,
+  "limitations": [
+    "measured ensemble attenuation, never fabric claims",
+    "independent emergency comms maintained",
+    "no SAR literature precedent"
+  ],
+  "measurements": [
+    {
+      "attenuation_db": 18.2,
+      "frequency_hz": 2437000000,
+      "uncertainty_db": 2.4
+    },
+    {
+      "attenuation_db": 24.1,
+      "frequency_hz": 5500000000,
+      "uncertainty_db": 3.1
+    }
+  ],
+  "never_enclose_possible_victim_sector_without_analysis": true,
+  "notes": "baseline measured before and after the announced window",
+  "operator": "operator-rf-2",
+  "photo_hashes": [
+    "9999999999999999999999999999999999999999999999999999999999999999"
+  ],
+  "profile_id": "isolation-command-post-1",
+  "record_type": "rf_isolation_profile",
+  "schema_version": "1.0.0",
+  "seams": "200mm overlap"
+}

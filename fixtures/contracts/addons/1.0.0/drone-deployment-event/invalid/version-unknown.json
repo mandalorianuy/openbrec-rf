@@ -1,0 +1,20 @@
+{
+  "deployment_id": "training-001",
+  "drone_id": "uas-01",
+  "drop_sample_states_excluded_from_fusion": [
+    "RELEASED",
+    "IMPACT",
+    "SETTLING"
+  ],
+  "event_id": "evt-drop-001",
+  "event_type": "payload_released",
+  "flight_authority_in_core": false,
+  "limitations": [
+    "autopilot keeps all flight authority",
+    "telemetry and payload only"
+  ],
+  "record_type": "drone_deployment_event",
+  "release_mode": "human_confirmed",
+  "schema_version": "9.9.9",
+  "timestamp": "2026-07-17T18:00:00.000000Z"
+}

@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openbrec.org/schemas/addons/victim-record/1.0.0",
+  "title": "VictimRecord",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "record_type", "victim_record_id", "incident_id", "status", "revision", "created_at", "updated_at", "confirmation", "source_observation_ids", "provenance_ref", "handling_policy_ref", "updates_append_only", "silence_means_absence", "limitations"],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "record_type": {"enum": ["victim_record"]},
+    "victim_record_id": {"type": "string", "format": "uuid"},
+    "incident_id": {"type": "string", "format": "uuid"},
+    "status": {"enum": ["located", "extraction_in_progress", "extracted", "transported", "handed_over"]},
+    "triage_start": {"enum": ["immediate", "delayed", "minor", "expectant"]},
+    "revision": {"type": "integer", "minimum": 1},
+    "created_at": {"type": "string", "format": "date-time", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{6}Z$"},
+    "updated_at": {"type": "string", "format": "date-time", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{6}Z$"},
+    "zone_id": {"type": "string", "pattern": "^[a-z][a-z0-9._-]{2,63}$"},
+    "location_note": {"type": "string", "minLength": 1, "maxLength": 512},
+    "confirmation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["actor_id", "actor_role", "method", "confirmed_at", "authentication_ref"],
+      "properties": {
+        "actor_id": {"type": "string", "minLength": 1},
+        "actor_role": {"enum": ["operator", "incident_commander"]},
+        "method": {"const": "human_operator_confirmation"},
+        "confirmed_at": {"type": "string", "format": "date-time", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{6}Z$"},
+        "authentication_ref": {"type": "string", "pattern": "^urn:sha256:[0-9a-f]{64}$"}
+      }
+    },
+    "source_observation_ids": {"type": "array", "items": {"type": "string", "format": "uuid"}, "uniqueItems": true},
+    "source_annotation_ids": {"type": "array", "items": {"type": "string", "format": "uuid"}, "uniqueItems": true},
+    "provenance_ref": {"type": "string", "pattern": "^urn:sha256:[0-9a-f]{64}$"},
+    "handling_policy_ref": {"type": "string", "pattern": "^urn:sha256:[0-9a-f]{64}$"},
+    "updates_append_only": {"const": true},
+    "silence_means_absence": {"const": false},
+    "limitations": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1, "uniqueItems": true}
+  },
+  "examples": [
+    {"schema_version": "1.0.0", "record_type": "victim_record", "victim_record_id": "41000000-0000-4000-8000-000000000001", "incident_id": "11111111-1111-4111-8111-111111111111", "status": "located", "revision": 1, "created_at": "2026-07-17T18:00:00.000000Z", "updated_at": "2026-07-17T18:00:00.000000Z", "confirmation": {"actor_id": "actor-1111111111111111", "actor_role": "operator", "method": "human_operator_confirmation", "confirmed_at": "2026-07-17T18:00:00.000000Z", "authentication_ref": "urn:sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}, "source_observation_ids": ["55555555-5555-4555-8555-555555555555"], "provenance_ref": "urn:sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "handling_policy_ref": "urn:sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc", "updates_append_only": true, "silence_means_absence": false, "limitations": ["operator-confirmed record only", "fusion never creates victim records"]},
+    {"schema_version": "1.0.0", "record_type": "victim_record", "victim_record_id": "41000000-0000-4000-8000-000000000001", "incident_id": "11111111-1111-4111-8111-111111111111", "status": "extracted", "triage_start": "delayed", "revision": 2, "created_at": "2026-07-17T18:00:00.000000Z", "updated_at": "2026-07-17T19:30:00.000000Z", "zone_id": "zone-b", "location_note": "north stairwell, ground floor", "confirmation": {"actor_id": "actor-2222222222222222", "actor_role": "incident_commander", "method": "human_operator_confirmation", "confirmed_at": "2026-07-17T19:30:00.000000Z", "authentication_ref": "urn:sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"}, "source_observation_ids": ["55555555-5555-4555-8555-555555555555", "55555555-5555-4555-8555-555555555556"], "source_annotation_ids": ["88888888-8888-4888-8888-888888888888"], "provenance_ref": "urn:sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee", "handling_policy_ref": "urn:sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff", "updates_append_only": true, "silence_means_absence": false, "limitations": ["update appended as new revision", "a sector without victim records does not imply absence"]}
+  ]
+}

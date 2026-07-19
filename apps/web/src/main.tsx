@@ -1,5 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { createRoot } from "react-dom/client";
+import { loadFusionResults } from "./live-data";
+import type { FusionFeed } from "./live-data";
 import "./style.css";
 
 const STORAGE_KEY = "openbrec:last-projection";
@@ -377,6 +379,7 @@ function formatTime(timestamp: string): string {
 function App() {
   const [projection, setProjection] = useState<Projection | null>(loadCachedProjection);
   const [terminal, setTerminal] = useState<TerminalProjection | null>(loadCachedTerminal);
+  const [fusionFeed, setFusionFeed] = useState<FusionFeed>({ source: "fixture", results: [] });
   const [view, setView] = useState<"terminal" | "situation">("terminal");
   const [selectedZone, setSelectedZone] = useState("zone-bravo");
   const [selectedEvent, setSelectedEvent] = useState<string | null>(null);
@@ -407,6 +410,7 @@ function App() {
       .catch(() => {
         // The local terminal fixture and queued messages survive a partition.
       });
+    loadFusionResults().then(setFusionFeed);
   }, []);
 
   const filteredTimeline = useMemo(
@@ -443,6 +447,9 @@ function App() {
             <span>{view === "terminal" ? "Partición activa" : "Replay offline"}</span>
             <time dateTime={view === "terminal" ? terminal.logical_now : projection.generated_at}>{formatTime(view === "terminal" ? terminal.logical_now : projection.generated_at)}</time>
           </div>
+          <span className={`data-source ${fusionFeed.source}`} role="status">
+            Fuente: {fusionFeed.source === "live" ? "API en vivo" : "fixtures verificados"}
+          </span>
         </div>
       </header>
 
@@ -598,6 +605,30 @@ function App() {
           ))}
         </ol>
       </section>
+
+      {fusionFeed.results.length > 0 && (
+      <section className="timeline-panel" data-testid="live-fusion-feed" aria-labelledby="live-fusion-title">
+        <div className="section-heading">
+          <div>
+            <p className="section-index">05 · API EN VIVO</p>
+            <h2 id="live-fusion-title">Fusión del pipeline</h2>
+          </div>
+          <p>Leído de la API local; las abstenciones se muestran sin interpretar.</p>
+        </div>
+        <ol className="timeline">
+          {fusionFeed.results.map((item) => (
+            <li key={item.result_id} className="fusion_result">
+              <div className="history-main">
+                <span>{item.abstained ? "Abstención" : item.state === "conflicted" ? "Conflicto" : "Indicador"}</span>
+                <strong>{item.explanation}</strong>
+                <small>{item.zone_id ?? "sin zona"} · confianza {Math.round(item.confidence * 100)}% · {item.coverage}</small>
+                {item.abstention_reasons.length > 0 && <small>Razones: {item.abstention_reasons.join(" · ")}</small>}
+              </div>
+            </li>
+          ))}
+        </ol>
+      </section>
+      )}
       </>}
     </main>
   );

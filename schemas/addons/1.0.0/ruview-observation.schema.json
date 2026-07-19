@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openbrec.org/schemas/addons/ruview-observation/1.0.0",
+  "title": "RuViewObservation",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "record_type", "observation_id", "timestamp", "node_id", "source_mode", "frame_format", "source_commit", "model_version", "stream_metrics", "quality", "experimental_only", "outputs_are_victim_detected", "unknown_class_required", "limitations"],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "record_type": {"enum": ["ruview_observation"]},
+    "observation_id": {"type": "string", "format": "uuid"},
+    "timestamp": {"type": "string", "format": "date-time", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{6}Z$"},
+    "node_id": {"type": "string", "minLength": 1},
+    "source_mode": {"enum": ["udp-adr018", "websocket", "file-replay", "python-sidecar"]},
+    "frame_format": {"type": "string", "minLength": 1},
+    "source_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "model_version": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["hash", "commit", "format"],
+      "properties": {
+        "hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "format": {"enum": ["rvf-binary", "jsonl-rvf", "onnx", "other_declared"]}
+      }
+    },
+    "stream_metrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["loss_ratio", "jitter_seconds", "effective_rate_hz"],
+      "properties": {
+        "loss_ratio": {"type": "number", "minimum": 0, "maximum": 1},
+        "jitter_seconds": {"type": "number", "minimum": 0},
+        "effective_rate_hz": {"type": "number", "exclusiveMinimum": 0}
+      }
+    },
+    "quality": {"type": "number", "minimum": 0, "maximum": 1},
+    "features": {"type": "object"},
+    "warnings": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+    "experimental_only": {"const": true},
+    "outputs_are_victim_detected": {"const": false},
+    "unknown_class_required": {"const": true},
+    "limitations": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1, "uniqueItems": true}
+  },
+  "examples": [
+    {"schema_version": "1.0.0", "record_type": "ruview_observation", "observation_id": "34000000-0000-4000-8000-000000000001", "timestamp": "2026-07-17T17:00:00.000000Z", "node_id": "ruview-node-01", "source_mode": "file-replay", "frame_format": "adr018-binary", "source_commit": "90667d0f1d9f4dc129d999c7998d4036cac2e1b8", "model_version": {"hash": "5555555555555555555555555555555555555555555555555555555555555555", "commit": "90667d0f1d9f4dc129d999c7998d4036cac2e1b8", "format": "rvf-binary"}, "stream_metrics": {"loss_ratio": 0.02, "jitter_seconds": 0.004, "effective_rate_hz": 95.5}, "quality": 0.6, "experimental_only": true, "outputs_are_victim_detected": false, "unknown_class_required": true, "limitations": ["version-pinned third-party tool", "claims never elevated", "unknown class mandatory"]},
+    {"schema_version": "1.0.0", "record_type": "ruview_observation", "observation_id": "34000000-0000-4000-8000-000000000002", "timestamp": "2026-07-17T17:01:00.000000Z", "node_id": "ruview-node-02", "source_mode": "udp-adr018", "frame_format": "adr018-binary", "source_commit": "90667d0f1d9f4dc129d999c7998d4036cac2e1b8", "model_version": {"hash": "6666666666666666666666666666666666666666666666666666666666666666", "commit": "90667d0f1d9f4dc129d999c7998d4036cac2e1b8", "format": "jsonl-rvf"}, "stream_metrics": {"loss_ratio": 0.1, "jitter_seconds": 0.02, "effective_rate_hz": 40}, "quality": 0.4, "features": {"variance": 0.31}, "warnings": ["jsonl-rvf gap: invalid magic fallback must stay visible"], "experimental_only": true, "outputs_are_victim_detected": false, "unknown_class_required": true, "limitations": ["jsonl-rvf loader gap documented upstream", "fallback visible, never silent null", "no victim detection output"]}
+  ]
+}

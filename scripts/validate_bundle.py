@@ -14,11 +14,12 @@ def main() -> int:
     warnings: list[str] = []
 
     required = [
-        'README.md', 'OPENBREC_RF_TECHNICAL_DESIGN.md', 'BOM.md',
+        'README.md', 'docs/legacy/OPENBREC_RF_TECHNICAL_DESIGN.md',
+        'docs/legacy/BOM.md',
         'AGENTS.md', 'CODEX_MASTER_PROMPT.md', 'docker-compose.yml',
         'DELIVERY_BOARD.md', 'SECURITY.md', 'LICENSE', 'NOTICE.md',
-        'docs/08-ruview-evaluation.md', 'docs/09-drone-deployment.md',
-        'docs/10-rf-quieting.md',
+        'docs/legacy/08-ruview-evaluation.md', 'docs/legacy/09-drone-deployment.md',
+        'docs/legacy/10-rf-quieting.md',
     ]
     for rel in required:
         if not (ROOT / rel).is_file():
@@ -48,12 +49,12 @@ def main() -> int:
     except ModuleNotFoundError:
         warnings.append('PyYAML no instalado; perfiles YAML no validados')
 
-    design = (ROOT / 'OPENBREC_RF_TECHNICAL_DESIGN.md').read_text(encoding='utf-8') if (ROOT/'OPENBREC_RF_TECHNICAL_DESIGN.md').exists() else ''
+    design = (ROOT / 'docs/legacy/OPENBREC_RF_TECHNICAL_DESIGN.md').read_text(encoding='utf-8') if (ROOT/'docs/legacy/OPENBREC_RF_TECHNICAL_DESIGN.md').exists() else ''
     for term in ['RuView', 'Drop Pod', 'RF Quieting', 'drones']:
         if term.lower() not in design.lower():
             errors.append(f'diseño técnico no contiene sección requerida: {term}')
 
-    bom = (ROOT / 'BOM.md').read_text(encoding='utf-8') if (ROOT/'BOM.md').exists() else ''
+    bom = (ROOT / 'docs/legacy/BOM.md').read_text(encoding='utf-8') if (ROOT/'docs/legacy/BOM.md').exists() else ''
     for term in ['ESP32', 'Drone', 'RF Quieting', 'Uruguay']:
         if term.lower() not in bom.lower():
             errors.append(f'BOM no contiene categoría requerida: {term}')

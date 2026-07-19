@@ -4,11 +4,13 @@ import json
 import os
 import threading
 from contextlib import asynccontextmanager
-from typing import Any, AsyncIterator, Protocol
+from typing import Any, AsyncIterator, Literal, Protocol
 
 import paho.mqtt.client as mqtt
-from fastapi import FastAPI, HTTPException, status
+from fastapi import FastAPI, HTTPException, Query, status
 
+from openbrec.fusion import FusionError, validate_fusion_result
+from openbrec.fusion_store import PostgresFusionStore
 from openbrec.runtime import ACCEPTED_OBSERVATION_TOPIC, ContractValidationError
 from openbrec.runtime import observation_to_event, validate_observation
 
@@ -22,6 +24,33 @@ class Publisher(Protocol):
     def close(self) -> None: ...
 
     def publish(self, topic: str, payload: dict[str, Any]) -> None: ...
+
+
+class FusionReader(Protocol):
+    @property
+    def ready(self) -> bool: ...
+
+    def connect(self) -> None: ...
+
+    def close(self) -> None: ...
+
+    def list_observations(
+        self,
+        *,
+        zone_id: str | None = None,
+        sensor_type: str | None = None,
+        limit: int = 50,
+    ) -> list[dict[str, Any]]: ...
+
+    def list_fusion_results(
+        self,
+        *,
+        zone_id: str | None = None,
+        state: str | None = None,
+        limit: int = 50,
+    ) -> list[dict[str, Any]]: ...
+
+    def get_fusion_result(self, result_id: str) -> dict[str, Any] | None: ...
 
 
 class RecordingPublisher:
@@ -92,16 +121,21 @@ class MqttPublisher:
             raise RuntimeError("MQTT publish was not acknowledged")
 
 
-def create_app(publisher: Publisher | None = None) -> FastAPI:
+def create_app(
+    publisher: Publisher | None = None, reader: FusionReader | None = None
+) -> FastAPI:
     selected = publisher or MqttPublisher(
         os.environ.get("OPENBREC_MQTT_HOST", "mqtt"),
         int(os.environ.get("OPENBREC_MQTT_PORT", "1883")),
     )
+    selected_reader = reader or PostgresFusionStore.from_environment()
 
     @asynccontextmanager
     async def lifespan(app: FastAPI) -> AsyncIterator[None]:
         selected.connect()
+        selected_reader.connect()
         yield
+        selected_reader.close()
         selected.close()
 
     app = FastAPI(title="OpenBREC RF M0 API", version="0.1.0", lifespan=lifespan)
@@ -132,6 +166,63 @@ def create_app(publisher: Publisher | None = None) -> FastAPI:
             "status": "accepted",
             "observation_id": str(observation["observation_id"]),
         }
+
+    def require_reader() -> FusionReader:
+        if not selected_reader.ready:
+            raise HTTPException(status_code=503, detail="read model unavailable")
+        return selected_reader
+
+    @app.get("/v1/observations")
+    def list_observations(
+        zone_id: str | None = None,
+        sensor_type: Literal["synthetic", "operator", "addon_registered"]
+        | None = None,
+        limit: int = Query(default=50, ge=1, le=200),
+    ) -> dict[str, Any]:
+        store = require_reader()
+        items = store.list_observations(
+            zone_id=zone_id, sensor_type=sensor_type, limit=limit
+        )
+        try:
+            return {
+                "items": [validate_observation(item) for item in items],
+            }
+        except ContractValidationError as exc:
+            raise HTTPException(
+                status_code=500, detail="stored observation violates contract"
+            ) from exc
+
+    @app.get("/v1/fusion-results")
+    def list_fusion_results(
+        zone_id: str | None = None,
+        state: Literal["indicator", "conflicted", "abstained"] | None = None,
+        limit: int = Query(default=50, ge=1, le=200),
+    ) -> dict[str, Any]:
+        store = require_reader()
+        items = store.list_fusion_results(
+            zone_id=zone_id, state=state, limit=limit
+        )
+        try:
+            return {
+                "items": [validate_fusion_result(item) for item in items],
+            }
+        except FusionError as exc:
+            raise HTTPException(
+                status_code=500, detail="stored fusion result violates contract"
+            ) from exc
+
+    @app.get("/v1/fusion-results/{result_id}")
+    def get_fusion_result(result_id: str) -> dict[str, Any]:
+        store = require_reader()
+        result = store.get_fusion_result(result_id)
+        if result is None:
+            raise HTTPException(status_code=404, detail="fusion result not found")
+        try:
+            return validate_fusion_result(result)
+        except FusionError as exc:
+            raise HTTPException(
+                status_code=500, detail="stored fusion result violates contract"
+            ) from exc
 
     return app
 

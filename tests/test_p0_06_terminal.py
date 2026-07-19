@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import shutil
 import subprocess
 import sys
 import unittest
@@ -9,6 +10,10 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 SCENARIO = REPO_ROOT / "fixtures/p0/terminal/offline-terminal.json"
+PNPM_AVAILABLE = shutil.which("pnpm") is not None
+PNPM_MISSING_REASON = (
+    "pnpm not installed; skipping gate that builds the PWA browser evidence"
+)
 
 
 class P006OfflineTerminalTests(unittest.TestCase):
@@ -115,6 +120,7 @@ class P006OfflineTerminalTests(unittest.TestCase):
         for prohibited in ("rescate garantizado", "zona vacía", "sin víctimas"):
             self.assertNotIn(prohibited, lowered)
 
+    @unittest.skipUnless(PNPM_AVAILABLE, PNPM_MISSING_REASON)
     def test_accessibility_gate_is_technical_and_defers_human_claims(self) -> None:
         summary = self.assert_gate_passed("accessibility")
 
@@ -144,6 +150,7 @@ class P006OfflineTerminalTests(unittest.TestCase):
         self.assertIn("context.setOffline(true)", smoke)
         self.assertIn("queued_after_offline_action", smoke)
 
+    @unittest.skipUnless(PNPM_AVAILABLE, PNPM_MISSING_REASON)
     def test_fixture_freezes_gate_hashes_and_ci_writes_independent_receipts(self) -> None:
         scenario = json.loads(SCENARIO.read_text(encoding="utf-8"))
         for gate in ("terminal-ux", "accessibility"):

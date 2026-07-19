@@ -1,0 +1,44 @@
+{
+  "amplitude_only": true,
+  "automatic_person_detection_allowed": false,
+  "baseline_ref": "urn:sha256:1111111111111111111111111111111111111111111111111111111111111111",
+  "capabilities_absent": [
+    "phase_sanitized_csi",
+    "multi_link"
+  ],
+  "coverage": "single synthetic csi window",
+  "limitations": [
+    "esp32 phase corrupted by cfo/sfo",
+    "amplitude only",
+    "no presence or absence inference"
+  ],
+  "link": {
+    "antenna_profile_id": "antenna-esp32-stock",
+    "bandwidth_mhz": 20,
+    "channel": 6,
+    "rx_node_id": "node-rx-01",
+    "tx_node_id": "node-tx-01"
+  },
+  "max_declared_evidence": "bench-validated",
+  "measurements": [
+    {
+      "measurement_type": "scalar",
+      "method": "csi:amplitude-variance-v1",
+      "metric": "csi.change_score",
+      "quality": 0.6,
+      "uncertainty": 0.2,
+      "unit": "1",
+      "value": 0.35
+    }
+  ],
+  "observation_id": "32000000-0000-4000-8000-000000000001",
+  "observation_kind": "measurement",
+  "quality": 0.6,
+  "schema_version": "1.0.0",
+  "sensor_id": "csi-link-a1",
+  "sensor_type": "addon_registered",
+  "silence_means_absence": false,
+  "uncertainty": 0.4,
+  "window_end": "2026-07-17T16:40:05.000000Z",
+  "window_start": "2026-07-17T12:00:00Z"
+}

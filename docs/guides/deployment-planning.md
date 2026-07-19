@@ -61,4 +61,4 @@ Un plan no acredita cobertura, regulación, capacidad RF, comprensión humana, s
 
 ## Contratos normativos relacionados
 
-[Federación](../../specs/openbrec/1.0.0-draft.1/recursive-federation-profiles.json), [energía](../../specs/openbrec/1.0.0-draft.1/energy-architecture-profiles.json) y [transportes](../../specs/openbrec/1.0.0-draft.1/multi-bearer-transport-profiles.json).
+[Federación](../../specs/openbrec/1.0.0-draft.1/recursive-federation-profiles.json), [energía](../../specs/openbrec/1.0.0-draft.1/energy-architecture-profiles.json) y [transportes](../../specs/openbrec/1.0.0-draft.1/multi-bearer-transport-profiles.json). Para mapas offline, tiles versionados y áreas de búsqueda con POD, ver [GIS offline](offline-mapping.md).

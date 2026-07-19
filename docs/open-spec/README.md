@@ -15,6 +15,8 @@ campo.
 - [Evidencia comunitaria](COMMUNITY-EVIDENCE.md): enviar, revisar, rechazar,
   conservar y superseder contribuciones.
 - [Publicación](PUBLISHING.md): bundle offline, versionado, checksums y releases.
+- [Proceso RFC](RFC-PROCESS.md): cómo proponer, evaluar y registrar cambios
+  normativos de la especificación.
 - [Reference builds](../reference-builds/README.md): construir, reutilizar o combinar sin convertir los builds en norma.
 - [Matriz de funcionalidades](../decision-matrices/open-spec-functionality-matrix.json):
   valor BREC, evidencia, alternativa, hardware, privacidad, safety, esfuerzo y

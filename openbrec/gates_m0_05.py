@@ -3,6 +3,7 @@ from __future__ import annotations
 import copy
 import json
 import os
+import shutil
 import socket
 import subprocess
 import time
@@ -143,6 +144,14 @@ def run_ui_smoke_gate(root: Path) -> tuple[list[str], list[str], dict[str, Any]]
         "offline_reload": "not_run",
     }
     if errors:
+        return errors, [], summary
+
+    missing_tools = [tool for tool in ("pnpm", "node") if shutil.which(tool) is None]
+    if missing_tools:
+        errors.append(
+            f"UI smoke skipped: {', '.join(missing_tools)} not installed; "
+            "browser evidence requires the pnpm/node toolchain"
+        )
         return errors, [], summary
 
     build = subprocess.run(

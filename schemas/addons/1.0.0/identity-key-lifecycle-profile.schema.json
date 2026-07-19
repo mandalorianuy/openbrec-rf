@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openbrec.org/schemas/addons/identity-key-lifecycle-profile/1.0.0",
+  "title": "IdentityKeyLifecycleProfile",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "profile_type", "profile_id", "created_at", "enrollment", "key_algorithms", "rotation", "revocation", "custody", "simulated_derivation", "limitations"],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "profile_type": {"enum": ["identity_key_lifecycle_profile"]},
+    "profile_id": {"type": "string", "pattern": "^identity-keys-[a-z0-9-]{3,64}$"},
+    "created_at": {"type": "string", "format": "date-time", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{6}Z$"},
+    "enrollment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["method", "actor_device_binding"],
+      "properties": {
+        "method": {"enum": ["offline_manual_entry", "offline_qr_exchange", "offline_media_transfer"]},
+        "actor_device_binding": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["actor_id", "device_id", "bound_at", "binding_proof"],
+          "properties": {
+            "actor_id": {"type": "string", "pattern": "^actor-[0-9a-f]{16}$"},
+            "device_id": {"type": "string", "pattern": "^device-[0-9a-f]{16}$"},
+            "bound_at": {"type": "string", "format": "date-time", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{6}Z$"},
+            "binding_proof": {"enum": ["ed25519_device_attestation"]}
+          }
+        }
+      }
+    },
+    "key_algorithms": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["signing", "aead"],
+      "properties": {
+        "signing": {"const": "Ed25519"},
+        "aead": {"const": "AES-256-GCM"}
+      }
+    },
+    "rotation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["scope", "triggers"],
+      "properties": {
+        "scope": {"const": "per_incident"},
+        "triggers": {"type": "array", "items": {"enum": ["incident_start", "incident_close", "compromise_suspected", "operator_decision"]}, "minItems": 1, "uniqueItems": true}
+      }
+    },
+    "revocation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mechanism", "distribution", "offline_capable"],
+      "properties": {
+        "mechanism": {"enum": ["offline_revocation_list", "key_commitment_replacement"]},
+        "distribution": {"enum": ["gossip_within_cell", "carry_bundle", "direct_exchange"]},
+        "offline_capable": {"const": true}
+      }
+    },
+    "custody": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["storage", "backup_required", "compromise_response"],
+      "properties": {
+        "storage": {"enum": ["hardware_keystore", "encrypted_file", "paper_backup"]},
+        "backup_required": {"type": "boolean"},
+        "compromise_response": {"enum": ["revoke_and_reenroll", "freeze_identity_pending_review"]}
+      }
+    },
+    "simulated_derivation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["domain_marker", "allowed_profiles", "prohibited_outside_allowed_profiles"],
+      "properties": {
+        "domain_marker": {"const": "openbrec-p0-simulated-only"},
+        "allowed_profiles": {"type": "array", "items": {"const": "lab-sim"}, "minItems": 1, "maxItems": 1},
+        "prohibited_outside_allowed_profiles": {"const": true}
+      }
+    },
+    "limitations": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1, "uniqueItems": true}
+  },
+  "examples": [
+    {"schema_version": "1.0.0", "profile_type": "identity_key_lifecycle_profile", "profile_id": "identity-keys-cell-alpha", "created_at": "2026-07-17T13:00:00.000000Z", "enrollment": {"method": "offline_manual_entry", "actor_device_binding": {"actor_id": "actor-1111111111111111", "device_id": "device-2222222222222222", "bound_at": "2026-07-17T13:00:00.000000Z", "binding_proof": "ed25519_device_attestation"}}, "key_algorithms": {"signing": "Ed25519", "aead": "AES-256-GCM"}, "rotation": {"scope": "per_incident", "triggers": ["incident_start"]}, "revocation": {"mechanism": "offline_revocation_list", "distribution": "gossip_within_cell", "offline_capable": true}, "custody": {"storage": "encrypted_file", "backup_required": true, "compromise_response": "revoke_and_reenroll"}, "simulated_derivation": {"domain_marker": "openbrec-p0-simulated-only", "allowed_profiles": ["lab-sim"], "prohibited_outside_allowed_profiles": true}, "limitations": ["specified profile only", "no field-proven key ceremony"]},
+    {"schema_version": "1.0.0", "profile_type": "identity_key_lifecycle_profile", "profile_id": "identity-keys-federated-hub", "created_at": "2026-07-17T13:05:00.000000Z", "enrollment": {"method": "offline_qr_exchange", "actor_device_binding": {"actor_id": "actor-3333333333333333", "device_id": "device-4444444444444444", "bound_at": "2026-07-17T13:05:00.000000Z", "binding_proof": "ed25519_device_attestation"}}, "key_algorithms": {"signing": "Ed25519", "aead": "AES-256-GCM"}, "rotation": {"scope": "per_incident", "triggers": ["incident_start", "compromise_suspected", "operator_decision"]}, "revocation": {"mechanism": "key_commitment_replacement", "distribution": "carry_bundle", "offline_capable": true}, "custody": {"storage": "hardware_keystore", "backup_required": true, "compromise_response": "freeze_identity_pending_review"}, "simulated_derivation": {"domain_marker": "openbrec-p0-simulated-only", "allowed_profiles": ["lab-sim"], "prohibited_outside_allowed_profiles": true}, "limitations": ["specified profile only", "revocation list convergence is eventual", "no cloud KMS dependency"]}
+  ]
+}

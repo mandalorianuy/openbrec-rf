@@ -1,0 +1,55 @@
+{
+  "amplitude_only": false,
+  "automatic_person_detection_allowed": false,
+  "baseline_ref": "urn:sha256:2222222222222222222222222222222222222222222222222222222222222222",
+  "calibration_ref": "urn:sha256:3333333333333333333333333333333333333333333333333333333333333333",
+  "capabilities_absent": [
+    "through_wall_validation",
+    "multi_person_counting"
+  ],
+  "coverage": "modeled overlapping windows",
+  "limitations": [
+    "candidate only, never automatic detection",
+    "breathing candidate is bench-validated single-person LOS only",
+    "silence never means absence"
+  ],
+  "link": {
+    "antenna_profile_id": "antenna-nexmon-rpi",
+    "bandwidth_mhz": 80,
+    "channel": 36,
+    "rx_node_id": "node-rx-02",
+    "tx_node_id": "node-tx-02"
+  },
+  "max_declared_evidence": "bench-validated",
+  "measurements": [
+    {
+      "measurement_type": "scalar",
+      "method": "csi:subcarrier-variance-v2",
+      "metric": "csi.motion_index",
+      "quality": 0.7,
+      "uncertainty": 0.15,
+      "unit": "1",
+      "value": 0.7
+    },
+    {
+      "measurement_type": "scalar",
+      "method": "csi:periodicity-v1",
+      "metric": "csi.breathing_candidate",
+      "quality": 0.5,
+      "uncertainty": 0.3,
+      "unit": "1",
+      "value": 0.4
+    }
+  ],
+  "observation_id": "32000000-0000-4000-8000-000000000002",
+  "observation_kind": "measurement",
+  "quality": 0.65,
+  "schema_version": "1.0.0",
+  "sensor_id": "csi-link-b2",
+  "sensor_type": "addon_registered",
+  "silence_means_absence": false,
+  "uncertainty": 0.35,
+  "window_end": "2026-07-17T16:41:10.000000Z",
+  "window_start": "2026-07-17T16:41:00.000000Z",
+  "zone_id": "zone-a"
+}

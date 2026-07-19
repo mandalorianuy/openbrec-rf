@@ -1,5 +1,11 @@
 # OpenBREC RF — Delivery Board
 
+> 📜 **Audit trail histórico (2026-07-19).** Este board queda como registro de
+> la ejecución M0/P0/Open Spec; ya no es la fuente de rumbo del proyecto. El
+> roadmap vigente es [`ROADMAP.md`](ROADMAP.md). Además, **P1a queda en pausa
+> declarativa**: no se aceptan más cambios de gates P1a hasta que exista
+> hardware real disponible.
+
 - Autoridad de secuencia: este board
 - Plan documental ejecutado: `docs/superpowers/plans/2026-07-18-openbrec-documentation-program-plan.md`
 - Autoridad normativa vigente: `docs/superpowers/plans/2026-07-18-openbrec-open-spec-plan.md`

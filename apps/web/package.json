@@ -7,15 +7,15 @@
     "build": "tsc --noEmit && vite build"
   },
   "dependencies": {
-    "@vitejs/plugin-react": "latest",
-    "react": "latest",
-    "react-dom": "latest",
-    "vite": "latest"
+    "@vitejs/plugin-react": "6.0.3",
+    "react": "19.2.7",
+    "react-dom": "19.2.7",
+    "vite": "8.1.5"
   },
   "devDependencies": {
-    "@types/react": "latest",
-    "@types/react-dom": "latest",
+    "@types/react": "19.2.17",
+    "@types/react-dom": "19.2.3",
     "playwright": "1.61.1",
-    "typescript": "latest"
+    "typescript": "7.0.2"
   }
 }

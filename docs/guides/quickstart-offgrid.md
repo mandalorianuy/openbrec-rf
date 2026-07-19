@@ -40,6 +40,39 @@ Contratos válidos, replay determinístico y eventos distinguibles para texto, e
 
 Los tres comandos terminan con código `0`. Registrar el SHA, los comandos y los resultados; asignar como máximo `simulated`.
 
+## Pipeline software end-to-end (lab-sim, opcional)
+
+Además de los gates, el repo incluye un pipeline de referencia que corre local con datos sintéticos: API → MQTT → worker → fusión determinística → PostgreSQL → API de lectura → PWA. Requiere `docker compose`; la primera ejecución descarga las imágenes pineadas por digest, después funciona offline.
+
+1. Provisionar secretos de laboratorio (efímeros, fuera del árbol de git):
+
+   ```bash
+   mkdir -p .lab-secrets
+   openssl rand -base64 32 > .lab-secrets/postgres_password
+   openssl rand -base64 32 > .lab-secrets/openbrec_master_key
+   export OPENBREC_POSTGRES_PASSWORD_FILE_HOST=$PWD/.lab-secrets/postgres_password
+   export OPENBREC_MASTER_KEY_FILE_HOST=$PWD/.lab-secrets/openbrec_master_key
+   ```
+
+2. Levantar la pila: `docker compose --profile lab-sim up --build --wait`. La red `lab-core` es interna; solo la PWA queda expuesta en `127.0.0.1:8080` y proxya `/api/` hacia la API.
+3. Publicar una observación sintética válida:
+
+   ```bash
+   curl -sS -X POST http://127.0.0.1:8080/api/v1/observations -H 'content-type: application/json' --data @fixtures/contracts/core/1.0.0/observation/valid/minimal.json
+   ```
+
+4. Leer lo persistido por el worker (validado contra los schemas core):
+
+   ```bash
+   curl -sS 'http://127.0.0.1:8080/api/v1/observations?limit=10'
+   curl -sS 'http://127.0.0.1:8080/api/v1/fusion-results?limit=10'
+   curl -sS 'http://127.0.0.1:8080/api/v1/fusion-results/<result_id>'
+   ```
+
+5. Abrir `http://127.0.0.1:8080`: el indicador **Fuente** muestra `API en vivo` cuando la PWA lee `/v1/fusion-results` del pipeline, o `fixtures verificados` cuando cae a los fixtures estáticos (comportamiento offline-first; sin la API todo sigue funcionando desde el cache).
+
+El motor de fusión (`openbrec/fusion.py`) aplica reglas determinísticas sin ML: una sola fuente produce un `indicator` de confianza baja, la corroboración exige ≥2 sensores y ≥2 tipos de sensor, y ante evidencia insuficiente (calidad < 0.5 o solo `no_event_detected`) el resultado es `abstained` con razones explícitas. Ningún resultado confirma presencia ni ausencia; el silencio nunca implica ausencia. Para apagar: `docker compose --profile lab-sim down --volumes`.
+
 ## Fallos comunes y recuperación
 
 Si `uv` intenta usar red, ejecutar primero `uv sync --frozen` con conectividad de provisioning y repetir los gates con `--offline`. Si falla un fixture, no editar el resultado: corregir el contrato o fixture y repetir desde cero.

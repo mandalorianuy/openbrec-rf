@@ -1,0 +1,24 @@
+{
+  "active_emulation": false,
+  "band": "uas_remote_id",
+  "capabilities_absent": [],
+  "content_interception": false,
+  "isolation_profile_ref": "urn:sha256:4444444444444444444444444444444444444444444444444444444444444444",
+  "limitations": [
+    "taken under announced rf-quieting window",
+    "metadata only",
+    "no persistent identifier stored"
+  ],
+  "observation_id": "33000000-0000-4000-8000-000000000002",
+  "observed_at": "2026-07-17T16:51:00.000000Z",
+  "payload_retained": false,
+  "pseudonym_scheme": "incident_rotating_hmac",
+  "record_type": "passive_rf_observation",
+  "rssi_dbm": -58,
+  "rssi_uncertainty_db": 2.5,
+  "schema_version": "1.0.0",
+  "sensor_id": "kismet-node-02",
+  "source": "drone_id",
+  "subject_ref": "hmac-sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+  "zone_id": "zone-b"
+}

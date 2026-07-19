@@ -1,0 +1,24 @@
+{
+  "active_emulation": false,
+  "band": "ism_2_4_ghz",
+  "capabilities_absent": [
+    "payload_inspection"
+  ],
+  "content_interception": false,
+  "limitations": [
+    "metadata only",
+    "mac randomization degrades probes",
+    "no presence or absence inference"
+  ],
+  "observation_id": "33000000-0000-4000-8000-000000000001",
+  "observed_at": "2026-07-17T16:50:00.000000Z",
+  "payload_retained": false,
+  "pseudonym_scheme": "incident_rotating_hmac",
+  "record_type": "passive_rf_observation",
+  "rssi_dbm": -72.5,
+  "rssi_uncertainty_db": 3,
+  "schema_version": "1.0.0",
+  "sensor_id": "kismet-node-01",
+  "source": "probe_request",
+  "subject_ref": "hmac-sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+}

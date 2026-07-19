@@ -50,6 +50,8 @@ Si falta autenticidad, marcar no verificado y preservar; no atribuirlo a una per
 
 La vida precede a la minimización cuando existe conflicto real: conservar posible distress en cuarentena gobernada. Limitar accesos, retención y exportación; no descartar silenciosamente contenido crítico.
 
+> ⚠️ El derivador determinista de claves del simulador (`_simulated_only_derived_bytes` en `openbrec/messaging.py`, dominio `openbrec-p0-simulated-only`) existe **solo** para los fixtures de laboratorio: cualquier clave así derivada es públicamente reproducible. Está prohibido usarlo fuera del contexto `lab-sim`; los despliegues reales provisionan, rotan y revocan claves por el ciclo de vida offline de claves.
+
 ## Estado de evidencia
 
 Semántica `specified` y fixtures/replay `simulated`; autenticidad, UX y entrega sobre dispositivos reales permanecen `unverified`.

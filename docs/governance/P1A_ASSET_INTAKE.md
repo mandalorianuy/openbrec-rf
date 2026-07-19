@@ -1,5 +1,11 @@
 # Preflight de evidencia física P1a-01
 
+> ⏸️ **P1a en pausa declarativa (2026-07-19).** El carril de evidencia física
+> P1a queda congelado hasta que exista hardware real disponible: no se aceptan
+> más cambios de gates P1a, submissions ni promociones de estado hasta entonces.
+> Este documento se conserva como referencia del proceso, no como invitación a
+> ejecutarlo. Ver [`ROADMAP.md`](../../ROADMAP.md).
+
 Este preflight convierte el bloqueo de P1a-01 en un checklist accionable por
 categoría. Es informativo: **no acepta P1a-01**, no autoriza compras, préstamos,
 inspecciones ni uso de hardware, y mantiene el avance físico en `0 / 8`.

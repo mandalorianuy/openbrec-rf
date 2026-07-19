@@ -1,0 +1,35 @@
+{
+  "clock_jump_policy": {
+    "behavior": "fail_visible",
+    "detection": [
+      "monotonic_violation"
+    ],
+    "operator_notice_required": true,
+    "silent_reorder_allowed": false
+  },
+  "created_at": "2026-07-17T13:10:00.000000Z",
+  "holdover": {
+    "behavior_after": "declare_time_unknown",
+    "max_holdover_seconds": 86400
+  },
+  "limitations": [
+    "manual time only",
+    "specified profile without hardware validation"
+  ],
+  "observation_uncertainty_policy": {
+    "mandatory": true,
+    "max_acceptable_uncertainty_seconds": 300,
+    "required_field": "clock_uncertainty_seconds"
+  },
+  "profile_id": "clock-cell-alpha",
+  "profile_type": "clock_discipline_profile",
+  "schema_version": "9.9.9",
+  "time_sources": [
+    {
+      "declared_uncertainty_seconds": 60,
+      "max_drift_seconds_per_day": 120,
+      "role": "primary",
+      "source": "manual"
+    }
+  ]
+}

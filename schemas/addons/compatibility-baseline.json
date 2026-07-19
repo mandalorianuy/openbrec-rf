@@ -2,12 +2,8 @@
   "baseline_version": "1.0.0",
   "status": "experimental",
   "accepted_at": null,
-  "contract_set_sha256": "fdab8dcc94eeb6c63e40a206d60f07fe931e7d0d3da125dab76054c0ea22067b",
+  "contract_set_sha256": "8142c9d6f579273f9b3050488777f57240f8b9d3422cd97d30243740c3d0b273",
   "addons": [
-    {
-      "$id": "https://openbrec.org/schemas/addons/bearer-capability/1.0.0",
-      "sha256": "bc0d393eeabf7bc817c6b3325cdc4fd3374055a578a64b7d5b10afa549afcc48"
-    },
     {
       "$id": "https://openbrec.org/schemas/addons/beacon-capability/1.0.0",
       "sha256": "1bc0e099cfd5bdddabb8744577c820e9e08d4b0c2acd1e6c1041f1d6ee4c67f2"
@@ -25,8 +21,24 @@
       "sha256": "380dcc751661486d25e64a1cdd9d04dbd54bbf79000c75ff1bac8544c7a97ad6"
     },
     {
+      "$id": "https://openbrec.org/schemas/addons/bearer-capability/1.0.0",
+      "sha256": "bc0d393eeabf7bc817c6b3325cdc4fd3374055a578a64b7d5b10afa549afcc48"
+    },
+    {
       "$id": "https://openbrec.org/schemas/addons/capture-authorization-event/1.0.0",
       "sha256": "dd3434ab6f43de8da976915ebfa99ec43214be781c25e665ac5e6100c8741f95"
+    },
+    {
+      "$id": "https://openbrec.org/schemas/addons/clock-discipline-profile/1.0.0",
+      "sha256": "6631ab5848bddc731a256812294ba398aadb0b02454221efd618916fa872317e"
+    },
+    {
+      "$id": "https://openbrec.org/schemas/addons/csi-link-observation/1.0.0",
+      "sha256": "3684bd07cb19d3fd5ce7470bb1f6205611ec29a4371e94a59cfa9f72c38c7bea"
+    },
+    {
+      "$id": "https://openbrec.org/schemas/addons/drone-deployment-event/1.0.0",
+      "sha256": "df9730edeaa0be650021a4cbd93add29b1dcb40084c008b87f5b1b363bf4b506"
     },
     {
       "$id": "https://openbrec.org/schemas/addons/energy-budget/1.0.0",
@@ -57,8 +69,36 @@
       "sha256": "7a3f524578716378307a5914750eacdc61e682ddbf2429ed2ccd10c26e1b7a1a"
     },
     {
+      "$id": "https://openbrec.org/schemas/addons/identity-key-lifecycle-profile/1.0.0",
+      "sha256": "ac70e7b76d9150927d50bb3f970a08c7d15fd6e4194e362d9fbf5f5d19656686"
+    },
+    {
+      "$id": "https://openbrec.org/schemas/addons/interop-emergency-standards-profile/1.0.0",
+      "sha256": "3971d09027649f7bae84fa672c7f8e02e2b0eaa9f9404bb7ee3373d760c321df"
+    },
+    {
+      "$id": "https://openbrec.org/schemas/addons/offline-mapping-profile/1.0.0",
+      "sha256": "edf617cc057f929d9d66036c066fe5843b4a2c343479f3e4d85ccf894fe0119c"
+    },
+    {
+      "$id": "https://openbrec.org/schemas/addons/passive-rf-observation/1.0.0",
+      "sha256": "8fb93b64bf71a4837aa9da7053a73c1a2eb9b17b151aed52a354036012595477"
+    },
+    {
       "$id": "https://openbrec.org/schemas/addons/review-task-event/1.0.0",
       "sha256": "a7fbbcbb9cb993e5ff86ee4a32b2b5bb886e560f4963939f806393ec757a25ed"
+    },
+    {
+      "$id": "https://openbrec.org/schemas/addons/rf-isolation-profile/1.0.0",
+      "sha256": "f993c659b3f12f697b6cfbad8178e509a8d41524c57f99795b2f7b8a7a5bb2dc"
+    },
+    {
+      "$id": "https://openbrec.org/schemas/addons/ruview-observation/1.0.0",
+      "sha256": "e879850b1143ec9c2b5485a356a74a03257ae40352b54706739b367ef268788b"
+    },
+    {
+      "$id": "https://openbrec.org/schemas/addons/sdr-receive-profile/1.0.0",
+      "sha256": "1e993d8282b8dc9f4fb75d04fd2136a2e812f9dede1de6214a0c10ddb4016d41"
     },
     {
       "$id": "https://openbrec.org/schemas/addons/terminal-capability/1.0.0",
@@ -75,6 +115,10 @@
     {
       "$id": "https://openbrec.org/schemas/addons/transport-profile/1.0.0",
       "sha256": "b358e08293a206f6e6da9b13b789f50030d56bd655c92e337af94775266ab4da"
+    },
+    {
+      "$id": "https://openbrec.org/schemas/addons/victim-record/1.0.0",
+      "sha256": "2fd0bea8413e9029916b4980b14df68a43162a7e1af76c314fc0e496ae537d5f"
     }
   ],
   "policy": "experimental_byte_baseline_until_acceptance"

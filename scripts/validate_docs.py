@@ -19,11 +19,16 @@ PUBLIC_ROOTS = (
     Path("docs/reference-builds"),
     Path("docs/evidence-packs"),
     Path("docs/field-profiles"),
+    Path("docs/research"),
 )
 PUBLIC_FILES = (
     Path("README.md"),
+    Path("CONTRIBUTING.md"),
     Path("docs/START_HERE.md"),
     Path("docs/DOCUMENTATION_ARCHITECTURE.md"),
+    Path("docs/architecture.md"),
+    Path("docs/faq.md"),
+    Path("docs/glossary.md"),
 )
 REQUIRED_FILES = {
     *PUBLIC_FILES,
