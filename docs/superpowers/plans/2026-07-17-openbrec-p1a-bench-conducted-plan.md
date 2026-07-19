@@ -184,6 +184,11 @@ rechazan `asset_id` o `serial_evidence_sha256` reutilizados entre categorías y
 reportan los grupos duplicados en el receipt; este control tampoco acredita la
 existencia o autenticidad del asset.
 
+El capability manifest vigente es v2.0.0 y requiere provenance de revisión de
+advisories por cada firmware pin. V1 queda archivado para migración pero falla el
+gate actual. Una disposición `block_firmware_use` puede preservar el inventario
+para review, pero mantiene `firmware_use_authorized: false` y no habilita P1a-02.
+
 El preflight `p1a-assets-intake` traduce ese bloqueo en un checklist por
 categoría, valida submissions parciales y CI conserva su receipt. Es una ayuda
 de ingreso no contable: aun con nueve submissions validadas individualmente,

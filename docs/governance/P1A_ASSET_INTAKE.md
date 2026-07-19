@@ -49,6 +49,21 @@ una unidad inspeccionada. Esos identificadores no pueden reutilizarse entre
 categorías: aplica tanto a `asset_id` como a `serial_evidence_sha256`; el intake
 invalida todas las submissions implicadas y el gate 9/9 rechaza el conjunto.
 
+## Firmware y advisories
+
+El contrato vigente es `manifest_version: 2.0.0` en
+`schemas/p1a/capability-manifest.schema.json`. Para todo asset programable exige
+un `advisory_review` cerrado con reviewer, fecha, fuentes recuperables, hashes de
+evidencia, disposición y razón. La disposición puede ser `no_known_blocker` o
+`block_firmware_use`; esta última permanece visible en summary/receipt y nunca
+autoriza flashing, testing ni P1a-02.
+
+La versión anterior queda preservada en
+`schemas/p1a/capability-manifest-1.0.0.schema.json` sólo para review y migración;
+no satisface el gate vigente. Este control no ejecuta una revisión real ni
+afirma que el firmware sea seguro: la persona responsable debe aportar la
+evidencia externa al seleccionar la unidad y el pin exactos.
+
 La solicitud fuente es
 `docs/governance/p1a-01-asset-authorization-request.json`; el contrato del
 manifest es `schemas/p1a/capability-manifest.schema.json`. P1a-02 permanece sin

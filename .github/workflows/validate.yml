@@ -555,6 +555,8 @@ jobs:
           assert receipt["summary"]["categories_awaiting_external_evidence"] == 9
           assert receipt["summary"]["categories_invalid"] == 0
           assert receipt["summary"]["categories_valid_for_gate"] == 0
+          assert receipt["summary"]["firmware_advisory_blockers"] == 0
+          assert receipt["summary"]["firmware_use_authorized"] is False
           assert receipt["summary"]["accepted_tasks"] == 0
           assert receipt["summary"]["next_task_started"] is False
           PY

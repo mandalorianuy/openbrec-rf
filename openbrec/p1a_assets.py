@@ -85,6 +85,43 @@ def _duplicate_manifest_groups(
     ]
 
 
+def _firmware_review(
+    manifest: dict[str, Any], label: str
+) -> tuple[list[str], str | None]:
+    errors: list[str] = []
+    if manifest.get("manifest_version") != "2.0.0":
+        errors.append(f"{label} manifest_version must be 2.0.0")
+    if manifest.get("category") not in FIRMWARE_CATEGORIES:
+        return errors, None
+
+    firmware_pin = manifest.get("firmware_pin")
+    if not isinstance(firmware_pin, dict):
+        errors.append(f"{label} requires an immutable firmware pin")
+        return errors, None
+    review = firmware_pin.get("advisory_review")
+    if not isinstance(review, dict):
+        errors.append(f"{label} requires advisory_review provenance")
+        return errors, None
+
+    for field in ("reviewer", "reason"):
+        if _placeholder(review.get(field)):
+            errors.append(f"{label} advisory_review.{field} cannot be a placeholder")
+    sources = review.get("sources")
+    if not isinstance(sources, list) or not sources:
+        errors.append(f"{label} advisory_review requires at least one source")
+    else:
+        for index, source in enumerate(sources):
+            if not isinstance(source, dict) or _placeholder(source.get("locator")):
+                errors.append(
+                    f"{label} advisory_review.sources[{index}] requires an exact locator"
+                )
+    disposition = review.get("disposition")
+    if disposition not in {"no_known_blocker", "block_firmware_use"}:
+        errors.append(f"{label} advisory_review disposition is invalid")
+        return errors, None
+    return errors, disposition
+
+
 def _validate_authorization_record(
     record: Any, index: int
 ) -> tuple[list[str], dict[str, Any] | None]:
@@ -159,6 +196,7 @@ def run_asset_intake(
 ) -> tuple[list[str], list[str], dict[str, Any], list[Path]]:
     """Validate partial evidence without accepting physical claims."""
     request, errors = _read_json(request_path, "asset authorization request")
+    warnings: list[str] = []
     schema, schema_errors = _read_json(schema_path, "capability manifest schema")
     errors.extend(schema_errors)
     validator: Draft202012Validator | None = None
@@ -183,13 +221,13 @@ def run_asset_intake(
             errors.append(f"asset authorization register schema is invalid: {exc}")
     inputs = [request_path, schema_path, authorization_schema_path]
     if request is None:
-        return errors, [], {"task": "P1a-01"}, inputs
+        return errors, warnings, {"task": "P1a-01"}, inputs
 
     rows = request.get("asset_requests")
     if not isinstance(rows, list):
         return (
             [*errors, "asset authorization request must contain asset_requests"],
-            [],
+            warnings,
             {"task": "P1a-01"},
             inputs,
         )
@@ -265,6 +303,7 @@ def run_asset_intake(
                 authorization_by_category[category] = record
 
     manifest_by_category: dict[str, dict[str, Any]] = {}
+    firmware_advisory_blocker_categories: list[str] = []
     manifests_dir = evidence_dir / "manifests"
     manifest_paths = (
         sorted(manifests_dir.glob("*.json")) if manifests_dir.is_dir() else []
@@ -298,11 +337,12 @@ def run_asset_intake(
             manifest_errors_for_category.append(
                 f"{path.name} inspection condition cannot remain unknown"
             )
-        if category in FIRMWARE_CATEGORIES and not isinstance(
-            manifest.get("firmware_pin"), dict
-        ):
-            manifest_errors_for_category.append(
-                f"{path.name} requires an immutable firmware pin"
+        firmware_errors, disposition = _firmware_review(manifest, path.name)
+        manifest_errors_for_category.extend(firmware_errors)
+        if disposition == "block_firmware_use":
+            firmware_advisory_blocker_categories.append(category)
+            warnings.append(
+                f"{category} firmware use remains blocked by advisory review"
             )
         if manifest.get("candidate_id") != CANDIDATE_BY_CATEGORY[category]:
             manifest_errors_for_category.append(
@@ -413,6 +453,13 @@ def run_asset_intake(
         "duplicate_serial_evidence_groups": len(
             duplicate_serial_evidence_groups
         ),
+        "firmware_advisory_blockers": len(
+            firmware_advisory_blocker_categories
+        ),
+        "firmware_advisory_blocker_categories": sorted(
+            firmware_advisory_blocker_categories
+        ),
+        "firmware_use_authorized": False,
         "accepted_tasks": 0,
         "total_tasks": 8,
         "percent": 0.0,
@@ -428,7 +475,7 @@ def run_asset_intake(
             "Validated submissions remain non-accepted until the 9/9 acceptance gate passes."
         ),
     }
-    return errors, [], summary, inputs
+    return errors, warnings, summary, inputs
 
 
 def run_asset_gate(
@@ -439,6 +486,7 @@ def run_asset_gate(
     authorization_schema_path: Path,
 ) -> tuple[list[str], list[str], dict[str, Any], list[Path]]:
     errors: list[str] = []
+    warnings: list[str] = []
     inputs: list[Path] = [schema_path, authorization_schema_path]
     schema, schema_errors = _read_json(schema_path, "capability manifest schema")
     errors.extend(schema_errors)
@@ -507,6 +555,7 @@ def run_asset_gate(
     manifests: list[dict[str, Any]] = []
     support_statuses: dict[str, int] = {}
     authorization_mismatches = 0
+    firmware_advisory_blocker_categories: list[str] = []
     for path in manifest_paths:
         manifest, manifest_errors = _read_json(path, "capability manifest")
         errors.extend(manifest_errors)
@@ -528,10 +577,13 @@ def run_asset_gate(
         inspection = manifest.get("physical_inspection")
         if isinstance(inspection, dict) and inspection.get("condition") == "unknown":
             errors.append(f"{path.name} inspection condition cannot remain unknown")
-        if category in FIRMWARE_CATEGORIES and not isinstance(
-            manifest.get("firmware_pin"), dict
-        ):
-            errors.append(f"{path.name} requires an immutable firmware pin")
+        firmware_errors, disposition = _firmware_review(manifest, path.name)
+        errors.extend(firmware_errors)
+        if disposition == "block_firmware_use":
+            firmware_advisory_blocker_categories.append(category)
+            warnings.append(
+                f"{category} firmware use remains blocked by advisory review"
+            )
 
         custody = manifest.get("custody")
         authorization = (
@@ -580,7 +632,14 @@ def run_asset_gate(
         "duplicate_serial_evidence_groups": len(
             duplicate_serial_evidence_groups
         ),
+        "firmware_advisory_blockers": len(
+            firmware_advisory_blocker_categories
+        ),
+        "firmware_advisory_blocker_categories": sorted(
+            firmware_advisory_blocker_categories
+        ),
+        "firmware_use_authorized": False,
         "physical_behavior_validated": False,
         "radiated_tx_authorized": False,
     }
-    return errors, [], summary, inputs
+    return errors, warnings, summary, inputs
