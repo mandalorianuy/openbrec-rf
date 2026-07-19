@@ -1,34 +1,16 @@
-# Energía de sitio sustituible
+# Alias de compatibilidad — energía de sitio
+
+La receta vigente es [`docs/reference-builds/energy-site.md`](../../reference-builds/energy-site.md). Este alias preserva `1.0.0-draft.1` y no duplica autoridad.
 
 ## Alcance
-
-Dominio energético local para cargas L0–L3. Solar, red, generador, vehículo y
-reemplazo manual son fuentes opcionales; ninguna implica operación perpetua.
-
+Ver la receta vigente.
 ## Plano funcional
-
-`fuente opcional → protección/control → almacenamiento → distribución protegida → cargas`
-
-Cada rama puede aislarse y el estado energético se publica sin convertir una
-estimación en garantía de autonomía.
-
+Ver la receta vigente.
 ## BOM por capacidades
-
-- almacenamiento protegido con Wh utilizables declarados;
-- distribución DC con fusible, polaridad y desconexión por rama;
-- fuente de reposición opcional con controlador compatible.
-
+Ver la receta vigente.
 ## Reutilización
-
-Una estación portátil, batería protegida o infraestructura existente puede
-ocupar esos roles si declara límites, conectores, restart y modo de aislamiento.
-
+Ver la receta vigente.
 ## Verificación
-
-Inspeccionar polaridad/protecciones, reproducir el load profile y ensayar
-brownout, reserva SOS, apagado seguro y recuperación manual.
-
+Ver la receta vigente.
 ## Límites
-
-No acredita 72 horas, sostenibilidad, vida útil ni seguridad del conjunto sin
-medición exacta. Daño, temperatura anormal o backfeed inseguro detienen el uso.
+Ver la receta vigente; este alias no acredita desempeño.

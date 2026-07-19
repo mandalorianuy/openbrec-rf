@@ -852,8 +852,7 @@ class P1AAssetGateTests(unittest.TestCase):
         guide = INTAKE_GUIDE.read_text(encoding="utf-8")
         plan = PLAN.read_text(encoding="utf-8")
         board = (REPO_ROOT / "DELIVERY_BOARD.md").read_text(encoding="utf-8")
-        readme = (REPO_ROOT / "README.md").read_text(encoding="utf-8")
-        for source in (guide, plan, board, readme):
+        for source in (guide, plan, board):
             self.assertIn("authorization_id", source)
             self.assertIn("receipt_sha256", source)
             self.assertIn("evidencia de", source)
@@ -879,8 +878,7 @@ class P1AAssetGateTests(unittest.TestCase):
         guide = INTAKE_GUIDE.read_text(encoding="utf-8")
         plan = PLAN.read_text(encoding="utf-8")
         board = (REPO_ROOT / "DELIVERY_BOARD.md").read_text(encoding="utf-8")
-        readme = (REPO_ROOT / "README.md").read_text(encoding="utf-8")
-        for source in (guide, plan, board, readme):
+        for source in (guide, plan, board):
             self.assertIn("authorization_inspection_order_errors", source)
             self.assertIn("advisory_source_order_errors", source)
 
@@ -906,8 +904,7 @@ class P1AAssetGateTests(unittest.TestCase):
         guide = INTAKE_GUIDE.read_text(encoding="utf-8")
         plan = PLAN.read_text(encoding="utf-8")
         board = (REPO_ROOT / "DELIVERY_BOARD.md").read_text(encoding="utf-8")
-        readme = (REPO_ROOT / "README.md").read_text(encoding="utf-8")
-        for source in (guide, plan, board, readme):
+        for source in (guide, plan, board):
             self.assertIn("duplicate_inspection_evidence_groups", source)
             self.assertIn("inspector", source)
             self.assertIn("placeholder", source)
@@ -944,8 +941,8 @@ class P1AAssetGateTests(unittest.TestCase):
             self.assertIn("blocked_external_evidence", source)
             self.assertIn("0 / 8", source)
             self.assertIn("P1a-02 no iniciada", source)
-        self.assertIn("openbrec.verify p1a-assets", readme)
-        self.assertIn("blocked_external_evidence", readme)
+        self.assertIn("docs/governance/P1A_ASSET_INTAKE.md", readme)
+        self.assertIn("carril opcional", readme)
 
     def test_asset_residuals_are_blocked_with_a_durable_resolution_path(self) -> None:
         value = json.loads(RESIDUALS.read_text(encoding="utf-8"))

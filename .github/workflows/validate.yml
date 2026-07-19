@@ -516,6 +516,8 @@ jobs:
         with:
           version: "0.11.1"
       - run: uv sync --frozen
+      - run: uv run --offline python scripts/validate_docs.py
+      - run: uv run --offline python -m unittest tests.test_documentation_program -v
       - run: uv run --offline python -m unittest tests.test_open_spec_exit -v
       - run: uv run --offline python -m openbrec.verify open-spec-exit --receipt evidence/open-spec/os-08/os-08-receipt.json
       - uses: actions/upload-artifact@v7

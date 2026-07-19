@@ -23,7 +23,7 @@ Construir OpenBREC RF de forma incremental, reproducible, segura y verificable.
 - Tests: pytest, hypothesis, Playwright, ESP-IDF Unity.
 
 ## Reglas de implementación
-- No inventar soporte de hardware. Cada driver declara `supported`, `experimental` o `unverified`.
+- No inventar soporte de hardware. Los contratos `1.0.0-draft.1` conservan sus tokens legacy por compatibilidad; la documentación pública los traduce al vocabulario `specified`, `simulated`, `bench-validated`, `field-validated`, `unsupported` o `unverified` sin elevar claims.
 - No guardar contenido de paquetes, credenciales, SSID históricos sensibles ni identificadores permanentes por defecto.
 - Separar observación, hipótesis y hecho consolidado.
 - Todo resultado incluye: timestamp, zona, precisión, confianza, fuentes, sensores ausentes y explicación resumida.

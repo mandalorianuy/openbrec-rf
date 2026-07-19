@@ -1,11 +1,12 @@
 # OpenBREC RF — Delivery Board
 
 - Autoridad de secuencia: este board
-- Plan activo aprobado: `docs/superpowers/plans/2026-07-18-openbrec-open-spec-plan.md`
-- Último plan completado: `docs/superpowers/plans/2026-07-17-openbrec-p0-simulated-addons-plan.md`
+- Plan documental ejecutado: `docs/superpowers/plans/2026-07-18-openbrec-documentation-program-plan.md`
+- Autoridad normativa vigente: `docs/superpowers/plans/2026-07-18-openbrec-open-spec-plan.md`
+- Último plan completado: programa documental DOC-01–DOC-05
 - Baseline cerrado: `docs/superpowers/plans/2026-07-17-openbrec-m0-executable-plan.md`
-- Estado real: M0/P0 completos; Open Spec `8 / 8` (`100%`); P1a física `0 / 8` (`0%`)
-- Regla de avance: Open Spec está cerrada; P1a-01 es opcional y permanece `blocked_external_evidence`
+- Estado real: M0/P0 completos; Open Spec `8 / 8` (`100%`); programa documental `5 / 5` (`100%`); P1a física `0 / 8` y opcional
+- Regla de avance: la Open Spec, manuales y builds son publicables sin hardware; cualquier carril físico posterior conserva autorización propia
 
 ## Decisiones de gobernanza cerradas
 
@@ -21,6 +22,19 @@
 - [x] OS-03 publica selección multi-bearer abierta, overlay común y riesgo regulatorio acotado el 2026-07-18.
 - [x] OS-04 publica contenido humano interoperable, lifecycle SOS y preservación de distress el 2026-07-18.
 - [x] OS-05 publica beacons abiertos, extensiones gobernadas, abstención y datasets reutilizables el 2026-07-18.
+- [x] DOC-01–DOC-05 separan norma, implementación, guías, builds, evidence packs y field profiles; establecen una entrada pública y validación documental offline el 2026-07-18.
+
+## Programa documental Open Spec
+
+Progreso: `5 / 5` (`100%`). La entrada pública es [`README.md`](README.md) y la ruta de selección es [`docs/START_HERE.md`](docs/START_HERE.md).
+
+- [x] `DOC-01`: frontera A–F y vocabulario público de seis estados.
+- [x] `DOC-02`: README exhaustivo y rutas por audiencia.
+- [x] `DOC-03`: nueve guías prácticas bajo un contrato común.
+- [x] `DOC-04`: kit personal/equipo, ResponseCell y deployment federado; recetas de capacidad y evidence packs separados.
+- [x] `DOC-05`: navegación, enlaces, ejemplos, comandos y terminología verificables con `scripts/validate_docs.py`.
+
+Los detalles históricos de delivery siguientes son evidencia del desarrollo, no la autoridad pública ni una condición para usar la Open Spec.
 
 ## Now — M0 Fundación
 
@@ -301,8 +315,9 @@ su implementación, validación, review y receipt; planificación o inicio no su
 - Supply chain: SBOM CycloneDX 1.7 con 124 componentes, 124/124 licencias
   revisadas, cero vulnerabilidades conocidas en los lockfiles y cero secretos
   en 701 archivos; los negativos sintéticos fueron detectados.
-- Soporte: matriz 3×3 por perfil/bearer; sólo `experimental` o `unverified`,
-  sin ganador global ni hardware `supported`.
+- Soporte histórico P0: la matriz usó los tokens legacy `experimental` y
+  `unverified`; la documentación vigente los normaliza a `simulated` y
+  `unverified`, sin ganador global ni claim físico.
 - Decisión física: nueve categorías con una unidad candidata cada una, todas
   `unverified`, `shortlisted_no_purchase` y sujetas a autorización separada.
 - Residuales: P0-R001–P0-R015 tienen estado, owner, gate/plan y stop condition;
