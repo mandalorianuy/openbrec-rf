@@ -54,6 +54,10 @@ de autorización aplicable (`evidence_sha256`, `loan_receipt_sha256` o
 `purchase_receipt_sha256` según el método), y esos receipts no pueden
 reutilizarse entre categorías. Los receipts reportan por separado IDs/evidencia
 duplicados, receipts de custodia duplicados y bindings incompatibles.
+Cada `physical_inspection.evidence_sha256` también debe ser único y el
+`inspector` debe identificar a un responsable, no ser un placeholder. Intake y
+gate exponen `duplicate_inspection_evidence_groups`; cero duplicados sólo prueba
+coherencia declarativa, no autenticidad ni identidad real del inspector.
 
 La cronología declarada también falla cerrada: `authorized_at` debe ser anterior
 o igual a `physical_inspection.inspected_at`, y cada fuente de advisory debe

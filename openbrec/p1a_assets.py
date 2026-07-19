@@ -430,6 +430,10 @@ def run_asset_intake(
             manifest_errors_for_category.append(
                 f"{path.name} inspection condition cannot remain unknown"
             )
+        if isinstance(inspection, dict) and _placeholder(inspection.get("inspector")):
+            manifest_errors_for_category.append(
+                f"{path.name} inspection inspector cannot be a placeholder"
+            )
         firmware_errors, disposition, source_order_errors = _firmware_review(
             manifest, path.name
         )
@@ -470,6 +474,19 @@ def run_asset_intake(
         ),
         "receipt_sha256",
     )
+    duplicate_inspection_evidence_groups = _duplicate_record_groups(
+        (
+            {
+                "category": manifest.get("category"),
+                "evidence_sha256": inspection.get("evidence_sha256"),
+            }
+            for manifest in manifest_by_category.values()
+            if isinstance(
+                (inspection := manifest.get("physical_inspection")), dict
+            )
+        ),
+        "evidence_sha256",
+    )
     for _, categories in duplicate_asset_id_groups:
         message = (
             "asset_id is reused across categories: " + ", ".join(categories)
@@ -488,6 +505,14 @@ def run_asset_intake(
     for _, categories in duplicate_custody_receipt_groups:
         message = (
             "custody receipt is reused across categories: "
+            + ", ".join(categories)
+        )
+        errors.append(message)
+        for category in categories:
+            category_errors[category].append(message)
+    for _, categories in duplicate_inspection_evidence_groups:
+        message = (
+            "inspection evidence is reused across categories: "
             + ", ".join(categories)
         )
         errors.append(message)
@@ -594,6 +619,9 @@ def run_asset_intake(
         ),
         "duplicate_custody_receipt_groups": len(
             duplicate_custody_receipt_groups
+        ),
+        "duplicate_inspection_evidence_groups": len(
+            duplicate_inspection_evidence_groups
         ),
         "custody_receipt_mismatches": custody_receipt_mismatches,
         "authorization_inspection_order_errors": (
@@ -746,6 +774,10 @@ def run_asset_gate(
         inspection = manifest.get("physical_inspection")
         if isinstance(inspection, dict) and inspection.get("condition") == "unknown":
             errors.append(f"{path.name} inspection condition cannot remain unknown")
+        if isinstance(inspection, dict) and _placeholder(inspection.get("inspector")):
+            errors.append(
+                f"{path.name} inspection inspector cannot be a placeholder"
+            )
         firmware_errors, disposition, source_order_errors = _firmware_review(
             manifest, path.name
         )
@@ -815,6 +847,21 @@ def run_asset_gate(
     )
     if duplicate_custody_receipt_groups:
         errors.append("custody receipt evidence must be unique per physical asset")
+    duplicate_inspection_evidence_groups = _duplicate_record_groups(
+        (
+            {
+                "category": manifest.get("category"),
+                "evidence_sha256": inspection.get("evidence_sha256"),
+            }
+            for manifest in manifests
+            if isinstance(
+                (inspection := manifest.get("physical_inspection")), dict
+            )
+        ),
+        "evidence_sha256",
+    )
+    if duplicate_inspection_evidence_groups:
+        errors.append("inspection evidence is reused across categories")
 
     accepted_assets = len(manifests) if not errors else 0
     summary = {
@@ -843,6 +890,9 @@ def run_asset_gate(
         ),
         "duplicate_custody_receipt_groups": len(
             duplicate_custody_receipt_groups
+        ),
+        "duplicate_inspection_evidence_groups": len(
+            duplicate_inspection_evidence_groups
         ),
         "firmware_advisory_blockers": len(
             firmware_advisory_blocker_categories

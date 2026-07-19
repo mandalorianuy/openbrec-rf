@@ -190,6 +190,11 @@ debe quedar ligado al receipt aplicable del registro. Intake y aceptación
 reportan cualquier duplicado o mismatch; este binding no prueba por sí mismo la
 autenticidad de la evidencia externa.
 
+La evidencia de inspección también es por unidad: un mismo
+`physical_inspection.evidence_sha256` no puede reutilizarse y `inspector` no
+puede ser un placeholder. `duplicate_inspection_evidence_groups` hace visible
+el incumplimiento; el control no autentica evidencia ni personas.
+
 La provenance temporal también debe ser coherente: ninguna inspección puede
 preceder su autorización y ninguna fuente puede figurar recuperada después de
 la fecha de review. `authorization_inspection_order_errors` y
