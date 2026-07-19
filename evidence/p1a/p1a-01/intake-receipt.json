@@ -13,14 +13,14 @@
   ],
   "dirty": false,
   "errors": [],
-  "finished_at": "2026-07-19T02:05:42.728225Z",
+  "finished_at": "2026-07-19T02:29:54.288669Z",
   "gate": "p1a-assets-intake",
   "gate_version": "0.1.0",
-  "git_sha": "574dde078bd88f232cea13b6b7925427e50ff8a9",
+  "git_sha": "f05d0786c01f7c349b753150747d5c64c6363c4a",
   "inputs": [
     {
       "path": "docs/governance/p1a-01-asset-authorization-request.json",
-      "sha256": "8ce3ecf2c8af6d843a09f7f4540b95fe32df64eb30c8a8aaef1928e2f913bcff"
+      "sha256": "be8d9e9e931765380162109d6f17d69999d084b782c6b020949f6a8de21379b8"
     },
     {
       "path": "schemas/p1a/capability-manifest.schema.json",
@@ -45,7 +45,7 @@
       "sha256": "12a1ed34e601b49a319846ef8d87c316708bb695853661ec3b3b95208701d278"
     }
   ],
-  "output_sha256": "79e226850402a0665aa9c77bbbd786de8760f10af1d9fb88b4eeb331db1d3b5f",
+  "output_sha256": "b681ccd560383aa1c5a62678273725ccb594b83f955fd5d56ef1f82681d6e765",
   "receipt_version": "1.0.0",
   "responsible_role": "release-reviewer",
   "result": "passed",
@@ -56,7 +56,7 @@
     "python": "3.12.13"
   },
   "scope": "p1a_external_asset_evidence_intake_status",
-  "started_at": "2026-07-19T02:05:42.330282Z",
+  "started_at": "2026-07-19T02:29:53.914798Z",
   "summary": {
     "acceptance_gate": "uv run --offline python -m openbrec.verify p1a-assets --evidence-dir evidence/p1a/p1a-01",
     "accepted_tasks": 0,
@@ -82,6 +82,8 @@
           "authorization before physical inspection",
           "serial evidence hash",
           "physical inspection evidence",
+          "unique physical inspection evidence",
+          "named non-placeholder inspector",
           "advisory sources retrieved before review"
         ],
         "status": "awaiting_external_evidence",
@@ -102,6 +104,8 @@
           "authorization before physical inspection",
           "serial evidence hash",
           "physical inspection evidence",
+          "unique physical inspection evidence",
+          "named non-placeholder inspector",
           "advisory sources retrieved before review"
         ],
         "status": "awaiting_external_evidence",
@@ -122,6 +126,8 @@
           "authorization before physical inspection",
           "serial evidence hash",
           "physical inspection evidence",
+          "unique physical inspection evidence",
+          "named non-placeholder inspector",
           "advisory sources retrieved before review"
         ],
         "status": "awaiting_external_evidence",
@@ -142,6 +148,8 @@
           "authorization before physical inspection",
           "serial evidence hash",
           "physical inspection evidence",
+          "unique physical inspection evidence",
+          "named non-placeholder inspector",
           "advisory sources retrieved before review"
         ],
         "status": "awaiting_external_evidence",
@@ -162,6 +170,8 @@
           "authorization before physical inspection",
           "serial evidence hash",
           "physical inspection evidence",
+          "unique physical inspection evidence",
+          "named non-placeholder inspector",
           "advisory sources retrieved before review"
         ],
         "status": "awaiting_external_evidence",
@@ -182,6 +192,8 @@
           "authorization before physical inspection",
           "serial evidence hash",
           "physical inspection evidence",
+          "unique physical inspection evidence",
+          "named non-placeholder inspector",
           "advisory sources retrieved before review"
         ],
         "status": "awaiting_external_evidence",
@@ -202,6 +214,8 @@
           "authorization before physical inspection",
           "serial evidence hash",
           "physical inspection evidence",
+          "unique physical inspection evidence",
+          "named non-placeholder inspector",
           "advisory sources retrieved before review"
         ],
         "status": "awaiting_external_evidence",
@@ -221,7 +235,9 @@
           "authorization and custody receipt binding",
           "authorization before physical inspection",
           "serial evidence hash",
-          "physical inspection evidence"
+          "physical inspection evidence",
+          "unique physical inspection evidence",
+          "named non-placeholder inspector"
         ],
         "status": "awaiting_external_evidence",
         "validation_errors": []
@@ -241,6 +257,8 @@
           "authorization before physical inspection",
           "serial evidence hash",
           "physical inspection evidence",
+          "unique physical inspection evidence",
+          "named non-placeholder inspector",
           "advisory sources retrieved before review"
         ],
         "status": "awaiting_external_evidence",
@@ -253,6 +271,7 @@
     "duplicate_authorization_evidence_groups": 0,
     "duplicate_authorization_id_groups": 0,
     "duplicate_custody_receipt_groups": 0,
+    "duplicate_inspection_evidence_groups": 0,
     "duplicate_serial_evidence_groups": 0,
     "evidence_dir": "evidence/p1a/p1a-01",
     "firmware_advisory_blocker_categories": [],
