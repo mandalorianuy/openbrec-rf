@@ -399,6 +399,9 @@ entre categorías para impedir que una misma identidad física cuente dos veces.
 También exigen `authorization_id` y evidencia de autorización únicos por asset,
 y ligan `custody.receipt_sha256` al receipt aplicable del registro; duplicados o
 mismatches invalidan las categorías implicadas sin sumar progreso.
+La evidencia de inspección es única por unidad y exige un `inspector` no
+placeholder; `duplicate_inspection_evidence_groups` deja el fallo visible sin
+afirmar autenticidad física ni identidad de la persona.
 Además, `authorization_inspection_order_errors` impide inspecciones anteriores a
 la autorización y `advisory_source_order_errors` impide fuentes recuperadas
 después del review. Es coherencia declarativa, no validación física.

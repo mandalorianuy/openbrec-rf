@@ -539,6 +539,46 @@ class P1AAssetGateTests(unittest.TestCase):
         self.assertEqual(intake_summary["authorization_inspection_order_errors"], 1)
         self.assertEqual(gate_summary["authorization_inspection_order_errors"], 1)
 
+    def test_intake_and_gate_reject_reused_inspection_evidence(self) -> None:
+        with tempfile.TemporaryDirectory(dir=REPO_ROOT) as temporary:
+            evidence_dir = Path(temporary)
+            self.write_complete_evidence(evidence_dir)
+            gateway_path = evidence_dir / "manifests" / "lorawan_gateway.json"
+            endpoint_path = evidence_dir / "manifests" / "lorawan_endpoint.json"
+            gateway = json.loads(gateway_path.read_text(encoding="utf-8"))
+            endpoint = json.loads(endpoint_path.read_text(encoding="utf-8"))
+            endpoint["physical_inspection"]["evidence_sha256"] = gateway[
+                "physical_inspection"
+            ]["evidence_sha256"]
+            endpoint_path.write_text(json.dumps(endpoint), encoding="utf-8")
+
+            intake, intake_summary, gate, gate_summary = self.run_intake_and_gate(
+                evidence_dir
+            )
+
+        self.assertNotEqual(intake.returncode, 0, intake.stdout)
+        self.assertNotEqual(gate.returncode, 0, gate.stdout)
+        self.assertIn("inspection evidence is reused across categories", intake.stderr)
+        self.assertIn("inspection evidence is reused across categories", gate.stderr)
+        self.assertEqual(intake_summary["duplicate_inspection_evidence_groups"], 1)
+        self.assertEqual(gate_summary["duplicate_inspection_evidence_groups"], 1)
+
+    def test_intake_and_gate_reject_placeholder_inspector(self) -> None:
+        with tempfile.TemporaryDirectory(dir=REPO_ROOT) as temporary:
+            evidence_dir = Path(temporary)
+            self.write_complete_evidence(evidence_dir)
+            manifest_path = evidence_dir / "manifests" / "lorawan_gateway.json"
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            manifest["physical_inspection"]["inspector"] = "TBD"
+            manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+
+            intake, _, gate, _ = self.run_intake_and_gate(evidence_dir)
+
+        self.assertNotEqual(intake.returncode, 0, intake.stdout)
+        self.assertNotEqual(gate.returncode, 0, gate.stdout)
+        self.assertIn("inspection inspector cannot be a placeholder", intake.stderr)
+        self.assertIn("inspection inspector cannot be a placeholder", gate.stderr)
+
     def test_intake_and_gate_reject_advisory_sources_after_review(self) -> None:
         with tempfile.TemporaryDirectory(dir=REPO_ROOT) as temporary:
             evidence_dir = Path(temporary)
@@ -861,6 +901,39 @@ class P1AAssetGateTests(unittest.TestCase):
         job = workflow.split("  p1a-assets-blocked:", 1)[1]
         self.assertIn('authorization_inspection_order_errors"] == 0', job)
         self.assertIn('advisory_source_order_errors"] == 0', job)
+
+    def test_inspection_evidence_integrity_is_documented_and_published(self) -> None:
+        guide = INTAKE_GUIDE.read_text(encoding="utf-8")
+        plan = PLAN.read_text(encoding="utf-8")
+        board = (REPO_ROOT / "DELIVERY_BOARD.md").read_text(encoding="utf-8")
+        readme = (REPO_ROOT / "README.md").read_text(encoding="utf-8")
+        for source in (guide, plan, board, readme):
+            self.assertIn("duplicate_inspection_evidence_groups", source)
+            self.assertIn("inspector", source)
+            self.assertIn("placeholder", source)
+
+        request = json.loads(AUTHORIZATION_REQUEST.read_text(encoding="utf-8"))
+        for row in request["asset_requests"]:
+            evidence = row["required_external_evidence"]
+            self.assertIn("unique physical inspection evidence", evidence)
+            self.assertIn("named non-placeholder inspector", evidence)
+
+        residuals = json.loads(RESIDUALS.read_text(encoding="utf-8"))
+        by_id = {row["id"]: row for row in residuals["residuals"]}
+        self.assertIn(
+            "inspection evidence reused",
+            by_id["P1A-R002"]["stop_condition"],
+        )
+        self.assertIn("named inspector", by_id["P1A-R002"]["next_action"])
+
+        workflow = (REPO_ROOT / ".github/workflows/validate.yml").read_text(
+            encoding="utf-8"
+        )
+        job = workflow.split("  p1a-assets-blocked:", 1)[1]
+        self.assertEqual(
+            job.count('duplicate_inspection_evidence_groups"] == 0'),
+            2,
+        )
 
     def test_plan_and_board_record_blocked_status_without_progress(self) -> None:
         plan = PLAN.read_text(encoding="utf-8")
