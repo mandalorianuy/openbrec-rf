@@ -396,6 +396,9 @@ El registro de autorizaciones se valida con el schema cerrado
 `schemas/p1a/asset-authorization-register.schema.json` tanto en intake como en
 el gate final 9/9. Ambos rechazan `asset_id` y evidencia serial reutilizados
 entre categorías para impedir que una misma identidad física cuente dos veces.
+El manifest v2 exige provenance y disposición de advisory review; v1 queda
+archivado, y cualquier `block_firmware_use` mantiene detenido el uso del pin y
+P1a-02 sin alterar el numerador.
 
 Frontera: P0 no autoriza compra, hardware, TX, captura real, ensayo de 72 horas,
 campo ni claims físicos. Solar, storage, generadores, conducted/radiated radio,

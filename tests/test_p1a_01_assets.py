@@ -10,6 +10,7 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 SCHEMA = REPO_ROOT / "schemas/p1a/capability-manifest.schema.json"
+LEGACY_SCHEMA = REPO_ROOT / "schemas/p1a/capability-manifest-1.0.0.schema.json"
 AUTHORIZATION_SCHEMA = (
     REPO_ROOT / "schemas/p1a/asset-authorization-register.schema.json"
 )
@@ -51,7 +52,7 @@ class P1AAssetGateTests(unittest.TestCase):
             asset_id = f"p1a-asset-unit-{index:02d}"
             authorization_id = f"P1A-AUTH-{index:02d}"
             manifest = {
-                "manifest_version": "1.0.0",
+                "manifest_version": "2.0.0",
                 "asset_id": asset_id,
                 "candidate_id": f"P1A-HW-{index:02d}",
                 "category": category,
@@ -83,7 +84,19 @@ class P1AAssetGateTests(unittest.TestCase):
                     "version": "1.0.0",
                     "commit": f"{index:040x}",
                     "artifact_sha256": f"{index + 30:064x}",
-                    "advisory_reviewed_at": "2026-07-17",
+                    "advisory_review": {
+                        "reviewed_at": "2026-07-17",
+                        "reviewer": "release-reviewer",
+                        "sources": [
+                            {
+                                "locator": f"https://example.invalid/firmware-{index}/advisories",
+                                "retrieved_at": "2026-07-17T12:30:00Z",
+                                "evidence_sha256": f"{index + 50:064x}",
+                            }
+                        ],
+                        "disposition": "no_known_blocker",
+                        "reason": "Synthetic fixture with no declared blocker.",
+                    },
                 }
             (manifests / f"{category}.json").write_text(
                 json.dumps(manifest), encoding="utf-8"
@@ -129,6 +142,23 @@ class P1AAssetGateTests(unittest.TestCase):
             result = self.run_verify(gate, "--help")
             self.assertEqual(result.returncode, 0, result.stderr)
             self.assertIn("--authorization-schema", result.stdout)
+
+    def test_capability_manifest_v2_preserves_v1_contract(self) -> None:
+        self.assertTrue(LEGACY_SCHEMA.is_file())
+        current = json.loads(SCHEMA.read_text(encoding="utf-8"))
+        legacy = json.loads(LEGACY_SCHEMA.read_text(encoding="utf-8"))
+        self.assertEqual(current["properties"]["manifest_version"]["const"], "2.0.0")
+        self.assertTrue(current["$id"].endswith("/2.0.0"))
+        self.assertEqual(legacy["properties"]["manifest_version"]["const"], "1.0.0")
+        self.assertTrue(legacy["$id"].endswith("/1.0.0"))
+        review = current["properties"]["firmware_pin"]["properties"][
+            "advisory_review"
+        ]
+        self.assertFalse(review["additionalProperties"])
+        self.assertEqual(
+            set(review["required"]),
+            {"reviewed_at", "reviewer", "sources", "disposition", "reason"},
+        )
 
     def test_repository_evidence_fails_closed_until_assets_exist(self) -> None:
         result = self.run_verify(
@@ -423,6 +453,69 @@ class P1AAssetGateTests(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0, result.stdout)
         self.assertIn("immutable firmware pin", result.stderr)
 
+    def test_date_only_firmware_review_fails_closed(self) -> None:
+        with tempfile.TemporaryDirectory(dir=REPO_ROOT) as temporary:
+            evidence_dir = Path(temporary)
+            self.write_complete_evidence(evidence_dir)
+            path = evidence_dir / "manifests" / "meshtastic_node.json"
+            value = json.loads(path.read_text(encoding="utf-8"))
+            value["manifest_version"] = "1.0.0"
+            firmware_pin = value["firmware_pin"]
+            firmware_pin.pop("advisory_review", None)
+            firmware_pin["advisory_reviewed_at"] = "2026-07-17"
+            path.write_text(json.dumps(value), encoding="utf-8")
+
+            result = self.run_verify(
+                "p1a-assets", "--evidence-dir", str(evidence_dir)
+            )
+
+        self.assertNotEqual(result.returncode, 0, result.stdout)
+        self.assertIn("manifest_version", result.stderr)
+        self.assertIn("advisory_review", result.stderr)
+
+    def test_blocked_advisory_disposition_remains_visible(self) -> None:
+        with tempfile.TemporaryDirectory(dir=REPO_ROOT) as temporary:
+            evidence_dir = Path(temporary)
+            self.write_complete_evidence(evidence_dir)
+            path = evidence_dir / "manifests" / "meshtastic_node.json"
+            value = json.loads(path.read_text(encoding="utf-8"))
+            firmware_pin = value["firmware_pin"]
+            firmware_pin.pop("advisory_reviewed_at", None)
+            firmware_pin["advisory_review"] = {
+                "reviewed_at": "2026-07-17",
+                "reviewer": "release-reviewer",
+                "sources": [
+                    {
+                        "locator": "https://example.invalid/security-advisories",
+                        "retrieved_at": "2026-07-17T12:30:00Z",
+                        "evidence_sha256": f"{91:064x}",
+                    }
+                ],
+                "disposition": "block_firmware_use",
+                "reason": "A governed blocker remains open.",
+            }
+            path.write_text(json.dumps(value), encoding="utf-8")
+            receipt_path = evidence_dir / "gate-receipt.json"
+
+            result = self.run_verify(
+                "p1a-assets",
+                "--evidence-dir",
+                str(evidence_dir),
+                "--receipt",
+                str(receipt_path.relative_to(REPO_ROOT)),
+            )
+            receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+
+        self.assertEqual(result.returncode, 0, result.stderr)
+        payload = json.loads(result.stdout)
+        self.assertEqual(payload["summary"]["firmware_advisory_blockers"], 1)
+        self.assertTrue(
+            any(
+                "firmware use remains blocked" in warning
+                for warning in receipt["warnings"]
+            )
+        )
+
     def test_authorization_request_governs_all_categories_without_fabricating_approval(self) -> None:
         self.assertTrue(AUTHORIZATION_REQUEST.is_file())
         value = json.loads(AUTHORIZATION_REQUEST.read_text(encoding="utf-8"))
@@ -484,6 +577,15 @@ class P1AAssetGateTests(unittest.TestCase):
         self.assertIn('categories_invalid"] == 0', job)
         self.assertIn('categories_valid_for_gate"] == 0', job)
         self.assertIn('accepted_tasks"] == 0', job)
+        self.assertIn('firmware_advisory_blockers"] == 0', job)
+        self.assertIn('firmware_use_authorized"] is False', job)
+
+    def test_firmware_contract_migration_is_documented(self) -> None:
+        guide = INTAKE_GUIDE.read_text(encoding="utf-8")
+        self.assertIn("capability-manifest-1.0.0.schema.json", guide)
+        self.assertIn("manifest_version: 2.0.0", guide)
+        self.assertIn("block_firmware_use", guide)
+        self.assertIn("no ejecuta una revisión real", guide)
 
     def test_plan_and_board_record_blocked_status_without_progress(self) -> None:
         plan = PLAN.read_text(encoding="utf-8")
@@ -505,6 +607,11 @@ class P1AAssetGateTests(unittest.TestCase):
             self.assertIn("P1a-01", by_id[identifier]["gate_or_task"])
             self.assertTrue(by_id[identifier]["resolution_artifact"])
             self.assertTrue(by_id[identifier]["next_action"])
+        firmware = by_id["P1A-R003"]
+        self.assertEqual(firmware["state"], "controlled")
+        self.assertIn("P1a-01", firmware["gate_or_task"])
+        self.assertTrue(firmware["resolution_artifact"])
+        self.assertTrue(firmware["next_action"])
 
 
 if __name__ == "__main__":
