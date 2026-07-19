@@ -12,6 +12,9 @@ OpenBREC publica contratos, perfiles de capacidad, alternativas, planos,
 fixtures y criterios de aceptación sin exigir que el proyecto posea hardware.
 P1a es un carril opcional de evidencia: sirve para elevar un claim específico a
 `lab_validated` o `field_validated`, nunca para impedir que la spec avance.
+La documentación pública presenta esos tokens de máquina como
+`bench-validated` y `field-validated`; el vocabulario completo y las capas A–F
+están en [`docs/DOCUMENTATION_ARCHITECTURE.md`](../../DOCUMENTATION_ARCHITECTURE.md).
 
 Los candidatos comerciales son referencias sustituibles. Ningún fabricante,
 SKU, firmware o bearer es obligatorio salvo que un perfil de implementación lo

@@ -1,33 +1,16 @@
-# Gateway autónomo de ResponseCell
+# Alias de compatibilidad — gateway ResponseCell
+
+La receta vigente es [`docs/reference-builds/response-cell-gateway.md`](../../reference-builds/response-cell-gateway.md). Este alias preserva `1.0.0-draft.1` y no duplica autoridad.
 
 ## Alcance
-
-Unidad local federable que funciona sin área, incidente, hub, cloud o backhaul.
-La federación coordina; nunca reemplaza la autoridad local.
-
+Ver la receta vigente.
 ## Plano funcional
-
-`logs/identidad/policy locales → resumen mínimo firmado → gateway outbound-only → peer/carry`
-
-El MQTT local, claves de celda y payload crudo no cruzan la frontera.
-
+Ver la receta vigente.
 ## BOM por capacidades
-
-- core local con log, trust y policy cache;
-- gateway outbound-only opcional;
-- custodia local durable y carry cifrado.
-
+Ver la receta vigente.
 ## Reutilización
-
-Un servidor de incidente, equipo portátil o gateway heterogéneo existente puede
-ocupar un rol si conserva namespaces por celda y peering explícito.
-
+Ver la receta vigente.
 ## Verificación
-
-Retirar cada superior, inyectar hub hostil, probar trust stale y reconciliar
-duplicados/conflictos sin overwrite, LWW ni pérdida silenciosa.
-
+Ver la receta vigente.
 ## Límites
-
-No acredita capacidad masiva ni autoridad central. Exportar claves, aceptar SOS,
-ordenar TX o sobrescribir el log desde un hub detiene el perfil.
+Ver la receta vigente; este alias no acredita desempeño.

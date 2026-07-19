@@ -1,5 +1,7 @@
 # Codex Master Prompt — construir OpenBREC RF
 
+> **Clasificación documental:** prompt histórico de bootstrap para la reference implementation. No es la Open Spec normativa ni la entrada pública. Ante contradicción prevalecen [`docs/open-spec`](docs/open-spec/README.md), los schemas/perfiles versionados y la [arquitectura documental](docs/DOCUMENTATION_ARCHITECTURE.md).
+
 Actúa como arquitecto principal, ingeniero de radio defensiva, desarrollador de sistemas distribuidos y especialista en software para operaciones de emergencia. Construye un repositorio production-minded pero claramente marcado como plataforma experimental de apoyo BREC/USAR.
 
 ## 1. Misión

@@ -1,33 +1,16 @@
-# Terminal de mensajería humana off-grid
+# Alias de compatibilidad — mensajería humana
+
+La receta vigente es [`docs/reference-builds/human-messaging.md`](../../reference-builds/human-messaging.md). Este alias preserva `1.0.0-draft.1` y no duplica autoridad.
 
 ## Alcance
-
-Texto breve, estado, SOS y ubicación con seguridad de aplicación por encima de
-un bearer sustituible. No ofrece voz ni garantiza rescate.
-
+Ver la receta vigente.
 ## Plano funcional
-
-`operador → UI offline → envelope firmado/cifrado → bearer adapter → receipts append-only`
-
-Recepción técnica, lectura y aceptación operativa permanecen separadas.
-
+Ver la receta vigente.
 ## BOM por capacidades
-
-- interfaz accesible offline;
-- bearer off-grid con adapter y kill switch;
-- identidad y claves por incidente con revocación local.
-
+Ver la receta vigente.
 ## Reutilización
-
-Se pueden reutilizar companions y radios Meshtastic, MeshCore, Reticulum/RNode,
-terminales seriales o carry bundles. Sus IDs y ACK no son identidad ni aceptación.
-
+Ver la receta vigente.
 ## Verificación
-
-Probar firma, TTL, replay, revocación, SOS no verificado, cancelación, restart,
-fallo del bearer y cero confirmaciones falsas.
-
+Ver la receta vigente.
 ## Límites
-
-No acredita cobertura, entrega ni rescate. Nonce reuse, clave compartida/default
-o aceptación sin actor autorizado detienen el perfil.
+Ver la receta vigente; este alias no acredita desempeño.

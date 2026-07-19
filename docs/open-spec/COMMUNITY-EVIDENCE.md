@@ -22,6 +22,7 @@ revisada, auditable y con receipt; no habilita retención indefinida.
 
 ## Promoción
 
-`supported`, `lab_validated` o `field_validated` requieren evidencia vigente de
-la versión y combinación exactas. Un nombre comercial, una prueba de otra
-revisión o evidencia comunitaria genérica no alcanza.
+`bench-validated` o `field-validated` requieren evidencia vigente de la versión
+y combinación exactas (`lab_validated` y `field_validated` en contratos de
+máquina). Un nombre comercial, una prueba de otra revisión o evidencia
+comunitaria genérica no alcanza.

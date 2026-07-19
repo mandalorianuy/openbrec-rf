@@ -14,11 +14,14 @@ declara limitaciones y conserva resultados negativos.
 
 ## Niveles de evidencia
 
-`unverified`, `specified`, `simulated`, `lab_validated` y `field_validated` son
+`unverified`, `specified`, `simulated`, `bench-validated` y `field-validated` son
 una escalera de claims, no un score de calidad. `specified` exige contratos y
 fixtures. `simulated` añade escenario y receipt determinístico. Los dos niveles
 físicos requieren configuración exacta, protocolo, resultados, custodia,
-entorno, jurisdicción y revisión; nunca se infieren desde CI.
+entorno, jurisdicción y revisión; nunca se infieren desde CI. Los identificadores
+de máquina correspondientes son `lab_validated` y `field_validated`.
+`unsupported` es una disposición fuera de la escalera: indica que la capacidad
+queda fuera del contrato, no que una prueba haya fallado.
 
 ## Ejecución
 
