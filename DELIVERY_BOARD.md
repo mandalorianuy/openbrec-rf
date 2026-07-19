@@ -396,6 +396,9 @@ El registro de autorizaciones se valida con el schema cerrado
 `schemas/p1a/asset-authorization-register.schema.json` tanto en intake como en
 el gate final 9/9. Ambos rechazan `asset_id` y evidencia serial reutilizados
 entre categorías para impedir que una misma identidad física cuente dos veces.
+También exigen `authorization_id` y evidencia de autorización únicos por asset,
+y ligan `custody.receipt_sha256` al receipt aplicable del registro; duplicados o
+mismatches invalidan las categorías implicadas sin sumar progreso.
 El manifest v2 exige provenance y disposición de advisory review; v1 queda
 archivado, y cualquier `block_firmware_use` mantiene detenido el uso del pin y
 P1a-02 sin alterar el numerador.

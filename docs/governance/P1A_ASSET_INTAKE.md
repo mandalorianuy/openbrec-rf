@@ -48,6 +48,12 @@ datos sintéticos ni declaraciones de una familia comercial como sustituto de
 una unidad inspeccionada. Esos identificadores no pueden reutilizarse entre
 categorías: aplica tanto a `asset_id` como a `serial_evidence_sha256`; el intake
 invalida todas las submissions implicadas y el gate 9/9 rechaza el conjunto.
+También se exige un `authorization_id` y evidencia de autorización distintos por
+asset. El `custody.receipt_sha256` del manifest debe coincidir con la evidencia
+de autorización aplicable (`evidence_sha256`, `loan_receipt_sha256` o
+`purchase_receipt_sha256` según el método), y esos receipts no pueden
+reutilizarse entre categorías. Los receipts reportan por separado IDs/evidencia
+duplicados, receipts de custodia duplicados y bindings incompatibles.
 
 ## Firmware y advisories
 

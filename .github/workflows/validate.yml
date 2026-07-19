@@ -555,6 +555,10 @@ jobs:
           assert receipt["summary"]["categories_awaiting_external_evidence"] == 9
           assert receipt["summary"]["categories_invalid"] == 0
           assert receipt["summary"]["categories_valid_for_gate"] == 0
+          assert receipt["summary"]["duplicate_authorization_id_groups"] == 0
+          assert receipt["summary"]["duplicate_authorization_evidence_groups"] == 0
+          assert receipt["summary"]["duplicate_custody_receipt_groups"] == 0
+          assert receipt["summary"]["custody_receipt_mismatches"] == 0
           assert receipt["summary"]["firmware_advisory_blockers"] == 0
           assert receipt["summary"]["firmware_use_authorized"] is False
           assert receipt["summary"]["accepted_tasks"] == 0
@@ -579,6 +583,10 @@ jobs:
           receipt = json.loads(Path(os.environ["RECEIPT"]).read_text(encoding="utf-8"))
           assert receipt["result"] == "failed"
           assert receipt["summary"]["accepted_assets"] == 0
+          assert receipt["summary"]["duplicate_authorization_id_groups"] == 0
+          assert receipt["summary"]["duplicate_authorization_evidence_groups"] == 0
+          assert receipt["summary"]["duplicate_custody_receipt_groups"] == 0
+          assert receipt["summary"]["custody_receipt_mismatches"] == 0
           assert any("authorization register" in error for error in receipt["errors"])
           assert any("nine exact manifests" in error for error in receipt["errors"])
           PY
