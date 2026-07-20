@@ -2,7 +2,7 @@
   "baseline_version": "1.0.0",
   "status": "experimental",
   "accepted_at": null,
-  "contract_set_sha256": "cbf476fecec5ba9007c509f331e534bff69bbcaa9a0af78c13b33eff4f1bae55",
+  "contract_set_sha256": "e951d6c3bc011668faaeb421a9fcbf5e795e364dbe3c526d1ea611b4ff6e36f1",
   "addons": [
     {
       "$id": "https://openbrec.org/schemas/addons/beacon-capability/1.0.0",
@@ -31,6 +31,10 @@
     {
       "$id": "https://openbrec.org/schemas/addons/clock-discipline-profile/1.0.0",
       "sha256": "6631ab5848bddc731a256812294ba398aadb0b02454221efd618916fa872317e"
+    },
+    {
+      "$id": "https://openbrec.org/schemas/addons/cot-bridge-profile/1.0.0",
+      "sha256": "50efa79c1470c989fbe3f3830ed16c02aed254f4ff025ac98e799b54e1dfa779"
     },
     {
       "$id": "https://openbrec.org/schemas/addons/csi-link-observation/1.0.0",

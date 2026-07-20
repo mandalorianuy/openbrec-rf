@@ -2,7 +2,7 @@
   "catalog_version": "1.0.0",
   "draft": "https://json-schema.org/draft/2020-12/schema",
   "status": "experimental",
-  "contract_set_sha256": "cbf476fecec5ba9007c509f331e534bff69bbcaa9a0af78c13b33eff4f1bae55",
+  "contract_set_sha256": "e951d6c3bc011668faaeb421a9fcbf5e795e364dbe3c526d1ea611b4ff6e36f1",
   "entries": [
     {
       "path": "schemas/addons/1.0.0/beacon-capability.schema.json",
@@ -81,6 +81,17 @@
       "status": "experimental",
       "dependencies": [],
       "maintainer": "core-replay-maintainer",
+      "accepted_at": null
+    },
+    {
+      "path": "schemas/addons/1.0.0/cot-bridge-profile.schema.json",
+      "$id": "https://openbrec.org/schemas/addons/cot-bridge-profile/1.0.0",
+      "declared_version": "1.0.0",
+      "sha256": "50efa79c1470c989fbe3f3830ed16c02aed254f4ff025ac98e799b54e1dfa779",
+      "category": "policy",
+      "status": "experimental",
+      "dependencies": [],
+      "maintainer": "radio-transport-maintainer",
       "accepted_at": null
     },
     {

@@ -1,0 +1,94 @@
+{
+  "campaign_version": "1.0.0",
+  "claim_scope": "deterministic_simulation_only",
+  "scenario_id": "interop-cot-export-v1",
+  "provenance": {
+    "source_type": "synthetic_generated",
+    "contains_real_sensor_data": false,
+    "contains_human_data": false
+  },
+  "incident_id": "11111111-1111-4111-8111-111111111111",
+  "uid_epoch": "epoch-1",
+  "profile": {
+    "schema_version": "1.0.0",
+    "profile_type": "cot_bridge_profile",
+    "profile_id": "cot-bridge-lab-sim",
+    "created_at": "2026-07-19T20:00:00.000000Z",
+    "direction": "export_only",
+    "gateway_implemented": false,
+    "reference_mapper_profile": "lab-sim",
+    "transport": {"mode": "udp_multicast_sa", "group": "239.2.3.1", "port": 6969},
+    "server_required": false,
+    "uid_scheme": "incident_scoped_deterministic",
+    "type_prefix": "a-f-G",
+    "usericon": "openbrec/marker",
+    "stale_ttl_seconds": 300,
+    "remarks_format": "structured_json",
+    "field_map": [
+      {"source_contract": "observation", "source_field": "observation_id", "cot_target": "uid", "transform": "incident_rotating_hash"},
+      {"source_contract": "observation", "source_field": "window_end", "cot_target": "time", "transform": "iso8601_utc"},
+      {"source_contract": "fusion-result", "source_field": "result_id", "cot_target": "uid", "transform": "incident_rotating_hash"},
+      {"source_contract": "fusion-result", "source_field": "window_end", "cot_target": "time", "transform": "iso8601_utc"},
+      {"source_contract": "victim-record", "source_field": "victim_record_id", "cot_target": "uid", "transform": "incident_rotating_hash"},
+      {"source_contract": "victim-record", "source_field": "updated_at", "cot_target": "time", "transform": "iso8601_utc"},
+      {"source_contract": "human-message", "source_field": "message_id", "cot_target": "uid", "transform": "incident_rotating_hash"},
+      {"source_contract": "human-message", "source_field": "created_at", "cot_target": "time", "transform": "iso8601_utc"}
+    ],
+    "person_identification_allowed": false,
+    "raw_payload_allowed": false,
+    "provenance_preserved": true,
+    "external_ack_means_person_located": false,
+    "silence_means_absence": false,
+    "evidence_level_elevation_by_export": false,
+    "cot_type_vocabulary": "open_with_default_icons",
+    "declared_evidence": "specified",
+    "limitations": [
+      "mapping verified in lab-sim only, no gateway and no sockets",
+      "no official usar cot taxonomy, neutral per-class types",
+      "export never elevates evidence level"
+    ]
+  },
+  "documents": [
+    {
+      "case_id": "fusion-abstained",
+      "contract": "fusion-result",
+      "path": "fixtures/contracts/core/1.0.0/fusion-result/valid/minimal.json"
+    },
+    {
+      "case_id": "human-message-sos",
+      "contract": "human-message",
+      "path": "fixtures/contracts/addons/1.0.0/human-message/valid/minimal.json"
+    },
+    {
+      "case_id": "observation-located",
+      "contract": "observation",
+      "path": "fixtures/contracts/core/1.0.0/observation/valid/complete.json",
+      "declared_location": {
+        "lat": -34.6037,
+        "lon": -58.3816,
+        "hae": 25.0,
+        "ce": 15.0,
+        "le": 20.0,
+        "declared_by": "operator",
+        "note": "sector anchor declared by operator, not sensor derived"
+      }
+    },
+    {
+      "case_id": "observation-zoned",
+      "contract": "observation",
+      "path": "fixtures/contracts/core/1.0.0/observation/valid/minimal.json"
+    },
+    {
+      "case_id": "victim-record-complete",
+      "contract": "victim-record",
+      "path": "fixtures/contracts/addons/1.0.0/victim-record/valid/complete.json"
+    }
+  ],
+  "limitations": [
+    "deterministic simulation only",
+    "verifies the xml mapping, not interoperability with real atak",
+    "no sockets, no network emission",
+    "no presence or absence conclusion"
+  ],
+  "expected_result_sha256": "84fa10c9ab089253efe6f41637fd4933d12caec1acc8dc5b320f732c3c03eb25"
+}

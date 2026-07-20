@@ -1,0 +1,140 @@
+{
+  "command": [
+    "python",
+    "-m",
+    "openbrec.verify",
+    "interop-cot",
+    "--receipt",
+    "evidence/interop/interop-cot-receipt.json"
+  ],
+  "dirty": true,
+  "errors": [],
+  "finished_at": "2026-07-20T19:23:44.465515Z",
+  "gate": "interop-cot",
+  "gate_version": "0.1.0",
+  "git_sha": "5772344c36d553d8780cf1d159447b0e32ba31f4",
+  "inputs": [
+    {
+      "path": "fixtures/replay/interop/cot-export-campaign.json",
+      "sha256": "013c02155e33823638403a916a9a8809e196860f762c67c3c5f7112b387ace8e"
+    },
+    {
+      "path": "openbrec/cot_export.py",
+      "sha256": "6d384fa93e218a7bef94c665edac6a2c691d8d3ebfe1bf87317275554131095e"
+    },
+    {
+      "path": "schemas/addons/1.0.0/cot-bridge-profile.schema.json",
+      "sha256": "50efa79c1470c989fbe3f3830ed16c02aed254f4ff025ac98e799b54e1dfa779"
+    },
+    {
+      "path": "schemas/core/1.0.0/observation.schema.json",
+      "sha256": "2038ce3c3f1953f3c6afe84b33a8df19caf52c488642889602726630f41fe234"
+    },
+    {
+      "path": "schemas/core/1.0.0/fusion-result.schema.json",
+      "sha256": "4ec3dfd541d824e78e22703dd4140eac1eefc4329d74a264c8b3ae9196f06569"
+    },
+    {
+      "path": "schemas/addons/1.0.0/victim-record.schema.json",
+      "sha256": "2fd0bea8413e9029916b4980b14df68a43162a7e1af76c314fc0e496ae537d5f"
+    },
+    {
+      "path": "schemas/addons/1.0.0/human-message.schema.json",
+      "sha256": "7a3f524578716378307a5914750eacdc61e682ddbf2429ed2ccd10c26e1b7a1a"
+    }
+  ],
+  "lockfiles": [
+    {
+      "path": "uv.lock",
+      "sha256": "2d1b79df4cd5878ec7f4674a133c54ca7b16dfa559560ba3a93911e620f435d5"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "sha256": "ed7659f050b279f37e5cf84fb065fc528e15b3204d374681f3a70ad081d1c25a"
+    },
+    {
+      "path": "apps/web/pnpm-lock.yaml",
+      "sha256": "f25dc17073860d2d18f806673d45b1ea7e461a424be10c4bea5126aeff155e62"
+    }
+  ],
+  "output_sha256": "798b2287d417f53b652d5feef8c1046fe87489d0d65295ab10034f44dc2bd235",
+  "receipt_version": "1.0.0",
+  "responsible_role": "contract-maintainer",
+  "result": "passed",
+  "runtime": {
+    "docker": "Docker version 29.5.3, build d1c06ef",
+    "node": "v26.5.0",
+    "pnpm": null,
+    "python": "3.12.13"
+  },
+  "scope": "deterministic_cot_xml_mapping_lab_sim_only",
+  "started_at": "2026-07-20T19:23:43.579391Z",
+  "summary": {
+    "abstention_preserved": true,
+    "campaign": "fixtures/replay/interop/cot-export-campaign.json",
+    "claim_scope": "deterministic_simulation_only",
+    "contracts": [
+      "fusion-result",
+      "human-message",
+      "observation",
+      "victim-record"
+    ],
+    "determinism_distinct_hashes": 1,
+    "documents": 5,
+    "events_with_point": 1,
+    "events_without_invented_coordinates": 4,
+    "forbidden_claim_tokens": 0,
+    "projection": [
+      {
+        "abstention_preserved": true,
+        "case_id": "fusion-abstained",
+        "contract": "fusion-result",
+        "has_point": false,
+        "type": "a-f-G-F",
+        "uid": "openbrec-11111111-1111-4111-8111-111111111111-1f1cc8c120f0aa86",
+        "xml_sha256": "57532bc5f7187a0eef3dca2dce253a3a3c66ecc610125a86c4526a49ac004f74"
+      },
+      {
+        "abstention_preserved": true,
+        "case_id": "human-message-sos",
+        "contract": "human-message",
+        "has_point": false,
+        "type": "a-f-G-M",
+        "uid": "openbrec-11111111-1111-4111-8111-111111111111-2826245abeaf1535",
+        "xml_sha256": "81c822d8d844d3803ead1a6dc5d471cd574c84c02fc8c9db76f2a56cd776e135"
+      },
+      {
+        "abstention_preserved": true,
+        "case_id": "observation-located",
+        "contract": "observation",
+        "has_point": true,
+        "type": "a-f-G-O",
+        "uid": "openbrec-11111111-1111-4111-8111-111111111111-3f9b38923deeae39",
+        "xml_sha256": "b7aa87d66c085c501c17880d36443852efb3441f432098ad663b61299e7c4c59"
+      },
+      {
+        "abstention_preserved": true,
+        "case_id": "observation-zoned",
+        "contract": "observation",
+        "has_point": false,
+        "type": "a-f-G-O",
+        "uid": "openbrec-11111111-1111-4111-8111-111111111111-6ed6e4db7d145208",
+        "xml_sha256": "948456317e671d0da015bd9454c2b2b43b6e24d6734705a8960a6605299dc507"
+      },
+      {
+        "abstention_preserved": true,
+        "case_id": "victim-record-complete",
+        "contract": "victim-record",
+        "has_point": false,
+        "type": "a-f-G-V",
+        "uid": "openbrec-11111111-1111-4111-8111-111111111111-2d2227751ac1fa9f",
+        "xml_sha256": "d564006d4195727c03b869d4b478a3227a7d51a789a9c49255c38c13b9a3f1a5"
+      }
+    ],
+    "raw_payload_leaks": 0,
+    "result_sha256": "84fa10c9ab089253efe6f41637fd4933d12caec1acc8dc5b320f732c3c03eb25",
+    "scope_note": "verifies the deterministic XML mapping only; interoperability with real ATAK/TAK stays unverified",
+    "victim_status_in_type": 0
+  },
+  "warnings": []
+}

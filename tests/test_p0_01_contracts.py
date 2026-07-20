@@ -21,6 +21,7 @@ EXPECTED_ADDON_SCHEMAS = {
     "beacon-placement",
     "capture-authorization-event",
     "clock-discipline-profile",
+    "cot-bridge-profile",
     "csi-link-observation",
     "drone-deployment-event",
     "emergency-autojoin-profile",
@@ -93,19 +94,19 @@ class P001AddonContractTests(unittest.TestCase):
     def test_addon_contract_gate_validates_metaschema_and_catalog(self) -> None:
         output = self.assert_passed(self.run_verify("addon-contracts"))
         self.assertEqual(output["scope"], "addon_metaschema_and_catalog")
-        self.assertEqual(output["summary"]["addon_schemas"], 31)
+        self.assertEqual(output["summary"]["addon_schemas"], 32)
         self.assertEqual(output["summary"]["support_status"], "experimental")
 
     def test_addon_fixture_gate_reconciles_positive_and_negative_cases(self) -> None:
         output = self.assert_passed(self.run_verify("addon-fixtures"))
         self.assertEqual(output["scope"], "addon_schema_fixture_matrix")
-        self.assertEqual(output["summary"]["schemas"], 31)
-        self.assertEqual(output["summary"]["valid_fixtures"], 62)
-        self.assertEqual(output["summary"]["invalid_fixtures"], 217)
+        self.assertEqual(output["summary"]["schemas"], 32)
+        self.assertEqual(output["summary"]["valid_fixtures"], 64)
+        self.assertEqual(output["summary"]["invalid_fixtures"], 224)
 
     def test_generated_consumers_include_all_addon_contracts(self) -> None:
         output = self.assert_passed(self.run_verify("contracts-gen", "--check"))
-        self.assertEqual(output["summary"]["addon_schemas"], 31)
+        self.assertEqual(output["summary"]["addon_schemas"], 32)
         python_models = (
             REPO_ROOT / "packages/contracts/generated/addons/python/models.py"
         )
@@ -121,7 +122,7 @@ class P001AddonContractTests(unittest.TestCase):
 
     def test_addon_compatibility_baseline_is_frozen(self) -> None:
         output = self.assert_passed(self.run_verify("schema-compat"))
-        self.assertEqual(output["summary"]["addon_schemas"], 31)
+        self.assertEqual(output["summary"]["addon_schemas"], 32)
         self.assertEqual(output["summary"]["addon_status"], "experimental")
 
     def test_contracts_enforce_life_safety_and_transport_boundaries(self) -> None:
@@ -299,6 +300,31 @@ class P001AddonContractTests(unittest.TestCase):
         profile = autojoin()
         profile["silence_means_absence"] = True
         self.assertTrue(errors("emergency-autojoin-profile", profile))
+
+        def cot_bridge() -> dict[str, object]:
+            return copy.deepcopy(schema("cot-bridge-profile")["examples"][0])
+
+        cot = cot_bridge()
+        cot["direction"] = "bidirectional"
+        self.assertTrue(errors("cot-bridge-profile", cot))
+        cot = cot_bridge()
+        cot["gateway_implemented"] = True
+        self.assertTrue(errors("cot-bridge-profile", cot))
+        cot = cot_bridge()
+        cot["person_identification_allowed"] = True
+        self.assertTrue(errors("cot-bridge-profile", cot))
+        cot = cot_bridge()
+        cot["raw_payload_allowed"] = True
+        self.assertTrue(errors("cot-bridge-profile", cot))
+        cot = cot_bridge()
+        cot["external_ack_means_person_located"] = True
+        self.assertTrue(errors("cot-bridge-profile", cot))
+        cot = cot_bridge()
+        cot["evidence_level_elevation_by_export"] = True
+        self.assertTrue(errors("cot-bridge-profile", cot))
+        cot = cot_bridge()
+        cot["silence_means_absence"] = True
+        self.assertTrue(errors("cot-bridge-profile", cot))
 
         for item, _path in addon_schemas:
             validator = Draft202012Validator(

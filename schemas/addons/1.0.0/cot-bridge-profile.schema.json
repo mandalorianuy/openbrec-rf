@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openbrec.org/schemas/addons/cot-bridge-profile/1.0.0",
+  "title": "CotBridgeProfile",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "profile_type", "profile_id", "created_at", "direction", "gateway_implemented", "reference_mapper_profile", "transport", "server_required", "uid_scheme", "type_prefix", "usericon", "stale_ttl_seconds", "remarks_format", "field_map", "person_identification_allowed", "raw_payload_allowed", "provenance_preserved", "external_ack_means_person_located", "silence_means_absence", "evidence_level_elevation_by_export", "cot_type_vocabulary", "declared_evidence", "limitations"],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "profile_type": {"enum": ["cot_bridge_profile"]},
+    "profile_id": {"type": "string", "pattern": "^cot-bridge-[a-z0-9-]{3,48}$"},
+    "created_at": {"type": "string", "format": "date-time", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{6}Z$"},
+    "direction": {"const": "export_only"},
+    "gateway_implemented": {"const": false},
+    "reference_mapper_profile": {"const": "lab-sim"},
+    "transport": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mode"],
+      "properties": {
+        "mode": {"enum": ["udp_multicast_sa", "tcp", "tls"]},
+        "group": {"type": "string", "pattern": "^239\\.2\\.3\\.1$"},
+        "port": {"type": "integer", "minimum": 1, "maximum": 65535},
+        "tcp_port": {"const": 8087},
+        "tls_port": {"const": 8089}
+      }
+    },
+    "server_required": {"const": false},
+    "uid_scheme": {"const": "incident_scoped_deterministic"},
+    "type_prefix": {"type": "string", "pattern": "^a-[a-z](-[A-Za-z0-9]+)*$"},
+    "usericon": {"type": "string", "minLength": 1, "maxLength": 256},
+    "stale_ttl_seconds": {"type": "integer", "minimum": 1},
+    "remarks_format": {"const": "structured_json"},
+    "field_map": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["source_contract", "source_field", "cot_target", "transform"],
+        "properties": {
+          "source_contract": {"enum": ["observation", "fusion-result", "victim-record", "human-message"]},
+          "source_field": {"type": "string", "minLength": 1},
+          "cot_target": {"enum": ["uid", "type", "time", "start", "stale", "point.lat", "point.lon", "point.hae", "point.ce", "point.le", "detail.usericon", "detail.remarks"]},
+          "transform": {"enum": ["copy", "iso8601_utc", "incident_rotating_hash"]}
+        }
+      }
+    },
+    "person_identification_allowed": {"const": false},
+    "raw_payload_allowed": {"const": false},
+    "provenance_preserved": {"const": true},
+    "external_ack_means_person_located": {"const": false},
+    "silence_means_absence": {"const": false},
+    "evidence_level_elevation_by_export": {"const": false},
+    "cot_type_vocabulary": {"const": "open_with_default_icons"},
+    "declared_evidence": {"const": "specified"},
+    "limitations": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1, "uniqueItems": true}
+  },
+  "examples": [
+    {"schema_version": "1.0.0", "profile_type": "cot_bridge_profile", "profile_id": "cot-bridge-lan-cell", "created_at": "2026-07-17T20:00:00.000000Z", "direction": "export_only", "gateway_implemented": false, "reference_mapper_profile": "lab-sim", "transport": {"mode": "udp_multicast_sa", "group": "239.2.3.1", "port": 6969}, "server_required": false, "uid_scheme": "incident_scoped_deterministic", "type_prefix": "a-f-G", "usericon": "openbrec/marker", "stale_ttl_seconds": 300, "remarks_format": "structured_json", "field_map": [{"source_contract": "observation", "source_field": "observation_id", "cot_target": "uid", "transform": "incident_rotating_hash"}, {"source_contract": "observation", "source_field": "window_end", "cot_target": "time", "transform": "iso8601_utc"}], "person_identification_allowed": false, "raw_payload_allowed": false, "provenance_preserved": true, "external_ack_means_person_located": false, "silence_means_absence": false, "evidence_level_elevation_by_export": false, "cot_type_vocabulary": "open_with_default_icons", "declared_evidence": "specified", "limitations": ["mapping spec only, no gateway implemented", "multicast needs no server", "no official usar cot taxonomy"]},
+    {"schema_version": "1.0.0", "profile_type": "cot_bridge_profile", "profile_id": "cot-bridge-tak-server", "created_at": "2026-07-17T20:10:00.000000Z", "direction": "export_only", "gateway_implemented": false, "reference_mapper_profile": "lab-sim", "transport": {"mode": "tls", "group": "239.2.3.1", "port": 6969, "tcp_port": 8087, "tls_port": 8089}, "server_required": false, "uid_scheme": "incident_scoped_deterministic", "type_prefix": "a-f-G", "usericon": "openbrec/victim-record", "stale_ttl_seconds": 600, "remarks_format": "structured_json", "field_map": [{"source_contract": "victim-record", "source_field": "victim_record_id", "cot_target": "uid", "transform": "incident_rotating_hash"}, {"source_contract": "victim-record", "source_field": "updated_at", "cot_target": "time", "transform": "iso8601_utc"}, {"source_contract": "victim-record", "source_field": "status", "cot_target": "detail.remarks", "transform": "copy"}, {"source_contract": "fusion-result", "source_field": "precision_m", "cot_target": "point.ce", "transform": "copy"}, {"source_contract": "human-message", "source_field": "message_id", "cot_target": "uid", "transform": "incident_rotating_hash"}], "person_identification_allowed": false, "raw_payload_allowed": false, "provenance_preserved": true, "external_ack_means_person_located": false, "silence_means_absence": false, "evidence_level_elevation_by_export": false, "cot_type_vocabulary": "open_with_default_icons", "declared_evidence": "specified", "limitations": ["mapping spec only, no gateway implemented", "a tak ack never confirms a located person", "export never elevates evidence level", "provenance confidence and limitations ride in structured remarks"]}
+  ]
+}

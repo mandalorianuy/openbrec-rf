@@ -28,7 +28,8 @@ Estado actual en una línea: Open Spec `1.0.0-draft.1` completa (8 / 8), todo `s
 3. Dimensionar la energía: [Energía](guides/energy.md).
 4. Componer una ruta: [reference builds](reference-builds/README.md).
 5. Sensing RF experimental (addons reintegrados por ADR-004): [CSI](guides/csi-sensing.md), [RF pasiva](guides/passive-rf.md), [SDR receive-only](guides/sdr-beacons.md), [drones](guides/drone-geometry.md), [RF quieting](guides/rf-quieting.md) y [offline finding](guides/offline-finding.md) — todo `specified`/`simulated`, salvo excepciones declaradas en cada guía; los estados exactos por tecnología están en la [investigación SOTA](research/rf-sensing-state-of-the-art.md).
-6. Si ejecutás una prueba física: [evidence packs](evidence-packs/README.md) — todo adapter nuevo nace `unverified` y sólo un pack exacto lo eleva.
+6. Conectar con lo que los equipos ya usan: [Integración con el ecosistema SAR](guides/ecosystem-integration.md) (CoT/TAK, Meshtastic MQTT, CAP/EDXL, CalTopo, APRS).
+7. Si ejecutás una prueba física: [evidence packs](evidence-packs/README.md) — todo adapter nuevo nace `unverified` y sólo un pack exacto lo eleva.
 
 ## Evaluador / investigador
 

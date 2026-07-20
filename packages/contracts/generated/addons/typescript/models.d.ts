@@ -6,6 +6,7 @@ export type { BeaconPlacement } from './beacon-placement.schema';
 export type { BearerCapability } from './bearer-capability.schema';
 export type { CaptureAuthorizationEvent } from './capture-authorization-event.schema';
 export type { ClockDisciplineProfile } from './clock-discipline-profile.schema';
+export type { CotBridgeProfile } from './cot-bridge-profile.schema';
 export type { CsiLinkObservation } from './csi-link-observation.schema';
 export type { DroneDeploymentEvent } from './drone-deployment-event.schema';
 export type { EmergencyAutojoinProfile } from './emergency-autojoin-profile.schema';

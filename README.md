@@ -31,7 +31,7 @@ SARCOP, TAK y CalTopo ya cubren el common operating picture **donde hay nube**, 
 - **Nicho realista:** equipos voluntarios, brigadas comunitarias y países sin task forces.
 - **Barrera honesta:** sin validación física ni certificación INSARAG/FEMA, ningún equipo clasificado lo adoptaría hoy; la adopción la da la evidencia y la comunidad de práctica, no la tecnología (lección Project OWL).
 
-Análisis completo con fuentes: [panorama SAR/USAR y posicionamiento](docs/research/sar-landscape.md).
+Análisis completo con fuentes: [panorama SAR/USAR y posicionamiento](docs/research/sar-landscape.md). Los caminos técnicos concretos de complemento — puente CoT/TAK local, Meshtastic MQTT, export CAP/EDXL, CalTopo y APRS opcional — están en la [arquitectura de integración con el ecosistema SAR](docs/research/sar-integration.md) y su [guía operativa](docs/guides/ecosystem-integration.md).
 
 ## Cómo está armado
 

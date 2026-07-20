@@ -81,6 +81,12 @@ histórico de la ejecución M0/P0/Open Spec.
 
 ## Siguiente
 
+- **Integración con el ecosistema SAR:** arquitectura priorizada en
+  `docs/research/sar-integration.md` y guía
+  `docs/guides/ecosystem-integration.md` (puente CoT/TAK local #1, Meshtastic
+  MQTT #2, export CAP/EDXL #3, CalTopo #4, APRS opcional); el addon
+  `cot-bridge-profile` y el mapper CoT son el próximo paso contractual.
+
 - **Posicionamiento SAR/USAR documentado:** el análisis de qué usa el mundo
   hoy, el vacío y las barreras reales de adopción vive en
   `docs/research/sar-landscape.md`; guía qué evidencia hace falta para que un

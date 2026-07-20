@@ -6,6 +6,7 @@ from .beacon_placement_schema import BeaconPlacement
 from .bearer_capability_schema import BearerCapability
 from .capture_authorization_event_schema import CaptureAuthorizationEvent
 from .clock_discipline_profile_schema import ClockDisciplineProfile
+from .cot_bridge_profile_schema import CotBridgeProfile
 from .csi_link_observation_schema import CsiLinkObservation
 from .drone_deployment_event_schema import DroneDeploymentEvent
 from .emergency_autojoin_profile_schema import EmergencyAutojoinProfile
@@ -31,4 +32,4 @@ from .transport_policy_decision_schema import TransportPolicyDecision
 from .transport_profile_schema import TransportProfile
 from .victim_record_schema import VictimRecord
 
-__all__ = ['BeaconCapability', 'BeaconHealth', 'BeaconObservation', 'BeaconPlacement', 'BearerCapability', 'CaptureAuthorizationEvent', 'ClockDisciplineProfile', 'CsiLinkObservation', 'DroneDeploymentEvent', 'EmergencyAutojoinProfile', 'EnergyBudget', 'EnergyCapability', 'EnergyStatus', 'FederationEvent', 'FederationTopologyEvent', 'HumanMessageEvent', 'HumanMessage', 'IdentityKeyLifecycleProfile', 'InteropEmergencyStandardsProfile', 'OfflineFindingObservation', 'OfflineMappingProfile', 'PassiveRfObservation', 'ReviewTaskEvent', 'RfIsolationProfile', 'RuViewObservation', 'SdrReceiveProfile', 'TerminalCapability', 'TransportEnvelope', 'TransportPolicyDecision', 'TransportProfile', 'VictimRecord']
+__all__ = ['BeaconCapability', 'BeaconHealth', 'BeaconObservation', 'BeaconPlacement', 'BearerCapability', 'CaptureAuthorizationEvent', 'ClockDisciplineProfile', 'CotBridgeProfile', 'CsiLinkObservation', 'DroneDeploymentEvent', 'EmergencyAutojoinProfile', 'EnergyBudget', 'EnergyCapability', 'EnergyStatus', 'FederationEvent', 'FederationTopologyEvent', 'HumanMessageEvent', 'HumanMessage', 'IdentityKeyLifecycleProfile', 'InteropEmergencyStandardsProfile', 'OfflineFindingObservation', 'OfflineMappingProfile', 'PassiveRfObservation', 'ReviewTaskEvent', 'RfIsolationProfile', 'RuViewObservation', 'SdrReceiveProfile', 'TerminalCapability', 'TransportEnvelope', 'TransportPolicyDecision', 'TransportProfile', 'VictimRecord']

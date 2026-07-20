@@ -85,6 +85,8 @@ flowchart LR
 
 La fusión usa reglas determinísticas con abstención: una sola fuente produce un indicio de confianza baja; la corroboración exige al menos dos sensores de al menos dos tipos; ante calidad insuficiente o sólo `no_event_detected` el resultado es `abstained` con razones explícitas. Ningún resultado confirma presencia ni ausencia de personas.
 
+Hacia afuera, la evidencia puede exportarse al ecosistema que los equipos ya usan — puente CoT/TAK local, Meshtastic MQTT, CAP/EDXL, CalTopo y APRS opcional — siempre con provenance, seudonimización y sin elevar estados: exportar no convierte observación en hecho y el ACK de una plataforma externa no confirma persona localizada. Arquitectura y priorización: [integración con el ecosistema SAR](research/sar-integration.md); operación: [guía de integración](guides/ecosystem-integration.md).
+
 **Implementación de referencia (lab-sim).** El repo incluye este pipeline funcionando end-to-end con datos sintéticos: `POST /v1/observations` (API FastAPI) → MQTT QoS1 → fusion-worker (valida, persiste en PostgreSQL y fusiona con `openbrec/fusion.py`) → `GET /v1/observations` y `GET /v1/fusion-results[/{id}]` → PWA offline-first que consume la API y cae a fixtures estáticos verificados cuando no está disponible, con indicador visible de la fuente. Todo corre local; el recorrido está en el [Quickstart off-grid](guides/quickstart-offgrid.md).
 
 ## Estados de evidencia y escalera

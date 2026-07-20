@@ -1,0 +1,47 @@
+{
+  "cot_type_vocabulary": "open_with_default_icons",
+  "created_at": "2026-07-17T12:00:00Z",
+  "declared_evidence": "specified",
+  "direction": "export_only",
+  "evidence_level_elevation_by_export": false,
+  "external_ack_means_person_located": false,
+  "field_map": [
+    {
+      "cot_target": "uid",
+      "source_contract": "observation",
+      "source_field": "observation_id",
+      "transform": "incident_rotating_hash"
+    },
+    {
+      "cot_target": "time",
+      "source_contract": "observation",
+      "source_field": "window_end",
+      "transform": "iso8601_utc"
+    }
+  ],
+  "gateway_implemented": false,
+  "limitations": [
+    "mapping spec only, no gateway implemented",
+    "multicast needs no server",
+    "no official usar cot taxonomy"
+  ],
+  "person_identification_allowed": false,
+  "profile_id": "cot-bridge-lan-cell",
+  "profile_type": "cot_bridge_profile",
+  "provenance_preserved": true,
+  "raw_payload_allowed": false,
+  "reference_mapper_profile": "lab-sim",
+  "remarks_format": "structured_json",
+  "schema_version": "1.0.0",
+  "server_required": false,
+  "silence_means_absence": false,
+  "stale_ttl_seconds": 300,
+  "transport": {
+    "group": "239.2.3.1",
+    "mode": "udp_multicast_sa",
+    "port": 6969
+  },
+  "type_prefix": "a-f-G",
+  "uid_scheme": "incident_scoped_deterministic",
+  "usericon": "openbrec/marker"
+}

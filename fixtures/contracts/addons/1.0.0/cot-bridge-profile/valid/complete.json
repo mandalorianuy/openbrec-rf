@@ -1,0 +1,68 @@
+{
+  "cot_type_vocabulary": "open_with_default_icons",
+  "created_at": "2026-07-17T20:10:00.000000Z",
+  "declared_evidence": "specified",
+  "direction": "export_only",
+  "evidence_level_elevation_by_export": false,
+  "external_ack_means_person_located": false,
+  "field_map": [
+    {
+      "cot_target": "uid",
+      "source_contract": "victim-record",
+      "source_field": "victim_record_id",
+      "transform": "incident_rotating_hash"
+    },
+    {
+      "cot_target": "time",
+      "source_contract": "victim-record",
+      "source_field": "updated_at",
+      "transform": "iso8601_utc"
+    },
+    {
+      "cot_target": "detail.remarks",
+      "source_contract": "victim-record",
+      "source_field": "status",
+      "transform": "copy"
+    },
+    {
+      "cot_target": "point.ce",
+      "source_contract": "fusion-result",
+      "source_field": "precision_m",
+      "transform": "copy"
+    },
+    {
+      "cot_target": "uid",
+      "source_contract": "human-message",
+      "source_field": "message_id",
+      "transform": "incident_rotating_hash"
+    }
+  ],
+  "gateway_implemented": false,
+  "limitations": [
+    "mapping spec only, no gateway implemented",
+    "a tak ack never confirms a located person",
+    "export never elevates evidence level",
+    "provenance confidence and limitations ride in structured remarks"
+  ],
+  "person_identification_allowed": false,
+  "profile_id": "cot-bridge-tak-server",
+  "profile_type": "cot_bridge_profile",
+  "provenance_preserved": true,
+  "raw_payload_allowed": false,
+  "reference_mapper_profile": "lab-sim",
+  "remarks_format": "structured_json",
+  "schema_version": "1.0.0",
+  "server_required": false,
+  "silence_means_absence": false,
+  "stale_ttl_seconds": 600,
+  "transport": {
+    "group": "239.2.3.1",
+    "mode": "tls",
+    "port": 6969,
+    "tcp_port": 8087,
+    "tls_port": 8089
+  },
+  "type_prefix": "a-f-G",
+  "uid_scheme": "incident_scoped_deterministic",
+  "usericon": "openbrec/victim-record"
+}

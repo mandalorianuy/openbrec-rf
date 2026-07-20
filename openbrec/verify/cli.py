@@ -61,6 +61,8 @@ from openbrec.rf_sensing import SCENARIO_PATHS as RF_SENSING_SCENARIO_PATHS
 from openbrec.rf_sensing import run_rf_sensing_gate
 from openbrec.ruview import CAMPAIGN_PATH as RUVIEW_CAMPAIGN_PATH
 from openbrec.ruview import run_ruview_model_gate
+from openbrec.cot_export import CAMPAIGN_PATH as COT_CAMPAIGN_PATH
+from openbrec.cot_export import run_cot_export_gate
 from openbrec.integrated import run_integrated_gate
 from openbrec.p0_exit import run_governance_gate
 from openbrec.p1a_readiness import (
@@ -837,6 +839,7 @@ def _parser() -> argparse.ArgumentParser:
         "rf-sensing-offline-finding",
         "rf-sensing-autojoin",
         "ruview-model-format",
+        "interop-cot",
         "p0-integrated",
         "review-quarantine",
         "life-safety-preservation",
@@ -1498,6 +1501,20 @@ def main(argv: Sequence[str] | None = None) -> int:
                 root / RUVIEW_CAMPAIGN_PATH,
                 root / "openbrec/ruview.py",
                 root / "schemas/addons/1.0.0/ruview-observation.schema.json",
+            ]
+        )
+    elif args.gate == "interop-cot":
+        errors, warnings, summary = run_cot_export_gate(root)
+        scope = "deterministic_cot_xml_mapping_lab_sim_only"
+        inputs.extend(
+            [
+                root / COT_CAMPAIGN_PATH,
+                root / "openbrec/cot_export.py",
+                root / "schemas/addons/1.0.0/cot-bridge-profile.schema.json",
+                root / "schemas/core/1.0.0/observation.schema.json",
+                root / "schemas/core/1.0.0/fusion-result.schema.json",
+                root / "schemas/addons/1.0.0/victim-record.schema.json",
+                root / "schemas/addons/1.0.0/human-message.schema.json",
             ]
         )
     elif args.gate == "p0-integrated":

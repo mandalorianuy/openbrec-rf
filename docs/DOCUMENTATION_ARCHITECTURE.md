@@ -35,7 +35,7 @@ Documentos de entrada y referencia que no son capa normativa ni guía de tarea:
 - [Arquitectura del sistema](architecture.md): vista unificada de planos, overlay, transportes, energía, beacons, federación, pipeline de evidencia y estados.
 - [FAQ](faq.md): respuestas cortas a las preguntas habituales, con el nivel de evidencia real.
 - [Glosario](glossary.md): definiciones de los términos e identificadores clave.
-- [Investigación](research/sar-landscape.md): `docs/research/` aloja las bases citables no normativas — el [panorama SAR/USAR y posicionamiento](research/sar-landscape.md) y el [estado del arte de RF sensing](research/rf-sensing-state-of-the-art.md).
+- [Investigación](research/sar-landscape.md): `docs/research/` aloja las bases citables no normativas — el [panorama SAR/USAR y posicionamiento](research/sar-landscape.md), la [arquitectura de integración con el ecosistema SAR](research/sar-integration.md) y el [estado del arte de RF sensing](research/rf-sensing-state-of-the-art.md).
 
 ### Gobernanza, decisiones y seguridad
 

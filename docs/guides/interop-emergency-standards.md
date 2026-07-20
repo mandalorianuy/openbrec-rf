@@ -56,6 +56,10 @@ El mapeo está `specified`; no hay gateway implementado ni interoperabilidad pro
 
 No demuestra conformidad certificada con CAP/EDXL-DE ni aceptación por agencias; es un contrato de mapeo mínimo para trabajo futuro.
 
+## Otros caminos de integración
+
+Este perfil queda como el camino CAP/EDXL (export-only). El resto de la integración con el ecosistema — puente CoT/TAK local, Meshtastic MQTT, locator de CalTopo y APRS opcional — se describe en la guía [Integración con el ecosistema SAR](ecosystem-integration.md) y su [arquitectura de investigación](../research/sar-integration.md); no modifican este perfil.
+
 ## Contratos normativos relacionados
 
 [InteropEmergencyStandardsProfile](../../schemas/addons/1.0.0/interop-emergency-standards-profile.schema.json), [catálogo de addons](../../schemas/addons/catalog.json) y [HumanMessage](../../schemas/addons/1.0.0/human-message.schema.json).
