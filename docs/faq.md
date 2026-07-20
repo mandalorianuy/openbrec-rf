@@ -47,6 +47,10 @@ Existe una **excepción gobernada** para ese caso (`emergency-autojoin-profile`,
 
 Ese es exactamente el diseño de complemento. Hoy está `specified` (investigación + contratos, sin gateway implementado): un puente MQTT→CoT emite por UDP multicast SA (239.2.3.1:6969) y cualquier ATAK de la LAN lo ve sin servidor ni internet, o vía OpenTAKServer en una Raspberry Pi para persistencia; además export CAP/EDXL, locator de CalTopo para tracks en vivo y APRS opcional. SARCOP-write queda diferido (exige ArcGIS Online + credenciales NAPSG), pero su vocabulario de waypoints (`detect`/`confirm`/`remains`/`search`) es la referencia destino. Exportar nunca eleva evidencia: un marcador en ATAK no confirma persona localizada. Arquitectura: [sar-integration](research/sar-integration.md); guía: [Integración con el ecosistema SAR](guides/ecosystem-integration.md).
 
+## ¿Cómo puede colaborar una universidad o un laboratorio?
+
+Con lo único que el proyecto no puede producir solo: **validación física**. El [programa de colaboración institucional](outreach/institutional-collaboration.md) define 8 labs acotados (desde una demo ATAK sin comprar hardware hasta el primer experimento publicado de aislamiento RF en contexto SAR), cada uno con protocolo ya escrito, costos estimados y criterios objetivos de aceptación. La institución mide y es coautora del evidence pack citable; el proyecto nunca eleva un claim sin ese pack, y los resultados negativos también se conservan y valen. Versión de una página para circular: [pitch](outreach/pitch-onepager.md).
+
 ## ¿Funciona sin internet?
 
 Sí; es el punto del diseño. Todas las funciones críticas — mensajería, energía, beacons, persistencia, replay, federación — operan localmente. La validación del repo también es offline: `uv sync --frozen` una vez con red, y después todos los gates y tests corren con `uv run --offline`. El pipeline lab-sim descarga imágenes Docker pineadas la primera vez y luego funciona sin red.

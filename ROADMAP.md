@@ -81,6 +81,12 @@ histórico de la ejecución M0/P0/Open Spec.
 
 ## Siguiente
 
+- **Adopción vía labs institucionales:** `docs/outreach/institutional-collaboration.md`
+  (programa de 8 labs de validación física para universidades, laboratorios,
+  escuelas de bomberos/defensa civil y clubes de radioaficionados) y
+  `docs/outreach/pitch-onepager.md`; es el camino activo para conseguir los
+  evidence packs que el proyecto no puede producir solo.
+
 - **Integración con el ecosistema SAR:** arquitectura priorizada en
   `docs/research/sar-integration.md` y guía
   `docs/guides/ecosystem-integration.md` (puente CoT/TAK local #1, Meshtastic

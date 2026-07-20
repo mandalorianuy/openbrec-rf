@@ -20,6 +20,7 @@ PUBLIC_ROOTS = (
     Path("docs/evidence-packs"),
     Path("docs/field-profiles"),
     Path("docs/research"),
+    Path("docs/outreach"),
 )
 PUBLIC_FILES = (
     Path("README.md"),

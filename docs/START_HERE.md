@@ -59,4 +59,13 @@ Estado actual en una línea: Open Spec `1.0.0-draft.1` completa (8 / 8), todo `s
 
 Una ejecución sintética no demuestra cobertura, autonomía, sensibilidad, seguridad eléctrica, cumplimiento regulatorio ni readiness de campo. Para elevar un claim, producí un [evidence pack](evidence-packs/README.md) de la combinación exacta. La ausencia de radio, movimiento, calor o detección nunca demuestra ausencia de personas.
 
+## Probar sin hardware
+
+[Quickstart off-grid](guides/quickstart-offgrid.md): gates, replay y el pipeline lab-sim completo (API → MQTT → worker → PWA) en una computadora común, con datos sintéticos.
+
+## Instituciones, colaboración y ayuda
+
+- Universidades, laboratorios, escuelas de bomberos/defensa civil y clubes de radioaficionados: [programa de colaboración institucional y labs de validación física](outreach/institutional-collaboration.md) (versión de una página: [pitch](outreach/pitch-onepager.md)).
+- Contribuir: [CONTRIBUTING.md](../CONTRIBUTING.md); reportes de seguridad: [SECURITY.md](../SECURITY.md); cambios a la spec: [proceso RFC](open-spec/RFC-PROCESS.md).
+
 ¿Dudas puntuales? [FAQ](faq.md) · [Glosario](glossary.md)

@@ -113,7 +113,7 @@ Cada gate valida su perfil normativo en `specs/openbrec/1.0.0-draft.1/`: `energy
 
 ## Contribución y licencias
 
-Leé [CONTRIBUTING.md](CONTRIBUTING.md), [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) y [SECURITY.md](SECURITY.md). Un cambio normativo exige nueva versión, fixtures y vectores de compatibilidad; un nuevo transporte/sensor entra como perfil o adapter reemplazable declarado `unverified` hasta tener evidencia; la evidencia física se publica separada de la norma.
+Leé [CONTRIBUTING.md](CONTRIBUTING.md), [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) y [SECURITY.md](SECURITY.md). Un cambio normativo exige nueva versión, fixtures y vectores de compatibilidad; un nuevo transporte/sensor entra como perfil o adapter reemplazable declarado `unverified` hasta tener evidencia; la evidencia física se publica separada de la norma. Universidades, laboratorios e instituciones de investigación: el [programa de colaboración institucional](docs/outreach/institutional-collaboration.md) define 8 labs de validación física con protocolo y criterios objetivos (one-pager: [pitch](docs/outreach/pitch-onepager.md)).
 
 - software/configuración: [Apache-2.0](LICENSE);
 - hardware de referencia: [CERN-OHL-S-2.0](LICENSES/CERN-OHL-S-2.0.txt);
