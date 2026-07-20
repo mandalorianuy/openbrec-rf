@@ -37,6 +37,7 @@ Estado actual en una línea: Open Spec `1.0.0-draft.1` completa (8 / 8), todo `s
 3. Los estados de evidencia y su autoridad: [arquitectura documental](DOCUMENTATION_ARCHITECTURE.md) y [Conformance](open-spec/CONFORMANCE.md).
 4. Riesgos y límites: [threat model](security/OpenBREC-RF-threat-model.md) y reviews en [`docs/security/`](security/).
 5. Historia y rumbo: [ROADMAP.md](../ROADMAP.md) (vigente) y [DELIVERY_BOARD.md](../DELIVERY_BOARD.md) (audit trail).
+6. El lugar en el mundo real: [panorama SAR/USAR y posicionamiento](research/sar-landscape.md) (qué usa el mundo hoy, el vacío y las barreras honestas).
 
 ## Selección rápida de perfil
 

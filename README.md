@@ -23,6 +23,16 @@ La Open Spec está `8 / 8` y su autoridad **spec-first** es `1.0.0-draft.1`, eje
 
 En estructuras colapsadas o incidentes extensos, los equipos pierden cloud, red eléctrica, backhaul y coordinación central. Cada grupo lleva radios, terminales, sensores y fuentes de energía incompatibles. Una solución útil debe operar localmente, atravesar particiones, componer el hardware disponible y conservar evidencia crítica sin convertir señales incompletas en certezas.
 
+## ¿Qué lugar ocupa OpenBREC?
+
+SARCOP, TAK y CalTopo ya cubren el common operating picture **donde hay nube**, y el mesh táctico comercial donde hay presupuesto de élite. OpenBREC no compite con eso: es la capa de **respaldo e interoperabilidad offline-first** que sigue operando donde esos sistemas se apagan, y exporta evidencia con provenance hacia ellos en vez de reemplazarlos.
+
+- **Complemento, no competidor:** fallback para cuando no hay ArcGIS/cloud/satélite.
+- **Nicho realista:** equipos voluntarios, brigadas comunitarias y países sin task forces.
+- **Barrera honesta:** sin validación física ni certificación INSARAG/FEMA, ningún equipo clasificado lo adoptaría hoy; la adopción la da la evidencia y la comunidad de práctica, no la tecnología (lección Project OWL).
+
+Análisis completo con fuentes: [panorama SAR/USAR y posicionamiento](docs/research/sar-landscape.md).
+
 ## Cómo está armado
 
 ```mermaid

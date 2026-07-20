@@ -81,6 +81,12 @@ histórico de la ejecución M0/P0/Open Spec.
 
 ## Siguiente
 
+- **Posicionamiento SAR/USAR documentado:** el análisis de qué usa el mundo
+  hoy, el vacío y las barreras reales de adopción vive en
+  `docs/research/sar-landscape.md`; guía qué evidencia hace falta para que un
+  equipo real adopte el proyecto (evidence packs, validación comunitaria,
+  exportación EDXL/SARCOP, comunidad de práctica).
+
 - **Evidencia física P1a:** permanece en pausa declarativa; se retoma cuando
   exista hardware real disponible y autoridad para operarlo.
 - **Validación comunitaria de addons:** los doce addons experimentales de las

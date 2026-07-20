@@ -10,6 +10,10 @@ No. OpenBREC produce y transporta **indicios con incertidumbre explícita**: obs
 
 No sin validación física propia. Todo el proyecto está en estado `specified` o `simulated`: la spec está completa (8 / 8 gates) y el pipeline de software corre con datos sintéticos, pero **no existe ninguna validación de banco ni de campo** (P1a 0 / 8, en pausa declarativa). Simulación y CI no acreditan cobertura, autonomía, sensibilidad, seguridad eléctrica ni cumplimiento regulatorio. Para usar una composición en campo haría falta un [evidence pack](evidence-packs/README.md) de esa combinación exacta.
 
+## ¿Por qué no usar SARCOP/TAK/CalTopo directamente?
+
+Usalos si están disponibles: cubren el common operating picture donde hay nube, gratis y con respaldo institucional. OpenBREC no compite ahí: su espacio es exactamente **donde esos sistemas se apagan** (sin ArcGIS, cloud, satélite ni presupuesto de élite) y su rol es fallback offline-first más exportación de evidencia con provenance hacia ellos. El nicho realista hoy son equipos voluntarios, brigadas comunitarias y países sin task forces. Detalle y fuentes: [panorama SAR/USAR](research/sar-landscape.md).
+
 ## ¿Qué hardware necesito?
 
 Ninguno para evaluar la spec: contratos, fixtures, replay, gates y el pipeline lab-sim corren offline en una computadora común. Para construir, OpenBREC es **capability-driven**: se compone con el hardware disponible (radios LoRa, SBC, teléfonos, baterías) mediante adapters reemplazables; no exige fabricante, SKU, frecuencia ni topología. Las rutas de solución documentadas son los [reference builds](reference-builds/README.md).

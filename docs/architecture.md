@@ -1,6 +1,6 @@
 # Arquitectura de OpenBREC
 
-Vista unificada del sistema: concepto, planos operativos, overlay y transportes, energía, beacons, federación, pipeline de evidencia y estados de evidencia. Este documento explica cómo encajan las piezas; el detalle normativo vive en la [Open Spec](open-spec/README.md) y el detalle de cada tarea en las [guías](guides/README.md). Si algo aquí contradice la spec, prevalece la spec.
+Vista unificada del sistema: concepto, planos operativos, overlay y transportes, energía, beacons, federación, pipeline de evidencia y estados de evidencia. Este documento explica cómo encajan las piezas; el detalle normativo vive en la [Open Spec](open-spec/README.md) y el detalle de cada tarea en las [guías](guides/README.md). Si algo aquí contradice la spec, prevalece la spec. El lugar del sistema frente a lo que el mundo SAR/USAR ya usa (SARCOP, TAK, CalTopo, mesh de élite) — complemento offline-first, no competidor — está en el [panorama SAR y posicionamiento](research/sar-landscape.md).
 
 ## Concepto y problema
 
