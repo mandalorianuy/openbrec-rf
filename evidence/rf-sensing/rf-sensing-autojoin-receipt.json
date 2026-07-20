@@ -1,0 +1,265 @@
+{
+  "command": [
+    "python",
+    "-m",
+    "openbrec.verify",
+    "rf-sensing-autojoin",
+    "--receipt",
+    "evidence/rf-sensing/rf-sensing-autojoin-receipt.json"
+  ],
+  "dirty": true,
+  "errors": [],
+  "finished_at": "2026-07-20T11:18:44.221416Z",
+  "gate": "rf-sensing-autojoin",
+  "gate_version": "0.1.0",
+  "git_sha": "e1d16468e0a21745d26d797ce437c02ace840a39",
+  "inputs": [
+    {
+      "path": "fixtures/replay/rf-sensing/autojoin-campaign.json",
+      "sha256": "ea6cd6f94e1e1ade3f9e7947322a65146e8cb69724080e2f20d0033faa6589cd"
+    },
+    {
+      "path": "openbrec/rf_sensing.py",
+      "sha256": "be3da21c57f8991983a6b710ca04eb76be2ec9953f5adc8c2354ef9340120b38"
+    },
+    {
+      "path": "openbrec/fusion.py",
+      "sha256": "3f3d3d92a462ebf5762f69ea82265984f414a14ba3c049259e19c11996e3efab"
+    },
+    {
+      "path": "schemas/addons/1.0.0/csi-link-observation.schema.json",
+      "sha256": "3684bd07cb19d3fd5ce7470bb1f6205611ec29a4371e94a59cfa9f72c38c7bea"
+    },
+    {
+      "path": "schemas/addons/1.0.0/passive-rf-observation.schema.json",
+      "sha256": "8fb93b64bf71a4837aa9da7053a73c1a2eb9b17b151aed52a354036012595477"
+    },
+    {
+      "path": "schemas/addons/1.0.0/offline-finding-observation.schema.json",
+      "sha256": "53b9a7f7cfddeeb5a47791d0844b3e2a3d46d4f365ad7db6f59921580e47ce25"
+    },
+    {
+      "path": "schemas/addons/1.0.0/emergency-autojoin-profile.schema.json",
+      "sha256": "57dcfe34497c46cd669a768c14e136ae5589660f37c296f4215197c3acde0930"
+    },
+    {
+      "path": "schemas/core/1.0.0/observation.schema.json",
+      "sha256": "2038ce3c3f1953f3c6afe84b33a8df19caf52c488642889602726630f41fe234"
+    }
+  ],
+  "lockfiles": [
+    {
+      "path": "uv.lock",
+      "sha256": "2d1b79df4cd5878ec7f4674a133c54ca7b16dfa559560ba3a93911e620f435d5"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "sha256": "ed7659f050b279f37e5cf84fb065fc528e15b3204d374681f3a70ad081d1c25a"
+    },
+    {
+      "path": "apps/web/pnpm-lock.yaml",
+      "sha256": "f25dc17073860d2d18f806673d45b1ea7e461a424be10c4bea5126aeff155e62"
+    }
+  ],
+  "output_sha256": "99990456ee8ee4ddc3172b7ba81f832f67196f4b04a181612feb9879ee1fed4d",
+  "receipt_version": "1.0.0",
+  "responsible_role": "beacon-science-maintainer",
+  "result": "passed",
+  "runtime": {
+    "docker": "Docker version 29.5.3, build d1c06ef",
+    "node": "v26.5.0",
+    "pnpm": null,
+    "python": "3.12.13"
+  },
+  "scope": "governed_emergency_autojoin_pipeline_not_radio",
+  "started_at": "2026-07-20T11:18:44.003121Z",
+  "summary": {
+    "absence_inferences": 0,
+    "cases": 6,
+    "claim_scope": "deterministic_simulation_only",
+    "content_interception_violations": 0,
+    "core_observations_validated": 6,
+    "determinism_distinct_hashes": 1,
+    "duplicates_deduplicated": 0,
+    "expired_profile_observations": 0,
+    "finding_only_peak_confidence": 0.2,
+    "forbidden_claim_tokens": 0,
+    "governance": {
+      "active": {
+        "outcome": "accepted",
+        "violations": []
+      },
+      "expired": {
+        "outcome": "refused_expired",
+        "violations": []
+      },
+      "single_authorizer": {
+        "outcome": "schema_rejected",
+        "violations": [
+          "authorizing_actors"
+        ]
+      }
+    },
+    "hypothesis_promoted_to_fact": 0,
+    "input_jsonl": "fixtures/replay/rf-sensing/autojoin-events.jsonl",
+    "observations_emitted": 4,
+    "own_fleet_excluded": 1,
+    "portal_ack_promoted": 0,
+    "projection": [
+      {
+        "abstained": null,
+        "abstention_reasons": [],
+        "case_id": "expired-profile",
+        "confidence": null,
+        "events": [],
+        "frames_observed": 0,
+        "governance": "refused_expired",
+        "observations_emitted": 0,
+        "profile": "expired",
+        "state": null
+      },
+      {
+        "abstained": false,
+        "abstention_reasons": [],
+        "case_id": "legitimate-activation",
+        "confidence": 0.2,
+        "events": [
+          {
+            "device_inference": {
+              "label": "smartphone",
+              "statement_kind": "hypothesis"
+            },
+            "event": "association",
+            "observation_id": "15cbbcc4-4357-52d4-b752-d2383e87d3b4",
+            "portal_ack": false,
+            "portal_ack_means_person_located": false,
+            "rssi_dbm": -70.0,
+            "subject_ref": "hmac-sha256:718c0548c7796a08651eeaff2a382e08aba2c5768d22ee3f2633bde003618da7"
+          },
+          {
+            "device_inference": {
+              "label": "smartphone",
+              "statement_kind": "hypothesis"
+            },
+            "event": "association",
+            "observation_id": "99b5c93b-184d-53fe-8b47-87d04273e2fc",
+            "portal_ack": false,
+            "portal_ack_means_person_located": false,
+            "rssi_dbm": -66.0,
+            "subject_ref": "hmac-sha256:f953f01ffcddab80e4e043edaed12749d7c30febb94ab42deb23b2a9d1dc7885"
+          },
+          {
+            "device_inference": {
+              "label": "smartphone",
+              "statement_kind": "hypothesis"
+            },
+            "event": "association",
+            "observation_id": "d977d6d4-acb8-5061-a385-7569af40db99",
+            "portal_ack": false,
+            "portal_ack_means_person_located": false,
+            "rssi_dbm": -69.0,
+            "subject_ref": "hmac-sha256:f953f01ffcddab80e4e043edaed12749d7c30febb94ab42deb23b2a9d1dc7885"
+          }
+        ],
+        "explanation": "single-source candidate",
+        "finding_in_corroboration_pool": true,
+        "frames_observed": 3,
+        "governance": "accepted",
+        "observations_emitted": 3,
+        "profile": "active",
+        "result_id": "f912ecef-abd2-5cfa-b31e-e862e4acf8aa",
+        "state": "indicator",
+        "weak_hint_ids": [
+          "15cbbcc4-4357-52d4-b752-d2383e87d3b4",
+          "99b5c93b-184d-53fe-8b47-87d04273e2fc",
+          "d977d6d4-acb8-5061-a385-7569af40db99"
+        ]
+      },
+      {
+        "abstained": true,
+        "abstention_reasons": [
+          "insufficient independent evidence"
+        ],
+        "case_id": "own-fleet-device",
+        "confidence": 0.0,
+        "events": [],
+        "explanation": "no usable evidence in window; abstaining instead of inferring presence or absence",
+        "finding_in_corroboration_pool": false,
+        "frames_observed": 1,
+        "governance": "accepted",
+        "observations_emitted": 0,
+        "profile": "active",
+        "result_id": "e617cef5-b4e4-577e-8de9-530be8240cbc",
+        "state": "abstained",
+        "weak_hint_ids": []
+      },
+      {
+        "abstained": false,
+        "abstention_reasons": [],
+        "case_id": "portal-ack",
+        "confidence": 0.2,
+        "events": [
+          {
+            "device_inference": {
+              "label": "unknown_device",
+              "statement_kind": "hypothesis"
+            },
+            "event": "portal_ack",
+            "observation_id": "c2420bc3-04c5-5695-bc3f-3f3cbe73ae2f",
+            "portal_ack": true,
+            "portal_ack_means_person_located": false,
+            "portal_capability": "emergency_message",
+            "rssi_dbm": -64.0,
+            "subject_ref": "hmac-sha256:6c45505f9c4f05bf7724b7e7cb6e605f8e2c276da39923eaf725219dfb8a5ded"
+          }
+        ],
+        "explanation": "single-source candidate",
+        "finding_in_corroboration_pool": true,
+        "frames_observed": 1,
+        "governance": "accepted",
+        "observations_emitted": 1,
+        "profile": "active",
+        "result_id": "78ab33d8-f2ca-5c0f-8a70-2080d5711cbf",
+        "state": "indicator",
+        "weak_hint_ids": [
+          "c2420bc3-04c5-5695-bc3f-3f3cbe73ae2f"
+        ]
+      },
+      {
+        "abstained": true,
+        "abstention_reasons": [
+          "insufficient independent evidence"
+        ],
+        "case_id": "quiet-window",
+        "confidence": 0.0,
+        "events": [],
+        "explanation": "no usable evidence in window; abstaining instead of inferring presence or absence",
+        "finding_in_corroboration_pool": false,
+        "frames_observed": 0,
+        "governance": "accepted",
+        "observations_emitted": 0,
+        "profile": "active",
+        "result_id": "e617cef5-b4e4-577e-8de9-530be8240cbc",
+        "state": "abstained",
+        "weak_hint_ids": []
+      },
+      {
+        "abstained": null,
+        "abstention_reasons": [],
+        "case_id": "single-authorizer",
+        "confidence": null,
+        "events": [],
+        "frames_observed": 0,
+        "governance": "schema_rejected",
+        "observations_emitted": 0,
+        "profile": "single_authorizer",
+        "state": null
+      }
+    ],
+    "raw_identifier_leaks": 0,
+    "records_rejected": 2,
+    "result_sha256": "47c1a53473fcd1c985a89b8012b34dc7c5f4ff45009a13f1b607848f4b4c43d4",
+    "scenario": "fixtures/replay/rf-sensing/autojoin-campaign.json"
+  },
+  "warnings": []
+}

@@ -56,13 +56,35 @@ histórico de la ejecución M0/P0/Open Spec.
    Wi2SAR quedan fuera del perímetro como referencias externas con boundary
    flag. Los estados de evidencia se asignaron sin elevar claims: CSI/Kismet/
    SDR en SAR real son `unverified`; RF quieting es `specified` sin literatura.
+8. **Fase 7 — Simuladores de replay RF y offline finding (hecha, 2026-07-19).**
+   Simuladores determinísticos de replay (`openbrec/rf_sensing.py`, fixtures en
+   `fixtures/replay/rf-sensing/`) que elevan `csi-link-observation`,
+   `passive-rf-observation` y `offline-finding-observation` de `specified` a
+   `simulated` (gates `rf-sensing-csi/-passive/-multimodal/-offline-finding`),
+   verificando como invariantes el silencio≠ausencia, la abstención, la
+   corroboración solo multi-modal y la privacidad (HMAC rotativo, cero payload).
+   Gate `ruview-model-format` (fallback visible, nunca null silencioso). Nuevo
+   addon `offline-finding-observation` (30 totales, RFC-0002 `accepted`):
+   detección pasiva de redes crowdsourced (Apple Find My, Google Find Hub,
+   Samsung) como indicio débil, con guía `docs/guides/offline-finding.md`.
+9. **Fase 8 — AP de emergencia con auto-join gobernado (hecha, 2026-07-19).**
+   Nuevo addon `emergency-autojoin-profile` (RFC-0003): AP estilo Karma que
+   responde a cualquier SSID sondeado para convertir el teléfono de una víctima
+   que no puede actuar en baliza vía portal cautivo. Incluido **sólo como
+   excepción gobernada** bajo `emergency_assumed_risk` (ADR-005), nunca por
+   defecto: doble autorización, geofence, expiración, kill switch; sin captura,
+   sin rerouting, sin inspección de contenido; el ACK del portal nunca es
+   persona localizada. Eficacia declarada `unverified` (degradada por OS
+   modernos) con experimento de medición definido. Guía
+   `docs/guides/emergency-autojoin.md`, review
+   `docs/security/emergency-autojoin-review.md`, TM-020..TM-022.
 
 ## Siguiente
 
 - **Evidencia física P1a:** permanece en pausa declarativa; se retoma cuando
   exista hardware real disponible y autoridad para operarlo.
-- **Validación comunitaria de addons:** los once addons experimentales de las
-  Fases 3 y 6 esperan review y evidencia de terceros vía
+- **Validación comunitaria de addons:** los doce addons experimentales de las
+  Fases 3, 6 y 7 esperan review y evidencia de terceros vía
   `docs/open-spec/COMMUNITY-EVIDENCE.md` antes de cualquier promoción.
 - **Experimentos de evidencia por dominio RF:** banco CSI del build exacto,
   ensayo con MAC randomization activa, baliza 406 MHz de test, drop pod en

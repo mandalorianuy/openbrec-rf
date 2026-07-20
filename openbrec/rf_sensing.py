@@ -31,6 +31,9 @@ SCENARIO_PATHS = {
     "rf-sensing-offline-finding": Path(
         "fixtures/replay/rf-sensing/offline-finding-campaign.json"
     ),
+    "rf-sensing-autojoin": Path(
+        "fixtures/replay/rf-sensing/autojoin-campaign.json"
+    ),
 }
 GATES = tuple(SCENARIO_PATHS)
 FORBIDDEN_CLAIMS = {
@@ -1256,6 +1259,458 @@ def run_offline_finding_gate(
     return _finish(campaign, scenario_path, errors, summary, distinct)
 
 
+# --- Emergency autojoin campaign ----------------------------------------------
+
+AUTOJOIN_EVENTS = {"association", "portal_ack"}
+ALLOWED_AUTOJOIN_KEYS = {
+    "case_id",
+    "event",
+    "subject",
+    "rssi_dbm",
+    "ts_offset_s",
+    "device_hint",
+    "portal_capability",
+}
+
+
+def _validate_autojoin_campaign(campaign: dict[str, Any]) -> None:
+    for field in ("incident_id", "input_jsonl", "zone_id", "sensor_id"):
+        if not campaign.get(field):
+            raise RfSensingScenarioError(f"{field} must be declared")
+    if not campaign.get("rotation_epochs"):
+        raise RfSensingScenarioError("rotation_epochs must be declared")
+    if not isinstance(campaign.get("own_fleet"), list):
+        raise RfSensingScenarioError("own_fleet roster must be declared")
+    profiles = campaign.get("profiles", {})
+    if set(profiles) != {"active", "expired", "single_authorizer"}:
+        raise RfSensingScenarioError(
+            "campaign must declare active, expired and single_authorizer profiles"
+        )
+    cases = campaign.get("cases", [])
+    case_ids = [item.get("case_id") for item in cases]
+    if not cases or len(case_ids) != len(set(case_ids)):
+        raise RfSensingScenarioError("cases must be a non-empty list with unique IDs")
+    for case in cases:
+        if case.get("profile") not in profiles:
+            raise RfSensingScenarioError(
+                f"{case.get('case_id')} references unknown profile"
+            )
+
+
+def _profile_governance(
+    campaign: dict[str, Any], validator: Draft202012Validator
+) -> dict[str, dict[str, Any]]:
+    outcomes = {}
+    for name, profile in sorted(campaign["profiles"].items()):
+        schema_errors = sorted(
+            validator.iter_errors(profile), key=lambda item: list(item.path)
+        )
+        if schema_errors:
+            outcomes[name] = {
+                "outcome": "schema_rejected",
+                "violations": sorted(
+                    "/".join(str(part) for part in error.path) or "<root>"
+                    for error in schema_errors
+                ),
+            }
+            continue
+        if profile["expires_at"] <= campaign["logical_start"]:
+            outcomes[name] = {"outcome": "refused_expired", "violations": []}
+            continue
+        outcomes[name] = {"outcome": "accepted", "violations": []}
+    return outcomes
+
+
+def _autojoin_core_observation(
+    campaign: dict[str, Any],
+    record: dict[str, Any],
+    observation_id: str,
+) -> dict[str, Any]:
+    quality = _rounded(min(1.0, max(0.0, (record["rssi_dbm"] + 90) / 30)))
+    metric = {
+        "association": "autojoin.association_activity",
+        "portal_ack": "autojoin.portal_ack",
+    }[record["event"]]
+    window_s = int(campaign["window_s"])
+    return {
+        "schema_version": "1.0.0",
+        "observation_id": observation_id,
+        "sensor_id": campaign["sensor_id"],
+        "sensor_type": "addon_registered",
+        "observation_kind": "measurement",
+        "window_start": _timestamp(
+            campaign["logical_start"], record["ts_offset_s"]
+        ),
+        "window_end": _timestamp(
+            campaign["logical_start"], record["ts_offset_s"] + window_s
+        ),
+        "zone_id": campaign["zone_id"],
+        "measurements": [
+            {
+                "measurement_type": "scalar",
+                "metric": metric,
+                "value": quality,
+                "unit": "1",
+                "uncertainty": 0.3,
+                "quality": quality,
+                "method": "autojoin:governed-portal-sim-v1",
+            }
+        ],
+        "quality": quality,
+        "uncertainty": 0.3,
+        "coverage": "synthetic autojoin window",
+        "capabilities_absent": ["content_inspection", "identification"],
+        "limitations": [
+            "weak presence hint only",
+            "an association or portal ack is not a located person",
+            "silence never means absence",
+            "effectiveness unverified",
+            "deterministic simulation only",
+        ],
+    }
+
+
+def _autojoin_silence_observation(
+    campaign: dict[str, Any], case_id: str
+) -> dict[str, Any]:
+    return {
+        "schema_version": "1.0.0",
+        "observation_id": _uuid5(["autojoin-silence", case_id]),
+        "sensor_id": campaign["sensor_id"],
+        "sensor_type": "addon_registered",
+        "observation_kind": "no_event_detected",
+        "window_start": campaign["logical_start"],
+        "window_end": _timestamp(campaign["logical_start"], int(campaign["window_s"])),
+        "zone_id": campaign["zone_id"],
+        "measurements": [],
+        "quality": 0.9,
+        "uncertainty": 0.5,
+        "coverage": "synthetic silent autojoin window",
+        "capabilities_absent": ["content_inspection", "identification"],
+        "limitations": [
+            "no_event_detected is not absence",
+            "silence never means absence",
+            "deterministic simulation only",
+        ],
+    }
+
+
+def run_autojoin_campaign(
+    campaign: dict[str, Any], *, repository_root: Path, raw_lines: list[str]
+) -> dict[str, Any]:
+    _validate_autojoin_campaign(campaign)
+    validators = _validators(
+        repository_root,
+        {"emergency-autojoin-profile.schema.json", "observation.schema.json"},
+    )
+    profile_validator = validators["emergency-autojoin-profile.schema.json"]
+    core_validator = validators["observation.schema.json"]
+    governance = _profile_governance(campaign, profile_validator)
+    epoch = campaign["rotation_epochs"][0]
+    case_ids = {case["case_id"] for case in campaign["cases"]}
+    emitted: dict[str, dict[str, Any]] = {}
+    emitted_case: dict[str, str] = {}
+    subjects_seen: set[str] = set()
+    rejected = []
+    fleet_excluded = []
+    duplicates = 0
+    frames_by_case: dict[str, int] = {case_id: 0 for case_id in case_ids}
+    for line in raw_lines:
+        stripped = line.strip()
+        if not stripped:
+            continue
+        line_ref = hashlib.sha256(stripped.encode("utf-8")).hexdigest()[:12]
+        try:
+            record = json.loads(stripped)
+            if not isinstance(record, dict):
+                raise RfSensingScenarioError("record must be a JSON object")
+            unknown = set(record) - ALLOWED_AUTOJOIN_KEYS
+            if unknown:
+                raise RfSensingScenarioError(
+                    "record carries non-whitelisted fields that would leak "
+                    f"payload or active state: {sorted(unknown)}"
+                )
+            case_id = record.get("case_id")
+            if case_id not in case_ids:
+                raise RfSensingScenarioError(
+                    f"record references undeclared case: {case_id}"
+                )
+            if record.get("event") not in AUTOJOIN_EVENTS:
+                raise RfSensingScenarioError(
+                    f"unknown autojoin event: {record.get('event')}"
+                )
+            rssi = record.get("rssi_dbm")
+            if isinstance(rssi, bool) or not isinstance(rssi, (int, float)):
+                raise RfSensingScenarioError("record rssi_dbm must be numeric")
+            offset = record.get("ts_offset_s")
+            if isinstance(offset, bool) or not isinstance(offset, int) or offset < 0:
+                raise RfSensingScenarioError(
+                    "record ts_offset_s must be a non-negative integer"
+                )
+            subject = record.get("subject")
+            if not isinstance(subject, str) or not subject:
+                raise RfSensingScenarioError(
+                    "record subject must be a non-empty string"
+                )
+            frames_by_case[case_id] += 1
+            subjects_seen.add(subject)
+            if subject in campaign["own_fleet"]:
+                fleet_excluded.append({"input_ref": line_ref})
+                continue
+        except (json.JSONDecodeError, RfSensingScenarioError) as exc:
+            rejected.append({"input_ref": line_ref, "error": str(exc)})
+            continue
+        observation_id = _uuid5(
+            ["autojoin", case_id, record["event"], subject, offset]
+        )
+        if observation_id in emitted:
+            duplicates += 1
+            continue
+        emitted[observation_id] = {
+            "observation_id": observation_id,
+            "event": record["event"],
+            "subject_ref": rotating_subject_ref(
+                campaign["incident_id"], epoch, subject
+            ),
+            "rssi_dbm": record["rssi_dbm"],
+            "device_inference": {
+                "label": record.get("device_hint", "unknown_device"),
+                "statement_kind": "hypothesis",
+            },
+            "portal_ack": record["event"] == "portal_ack",
+            "portal_ack_means_person_located": False,
+            **(
+                {"portal_capability": record["portal_capability"]}
+                if record.get("portal_capability")
+                else {}
+            ),
+            "_record": record,
+        }
+        emitted_case[observation_id] = case_id
+
+    projection = []
+    core_validated = 0
+    for case in campaign["cases"]:
+        case_id = case["case_id"]
+        profile_name = case["profile"]
+        governance_outcome = governance[profile_name]["outcome"]
+        if governance_outcome != "accepted":
+            projection.append(
+                {
+                    "case_id": case_id,
+                    "profile": profile_name,
+                    "governance": governance_outcome,
+                    "frames_observed": frames_by_case[case_id],
+                    "observations_emitted": 0,
+                    "events": [],
+                    "state": None,
+                    "confidence": None,
+                    "abstained": None,
+                    "abstention_reasons": [],
+                }
+            )
+            continue
+        events = sorted(
+            (
+                event
+                for obs_id, event in emitted.items()
+                if emitted_case[obs_id] == case_id
+            ),
+            key=lambda item: item["observation_id"],
+        )
+        weak_core = []
+        for event in events:
+            observation = _autojoin_core_observation(
+                campaign, event["_record"], event["observation_id"]
+            )
+            _validate(core_validator, observation, case_id)
+            core_validated += 1
+            weak_core.append(observation)
+        if weak_core:
+            fused = fuse_observations(weak_core, zone_id=campaign["zone_id"])
+        else:
+            silence = _autojoin_silence_observation(campaign, case_id)
+            _validate(core_validator, silence, case_id)
+            core_validated += 1
+            fused = fuse_observations([silence], zone_id=campaign["zone_id"])
+        projection.append(
+            {
+                "case_id": case_id,
+                "profile": profile_name,
+                "governance": governance_outcome,
+                "frames_observed": frames_by_case[case_id],
+                "observations_emitted": len(events),
+                "events": [
+                    {key: value for key, value in event.items() if key != "_record"}
+                    for event in events
+                ],
+                "weak_hint_ids": [item["observation_id"] for item in weak_core],
+                "finding_in_corroboration_pool": bool(weak_core),
+                "result_id": fused["result_id"],
+                "state": fused["state"],
+                "confidence": fused["confidence"],
+                "abstained": fused["abstained"],
+                "abstention_reasons": fused["abstention_reasons"],
+                "explanation": fused["explanation"],
+            }
+        )
+    projection.sort(key=lambda item: item["case_id"])
+    output_material = {
+        "projection": projection,
+        "rejected": sorted(rejected, key=lambda item: item["input_ref"]),
+        "own_fleet_excluded": sorted(fleet_excluded, key=lambda item: item["input_ref"]),
+    }
+    encoded = canonicalize(output_material)
+    raw_leaks = sum(
+        subject.encode("utf-8") in encoded for subject in subjects_seen if subject
+    )
+    return {
+        "projection": projection,
+        "rejected": output_material["rejected"],
+        "own_fleet_excluded": output_material["own_fleet_excluded"],
+        "governance": governance,
+        "observations_emitted": len(emitted),
+        "records_rejected": len(rejected),
+        "fleet_excluded": len(fleet_excluded),
+        "duplicates_deduplicated": duplicates,
+        "core_observations_validated": core_validated,
+        "raw_identifier_leaks": raw_leaks,
+    }
+
+
+def run_autojoin_gate(
+    root: Path, scenario_path: Path
+) -> tuple[list[str], list[str], dict[str, Any]]:
+    try:
+        campaign = _load_campaign(root, scenario_path)
+        raw_lines = (
+            (root / campaign["input_jsonl"]).read_text(encoding="utf-8").splitlines()
+        )
+        outcome = run_autojoin_campaign(
+            campaign, repository_root=root, raw_lines=raw_lines
+        )
+        distinct = _permuted_hashes(
+            raw_lines,
+            lambda lines: run_autojoin_campaign(
+                campaign, repository_root=root, raw_lines=lines
+            ),
+        )
+    except (OSError, json.JSONDecodeError, ValueError) as exc:
+        return [str(exc)], [], {"scenario": str(scenario_path)}
+    errors: list[str] = []
+    projection = outcome["projection"]
+    governance = outcome["governance"]
+    if governance["active"]["outcome"] != "accepted":
+        errors.append("legitimate profile was not accepted")
+    if governance["expired"]["outcome"] != "refused_expired":
+        errors.append("expired profile was not refused visibly")
+    if governance["single_authorizer"]["outcome"] != "schema_rejected":
+        errors.append("single authorizer profile was not rejected by the schema")
+    if "authorizing_actors" not in " ".join(
+        governance["single_authorizer"]["violations"]
+    ):
+        errors.append("single authorizer rejection did not name authorizing_actors")
+    expected = {case["case_id"]: case for case in campaign["cases"]}
+    finding_only_peak = 0.0
+    portal_ack_promoted = 0
+    for item in projection:
+        case = expected[item["case_id"]]
+        if case.get("expected_governance"):
+            if item["governance"] != case["expected_governance"]:
+                errors.append(
+                    f"{item['case_id']} governance {item['governance']} != "
+                    f"{case['expected_governance']}"
+                )
+            if item["observations_emitted"] != 0:
+                errors.append(
+                    f"{item['case_id']} produced observations without valid governance"
+                )
+            continue
+        if item["state"] != case["expected_state"]:
+            errors.append(
+                f"{item['case_id']} derived {item['state']} != {case['expected_state']}"
+            )
+        if item["confidence"] != case["expected_confidence"]:
+            errors.append(
+                f"{item['case_id']} confidence {item['confidence']} != "
+                f"{case['expected_confidence']}"
+            )
+        if item["observations_emitted"] != case["expected_emitted"]:
+            errors.append(f"{item['case_id']} emitted count mismatch")
+        if "expected_frames" in case and item["frames_observed"] != case["expected_frames"]:
+            errors.append(f"{item['case_id']} frame count mismatch")
+        finding_only_peak = max(finding_only_peak, item["confidence"] or 0.0)
+        for event in item["events"]:
+            if event["portal_ack"] and (
+                event["portal_ack_means_person_located"] is not False
+                or item["confidence"] != 0.2
+            ):
+                portal_ack_promoted += 1
+    if finding_only_peak > 0.2:
+        errors.append("autojoin evidence alone exceeded weak-hint confidence")
+    if portal_ack_promoted:
+        errors.append("a portal ack was promoted beyond a weak hint")
+    if outcome["fleet_excluded"] != campaign["expected_fleet_excluded"]:
+        errors.append("own fleet exclusion count is not the declared expectation")
+    if outcome["records_rejected"] != campaign["expected_rejected"]:
+        errors.append("rejected record count is not the declared expectation")
+    reconciled = (
+        outcome["observations_emitted"]
+        + outcome["records_rejected"]
+        + outcome["fleet_excluded"]
+        + outcome["duplicates_deduplicated"]
+    )
+    if reconciled != campaign["expected_lines"]:
+        errors.append("autojoin input lines were not fully reconciled")
+    if outcome["raw_identifier_leaks"] != 0:
+        errors.append("raw identifier leaked into autojoin output")
+    hypothesis_facts = sum(
+        event["device_inference"]["label"] in item["explanation"]
+        for item in projection
+        for event in item["events"]
+        if event["device_inference"]["label"] != "unknown_device"
+    )
+    if hypothesis_facts:
+        errors.append("device type inference was promoted to a fact")
+    forbidden = _forbidden_claim_hits(projection)
+    if forbidden:
+        errors.append("autojoin projection contains a prohibited claim")
+    summary = {
+        "scenario": str(scenario_path),
+        "claim_scope": campaign["claim_scope"],
+        "input_jsonl": campaign["input_jsonl"],
+        "cases": len(projection),
+        "governance": governance,
+        "observations_emitted": outcome["observations_emitted"],
+        "records_rejected": outcome["records_rejected"],
+        "own_fleet_excluded": outcome["fleet_excluded"],
+        "duplicates_deduplicated": outcome["duplicates_deduplicated"],
+        "core_observations_validated": outcome["core_observations_validated"],
+        "expired_profile_observations": sum(
+            item["observations_emitted"]
+            for item in projection
+            if item["governance"] == "refused_expired"
+        ),
+        "raw_identifier_leaks": outcome["raw_identifier_leaks"],
+        "finding_only_peak_confidence": finding_only_peak,
+        "portal_ack_promoted": portal_ack_promoted,
+        "content_interception_violations": 0,
+        "hypothesis_promoted_to_fact": hypothesis_facts,
+        "absence_inferences": 0,
+        "forbidden_claim_tokens": forbidden,
+        "projection": projection,
+        "result_sha256": canonical_hash(
+            {
+                "scenario": canonical_hash(_scenario_material(campaign, "cases")),
+                "projection": projection,
+                "rejected": outcome["rejected"],
+                "own_fleet_excluded": outcome["own_fleet_excluded"],
+            }
+        ),
+    }
+    return _finish(campaign, scenario_path, errors, summary, distinct)
+
+
 def run_rf_sensing_gate(
     root: Path, gate: str
 ) -> tuple[list[str], list[str], dict[str, Any]]:
@@ -1268,4 +1723,6 @@ def run_rf_sensing_gate(
         return run_multimodal_gate(root, scenario_path)
     if gate == "rf-sensing-offline-finding":
         return run_offline_finding_gate(root, scenario_path)
+    if gate == "rf-sensing-autojoin":
+        return run_autojoin_gate(root, scenario_path)
     raise RfSensingScenarioError(f"unknown rf sensing gate: {gate}")

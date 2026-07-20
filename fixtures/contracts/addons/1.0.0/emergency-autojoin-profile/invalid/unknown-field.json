@@ -1,0 +1,52 @@
+{
+  "authorizing_actors": [
+    "incident_commander-1",
+    "privacy_safety_reviewer-1"
+  ],
+  "channel_plan": {
+    "band": "ism_2_4_ghz",
+    "channels": [
+      1,
+      6,
+      11
+    ]
+  },
+  "content_interception": false,
+  "created_at": "2026-07-17T19:00:00.000000Z",
+  "credential_capture": false,
+  "default_profile_allowed": false,
+  "device_type_inference": "heuristic_only",
+  "dual_authorization_required": true,
+  "expires_at": "2026-07-17T21:00:00.000000Z",
+  "expiry_required": true,
+  "geofence_ref": "urn:sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "karma_ssid_response": true,
+  "kill_switch_required": true,
+  "limitations": [
+    "governed exception only, never default",
+    "os mitigations make auto-join rare in 2026",
+    "effectiveness unverified"
+  ],
+  "max_declared_evidence": "unverified",
+  "monitoring_required": true,
+  "never_equals_legal_authorization": true,
+  "own_fleet_exclusion_applied": true,
+  "payload_retained": false,
+  "person_identification_allowed": false,
+  "portal_ack_means_person_located": false,
+  "portal_capabilities": [
+    "emergency_message",
+    "sound_alert"
+  ],
+  "profile_id": "emergency-autojoin-sector-7",
+  "profile_type": "emergency_autojoin_profile",
+  "pseudonym_scheme": "incident_rotating_hmac",
+  "regulatory_mode": "emergency_assumed_risk",
+  "schema_version": "1.0.0",
+  "silence_means_absence": false,
+  "ssid_labeling": "emergency_labeled_portal",
+  "stop_condition_required": true,
+  "subject_ref": "hmac-sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+  "traffic_rerouting_allowed": false,
+  "unexpected_field": true
+}

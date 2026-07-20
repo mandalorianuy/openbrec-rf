@@ -18,6 +18,8 @@ RVF_JSONL = REPO_ROOT / "fixtures/replay/ruview/model-jsonl-rvf.jsonl"
 RVF_CORRUPT = REPO_ROOT / "fixtures/replay/ruview/model-corrupt.bin"
 FINDING_CAMPAIGN = REPO_ROOT / "fixtures/replay/rf-sensing/offline-finding-campaign.json"
 FINDING_JSONL = REPO_ROOT / "fixtures/replay/rf-sensing/offline-finding-frames.jsonl"
+AUTOJOIN_CAMPAIGN = REPO_ROOT / "fixtures/replay/rf-sensing/autojoin-campaign.json"
+AUTOJOIN_JSONL = REPO_ROOT / "fixtures/replay/rf-sensing/autojoin-events.jsonl"
 
 
 def load_module(name: str, path: Path):
@@ -246,6 +248,78 @@ class OfflineFindingCampaignTests(unittest.TestCase):
         self.assertEqual(len(hashes), 1)
 
 
+class AutojoinCampaignTests(unittest.TestCase):
+    def setUp(self) -> None:
+        self.rf = load_module(
+            "openbrec_rf_sensing_autojoin_test", REPO_ROOT / "openbrec/rf_sensing.py"
+        )
+        self.campaign = load_json(AUTOJOIN_CAMPAIGN)
+        self.lines = AUTOJOIN_JSONL.read_text(encoding="utf-8").splitlines()
+        self.outcome = self.rf.run_autojoin_campaign(
+            self.campaign, repository_root=REPO_ROOT, raw_lines=self.lines
+        )
+        self.by_case = {item["case_id"]: item for item in self.outcome["projection"]}
+
+    def test_legitimate_activation_produces_weak_hints_only(self) -> None:
+        case = self.by_case["legitimate-activation"]
+        self.assertEqual(case["governance"], "accepted")
+        self.assertEqual(case["observations_emitted"], 3)
+        self.assertEqual(case["state"], "indicator")
+        self.assertLessEqual(case["confidence"], 0.2)
+        for event in case["events"]:
+            self.assertTrue(event["subject_ref"].startswith("hmac-sha256:"))
+            self.assertEqual(event["device_inference"]["statement_kind"], "hypothesis")
+
+    def test_expired_profile_is_refused_and_produces_nothing(self) -> None:
+        case = self.by_case["expired-profile"]
+        self.assertEqual(case["governance"], "refused_expired")
+        self.assertEqual(case["observations_emitted"], 0)
+        self.assertIsNone(case["state"])
+
+    def test_single_authorizer_profile_is_rejected_by_schema(self) -> None:
+        governance = self.outcome["governance"]["single_authorizer"]
+        self.assertEqual(governance["outcome"], "schema_rejected")
+        self.assertIn("authorizing_actors", governance["violations"])
+        case = self.by_case["single-authorizer"]
+        self.assertEqual(case["observations_emitted"], 0)
+
+    def test_portal_ack_is_never_promoted_to_located_person(self) -> None:
+        case = self.by_case["portal-ack"]
+        self.assertEqual(case["state"], "indicator")
+        self.assertEqual(case["confidence"], 0.2)
+        ack = next(item for item in case["events"] if item["portal_ack"])
+        self.assertFalse(ack["portal_ack_means_person_located"])
+        self.assertNotIn("located", case["explanation"])
+
+    def test_quiet_window_and_fleet_exclusion_abstain(self) -> None:
+        quiet = self.by_case["quiet-window"]
+        self.assertEqual(quiet["frames_observed"], 0)
+        self.assertEqual(quiet["state"], "abstained")
+        fleet = self.by_case["own-fleet-device"]
+        self.assertEqual(fleet["observations_emitted"], 0)
+        self.assertEqual(fleet["state"], "abstained")
+        self.assertEqual(self.outcome["fleet_excluded"], 1)
+        self.assertEqual(self.rf._forbidden_claim_hits(self.outcome["projection"]), 0)
+
+    def test_hostile_records_are_rejected_without_leaking_content(self) -> None:
+        rejected = self.outcome["rejected"]
+        self.assertEqual(len(rejected), 2)
+        messages = " ".join(item["error"] for item in rejected)
+        self.assertIn("http_payload", messages)
+        self.assertIn("content_interception", messages)
+        self.assertNotIn("synthetic-marker-zzz", messages)
+        self.assertEqual(self.outcome["raw_identifier_leaks"], 0)
+
+    def test_determinism_under_input_permutations(self) -> None:
+        hashes = self.rf._permuted_hashes(
+            self.lines,
+            lambda lines: self.rf.run_autojoin_campaign(
+                self.campaign, repository_root=REPO_ROOT, raw_lines=lines
+            ),
+        )
+        self.assertEqual(len(hashes), 1)
+
+
 class RuviewModelFormatTests(unittest.TestCase):
     def setUp(self) -> None:
         self.ruview = load_module(
@@ -290,6 +364,7 @@ class RfSensingGateCliTests(unittest.TestCase):
             "rf-sensing-passive",
             "rf-sensing-multimodal",
             "rf-sensing-offline-finding",
+            "rf-sensing-autojoin",
         ):
             outcome = self.run_verify(gate)
             self.assertEqual(outcome["result"], "passed")
@@ -318,6 +393,7 @@ class RfSensingGateCliTests(unittest.TestCase):
             "rf-sensing-passive",
             "rf-sensing-multimodal",
             "rf-sensing-offline-finding",
+            "rf-sensing-autojoin",
             "ruview-model-format",
         ):
             self.assertIn(gate, result.stdout)

@@ -37,7 +37,7 @@ flowchart LR
 
 Cada nivel local sigue operando si pierde el nivel superior. El transporte mueve envelopes; el overlay conserva identidad, prioridad, autenticidad, deduplicación y semántica. La vista completa — planos, transportes (Meshtastic, MeshCore, Reticulum, LoRaWAN, carry bundle), energía, beacons, federación y el pipeline de evidencia — está en [Arquitectura](docs/architecture.md).
 
-Además, los dominios de RF sensing de la encarnación previa (Wi-Fi CSI, metadata pasiva, SDR receive-only, drones como geometría, RF quieting) están reintegrados como **addons experimentales** con invariantes de safety en contrato y estados de evidencia honestos (ADR-004); la base citable es la [investigación SOTA de RF sensing](docs/research/rf-sensing-state-of-the-art.md). Ninguno es capacidad validada: CSI/Kismet/SDR en SAR real son `unverified` y RF quieting es `specified` sin literatura.
+Además, los dominios de RF sensing de la encarnación previa (Wi-Fi CSI, metadata pasiva, SDR receive-only, drones como geometría, RF quieting) están reintegrados como **addons experimentales** con invariantes de safety en contrato y estados de evidencia honestos (ADR-004), junto a la detección pasiva de redes de localización crowdsourced — Apple Find My, Google Find Hub, Samsung — como indicio débil (`offline-finding-observation`, RFC-0002). La base citable es la [investigación SOTA de RF sensing](docs/research/rf-sensing-state-of-the-art.md). Tres addons (`csi-link-observation`, `passive-rf-observation`, `offline-finding-observation`) tienen simuladores de replay determinísticos que los elevan a `simulated` (gates `rf-sensing-*`). Ninguno es capacidad validada: CSI/Kismet/SDR en SAR real son `unverified` y RF quieting es `specified` sin literatura. Como excepción separada y gobernada (ADR-005), el addon `emergency-autojoin-profile` define un AP de emergencia que responde a cualquier SSID sondeado para convertir el teléfono de una víctima que no puede actuar en baliza vía portal cautivo — sólo bajo `emergency_assumed_risk`, nunca por defecto, con eficacia `unverified` ([guía](docs/guides/emergency-autojoin.md)).
 
 ## Tres caminos
 
@@ -90,11 +90,16 @@ uv run --offline python -m openbrec.verify open-spec-beacons
 uv run --offline python -m openbrec.verify open-spec-federation
 uv run --offline python -m openbrec.verify open-spec-builds
 uv run --offline python -m openbrec.verify open-spec-exit
+uv run --offline python -m openbrec.verify rf-sensing-csi
+uv run --offline python -m openbrec.verify rf-sensing-passive
+uv run --offline python -m openbrec.verify rf-sensing-multimodal
+uv run --offline python -m openbrec.verify ruview-model-format
+uv run --offline python -m openbrec.verify rf-sensing-offline-finding
 uv run --offline python -m unittest discover tests -q
 uv run --offline python -m openbrec.verify core-replay --bundle fixtures/replay/core/m0-six-node.json
 ```
 
-Cada gate valida su perfil normativo en `specs/openbrec/1.0.0-draft.1/`: `energy-architecture-profiles.json`, `multi-bearer-transport-profiles.json`, `messaging-interoperability-profiles.json`, `beacon-capability-profiles.json`, `recursive-federation-profiles.json` y `reference-build-profiles.json`. La suite completa (311 tests) corre sin hardware. El pipeline software end-to-end con datos sintéticos se describe en el [Quickstart off-grid](docs/guides/quickstart-offgrid.md). Consultar [Validación y troubleshooting](docs/guides/validation-troubleshooting.md) para interpretar resultados.
+Cada gate valida su perfil normativo en `specs/openbrec/1.0.0-draft.1/`: `energy-architecture-profiles.json`, `multi-bearer-transport-profiles.json`, `messaging-interoperability-profiles.json`, `beacon-capability-profiles.json`, `recursive-federation-profiles.json` y `reference-build-profiles.json`; los gates `rf-sensing-*` ejecutan los simuladores de replay de los dominios RF (fixtures en `fixtures/replay/`). La suite completa (337 tests) corre sin hardware. El pipeline software end-to-end con datos sintéticos se describe en el [Quickstart off-grid](docs/guides/quickstart-offgrid.md). Consultar [Validación y troubleshooting](docs/guides/validation-troubleshooting.md) para interpretar resultados.
 
 ## Contribución y licencias
 
@@ -132,7 +137,7 @@ El roadmap vigente es [ROADMAP.md](ROADMAP.md); [DELIVERY_BOARD.md](DELIVERY_BOA
 | Interop CAP/EDXL-DE | [Interoperación](docs/guides/interop-emergency-standards.md) |
 | Marco regulatorio | [Regulatory](docs/guides/regulatory.md) |
 | Doctrina USAR | [USAR doctrine integration](docs/guides/usar-doctrine-integration.md) |
-| Sensing RF experimental | [CSI](docs/guides/csi-sensing.md) · [RF pasiva](docs/guides/passive-rf.md) · [SDR receive-only](docs/guides/sdr-beacons.md) · [Drones](docs/guides/drone-geometry.md) · [RF quieting](docs/guides/rf-quieting.md) |
+| Sensing RF experimental | [CSI](docs/guides/csi-sensing.md) · [RF pasiva](docs/guides/passive-rf.md) · [SDR receive-only](docs/guides/sdr-beacons.md) · [Drones](docs/guides/drone-geometry.md) · [RF quieting](docs/guides/rf-quieting.md) · [Offline finding](docs/guides/offline-finding.md) |
 | Rutas de solución | [Kit mínimo personal/equipo](docs/reference-builds/personal-team-kit.md) · [ResponseCell](docs/reference-builds/response-cell.md) · [Deployment federado](docs/reference-builds/federated-deployment.md) |
 
 Los principios de diseño (offline-first, replayable, capability-driven, life-safety-first, open hardware, evidence-not-assertions, abstention) se desarrollan en [Arquitectura](docs/architecture.md) y tienen autoridad normativa en la [Open Spec](docs/open-spec/README.md). Las recetas reutilizables por capacidad están en el [índice de reference builds](docs/reference-builds/README.md).

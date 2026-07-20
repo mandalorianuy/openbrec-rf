@@ -8,6 +8,7 @@ export type { CaptureAuthorizationEvent } from './capture-authorization-event.sc
 export type { ClockDisciplineProfile } from './clock-discipline-profile.schema';
 export type { CsiLinkObservation } from './csi-link-observation.schema';
 export type { DroneDeploymentEvent } from './drone-deployment-event.schema';
+export type { EmergencyAutojoinProfile } from './emergency-autojoin-profile.schema';
 export type { EnergyBudget } from './energy-budget.schema';
 export type { EnergyCapability } from './energy-capability.schema';
 export type { EnergyStatus } from './energy-status.schema';

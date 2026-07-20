@@ -2,7 +2,7 @@
   "baseline_version": "1.0.0",
   "status": "experimental",
   "accepted_at": null,
-  "contract_set_sha256": "f008529b789ea1581d38c564b82ed0d41d62437372c409a2db09dc753abab981",
+  "contract_set_sha256": "cbf476fecec5ba9007c509f331e534bff69bbcaa9a0af78c13b33eff4f1bae55",
   "addons": [
     {
       "$id": "https://openbrec.org/schemas/addons/beacon-capability/1.0.0",
@@ -39,6 +39,10 @@
     {
       "$id": "https://openbrec.org/schemas/addons/drone-deployment-event/1.0.0",
       "sha256": "df9730edeaa0be650021a4cbd93add29b1dcb40084c008b87f5b1b363bf4b506"
+    },
+    {
+      "$id": "https://openbrec.org/schemas/addons/emergency-autojoin-profile/1.0.0",
+      "sha256": "57dcfe34497c46cd669a768c14e136ae5589660f37c296f4215197c3acde0930"
     },
     {
       "$id": "https://openbrec.org/schemas/addons/energy-budget/1.0.0",

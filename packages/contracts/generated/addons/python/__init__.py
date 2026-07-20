@@ -8,6 +8,7 @@ from .capture_authorization_event_schema import CaptureAuthorizationEvent
 from .clock_discipline_profile_schema import ClockDisciplineProfile
 from .csi_link_observation_schema import CsiLinkObservation
 from .drone_deployment_event_schema import DroneDeploymentEvent
+from .emergency_autojoin_profile_schema import EmergencyAutojoinProfile
 from .energy_budget_schema import EnergyBudget
 from .energy_capability_schema import EnergyCapability
 from .energy_status_schema import EnergyStatus
@@ -30,4 +31,4 @@ from .transport_policy_decision_schema import TransportPolicyDecision
 from .transport_profile_schema import TransportProfile
 from .victim_record_schema import VictimRecord
 
-__all__ = ['BeaconCapability', 'BeaconHealth', 'BeaconObservation', 'BeaconPlacement', 'BearerCapability', 'CaptureAuthorizationEvent', 'ClockDisciplineProfile', 'CsiLinkObservation', 'DroneDeploymentEvent', 'EnergyBudget', 'EnergyCapability', 'EnergyStatus', 'FederationEvent', 'FederationTopologyEvent', 'HumanMessageEvent', 'HumanMessage', 'IdentityKeyLifecycleProfile', 'InteropEmergencyStandardsProfile', 'OfflineFindingObservation', 'OfflineMappingProfile', 'PassiveRfObservation', 'ReviewTaskEvent', 'RfIsolationProfile', 'RuViewObservation', 'SdrReceiveProfile', 'TerminalCapability', 'TransportEnvelope', 'TransportPolicyDecision', 'TransportProfile', 'VictimRecord']
+__all__ = ['BeaconCapability', 'BeaconHealth', 'BeaconObservation', 'BeaconPlacement', 'BearerCapability', 'CaptureAuthorizationEvent', 'ClockDisciplineProfile', 'CsiLinkObservation', 'DroneDeploymentEvent', 'EmergencyAutojoinProfile', 'EnergyBudget', 'EnergyCapability', 'EnergyStatus', 'FederationEvent', 'FederationTopologyEvent', 'HumanMessageEvent', 'HumanMessage', 'IdentityKeyLifecycleProfile', 'InteropEmergencyStandardsProfile', 'OfflineFindingObservation', 'OfflineMappingProfile', 'PassiveRfObservation', 'ReviewTaskEvent', 'RfIsolationProfile', 'RuViewObservation', 'SdrReceiveProfile', 'TerminalCapability', 'TransportEnvelope', 'TransportPolicyDecision', 'TransportProfile', 'VictimRecord']

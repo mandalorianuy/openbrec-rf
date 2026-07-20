@@ -160,6 +160,7 @@ RF_SENSING_GATES = {
     "rf-sensing-passive",
     "rf-sensing-multimodal",
     "rf-sensing-offline-finding",
+    "rf-sensing-autojoin",
 }
 P0_INTEGRATED_GATES = {"p0-integrated"}
 PRIVACY_SAFETY_GATES = {
@@ -834,6 +835,7 @@ def _parser() -> argparse.ArgumentParser:
         "rf-sensing-passive",
         "rf-sensing-multimodal",
         "rf-sensing-offline-finding",
+        "rf-sensing-autojoin",
         "ruview-model-format",
         "p0-integrated",
         "review-quarantine",
@@ -1474,6 +1476,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             "rf-sensing-passive": "synthetic_passive_rf_pseudonymization_and_payload_stripping",
             "rf-sensing-multimodal": "declared_independence_multimodal_corroboration",
             "rf-sensing-offline-finding": "passive_offline_finding_weak_hints_and_fleet_exclusion",
+            "rf-sensing-autojoin": "governed_emergency_autojoin_pipeline_not_radio",
         }[args.gate]
         inputs.extend(
             [
@@ -1483,6 +1486,7 @@ def main(argv: Sequence[str] | None = None) -> int:
                 root / "schemas/addons/1.0.0/csi-link-observation.schema.json",
                 root / "schemas/addons/1.0.0/passive-rf-observation.schema.json",
                 root / "schemas/addons/1.0.0/offline-finding-observation.schema.json",
+                root / "schemas/addons/1.0.0/emergency-autojoin-profile.schema.json",
                 root / "schemas/core/1.0.0/observation.schema.json",
             ]
         )

@@ -23,6 +23,7 @@ EXPECTED_ADDON_SCHEMAS = {
     "clock-discipline-profile",
     "csi-link-observation",
     "drone-deployment-event",
+    "emergency-autojoin-profile",
     "energy-budget",
     "energy-capability",
     "energy-status",
@@ -92,19 +93,19 @@ class P001AddonContractTests(unittest.TestCase):
     def test_addon_contract_gate_validates_metaschema_and_catalog(self) -> None:
         output = self.assert_passed(self.run_verify("addon-contracts"))
         self.assertEqual(output["scope"], "addon_metaschema_and_catalog")
-        self.assertEqual(output["summary"]["addon_schemas"], 30)
+        self.assertEqual(output["summary"]["addon_schemas"], 31)
         self.assertEqual(output["summary"]["support_status"], "experimental")
 
     def test_addon_fixture_gate_reconciles_positive_and_negative_cases(self) -> None:
         output = self.assert_passed(self.run_verify("addon-fixtures"))
         self.assertEqual(output["scope"], "addon_schema_fixture_matrix")
-        self.assertEqual(output["summary"]["schemas"], 30)
-        self.assertEqual(output["summary"]["valid_fixtures"], 60)
-        self.assertEqual(output["summary"]["invalid_fixtures"], 210)
+        self.assertEqual(output["summary"]["schemas"], 31)
+        self.assertEqual(output["summary"]["valid_fixtures"], 62)
+        self.assertEqual(output["summary"]["invalid_fixtures"], 217)
 
     def test_generated_consumers_include_all_addon_contracts(self) -> None:
         output = self.assert_passed(self.run_verify("contracts-gen", "--check"))
-        self.assertEqual(output["summary"]["addon_schemas"], 30)
+        self.assertEqual(output["summary"]["addon_schemas"], 31)
         python_models = (
             REPO_ROOT / "packages/contracts/generated/addons/python/models.py"
         )
@@ -120,7 +121,7 @@ class P001AddonContractTests(unittest.TestCase):
 
     def test_addon_compatibility_baseline_is_frozen(self) -> None:
         output = self.assert_passed(self.run_verify("schema-compat"))
-        self.assertEqual(output["summary"]["addon_schemas"], 30)
+        self.assertEqual(output["summary"]["addon_schemas"], 31)
         self.assertEqual(output["summary"]["addon_status"], "experimental")
 
     def test_contracts_enforce_life_safety_and_transport_boundaries(self) -> None:
@@ -262,6 +263,42 @@ class P001AddonContractTests(unittest.TestCase):
         )
         finding["silence_means_absence"] = True
         self.assertTrue(errors("offline-finding-observation", finding))
+
+        def autojoin() -> dict[str, object]:
+            return copy.deepcopy(
+                schema("emergency-autojoin-profile")["examples"][0]
+            )
+
+        profile = autojoin()
+        profile["regulatory_mode"] = "receive_only"
+        self.assertTrue(errors("emergency-autojoin-profile", profile))
+        profile = autojoin()
+        profile["dual_authorization_required"] = False
+        self.assertTrue(errors("emergency-autojoin-profile", profile))
+        profile = autojoin()
+        del profile["expires_at"]
+        self.assertTrue(errors("emergency-autojoin-profile", profile))
+        profile = autojoin()
+        profile["content_interception"] = True
+        self.assertTrue(errors("emergency-autojoin-profile", profile))
+        profile = autojoin()
+        profile["traffic_rerouting_allowed"] = True
+        self.assertTrue(errors("emergency-autojoin-profile", profile))
+        profile = autojoin()
+        profile["credential_capture"] = True
+        self.assertTrue(errors("emergency-autojoin-profile", profile))
+        profile = autojoin()
+        profile["person_identification_allowed"] = True
+        self.assertTrue(errors("emergency-autojoin-profile", profile))
+        profile = autojoin()
+        profile["portal_ack_means_person_located"] = True
+        self.assertTrue(errors("emergency-autojoin-profile", profile))
+        profile = autojoin()
+        profile["default_profile_allowed"] = True
+        self.assertTrue(errors("emergency-autojoin-profile", profile))
+        profile = autojoin()
+        profile["silence_means_absence"] = True
+        self.assertTrue(errors("emergency-autojoin-profile", profile))
 
         for item, _path in addon_schemas:
             validator = Draft202012Validator(

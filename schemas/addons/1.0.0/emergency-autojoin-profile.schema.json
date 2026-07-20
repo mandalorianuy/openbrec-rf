@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openbrec.org/schemas/addons/emergency-autojoin-profile/1.0.0",
+  "title": "EmergencyAutojoinProfile",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "profile_type", "profile_id", "created_at", "expires_at", "regulatory_mode", "authorizing_actors", "dual_authorization_required", "expiry_required", "kill_switch_required", "stop_condition_required", "monitoring_required", "never_equals_legal_authorization", "karma_ssid_response", "ssid_labeling", "geofence_ref", "channel_plan", "portal_capabilities", "portal_ack_means_person_located", "content_interception", "traffic_rerouting_allowed", "credential_capture", "payload_retained", "person_identification_allowed", "subject_ref", "pseudonym_scheme", "own_fleet_exclusion_applied", "silence_means_absence", "device_type_inference", "default_profile_allowed", "max_declared_evidence", "limitations"],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "profile_type": {"enum": ["emergency_autojoin_profile"]},
+    "profile_id": {"type": "string", "pattern": "^emergency-autojoin-[a-z0-9-]{3,48}$"},
+    "created_at": {"type": "string", "format": "date-time", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{6}Z$"},
+    "expires_at": {"type": "string", "format": "date-time", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{6}Z$"},
+    "regulatory_mode": {"const": "emergency_assumed_risk"},
+    "authorizing_actors": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 2, "uniqueItems": true},
+    "dual_authorization_required": {"const": true},
+    "expiry_required": {"const": true},
+    "kill_switch_required": {"const": true},
+    "stop_condition_required": {"const": true},
+    "monitoring_required": {"const": true},
+    "never_equals_legal_authorization": {"const": true},
+    "karma_ssid_response": {"const": true},
+    "ssid_labeling": {"const": "emergency_labeled_portal"},
+    "geofence_ref": {"type": "string", "pattern": "^urn:sha256:[0-9a-f]{64}$"},
+    "channel_plan": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["band", "channels"],
+      "properties": {
+        "band": {"enum": ["ism_2_4_ghz", "ism_5_ghz"]},
+        "channels": {"type": "array", "items": {"type": "integer", "minimum": 1, "maximum": 196}, "minItems": 1, "uniqueItems": true}
+      }
+    },
+    "portal_capabilities": {"type": "array", "items": {"enum": ["emergency_message", "sound_alert", "vibration_alert", "flash_alert"]}, "minItems": 1, "uniqueItems": true},
+    "portal_ack_means_person_located": {"const": false},
+    "stop_condition": {"type": "string", "minLength": 1, "maxLength": 512},
+    "monitoring_log_ref": {"type": "string", "pattern": "^urn:sha256:[0-9a-f]{64}$"},
+    "content_interception": {"const": false},
+    "traffic_rerouting_allowed": {"const": false},
+    "credential_capture": {"const": false},
+    "payload_retained": {"const": false},
+    "person_identification_allowed": {"const": false},
+    "subject_ref": {"type": "string", "pattern": "^hmac-sha256:[0-9a-f]{64}$"},
+    "pseudonym_scheme": {"const": "incident_rotating_hmac"},
+    "own_fleet_exclusion_applied": {"const": true},
+    "silence_means_absence": {"const": false},
+    "device_type_inference": {"const": "heuristic_only"},
+    "default_profile_allowed": {"const": false},
+    "max_declared_evidence": {"const": "unverified"},
+    "limitations": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1, "uniqueItems": true}
+  },
+  "examples": [
+    {"schema_version": "1.0.0", "profile_type": "emergency_autojoin_profile", "profile_id": "emergency-autojoin-sector-7", "created_at": "2026-07-17T19:00:00.000000Z", "expires_at": "2026-07-17T21:00:00.000000Z", "regulatory_mode": "emergency_assumed_risk", "authorizing_actors": ["incident_commander-1", "privacy_safety_reviewer-1"], "dual_authorization_required": true, "expiry_required": true, "kill_switch_required": true, "stop_condition_required": true, "monitoring_required": true, "never_equals_legal_authorization": true, "karma_ssid_response": true, "ssid_labeling": "emergency_labeled_portal", "geofence_ref": "urn:sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "channel_plan": {"band": "ism_2_4_ghz", "channels": [1, 6, 11]}, "portal_capabilities": ["emergency_message", "sound_alert"], "portal_ack_means_person_located": false, "content_interception": false, "traffic_rerouting_allowed": false, "credential_capture": false, "payload_retained": false, "person_identification_allowed": false, "subject_ref": "hmac-sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "pseudonym_scheme": "incident_rotating_hmac", "own_fleet_exclusion_applied": true, "silence_means_absence": false, "device_type_inference": "heuristic_only", "default_profile_allowed": false, "max_declared_evidence": "unverified", "limitations": ["governed exception only, never default", "os mitigations make auto-join rare in 2026", "effectiveness unverified"]},
+    {"schema_version": "1.0.0", "profile_type": "emergency_autojoin_profile", "profile_id": "emergency-autojoin-sector-9", "created_at": "2026-07-17T19:30:00.000000Z", "expires_at": "2026-07-17T20:30:00.000000Z", "regulatory_mode": "emergency_assumed_risk", "authorizing_actors": ["incident_commander-1", "comms_lead-1"], "dual_authorization_required": true, "expiry_required": true, "kill_switch_required": true, "stop_condition_required": true, "monitoring_required": true, "never_equals_legal_authorization": true, "karma_ssid_response": true, "ssid_labeling": "emergency_labeled_portal", "geofence_ref": "urn:sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc", "channel_plan": {"band": "ism_2_4_ghz", "channels": [1]}, "portal_capabilities": ["emergency_message", "sound_alert", "vibration_alert", "flash_alert"], "portal_ack_means_person_located": false, "stop_condition": "stop immediately if coordination or critical devices are affected", "monitoring_log_ref": "urn:sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd", "content_interception": false, "traffic_rerouting_allowed": false, "credential_capture": false, "payload_retained": false, "person_identification_allowed": false, "subject_ref": "hmac-sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee", "pseudonym_scheme": "incident_rotating_hmac", "own_fleet_exclusion_applied": true, "silence_means_absence": false, "device_type_inference": "heuristic_only", "default_profile_allowed": false, "max_declared_evidence": "unverified", "limitations": ["governed exception only, never default", "an association is not a located person", "silence never means absence", "assumed risk does not equal legal authorization"]}
+  ]
+}

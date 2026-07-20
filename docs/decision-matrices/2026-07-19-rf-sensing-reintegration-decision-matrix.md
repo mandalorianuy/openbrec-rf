@@ -30,6 +30,8 @@ Recomendaciones principales:
 | Reintegrar en el core | Descartada | Viola ADR-0001: el core no conoce protocolos de radio, fabricantes ni modalidades; además inyectaría dominios `specified`/`unverified` en la autoridad normativa central. |
 | **Reintegrar como addons experimentales** | **Adoptada** | Mismo patrón de la Fase 3: archivos nuevos, catálogo con `accepted_at: null`, fixtures, invariantes como consts, reviews por dominio. |
 
+Decisión posterior por dominio (R-09, 2026-07-19): para el AP de emergencia con auto-join se evaluó **no incluir** (descartada: el caso de vida — víctima que no puede elegir red — queda sin canal), **incluir por defecto** (descartada: técnica evil-twin-like y legalmente interceptación-adyacente; inaceptable sin gobernanza) e **incluir como excepción gobernada** bajo `emergency_assumed_risk` (adoptada, ADR-005).
+
 ## 3. Dominios reintegrados y estados de evidencia asignados
 
 Escalas: valor BREC `V1`–`V5`, madurez `externa/OpenBREC` (M0 idea → M5 operacional repetida), decisión según la regla de la matriz vigente.
@@ -44,6 +46,7 @@ Escalas: valor BREC `V1`–`V5`, madurez `externa/OpenBREC` (M0 idea → M5 oper
 | R-06 | RF quieting / aislamiento medido | `rf-isolation-profile` | V3 | `specified` — sin literatura SAR (resultado negativo declarado) | M1/M1 | WATCH-P1 (requiere experimento propio) |
 | R-07 | RuView como proveedor CSI opcional | `ruview-observation` | V3 | `specified` (adapter pineado `90667d0…`); claims nunca elevados | M2/M1 | GO (contrato, ADR-001) |
 | R-08 | Detección pasiva de redes crowdsourced (Find My / Find Hub / SmartThings Find) | `offline-finding-observation` | V3 | `specified` — sin literatura SAR (RFC-0002, 2026-07-19; extensión posterior a esta matriz) | M3/M1 | GO (contrato) / WATCH-P1 (físico) |
+| R-09 | AP de emergencia con auto-join (Karma gobernado + portal de emergencia) | `emergency-autojoin-profile` | V4 si funcionara | `specified` (contrato/gobernanza); eficacia `unverified` y cayendo por OS modernos (ADR-005, RFC-0003) | M2/M1 | GO (contrato, sólo excepción gobernada) / WATCH-P1 (experimento de eficacia) |
 
 ## 4. Boundaries fijados
 
@@ -57,6 +60,7 @@ Escalas: valor BREC `V1`–`V5`, madurez `externa/OpenBREC` (M0 idea → M5 oper
 | RB-06 | Aislamiento medido, nunca presumido; nunca envolver sector con posible víctima | Consts `baseline_before_after_required: true`, `never_enclose_possible_victim_sector_without_analysis: true` (R-06); ADR-003 |
 | RB-07 | Salidas de RuView son observaciones experimentales, nunca `victim_detected` | Consts `experimental_only: true`, `outputs_are_victim_detected: false`, `unknown_class_required: true` (R-07); ADR-001 |
 | RB-08 | Offline finding: solo recepción, sin identificación, peso bajo, exclusión del propio despliegue | Consts `passive_only: true`, `gatt_connection_attempted: false`, `identification_attempted: false`, `raw_identifier_retained: false`, `alert_trigger_allowed: false`, `own_fleet_exclusion_applied: true` (R-08); RFC-0002 |
+| RB-09 | Autojoin de emergencia: sólo bajo `emergency_assumed_risk` completo; sin captura, sin rerouting, sin inspección de contenido; ACK de portal ≠ persona localizada; sin perfil por defecto | Invariantes de contrato de `emergency-autojoin-profile` (R-09); ADR-005; review `emergency-autojoin-review.md` |
 
 ## 5. Secuencia y siguiente experimento
 
@@ -89,3 +93,4 @@ Escalas: valor BREC `V1`–`V5`, madurez `externa/OpenBREC` (M0 idea → M5 oper
 | Fecha | Estado anterior | Estado nuevo | Evidencia/razón |
 |---|---|---|---|
 | 2026-07-19 | Dominios RF sensing archivados en `docs/legacy/` sin representación vigente | Reintegrados como 6 addons experimentales con invariantes de safety | ADR-004; investigación SOTA con tabla de evidencia; 5 reviews de diseño; RFC 0001 accepted. |
+| 2026-07-19 | Sin canal hacia víctimas que no pueden interactuar con su teléfono | AP de emergencia con auto-join incluido sólo como excepción gobernada bajo `emergency_assumed_risk` (R-09/RB-09) | ADR-005; review de diseño; TM-020..TM-022; eficacia declarada `unverified` con experimento definido. |

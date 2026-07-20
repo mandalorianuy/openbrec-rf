@@ -2,7 +2,7 @@
   "catalog_version": "1.0.0",
   "draft": "https://json-schema.org/draft/2020-12/schema",
   "status": "experimental",
-  "contract_set_sha256": "f008529b789ea1581d38c564b82ed0d41d62437372c409a2db09dc753abab981",
+  "contract_set_sha256": "cbf476fecec5ba9007c509f331e534bff69bbcaa9a0af78c13b33eff4f1bae55",
   "entries": [
     {
       "path": "schemas/addons/1.0.0/beacon-capability.schema.json",
@@ -105,6 +105,17 @@
       "status": "experimental",
       "dependencies": [],
       "maintainer": "radio-transport-maintainer",
+      "accepted_at": null
+    },
+    {
+      "path": "schemas/addons/1.0.0/emergency-autojoin-profile.schema.json",
+      "$id": "https://openbrec.org/schemas/addons/emergency-autojoin-profile/1.0.0",
+      "declared_version": "1.0.0",
+      "sha256": "57dcfe34497c46cd669a768c14e136ae5589660f37c296f4215197c3acde0930",
+      "category": "policy",
+      "status": "experimental",
+      "dependencies": [],
+      "maintainer": "privacy-safety-reviewer",
       "accepted_at": null
     },
     {

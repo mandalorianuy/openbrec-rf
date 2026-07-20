@@ -10,7 +10,8 @@ Estado actual en una línea: Open Spec `1.0.0-draft.1` completa (8 / 8), todo `s
 2. Cómo encaja en un operativo real: [Integración con doctrina USAR](guides/usar-doctrine-integration.md) (ICS-205, INSARAG, ciclo operacional).
 3. La base regulatoria antes de transmitir: [Marco regulatorio de RF](guides/regulatory.md).
 4. Las rutas de solución: [Kit mínimo personal/equipo](reference-builds/personal-team-kit.md), [ResponseCell](reference-builds/response-cell.md) y [Deployment federado](reference-builds/federated-deployment.md).
-5. [Qué no demuestra](#antes-de-usar-en-una-operación-real): ninguna ejecución sintética demuestra readiness operativa.
+5. Si la víctima no puede actuar (inconsciente, atrapada): la excepción gobernada del [AP de emergencia con auto-join](guides/emergency-autojoin.md) — sólo bajo `emergency_assumed_risk`, eficacia `unverified`.
+6. [Qué no demuestra](#antes-de-usar-en-una-operación-real): ninguna ejecución sintética demuestra readiness operativa.
 
 ## Desarrollador que implementa la spec
 
@@ -26,7 +27,7 @@ Estado actual en una línea: Open Spec `1.0.0-draft.1` completa (8 / 8), todo `s
 2. Elegir el bearer: [Transportes](guides/transports.md) (Meshtastic, MeshCore, Reticulum, LoRaWAN, carry bundle).
 3. Dimensionar la energía: [Energía](guides/energy.md).
 4. Componer una ruta: [reference builds](reference-builds/README.md).
-5. Sensing RF experimental (addons reintegrados por ADR-004): [CSI](guides/csi-sensing.md), [RF pasiva](guides/passive-rf.md), [SDR receive-only](guides/sdr-beacons.md), [drones](guides/drone-geometry.md) y [RF quieting](guides/rf-quieting.md) — todo `specified`/`simulated`, salvo excepciones declaradas en cada guía; los estados exactos por tecnología están en la [investigación SOTA](research/rf-sensing-state-of-the-art.md).
+5. Sensing RF experimental (addons reintegrados por ADR-004): [CSI](guides/csi-sensing.md), [RF pasiva](guides/passive-rf.md), [SDR receive-only](guides/sdr-beacons.md), [drones](guides/drone-geometry.md), [RF quieting](guides/rf-quieting.md) y [offline finding](guides/offline-finding.md) — todo `specified`/`simulated`, salvo excepciones declaradas en cada guía; los estados exactos por tecnología están en la [investigación SOTA](research/rf-sensing-state-of-the-art.md).
 6. Si ejecutás una prueba física: [evidence packs](evidence-packs/README.md) — todo adapter nuevo nace `unverified` y sólo un pack exacto lo eleva.
 
 ## Evaluador / investigador

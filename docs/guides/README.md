@@ -25,6 +25,7 @@ La entrada recomendada es [Start Here](../START_HERE.md). Cada guía resuelve un
 21. [Drones como geometría de sensing](drone-geometry.md)
 22. [RF quieting](rf-quieting.md)
 23. [Redes de localización crowdsourced](offline-finding.md)
+24. [AP de emergencia con auto-join gobernado](emergency-autojoin.md)
 
 Las guías 18–22 documentan los dominios de RF sensing reintegrados como addons experimentales; su base citable de evidencia es [docs/research/rf-sensing-state-of-the-art.md](../research/rf-sensing-state-of-the-art.md). La guía 23 cubre la detección pasiva de redes de localización crowdsourced (RFC-0002), también `specified`.
 

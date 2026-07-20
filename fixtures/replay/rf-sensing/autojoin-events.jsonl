@@ -1,0 +1,7 @@
+{"case_id": "legitimate-activation", "event": "association", "subject": "eid-synthetic-11", "rssi_dbm": -66.0, "ts_offset_s": 0, "device_hint": "smartphone"}
+{"case_id": "legitimate-activation", "event": "association", "subject": "eid-synthetic-12", "rssi_dbm": -70.0, "ts_offset_s": 120, "device_hint": "smartphone"}
+{"case_id": "legitimate-activation", "event": "association", "subject": "eid-synthetic-11", "rssi_dbm": -69.0, "ts_offset_s": 300, "device_hint": "smartphone"}
+{"case_id": "portal-ack", "event": "portal_ack", "subject": "eid-synthetic-13", "rssi_dbm": -64.0, "ts_offset_s": 60, "portal_capability": "emergency_message"}
+{"case_id": "own-fleet-device", "event": "association", "subject": "eid-synthetic-rescuer-1", "rssi_dbm": -55.0, "ts_offset_s": 0, "device_hint": "smartphone"}
+{"case_id": "legitimate-activation", "event": "association", "subject": "eid-synthetic-14", "rssi_dbm": -70.0, "ts_offset_s": 600, "device_hint": "smartphone", "http_payload": "GET /login synthetic-marker-zzz"}
+{"case_id": "portal-ack", "event": "portal_ack", "subject": "eid-synthetic-15", "rssi_dbm": -65.0, "ts_offset_s": 120, "content_interception": true}
