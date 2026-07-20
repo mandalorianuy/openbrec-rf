@@ -65,7 +65,7 @@ def engine_configuration() -> dict[str, Any]:
         "single_source_confidence": SINGLE_SOURCE_CONFIDENCE,
         "corroborated_confidence": CORROBORATED_CONFIDENCE,
         "result_ttl_s": RESULT_TTL_S,
-        "corroboration": "distinct_sensors>=2 and distinct_sensor_types>=2",
+        "corroboration": "distinct_sensors>=2 and distinct_independence_groups>=2",
     }
 
 
@@ -122,7 +122,10 @@ def _result_id(
 
 
 def fuse_observations(
-    observations: list[dict[str, Any]], *, zone_id: str | None = None
+    observations: list[dict[str, Any]],
+    *,
+    zone_id: str | None = None,
+    independence_groups: dict[str, str] | None = None,
 ) -> dict[str, Any]:
     ordered = sorted(observations, key=lambda item: item["observation_id"])
     if not ordered:
@@ -164,7 +167,13 @@ def fuse_observations(
         )
     else:
         sensors = {item["sensor_id"] for item in usable}
-        groups = {item["sensor_type"] for item in usable}
+        declared = independence_groups or {}
+        # Independence is declared per evidence source (like the beacon
+        # campaign); sensor_type is the conservative fallback.
+        groups = {
+            declared.get(item["observation_id"], item["sensor_type"])
+            for item in usable
+        }
         corroborated = len(sensors) >= 2 and len(groups) >= 2
         state = "indicator"
         abstained = False

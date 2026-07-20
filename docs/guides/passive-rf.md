@@ -53,6 +53,12 @@ Fixtures válidos/inválidos del addon (rechazo de MAC cruda y de payload reteni
 uv run --offline python -m openbrec.verify addon-fixtures
 ```
 
+Replay determinístico del dominio (JSONL sintético tipo Kismet → observaciones pseudonimizadas, con stripping verificado y rotación de `subject_ref`):
+
+```bash
+uv run --offline python -m openbrec.verify rf-sensing-passive
+```
+
 ## Fallos comunes y recuperación
 
 Ante MAC randomization, declarar menor confianza de vinculación y nunca "rellenar" identidad. Ante captura accidental de contenido, descartar en el borde y registrar la excepción. Ante duda legal sobre una fuente, suspenderla y volver a `receive_only` estricto hasta revisión.
@@ -63,7 +69,7 @@ La metadata de dispositivos es dato personal potencial: minimización, hash rota
 
 ## Estado de evidencia
 
-Recepción de probes/BT y decodificación rtl_433/ADS-B: `bench-validated` (comunitario). Vinculación de identidad bajo MAC randomization: degradada, declarada como limitación. Kismet como herramienta de rescate: `unverified` (sin casos SAR documentados). Kismet en SAR y toda integración OpenBREC de este dominio: `specified`/`simulated` hasta evidence pack.
+Recepción de probes/BT y decodificación rtl_433/ADS-B: `bench-validated` (comunitario). Vinculación de identidad bajo MAC randomization: degradada, declarada como limitación. Kismet como herramienta de rescate: `unverified` (sin casos SAR documentados). Kismet en SAR y toda integración OpenBREC de este dominio: `specified`/`simulated` hasta evidence pack. El addon `passive-rf-observation` (contrato + replay determinístico con pseudonimización y stripping verificados) queda en `simulated` (gate `rf-sensing-passive`, receipt en `evidence/rf-sensing/`).
 
 ## Qué no demuestra
 

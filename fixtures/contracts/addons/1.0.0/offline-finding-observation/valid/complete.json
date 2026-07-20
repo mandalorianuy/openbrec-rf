@@ -1,0 +1,39 @@
+{
+  "alert_trigger_allowed": false,
+  "capabilities_absent": [
+    "google_aggregation_counter"
+  ],
+  "classification_hypothesis": {
+    "basis": "feaa frame rhythm compatible with fmdn eid rotation near 1024 s",
+    "confidence": 0.4,
+    "label": "offline_finding_beacon",
+    "statement_kind": "hypothesis"
+  },
+  "frame_pattern": "0xFEAA/0x40",
+  "fusion_weight": "low",
+  "gatt_connection_attempted": false,
+  "identification_attempted": false,
+  "limitations": [
+    "hypothesis, never a fact",
+    "own fleet devices excluded by roster",
+    "google aggregation hides single devices",
+    "no sar literature for offline finding detection"
+  ],
+  "max_declared_evidence": "bench-validated",
+  "network": "google_find_hub",
+  "observation_id": "35000000-0000-4000-8000-000000000002",
+  "own_fleet_exclusion_applied": true,
+  "passive_only": true,
+  "pseudonym_scheme": "incident_rotating_hmac",
+  "raw_identifier_retained": false,
+  "record_type": "offline_finding_observation",
+  "rssi_dbm": -70,
+  "rssi_uncertainty_db": 3.5,
+  "schema_version": "1.0.0",
+  "sensor_id": "ble-node-02",
+  "silence_means_absence": false,
+  "subject_ref": "hmac-sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+  "window_end": "2026-07-17T17:45:00.000000Z",
+  "window_start": "2026-07-17T17:30:00.000000Z",
+  "zone_id": "zone-c"
+}

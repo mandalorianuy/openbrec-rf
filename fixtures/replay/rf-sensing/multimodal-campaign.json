@@ -1,0 +1,83 @@
+{
+  "campaign_version": "1.0.0",
+  "claim_scope": "deterministic_simulation_only",
+  "scenario_id": "rf-sensing-multimodal-v1",
+  "provenance": {
+    "source_type": "synthetic_generated",
+    "contains_real_sensor_data": false,
+    "contains_human_data": false
+  },
+  "zone_id": "zone-a",
+  "window_start": "2026-07-19T19:00:00.000000Z",
+  "window_end": "2026-07-19T19:00:10.000000Z",
+  "sources": [
+    {
+      "source_id": "acoustic-beacon-1",
+      "sensor_id": "beacon-ac-1",
+      "independence_group": "acoustic",
+      "metric": "acoustic.motion_index",
+      "method": "acoustic:envelope-sim-v1",
+      "capabilities_absent": ["thermal"]
+    },
+    {
+      "source_id": "csi-link-1",
+      "sensor_id": "csi-link-alpha",
+      "independence_group": "csi",
+      "metric": "csi.change_score",
+      "method": "csi:amplitude-variance-sim-v1",
+      "capabilities_absent": ["phase_sanitized_csi"]
+    },
+    {
+      "source_id": "csi-link-2",
+      "sensor_id": "csi-link-beta",
+      "independence_group": "csi",
+      "metric": "csi.change_score",
+      "method": "csi:amplitude-variance-sim-v1",
+      "capabilities_absent": ["phase_sanitized_csi"]
+    },
+    {
+      "source_id": "passive-rf-1",
+      "sensor_id": "kismet-node-01",
+      "independence_group": "passive_rf",
+      "metric": "passive_rf.device_activity",
+      "method": "passive_rf:window-count-sim-v1",
+      "capabilities_absent": ["payload_inspection"]
+    }
+  ],
+  "cases": [
+    {
+      "case_id": "all-modalities",
+      "active": ["acoustic-beacon-1", "csi-link-1", "passive-rf-1"],
+      "signal": {"acoustic-beacon-1": 0.7, "csi-link-1": 0.6, "passive-rf-1": 0.65},
+      "expected_state": "indicator",
+      "expected_confidence": 0.5
+    },
+    {
+      "case_id": "csi-silent",
+      "active": ["acoustic-beacon-1", "csi-link-1"],
+      "signal": {"acoustic-beacon-1": 0.7, "csi-link-1": 0.3},
+      "expected_state": "indicator",
+      "expected_confidence": 0.2
+    },
+    {
+      "case_id": "insufficient-evidence",
+      "active": ["acoustic-beacon-1", "csi-link-1", "passive-rf-1"],
+      "signal": {"acoustic-beacon-1": 0.3, "csi-link-1": 0.2, "passive-rf-1": 0.1},
+      "expected_state": "abstained",
+      "expected_confidence": 0.0
+    },
+    {
+      "case_id": "two-csi-links",
+      "active": ["csi-link-1", "csi-link-2"],
+      "signal": {"csi-link-1": 0.7, "csi-link-2": 0.7},
+      "expected_state": "indicator",
+      "expected_confidence": 0.2
+    }
+  ],
+  "limitations": [
+    "deterministic simulation only",
+    "no presence or absence conclusion",
+    "silence of one modality never cancels another"
+  ],
+  "expected_result_sha256": "6b1ca377748fedfec1054c10b9eb164081f8d415af5128255669842c6bb6b4c6"
+}

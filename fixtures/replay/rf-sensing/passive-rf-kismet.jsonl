@@ -1,0 +1,6 @@
+{"source": "probe_request", "subject": "aa:bb:cc:dd:ee:01", "rssi_dbm": -72.5, "ts_offset_s": 0}
+{"source": "probe_request", "subject": "aa:bb:cc:dd:ee:01", "rssi_dbm": -72.5, "ts_offset_s": 0}
+{"source": "bt_advertisement", "subject": "aa:bb:cc:dd:ee:02", "rssi_dbm": -80.0, "ts_offset_s": 8}
+{"source": "rtl_433", "subject": "fineoffset-wh31-42", "rssi_dbm": -65.0, "ts_offset_s": 12}
+{"source": "drone_id", "subject": "synthetic-uas-serial-7", "rssi_dbm": -58.0, "ts_offset_s": 20}
+{"source": "probe_request", "subject": "aa:bb:cc:dd:ee:03", "rssi_dbm": "not-a-number", "ts_offset_s": 25, "ssid": "payload-must-be-stripped"}

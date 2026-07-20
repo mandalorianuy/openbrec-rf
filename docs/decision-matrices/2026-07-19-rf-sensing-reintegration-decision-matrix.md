@@ -43,6 +43,7 @@ Escalas: valor BREC `V1`–`V5`, madurez `externa/OpenBREC` (M0 idea → M5 oper
 | R-05 | Drones como geometría de sensing | `drone-deployment-event` | V4 | `specified`/`simulated` (payloads RF); térmica USAR `field-validated` externa y ajena | M2–M4/M1 | GO (contrato) / WATCH-P1 (físico) |
 | R-06 | RF quieting / aislamiento medido | `rf-isolation-profile` | V3 | `specified` — sin literatura SAR (resultado negativo declarado) | M1/M1 | WATCH-P1 (requiere experimento propio) |
 | R-07 | RuView como proveedor CSI opcional | `ruview-observation` | V3 | `specified` (adapter pineado `90667d0…`); claims nunca elevados | M2/M1 | GO (contrato, ADR-001) |
+| R-08 | Detección pasiva de redes crowdsourced (Find My / Find Hub / SmartThings Find) | `offline-finding-observation` | V3 | `specified` — sin literatura SAR (RFC-0002, 2026-07-19; extensión posterior a esta matriz) | M3/M1 | GO (contrato) / WATCH-P1 (físico) |
 
 ## 4. Boundaries fijados
 
@@ -55,6 +56,7 @@ Escalas: valor BREC `V1`–`V5`, madurez `externa/OpenBREC` (M0 idea → M5 oper
 | RB-05 | El autopiloto conserva el vuelo; release con confirmación humana | Const `flight_authority_in_core: false` (R-05); ADR-002 |
 | RB-06 | Aislamiento medido, nunca presumido; nunca envolver sector con posible víctima | Consts `baseline_before_after_required: true`, `never_enclose_possible_victim_sector_without_analysis: true` (R-06); ADR-003 |
 | RB-07 | Salidas de RuView son observaciones experimentales, nunca `victim_detected` | Consts `experimental_only: true`, `outputs_are_victim_detected: false`, `unknown_class_required: true` (R-07); ADR-001 |
+| RB-08 | Offline finding: solo recepción, sin identificación, peso bajo, exclusión del propio despliegue | Consts `passive_only: true`, `gatt_connection_attempted: false`, `identification_attempted: false`, `raw_identifier_retained: false`, `alert_trigger_allowed: false`, `own_fleet_exclusion_applied: true` (R-08); RFC-0002 |
 
 ## 5. Secuencia y siguiente experimento
 

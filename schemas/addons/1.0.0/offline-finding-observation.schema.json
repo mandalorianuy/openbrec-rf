@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openbrec.org/schemas/addons/offline-finding-observation/1.0.0",
+  "title": "OfflineFindingObservation",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "record_type", "observation_id", "window_start", "window_end", "sensor_id", "network", "frame_pattern", "rssi_dbm", "rssi_uncertainty_db", "subject_ref", "pseudonym_scheme", "own_fleet_exclusion_applied", "passive_only", "gatt_connection_attempted", "identification_attempted", "raw_identifier_retained", "silence_means_absence", "alert_trigger_allowed", "fusion_weight", "max_declared_evidence", "capabilities_absent", "limitations"],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "record_type": {"enum": ["offline_finding_observation"]},
+    "observation_id": {"type": "string", "format": "uuid"},
+    "window_start": {"type": "string", "format": "date-time", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{6}Z$"},
+    "window_end": {"type": "string", "format": "date-time", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{6}Z$"},
+    "sensor_id": {"type": "string", "minLength": 1},
+    "network": {"enum": ["apple_find_my", "google_find_hub", "samsung_smartthings_find", "unknown"]},
+    "frame_pattern": {"type": "string", "pattern": "^(0x[0-9A-Fa-f]{4}/0x[0-9A-Fa-f]{2}|undocumented)$"},
+    "rssi_dbm": {"type": "number"},
+    "rssi_uncertainty_db": {"type": "number", "minimum": 0},
+    "zone_id": {"type": "string", "pattern": "^[a-z][a-z0-9._-]{2,63}$"},
+    "subject_ref": {"type": "string", "pattern": "^hmac-sha256:[0-9a-f]{64}$"},
+    "pseudonym_scheme": {"const": "incident_rotating_hmac"},
+    "classification_hypothesis": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["label", "confidence", "statement_kind", "basis"],
+      "properties": {
+        "label": {"enum": ["separated_airtag_rhythm", "offline_finding_beacon", "powered_off_iphone_beacon", "unknown_pattern"]},
+        "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+        "statement_kind": {"const": "hypothesis"},
+        "basis": {"type": "string", "minLength": 1, "maxLength": 512}
+      }
+    },
+    "own_fleet_exclusion_applied": {"const": true},
+    "passive_only": {"const": true},
+    "gatt_connection_attempted": {"const": false},
+    "identification_attempted": {"const": false},
+    "raw_identifier_retained": {"const": false},
+    "silence_means_absence": {"const": false},
+    "alert_trigger_allowed": {"const": false},
+    "fusion_weight": {"const": "low"},
+    "max_declared_evidence": {"const": "bench-validated"},
+    "capabilities_absent": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+    "limitations": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1, "uniqueItems": true}
+  },
+  "examples": [
+    {"schema_version": "1.0.0", "record_type": "offline_finding_observation", "observation_id": "35000000-0000-4000-8000-000000000001", "window_start": "2026-07-17T17:20:00.000000Z", "window_end": "2026-07-17T17:25:00.000000Z", "sensor_id": "ble-node-01", "network": "apple_find_my", "frame_pattern": "0x004C/0x12", "rssi_dbm": -78.5, "rssi_uncertainty_db": 4, "subject_ref": "hmac-sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "pseudonym_scheme": "incident_rotating_hmac", "own_fleet_exclusion_applied": true, "passive_only": true, "gatt_connection_attempted": false, "identification_attempted": false, "raw_identifier_retained": false, "silence_means_absence": false, "alert_trigger_allowed": false, "fusion_weight": "low", "max_declared_evidence": "bench-validated", "capabilities_absent": ["gatt", "identification"], "limitations": ["weak presence hint only", "airtag in connected state is silent", "silence never means absence"]},
+    {"schema_version": "1.0.0", "record_type": "offline_finding_observation", "observation_id": "35000000-0000-4000-8000-000000000002", "window_start": "2026-07-17T17:30:00.000000Z", "window_end": "2026-07-17T17:45:00.000000Z", "sensor_id": "ble-node-02", "network": "google_find_hub", "frame_pattern": "0xFEAA/0x40", "rssi_dbm": -70, "rssi_uncertainty_db": 3.5, "zone_id": "zone-c", "subject_ref": "hmac-sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "pseudonym_scheme": "incident_rotating_hmac", "classification_hypothesis": {"label": "offline_finding_beacon", "confidence": 0.4, "statement_kind": "hypothesis", "basis": "feaa frame rhythm compatible with fmdn eid rotation near 1024 s"}, "own_fleet_exclusion_applied": true, "passive_only": true, "gatt_connection_attempted": false, "identification_attempted": false, "raw_identifier_retained": false, "silence_means_absence": false, "alert_trigger_allowed": false, "fusion_weight": "low", "max_declared_evidence": "bench-validated", "capabilities_absent": ["google_aggregation_counter"], "limitations": ["hypothesis, never a fact", "own fleet devices excluded by roster", "google aggregation hides single devices", "no sar literature for offline finding detection"]}
+  ]
+}

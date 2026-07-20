@@ -1,0 +1,11 @@
+{"case_id": "apple-find-my", "network": "apple_find_my", "frame_pattern": "0x004C/0x12", "subject": "eid-synthetic-01", "rssi_dbm": -68.0, "ts_offset_s": 0}
+{"case_id": "apple-find-my", "network": "apple_find_my", "frame_pattern": "0x004C/0x12", "subject": "eid-synthetic-01", "rssi_dbm": -71.0, "ts_offset_s": 300}
+{"case_id": "apple-find-my", "network": "apple_find_my", "frame_pattern": "0x004C/0x12", "subject": "eid-synthetic-01", "rssi_dbm": -66.0, "ts_offset_s": 600}
+{"case_id": "google-find-hub", "network": "google_find_hub", "frame_pattern": "0xFEAA/0x40", "subject": "eid-synthetic-02", "rssi_dbm": -70.0, "ts_offset_s": 0}
+{"case_id": "google-find-hub", "network": "google_find_hub", "frame_pattern": "0xFEAA/0x40", "subject": "eid-synthetic-02", "rssi_dbm": -73.0, "ts_offset_s": 300}
+{"case_id": "own-fleet-device", "network": "apple_find_my", "frame_pattern": "0x004C/0x12", "subject": "eid-synthetic-rescuer-1", "rssi_dbm": -55.0, "ts_offset_s": 0}
+{"case_id": "separated-airtag-rhythm", "network": "apple_find_my", "frame_pattern": "0x004C/0x12", "subject": "eid-synthetic-03", "rssi_dbm": -69.0, "ts_offset_s": 0}
+{"case_id": "separated-airtag-rhythm", "network": "apple_find_my", "frame_pattern": "0x004C/0x12", "subject": "eid-synthetic-03", "rssi_dbm": -72.0, "ts_offset_s": 300}
+{"case_id": "finding-beside-csi", "network": "google_find_hub", "frame_pattern": "0xFEAA/0x40", "subject": "eid-synthetic-04", "rssi_dbm": -67.0, "ts_offset_s": 0}
+{"case_id": "apple-find-my", "network": "apple_find_my", "frame_pattern": "0x004C/0x12", "subject": "eid-synthetic-05", "rssi_dbm": -60.0, "ts_offset_s": 0, "gatt_attempt": true}
+{"case_id": "google-find-hub", "network": "google_find_hub", "frame_pattern": "0xFEAA/0x40", "subject": "eid-synthetic-06", "rssi_dbm": -62.0, "ts_offset_s": 0, "raw_eid": "4f:3a:9c:11:02:77"}

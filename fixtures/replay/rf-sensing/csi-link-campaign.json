@@ -1,0 +1,79 @@
+{
+  "campaign_version": "1.0.0",
+  "claim_scope": "deterministic_simulation_only",
+  "scenario_id": "rf-sensing-csi-v1",
+  "provenance": {
+    "source_type": "synthetic_generated",
+    "contains_real_sensor_data": false,
+    "contains_human_data": false
+  },
+  "logical_start": "2026-07-19T18:00:00.000000Z",
+  "window_s": 5,
+  "windows_per_case": 3,
+  "baseline_ref": "urn:sha256:1111111111111111111111111111111111111111111111111111111111111111",
+  "links": [
+    {
+      "link_id": "link-alpha",
+      "sensor_id": "csi-link-alpha",
+      "tx_node_id": "node-tx-01",
+      "rx_node_id": "node-rx-01",
+      "channel": 6,
+      "bandwidth_mhz": 20,
+      "antenna_profile_id": "antenna-esp32-stock",
+      "amplitude_only": true
+    }
+  ],
+  "cases": [
+    {
+      "case_id": "breathing-candidate",
+      "zone_id": "zone-a",
+      "link_id": "link-alpha",
+      "signal": {
+        "kind": "breathing_candidate",
+        "change_score": 0.4,
+        "breathing_candidate": 0.45,
+        "quality": 0.65
+      },
+      "expected_state": "indicator"
+    },
+    {
+      "case_id": "empty-room",
+      "zone_id": "zone-a",
+      "link_id": "link-alpha",
+      "signal": {
+        "kind": "empty",
+        "quality": 0.3
+      },
+      "expected_state": "abstained"
+    },
+    {
+      "case_id": "quiet-person",
+      "zone_id": "zone-a",
+      "link_id": "link-alpha",
+      "signal": {
+        "kind": "quiet_person",
+        "change_score": 0.35,
+        "quality": 0.7
+      },
+      "expected_state": "indicator"
+    },
+    {
+      "case_id": "ventilator",
+      "zone_id": "zone-a",
+      "link_id": "link-alpha",
+      "signal": {
+        "kind": "non_human_motion",
+        "change_score": 0.6,
+        "motion_index": 0.7,
+        "quality": 0.75
+      },
+      "expected_state": "indicator"
+    }
+  ],
+  "limitations": [
+    "deterministic simulation only",
+    "no hardware, RF, field, sensitivity or false-alert performance claim",
+    "no human presence or absence conclusion"
+  ],
+  "expected_result_sha256": "d88d69c141d641f25c7cf66f39d3de9cb7530dd8b371d84415e7c1e786cd7e9d"
+}

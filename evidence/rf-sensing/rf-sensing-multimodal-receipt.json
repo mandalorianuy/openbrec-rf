@@ -1,0 +1,170 @@
+{
+  "command": [
+    "python",
+    "-m",
+    "openbrec.verify",
+    "rf-sensing-multimodal",
+    "--receipt",
+    "evidence/rf-sensing/rf-sensing-multimodal-receipt.json"
+  ],
+  "dirty": true,
+  "errors": [],
+  "finished_at": "2026-07-19T23:10:25.904856Z",
+  "gate": "rf-sensing-multimodal",
+  "gate_version": "0.1.0",
+  "git_sha": "e3a42d4c456044528f49709d33f8c975ea336496",
+  "inputs": [
+    {
+      "path": "fixtures/replay/rf-sensing/multimodal-campaign.json",
+      "sha256": "91f172d5830c542251869593e361a29f43b6b16228bafe2cc4f25a06625bf38d"
+    },
+    {
+      "path": "openbrec/rf_sensing.py",
+      "sha256": "c3b9ae8cf7e24e4c075be6e55780fc4689fb716ac5ea651a859d026564df7dd4"
+    },
+    {
+      "path": "openbrec/fusion.py",
+      "sha256": "3f3d3d92a462ebf5762f69ea82265984f414a14ba3c049259e19c11996e3efab"
+    },
+    {
+      "path": "schemas/addons/1.0.0/csi-link-observation.schema.json",
+      "sha256": "3684bd07cb19d3fd5ce7470bb1f6205611ec29a4371e94a59cfa9f72c38c7bea"
+    },
+    {
+      "path": "schemas/addons/1.0.0/passive-rf-observation.schema.json",
+      "sha256": "8fb93b64bf71a4837aa9da7053a73c1a2eb9b17b151aed52a354036012595477"
+    },
+    {
+      "path": "schemas/core/1.0.0/observation.schema.json",
+      "sha256": "2038ce3c3f1953f3c6afe84b33a8df19caf52c488642889602726630f41fe234"
+    }
+  ],
+  "lockfiles": [
+    {
+      "path": "uv.lock",
+      "sha256": "2d1b79df4cd5878ec7f4674a133c54ca7b16dfa559560ba3a93911e620f435d5"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "sha256": "ed7659f050b279f37e5cf84fb065fc528e15b3204d374681f3a70ad081d1c25a"
+    },
+    {
+      "path": "apps/web/pnpm-lock.yaml",
+      "sha256": "f25dc17073860d2d18f806673d45b1ea7e461a424be10c4bea5126aeff155e62"
+    }
+  ],
+  "output_sha256": "61c6e915881c74ca0ded45c3959e0f7d5b16926553aa9f50835c64fc307123b7",
+  "receipt_version": "1.0.0",
+  "responsible_role": "beacon-science-maintainer",
+  "result": "passed",
+  "runtime": {
+    "docker": "Docker version 29.5.3, build d1c06ef",
+    "node": "v26.5.0",
+    "pnpm": null,
+    "python": "3.12.13"
+  },
+  "scope": "declared_independence_multimodal_corroboration",
+  "started_at": "2026-07-19T23:10:25.742185Z",
+  "summary": {
+    "absence_inferences": 0,
+    "cases": 4,
+    "claim_scope": "deterministic_simulation_only",
+    "corroborated_cases": 1,
+    "determinism_distinct_hashes": 1,
+    "forbidden_claim_tokens": 0,
+    "observations_schema_validated": 10,
+    "projection": [
+      {
+        "abstained": false,
+        "abstention_reasons": [],
+        "active_sources": [
+          "acoustic-beacon-1",
+          "csi-link-1",
+          "passive-rf-1"
+        ],
+        "case_id": "all-modalities",
+        "confidence": 0.5,
+        "explanation": "corroborated candidate across independent sources",
+        "observation_ids": [
+          "17eac375-bd43-56d8-a123-39a5970fc1d2",
+          "3c5f5009-2727-50d5-968b-27a7989145be",
+          "722905f0-8586-54a8-968a-48e61d4533d0"
+        ],
+        "result_id": "82189705-6da4-51be-983b-b7e12eeb19ab",
+        "state": "indicator",
+        "usable_sources": [
+          "beacon-ac-1",
+          "csi-link-alpha",
+          "kismet-node-01"
+        ]
+      },
+      {
+        "abstained": false,
+        "abstention_reasons": [],
+        "active_sources": [
+          "acoustic-beacon-1",
+          "csi-link-1"
+        ],
+        "case_id": "csi-silent",
+        "confidence": 0.2,
+        "explanation": "single-source candidate",
+        "observation_ids": [
+          "57fefe4a-aa04-5735-a585-a4ced8e14443",
+          "9f230401-5354-57f6-8211-adc4ac908913"
+        ],
+        "result_id": "0592c63b-870e-549a-b42b-615319708841",
+        "state": "indicator",
+        "usable_sources": [
+          "beacon-ac-1"
+        ]
+      },
+      {
+        "abstained": true,
+        "abstention_reasons": [
+          "insufficient independent evidence"
+        ],
+        "active_sources": [
+          "acoustic-beacon-1",
+          "csi-link-1",
+          "passive-rf-1"
+        ],
+        "case_id": "insufficient-evidence",
+        "confidence": 0.0,
+        "explanation": "no usable evidence in window; abstaining instead of inferring presence or absence",
+        "observation_ids": [
+          "1f37867a-6521-5027-9cfd-75b1f2a38e4f",
+          "44f5108f-e302-57a2-b9ec-35afe1333c7b",
+          "da10e0df-54cf-5772-a535-4703ed6812bb"
+        ],
+        "result_id": "94b10067-a0e5-5993-8b28-4d0fbd2533cb",
+        "state": "abstained",
+        "usable_sources": []
+      },
+      {
+        "abstained": false,
+        "abstention_reasons": [],
+        "active_sources": [
+          "csi-link-1",
+          "csi-link-2"
+        ],
+        "case_id": "two-csi-links",
+        "confidence": 0.2,
+        "explanation": "single-source candidate",
+        "observation_ids": [
+          "8d23904c-d910-5a14-8750-18c7063abfc3",
+          "c68f5c1f-2ae9-5691-82f2-79dc83131396"
+        ],
+        "result_id": "f4e666ea-9c37-5633-be78-c66feda56bc9",
+        "state": "indicator",
+        "usable_sources": [
+          "csi-link-alpha",
+          "csi-link-beta"
+        ]
+      }
+    ],
+    "result_sha256": "6b1ca377748fedfec1054c10b9eb164081f8d415af5128255669842c6bb6b4c6",
+    "scenario": "fixtures/replay/rf-sensing/multimodal-campaign.json",
+    "silence_cancels_other_modalities": 0
+  },
+  "warnings": []
+}

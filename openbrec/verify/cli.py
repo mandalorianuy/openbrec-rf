@@ -57,6 +57,10 @@ from openbrec.terminal import P1A_PROTOCOL_PATH, SCENARIO_PATH as TERMINAL_SCENA
 from openbrec.terminal import run_accessibility_gate, run_terminal_gate
 from openbrec.beacons import CAMPAIGN_PATH as BEACON_CAMPAIGN_PATH
 from openbrec.beacons import run_beacon_gate
+from openbrec.rf_sensing import SCENARIO_PATHS as RF_SENSING_SCENARIO_PATHS
+from openbrec.rf_sensing import run_rf_sensing_gate
+from openbrec.ruview import CAMPAIGN_PATH as RUVIEW_CAMPAIGN_PATH
+from openbrec.ruview import run_ruview_model_gate
 from openbrec.integrated import run_integrated_gate
 from openbrec.p0_exit import run_governance_gate
 from openbrec.p1a_readiness import (
@@ -151,6 +155,12 @@ P0_TRANSPORT_GATES = {"transport-comparison", "malicious-transport"}
 P0_FEDERATION_GATES = {"federation-scale", "federation-reconciliation"}
 P0_TERMINAL_GATES = {"terminal-ux", "accessibility"}
 P0_BEACON_GATES = {"beacon-replay", "beacon-adversarial", "retention-fault"}
+RF_SENSING_GATES = {
+    "rf-sensing-csi",
+    "rf-sensing-passive",
+    "rf-sensing-multimodal",
+    "rf-sensing-offline-finding",
+}
 P0_INTEGRATED_GATES = {"p0-integrated"}
 PRIVACY_SAFETY_GATES = {
     "review-quarantine",
@@ -290,6 +300,8 @@ def _responsible_role(gate: str) -> str:
     if gate == "accessibility":
         return "privacy-safety-reviewer"
     if gate == "beacon-replay":
+        return "beacon-science-maintainer"
+    if gate in RF_SENSING_GATES or gate == "ruview-model-format":
         return "beacon-science-maintainer"
     if gate in P0_INTEGRATED_GATES:
         return "core-replay-maintainer"
@@ -818,6 +830,11 @@ def _parser() -> argparse.ArgumentParser:
         "beacon-replay",
         "beacon-adversarial",
         "retention-fault",
+        "rf-sensing-csi",
+        "rf-sensing-passive",
+        "rf-sensing-multimodal",
+        "rf-sensing-offline-finding",
+        "ruview-model-format",
         "p0-integrated",
         "review-quarantine",
         "life-safety-preservation",
@@ -1448,6 +1465,35 @@ def main(argv: Sequence[str] | None = None) -> int:
                 root / "schemas/addons/1.0.0/capture-authorization-event.schema.json",
                 root / "schemas/addons/1.0.0/review-task-event.schema.json",
                 root / "schemas/core/1.0.0/preservation-record.schema.json",
+            ]
+        )
+    elif args.gate in RF_SENSING_GATES:
+        errors, warnings, summary = run_rf_sensing_gate(root, args.gate)
+        scope = {
+            "rf-sensing-csi": "deterministic_csi_link_replay_abstention_and_confounders",
+            "rf-sensing-passive": "synthetic_passive_rf_pseudonymization_and_payload_stripping",
+            "rf-sensing-multimodal": "declared_independence_multimodal_corroboration",
+            "rf-sensing-offline-finding": "passive_offline_finding_weak_hints_and_fleet_exclusion",
+        }[args.gate]
+        inputs.extend(
+            [
+                root / RF_SENSING_SCENARIO_PATHS[args.gate],
+                root / "openbrec/rf_sensing.py",
+                root / "openbrec/fusion.py",
+                root / "schemas/addons/1.0.0/csi-link-observation.schema.json",
+                root / "schemas/addons/1.0.0/passive-rf-observation.schema.json",
+                root / "schemas/addons/1.0.0/offline-finding-observation.schema.json",
+                root / "schemas/core/1.0.0/observation.schema.json",
+            ]
+        )
+    elif args.gate == "ruview-model-format":
+        errors, warnings, summary = run_ruview_model_gate(root)
+        scope = "ruview_rvf_binary_magic_and_jsonl_fallback_visibility"
+        inputs.extend(
+            [
+                root / RUVIEW_CAMPAIGN_PATH,
+                root / "openbrec/ruview.py",
+                root / "schemas/addons/1.0.0/ruview-observation.schema.json",
             ]
         )
     elif args.gate == "p0-integrated":

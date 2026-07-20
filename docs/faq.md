@@ -31,6 +31,10 @@ Sí, pero como **addons experimentales**, no como capacidades (ADR-004, 2026-07-
 
 Lifeseeker y Wi2SAR **no** son capacidades OpenBREC: son referencias externas con boundary flag (emulación activa, contra las red lines). Guías: [CSI](guides/csi-sensing.md), [RF pasiva](guides/passive-rf.md), [SDR](guides/sdr-beacons.md), [drones](guides/drone-geometry.md), [RF quieting](guides/rf-quieting.md); base citable: [investigación SOTA](research/rf-sensing-state-of-the-art.md).
 
+## ¿Y los AirTag / Find My / Find Hub? ¿Sirven para encontrar personas?
+
+Sólo como **indicio débil** (`offline-finding-observation`, RFC-0002, estado `specified`). Un nodo pasivo puede observar los anuncios BLE de Apple Find My (`0x004C`/`0x12`), Google Find Hub (`0xFEAA`) y SmartThings Find sin conectarse jamás (cero GATT), y un iPhone 11+ apagado sigue emitiendo horas. Pero un anuncio no demuestra presencia (puede ser un dispositivo perdido), el silencio no demuestra ausencia (BT apagado, AirTag en modo *Connected*, agregación de Google, escombros) y los propios rescatistas llevan estos dispositivos (exclusión por roster obligatoria). Nunca dispara una alerta por sí solo ni identifica personas (HMAC rotativo, sin retener identificadores crudos). Ver [guía](guides/offline-finding.md).
+
 ## ¿Funciona sin internet?
 
 Sí; es el punto del diseño. Todas las funciones críticas — mensajería, energía, beacons, persistencia, replay, federación — operan localmente. La validación del repo también es offline: `uv sync --frozen` una vez con red, y después todos los gates y tests corren con `uv run --offline`. El pipeline lab-sim descarga imágenes Docker pineadas la primera vez y luego funciona sin red.

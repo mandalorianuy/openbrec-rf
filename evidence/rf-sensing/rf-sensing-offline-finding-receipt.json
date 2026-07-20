@@ -1,0 +1,483 @@
+{
+  "command": [
+    "python",
+    "-m",
+    "openbrec.verify",
+    "rf-sensing-offline-finding",
+    "--receipt",
+    "evidence/rf-sensing/rf-sensing-offline-finding-receipt.json"
+  ],
+  "dirty": true,
+  "errors": [],
+  "finished_at": "2026-07-19T23:57:32.775836Z",
+  "gate": "rf-sensing-offline-finding",
+  "gate_version": "0.1.0",
+  "git_sha": "e3a42d4c456044528f49709d33f8c975ea336496",
+  "inputs": [
+    {
+      "path": "fixtures/replay/rf-sensing/offline-finding-campaign.json",
+      "sha256": "817084af1ba6356541fa3ecf972fc4aebe18d68a14593b9f263fbd5e269945a5"
+    },
+    {
+      "path": "openbrec/rf_sensing.py",
+      "sha256": "fe2b7fd4ba53124cc5cf729a81920d2e6d791539500bee8a3417ddec40258a03"
+    },
+    {
+      "path": "openbrec/fusion.py",
+      "sha256": "3f3d3d92a462ebf5762f69ea82265984f414a14ba3c049259e19c11996e3efab"
+    },
+    {
+      "path": "schemas/addons/1.0.0/csi-link-observation.schema.json",
+      "sha256": "3684bd07cb19d3fd5ce7470bb1f6205611ec29a4371e94a59cfa9f72c38c7bea"
+    },
+    {
+      "path": "schemas/addons/1.0.0/passive-rf-observation.schema.json",
+      "sha256": "8fb93b64bf71a4837aa9da7053a73c1a2eb9b17b151aed52a354036012595477"
+    },
+    {
+      "path": "schemas/addons/1.0.0/offline-finding-observation.schema.json",
+      "sha256": "53b9a7f7cfddeeb5a47791d0844b3e2a3d46d4f365ad7db6f59921580e47ce25"
+    },
+    {
+      "path": "schemas/core/1.0.0/observation.schema.json",
+      "sha256": "2038ce3c3f1953f3c6afe84b33a8df19caf52c488642889602726630f41fe234"
+    }
+  ],
+  "lockfiles": [
+    {
+      "path": "uv.lock",
+      "sha256": "2d1b79df4cd5878ec7f4674a133c54ca7b16dfa559560ba3a93911e620f435d5"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "sha256": "ed7659f050b279f37e5cf84fb065fc528e15b3204d374681f3a70ad081d1c25a"
+    },
+    {
+      "path": "apps/web/pnpm-lock.yaml",
+      "sha256": "f25dc17073860d2d18f806673d45b1ea7e461a424be10c4bea5126aeff155e62"
+    }
+  ],
+  "output_sha256": "238eaedad0644806d4390e744223ab37aa3c4a1408f47c9fc47f451f6cba31fb",
+  "receipt_version": "1.0.0",
+  "responsible_role": "beacon-science-maintainer",
+  "result": "passed",
+  "runtime": {
+    "docker": "Docker version 29.5.3, build d1c06ef",
+    "node": "v26.5.0",
+    "pnpm": null,
+    "python": "3.12.13"
+  },
+  "scope": "passive_offline_finding_weak_hints_and_fleet_exclusion",
+  "started_at": "2026-07-19T23:57:32.510370Z",
+  "summary": {
+    "absence_inferences": 0,
+    "alert_trigger_violations": 0,
+    "cases": 6,
+    "claim_scope": "deterministic_simulation_only",
+    "core_observations_validated": 11,
+    "determinism_distinct_hashes": 1,
+    "duplicates_deduplicated": 0,
+    "finding_only_peak_confidence": 0.2,
+    "forbidden_claim_tokens": 0,
+    "hypothesis_promoted_to_fact": 0,
+    "input_jsonl": "fixtures/replay/rf-sensing/offline-finding-frames.jsonl",
+    "observations_emitted": 8,
+    "own_fleet_excluded": 1,
+    "projection": [
+      {
+        "abstained": false,
+        "abstention_reasons": [],
+        "case_id": "apple-find-my",
+        "confidence": 0.2,
+        "explanation": "single-source candidate",
+        "finding_in_corroboration_pool": true,
+        "finding_observations": [
+          {
+            "alert_trigger_allowed": false,
+            "capabilities_absent": [
+              "gatt",
+              "identification"
+            ],
+            "frame_pattern": "0x004C/0x12",
+            "fusion_weight": "low",
+            "gatt_connection_attempted": false,
+            "identification_attempted": false,
+            "limitations": [
+              "weak presence hint only",
+              "silence never means absence",
+              "deterministic simulation only"
+            ],
+            "max_declared_evidence": "bench-validated",
+            "network": "apple_find_my",
+            "observation_id": "0ad5837c-a22f-5dd2-9810-766c85470d0a",
+            "own_fleet_exclusion_applied": true,
+            "passive_only": true,
+            "pseudonym_scheme": "incident_rotating_hmac",
+            "raw_identifier_retained": false,
+            "record_type": "offline_finding_observation",
+            "rssi_dbm": -68.0,
+            "rssi_uncertainty_db": 4,
+            "schema_version": "1.0.0",
+            "sensor_id": "ble-node-01",
+            "silence_means_absence": false,
+            "subject_ref": "hmac-sha256:14756a87a905f76f17028c8ff2b92903f7a68fac85b67693febe80b5270b1be6",
+            "window_end": "2026-07-19T20:05:00.000000Z",
+            "window_start": "2026-07-19T20:00:00.000000Z",
+            "zone_id": "zone-a"
+          },
+          {
+            "alert_trigger_allowed": false,
+            "capabilities_absent": [
+              "gatt",
+              "identification"
+            ],
+            "frame_pattern": "0x004C/0x12",
+            "fusion_weight": "low",
+            "gatt_connection_attempted": false,
+            "identification_attempted": false,
+            "limitations": [
+              "weak presence hint only",
+              "silence never means absence",
+              "deterministic simulation only"
+            ],
+            "max_declared_evidence": "bench-validated",
+            "network": "apple_find_my",
+            "observation_id": "306d7bbf-42e0-5a13-91d4-93da54f462d4",
+            "own_fleet_exclusion_applied": true,
+            "passive_only": true,
+            "pseudonym_scheme": "incident_rotating_hmac",
+            "raw_identifier_retained": false,
+            "record_type": "offline_finding_observation",
+            "rssi_dbm": -71.0,
+            "rssi_uncertainty_db": 4,
+            "schema_version": "1.0.0",
+            "sensor_id": "ble-node-01",
+            "silence_means_absence": false,
+            "subject_ref": "hmac-sha256:14756a87a905f76f17028c8ff2b92903f7a68fac85b67693febe80b5270b1be6",
+            "window_end": "2026-07-19T20:10:00.000000Z",
+            "window_start": "2026-07-19T20:05:00.000000Z",
+            "zone_id": "zone-a"
+          },
+          {
+            "alert_trigger_allowed": false,
+            "capabilities_absent": [
+              "gatt",
+              "identification"
+            ],
+            "frame_pattern": "0x004C/0x12",
+            "fusion_weight": "low",
+            "gatt_connection_attempted": false,
+            "identification_attempted": false,
+            "limitations": [
+              "weak presence hint only",
+              "silence never means absence",
+              "deterministic simulation only"
+            ],
+            "max_declared_evidence": "bench-validated",
+            "network": "apple_find_my",
+            "observation_id": "3564eacb-a5fb-5ccf-8bd2-3aba19c3068e",
+            "own_fleet_exclusion_applied": true,
+            "passive_only": true,
+            "pseudonym_scheme": "incident_rotating_hmac",
+            "raw_identifier_retained": false,
+            "record_type": "offline_finding_observation",
+            "rssi_dbm": -66.0,
+            "rssi_uncertainty_db": 4,
+            "schema_version": "1.0.0",
+            "sensor_id": "ble-node-01",
+            "silence_means_absence": false,
+            "subject_ref": "hmac-sha256:14756a87a905f76f17028c8ff2b92903f7a68fac85b67693febe80b5270b1be6",
+            "window_end": "2026-07-19T20:15:00.000000Z",
+            "window_start": "2026-07-19T20:10:00.000000Z",
+            "zone_id": "zone-a"
+          }
+        ],
+        "frames_observed": 3,
+        "hypothesis_labels": [],
+        "observations_emitted": 3,
+        "result_id": "008a332e-b6ef-5e68-9f1b-559883c417b9",
+        "state": "indicator",
+        "weak_hint_ids": [
+          "b38824e1-1884-58a1-b98d-f56759a218a9",
+          "fe118d60-aa2c-5ce7-a8ae-8f8b72f105c0",
+          "369f81de-5c7f-5e49-98c7-c3269567bfc6"
+        ]
+      },
+      {
+        "abstained": false,
+        "abstention_reasons": [],
+        "case_id": "finding-beside-csi",
+        "confidence": 0.2,
+        "explanation": "single-source candidate",
+        "finding_in_corroboration_pool": false,
+        "finding_observations": [
+          {
+            "alert_trigger_allowed": false,
+            "capabilities_absent": [
+              "gatt",
+              "identification"
+            ],
+            "frame_pattern": "0xFEAA/0x40",
+            "fusion_weight": "low",
+            "gatt_connection_attempted": false,
+            "identification_attempted": false,
+            "limitations": [
+              "weak presence hint only",
+              "silence never means absence",
+              "deterministic simulation only"
+            ],
+            "max_declared_evidence": "bench-validated",
+            "network": "google_find_hub",
+            "observation_id": "b77e724a-8fd0-5f3e-9b7f-e6ab00eb0841",
+            "own_fleet_exclusion_applied": true,
+            "passive_only": true,
+            "pseudonym_scheme": "incident_rotating_hmac",
+            "raw_identifier_retained": false,
+            "record_type": "offline_finding_observation",
+            "rssi_dbm": -67.0,
+            "rssi_uncertainty_db": 4,
+            "schema_version": "1.0.0",
+            "sensor_id": "ble-node-01",
+            "silence_means_absence": false,
+            "subject_ref": "hmac-sha256:5262a1c650053cd88bf1ca8c1d2faedab99f25d05ff9f7ab0f4bc581030989ef",
+            "window_end": "2026-07-19T20:05:00.000000Z",
+            "window_start": "2026-07-19T20:00:00.000000Z",
+            "zone_id": "zone-a"
+          }
+        ],
+        "frames_observed": 1,
+        "hypothesis_labels": [],
+        "observations_emitted": 1,
+        "result_id": "de2b4572-6b8c-53fa-bfcc-864a548efcba",
+        "state": "indicator",
+        "weak_hint_ids": [
+          "99633480-204f-515f-a457-4f5216ee5560"
+        ]
+      },
+      {
+        "abstained": false,
+        "abstention_reasons": [],
+        "case_id": "google-find-hub",
+        "confidence": 0.2,
+        "explanation": "single-source candidate",
+        "finding_in_corroboration_pool": true,
+        "finding_observations": [
+          {
+            "alert_trigger_allowed": false,
+            "capabilities_absent": [
+              "gatt",
+              "identification"
+            ],
+            "frame_pattern": "0xFEAA/0x40",
+            "fusion_weight": "low",
+            "gatt_connection_attempted": false,
+            "identification_attempted": false,
+            "limitations": [
+              "weak presence hint only",
+              "silence never means absence",
+              "deterministic simulation only"
+            ],
+            "max_declared_evidence": "bench-validated",
+            "network": "google_find_hub",
+            "observation_id": "34daa13e-06a5-5746-811a-1ec1d4e1dd4a",
+            "own_fleet_exclusion_applied": true,
+            "passive_only": true,
+            "pseudonym_scheme": "incident_rotating_hmac",
+            "raw_identifier_retained": false,
+            "record_type": "offline_finding_observation",
+            "rssi_dbm": -73.0,
+            "rssi_uncertainty_db": 4,
+            "schema_version": "1.0.0",
+            "sensor_id": "ble-node-01",
+            "silence_means_absence": false,
+            "subject_ref": "hmac-sha256:74e159dbe822ba0755b447285693d1bb449cb9b94fc09405632e9d867e52a998",
+            "window_end": "2026-07-19T20:10:00.000000Z",
+            "window_start": "2026-07-19T20:05:00.000000Z",
+            "zone_id": "zone-a"
+          },
+          {
+            "alert_trigger_allowed": false,
+            "capabilities_absent": [
+              "gatt",
+              "identification"
+            ],
+            "frame_pattern": "0xFEAA/0x40",
+            "fusion_weight": "low",
+            "gatt_connection_attempted": false,
+            "identification_attempted": false,
+            "limitations": [
+              "weak presence hint only",
+              "silence never means absence",
+              "deterministic simulation only"
+            ],
+            "max_declared_evidence": "bench-validated",
+            "network": "google_find_hub",
+            "observation_id": "5ca3e3f3-8eff-55c4-b238-9bdbd13b2c49",
+            "own_fleet_exclusion_applied": true,
+            "passive_only": true,
+            "pseudonym_scheme": "incident_rotating_hmac",
+            "raw_identifier_retained": false,
+            "record_type": "offline_finding_observation",
+            "rssi_dbm": -70.0,
+            "rssi_uncertainty_db": 4,
+            "schema_version": "1.0.0",
+            "sensor_id": "ble-node-01",
+            "silence_means_absence": false,
+            "subject_ref": "hmac-sha256:74e159dbe822ba0755b447285693d1bb449cb9b94fc09405632e9d867e52a998",
+            "window_end": "2026-07-19T20:05:00.000000Z",
+            "window_start": "2026-07-19T20:00:00.000000Z",
+            "zone_id": "zone-a"
+          }
+        ],
+        "frames_observed": 2,
+        "hypothesis_labels": [],
+        "observations_emitted": 2,
+        "result_id": "271d378b-8c4b-5568-96db-28dbdbb6e567",
+        "state": "indicator",
+        "weak_hint_ids": [
+          "208100b6-754a-5309-8e84-3ec48958185c",
+          "9b13c4fd-a518-5dd4-974c-a702a3deaa5b"
+        ]
+      },
+      {
+        "abstained": true,
+        "abstention_reasons": [
+          "insufficient independent evidence"
+        ],
+        "case_id": "own-fleet-device",
+        "confidence": 0.0,
+        "explanation": "no usable evidence in window; abstaining instead of inferring presence or absence",
+        "finding_in_corroboration_pool": false,
+        "finding_observations": [],
+        "frames_observed": 1,
+        "hypothesis_labels": [],
+        "observations_emitted": 0,
+        "result_id": "9e219a52-6e25-59e3-8d90-a1fc2078251d",
+        "state": "abstained",
+        "weak_hint_ids": []
+      },
+      {
+        "abstained": true,
+        "abstention_reasons": [
+          "insufficient independent evidence"
+        ],
+        "case_id": "quiet-window",
+        "confidence": 0.0,
+        "explanation": "no usable evidence in window; abstaining instead of inferring presence or absence",
+        "finding_in_corroboration_pool": false,
+        "finding_observations": [],
+        "frames_observed": 0,
+        "hypothesis_labels": [],
+        "observations_emitted": 0,
+        "result_id": "9e219a52-6e25-59e3-8d90-a1fc2078251d",
+        "state": "abstained",
+        "weak_hint_ids": []
+      },
+      {
+        "abstained": false,
+        "abstention_reasons": [],
+        "case_id": "separated-airtag-rhythm",
+        "confidence": 0.2,
+        "explanation": "single-source candidate",
+        "finding_in_corroboration_pool": true,
+        "finding_observations": [
+          {
+            "alert_trigger_allowed": false,
+            "capabilities_absent": [
+              "gatt",
+              "identification"
+            ],
+            "classification_hypothesis": {
+              "basis": "synthetic frame rhythm compatible with a separated airtag rotation pattern",
+              "confidence": 0.4,
+              "label": "separated_airtag_rhythm",
+              "statement_kind": "hypothesis"
+            },
+            "frame_pattern": "0x004C/0x12",
+            "fusion_weight": "low",
+            "gatt_connection_attempted": false,
+            "identification_attempted": false,
+            "limitations": [
+              "weak presence hint only",
+              "silence never means absence",
+              "deterministic simulation only"
+            ],
+            "max_declared_evidence": "bench-validated",
+            "network": "apple_find_my",
+            "observation_id": "0f1f0500-cad4-55a9-8767-94888be6949e",
+            "own_fleet_exclusion_applied": true,
+            "passive_only": true,
+            "pseudonym_scheme": "incident_rotating_hmac",
+            "raw_identifier_retained": false,
+            "record_type": "offline_finding_observation",
+            "rssi_dbm": -69.0,
+            "rssi_uncertainty_db": 4,
+            "schema_version": "1.0.0",
+            "sensor_id": "ble-node-01",
+            "silence_means_absence": false,
+            "subject_ref": "hmac-sha256:5792c2f17b53133c34024a672ddec4ab77077b06b1d10d4af45aa14733ad3d2c",
+            "window_end": "2026-07-19T20:05:00.000000Z",
+            "window_start": "2026-07-19T20:00:00.000000Z",
+            "zone_id": "zone-a"
+          },
+          {
+            "alert_trigger_allowed": false,
+            "capabilities_absent": [
+              "gatt",
+              "identification"
+            ],
+            "classification_hypothesis": {
+              "basis": "synthetic frame rhythm compatible with a separated airtag rotation pattern",
+              "confidence": 0.4,
+              "label": "separated_airtag_rhythm",
+              "statement_kind": "hypothesis"
+            },
+            "frame_pattern": "0x004C/0x12",
+            "fusion_weight": "low",
+            "gatt_connection_attempted": false,
+            "identification_attempted": false,
+            "limitations": [
+              "weak presence hint only",
+              "silence never means absence",
+              "deterministic simulation only"
+            ],
+            "max_declared_evidence": "bench-validated",
+            "network": "apple_find_my",
+            "observation_id": "7f836108-b08b-5583-89f8-d23e7de92766",
+            "own_fleet_exclusion_applied": true,
+            "passive_only": true,
+            "pseudonym_scheme": "incident_rotating_hmac",
+            "raw_identifier_retained": false,
+            "record_type": "offline_finding_observation",
+            "rssi_dbm": -72.0,
+            "rssi_uncertainty_db": 4,
+            "schema_version": "1.0.0",
+            "sensor_id": "ble-node-01",
+            "silence_means_absence": false,
+            "subject_ref": "hmac-sha256:5792c2f17b53133c34024a672ddec4ab77077b06b1d10d4af45aa14733ad3d2c",
+            "window_end": "2026-07-19T20:10:00.000000Z",
+            "window_start": "2026-07-19T20:05:00.000000Z",
+            "zone_id": "zone-a"
+          }
+        ],
+        "frames_observed": 2,
+        "hypothesis_labels": [
+          "separated_airtag_rhythm"
+        ],
+        "observations_emitted": 2,
+        "result_id": "df216d55-7d2a-56c6-9986-08156956ed04",
+        "state": "indicator",
+        "weak_hint_ids": [
+          "95473891-50d0-54f4-a980-303584727e02",
+          "ce8bb401-fafd-51c1-bcbc-4ab416467a32"
+        ]
+      }
+    ],
+    "raw_identifier_leaks": 0,
+    "records_rejected": 2,
+    "result_sha256": "6128d2874fe0bbcd057ab07136f0f57abc8d1a5ed1897fc28b51dc299d0fcf8d",
+    "scenario": "fixtures/replay/rf-sensing/offline-finding-campaign.json",
+    "schema_rejections_confirmed": 2
+  },
+  "warnings": []
+}

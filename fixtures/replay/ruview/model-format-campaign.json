@@ -1,0 +1,32 @@
+{
+  "campaign_version": "1.0.0",
+  "claim_scope": "deterministic_simulation_only",
+  "scenario_id": "ruview-model-format-v1",
+  "provenance": {
+    "source_type": "synthetic_generated",
+    "contains_real_sensor_data": false,
+    "contains_human_data": false
+  },
+  "cases": [
+    {
+      "case_id": "jsonl-distributed-model",
+      "path": "fixtures/replay/ruview/model-jsonl-rvf.jsonl",
+      "expected": "rejected"
+    },
+    {
+      "case_id": "unknown-magic",
+      "path": "fixtures/replay/ruview/model-corrupt.bin",
+      "expected": "rejected"
+    },
+    {
+      "case_id": "valid-rvf-binary",
+      "path": "fixtures/replay/ruview/model-rvf-binary.rvf",
+      "expected": "accepted"
+    }
+  ],
+  "limitations": [
+    "format verification only, not a hardware adapter",
+    "no sensing capability claim for ruview-observation"
+  ],
+  "expected_result_sha256": "a4d96cf61294fa4abf16a3c08def71a23e922da5473b0dfd121d0d88f391af62"
+}

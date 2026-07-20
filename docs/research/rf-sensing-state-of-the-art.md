@@ -49,6 +49,7 @@
   - Lifeseeker (CENTUM): emula una celda celular para provocar registro de terminales — funcionalmente comparable a un IMSI catcher.
   - Wi2SAR (artículo ACM MobiCom 2026): AP mimético — comparable a evil twin.
   - Ambos implican transmisión activa engañosa; contradicen las red lines del proyecto (`active_emulation: false`, sin TX activo en la fase inicial) y el marco legal de recepción pasiva. Se citan solo para delimitar el boundary.
+- **Redes de localización crowdsourced (Find My, Find Hub, SmartThings Find):** sus anuncios BLE son observables pasivamente (Apple `0x004C`/`0x12`, Google FMDN `0xFEAA`/`0x40`-`0x41`, Samsung con spec cerrada) y un iPhone 11+ apagado sigue emitiendo horas por reserva de batería → indicio débil de presencia, registrado por el addon `offline-finding-observation` (RFC-0002). Estado: `specified` — cero literatura SAR publicada de este uso. Fuentes: OpenHaystack (https://github.com/seemoo-lab/openhaystack), spec FMDN (https://developers.google.com/nearby/fast-pair/specifications/extensions/fmdn), RE de AirTag (https://adamcatley.com/AirTag.html), USENIX Sec'23 Samsung (https://www.usenix.org/conference/usenixsecurity23/presentation/yu), IETF DULT (https://datatracker.ietf.org/doc/draft-ietf-dult-finding/).
 
 ## 8. Kismet
 
@@ -102,6 +103,7 @@
 | CSI/RTI en rescate real | `unverified` | §5: cero casos | Un despliegue documentado en ejercicio u operativo |
 | RuView como proveedor | `specified` (adapter pineado) | §6, ADR-001 | Gates de replay + evaluación por día/geometría/material |
 | Probes/BT pasivos (Kismet u otro) | `bench-validated` | §7–8 | Ensayo propio con MAC randomization activa |
+| Detección pasiva Find My / Find Hub / SmartThings | `specified` (sin literatura SAR) | §7 | Rango bajo escombros, prevalencia regional, tasa de falsos positivos, duración post-apagado |
 | Kismet como herramienta SAR | `unverified` | §8 | Uso documentado en ejercicio SAR |
 | Decodificación 406 MHz (SDR) | `bench-validated` | §9 | Ensayo con baliza de test en banco/campo controlado |
 | DF con array coherente (KrakenSDR) | `bench-validated` | §9 | Error angular medido en geometría de incidente |

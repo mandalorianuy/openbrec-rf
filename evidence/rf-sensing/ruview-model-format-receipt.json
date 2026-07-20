@@ -1,0 +1,92 @@
+{
+  "command": [
+    "python",
+    "-m",
+    "openbrec.verify",
+    "ruview-model-format",
+    "--receipt",
+    "evidence/rf-sensing/ruview-model-format-receipt.json"
+  ],
+  "dirty": true,
+  "errors": [],
+  "finished_at": "2026-07-19T23:10:26.300469Z",
+  "gate": "ruview-model-format",
+  "gate_version": "0.1.0",
+  "git_sha": "e3a42d4c456044528f49709d33f8c975ea336496",
+  "inputs": [
+    {
+      "path": "fixtures/replay/ruview/model-format-campaign.json",
+      "sha256": "51a34689f743625e7621fe2b01adb3f2541c699a69ff785a07e251792b8c76b1"
+    },
+    {
+      "path": "openbrec/ruview.py",
+      "sha256": "afd6a610d26f692d1679ca50f45472a2c691531d04e08785bf1404e6871d09ee"
+    },
+    {
+      "path": "schemas/addons/1.0.0/ruview-observation.schema.json",
+      "sha256": "e879850b1143ec9c2b5485a356a74a03257ae40352b54706739b367ef268788b"
+    }
+  ],
+  "lockfiles": [
+    {
+      "path": "uv.lock",
+      "sha256": "2d1b79df4cd5878ec7f4674a133c54ca7b16dfa559560ba3a93911e620f435d5"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "sha256": "ed7659f050b279f37e5cf84fb065fc528e15b3204d374681f3a70ad081d1c25a"
+    },
+    {
+      "path": "apps/web/pnpm-lock.yaml",
+      "sha256": "f25dc17073860d2d18f806673d45b1ea7e461a424be10c4bea5126aeff155e62"
+    }
+  ],
+  "output_sha256": "2fd3780d5e7446c73a7d1580fa3e776833af54a2891c870f6a760ad6d7748e70",
+  "receipt_version": "1.0.0",
+  "responsible_role": "beacon-science-maintainer",
+  "result": "passed",
+  "runtime": {
+    "docker": "Docker version 29.5.3, build d1c06ef",
+    "node": "v26.5.0",
+    "pnpm": null,
+    "python": "3.12.13"
+  },
+  "scope": "ruview_rvf_binary_magic_and_jsonl_fallback_visibility",
+  "started_at": "2026-07-19T23:10:26.135898Z",
+  "summary": {
+    "accepted": 1,
+    "campaign": "fixtures/replay/ruview/model-format-campaign.json",
+    "cases": 3,
+    "claim_scope": "deterministic_simulation_only",
+    "rejected": 2,
+    "result_sha256": "a4d96cf61294fa4abf16a3c08def71a23e922da5473b0dfd121d0d88f391af62",
+    "results": [
+      {
+        "case_id": "jsonl-distributed-model",
+        "error_type": "RvModelFormatError",
+        "fallback_declared": true,
+        "format": null,
+        "model_sha256": null,
+        "result": "rejected"
+      },
+      {
+        "case_id": "unknown-magic",
+        "error_type": "RvModelFormatError",
+        "fallback_declared": true,
+        "format": null,
+        "model_sha256": null,
+        "result": "rejected"
+      },
+      {
+        "case_id": "valid-rvf-binary",
+        "error_type": null,
+        "fallback_declared": null,
+        "format": "rvf-binary",
+        "model_sha256": "a0e8093a0cc211c624ab236aa30a5ca3c080e83bb4fa1c74d94261c390001ba4",
+        "result": "accepted"
+      }
+    ],
+    "silent_null_returns": 0
+  },
+  "warnings": []
+}

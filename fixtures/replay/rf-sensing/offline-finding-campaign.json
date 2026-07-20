@@ -1,0 +1,84 @@
+{
+  "campaign_version": "1.0.0",
+  "claim_scope": "deterministic_simulation_only",
+  "scenario_id": "rf-sensing-offline-finding-v1",
+  "provenance": {
+    "source_type": "synthetic_generated",
+    "contains_real_sensor_data": false,
+    "contains_human_data": false
+  },
+  "logical_start": "2026-07-19T20:00:00.000000Z",
+  "window_s": 300,
+  "zone_id": "zone-a",
+  "incident_id": "11111111-1111-4111-8111-111111111111",
+  "sensor_id": "ble-node-01",
+  "rotation_epochs": ["epoch-1", "epoch-2"],
+  "rssi_uncertainty_db": 4,
+  "own_fleet": ["eid-synthetic-rescuer-1"],
+  "input_jsonl": "fixtures/replay/rf-sensing/offline-finding-frames.jsonl",
+  "hypothesis_cases": {
+    "separated-airtag-rhythm": {
+      "label": "separated_airtag_rhythm",
+      "confidence": 0.4,
+      "basis": "synthetic frame rhythm compatible with a separated airtag rotation pattern"
+    }
+  },
+  "companions": {
+    "finding-beside-csi": {
+      "sensor_id": "csi-link-alpha",
+      "independence_group": "csi",
+      "metric": "csi.change_score",
+      "quality": 0.7
+    }
+  },
+  "cases": [
+    {
+      "case_id": "apple-find-my",
+      "expected_state": "indicator",
+      "expected_confidence": 0.2,
+      "expected_emitted": 3
+    },
+    {
+      "case_id": "finding-beside-csi",
+      "expected_state": "indicator",
+      "expected_confidence": 0.2,
+      "expected_emitted": 1
+    },
+    {
+      "case_id": "google-find-hub",
+      "expected_state": "indicator",
+      "expected_confidence": 0.2,
+      "expected_emitted": 2
+    },
+    {
+      "case_id": "own-fleet-device",
+      "expected_state": "abstained",
+      "expected_confidence": 0.0,
+      "expected_emitted": 0
+    },
+    {
+      "case_id": "quiet-window",
+      "expected_state": "abstained",
+      "expected_confidence": 0.0,
+      "expected_emitted": 0,
+      "expected_frames": 0
+    },
+    {
+      "case_id": "separated-airtag-rhythm",
+      "expected_state": "indicator",
+      "expected_confidence": 0.2,
+      "expected_emitted": 2,
+      "expected_hypothesis": "separated_airtag_rhythm"
+    }
+  ],
+  "expected_lines": 11,
+  "expected_rejected": 2,
+  "expected_fleet_excluded": 1,
+  "limitations": [
+    "deterministic simulation only",
+    "synthetic identifiers, no real devices observed",
+    "weak hint only, never an alert trigger",
+    "no presence or absence conclusion"
+  ],
+  "expected_result_sha256": "6128d2874fe0bbcd057ab07136f0f57abc8d1a5ed1897fc28b51dc299d0fcf8d"
+}

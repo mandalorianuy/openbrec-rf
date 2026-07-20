@@ -2,7 +2,7 @@
   "baseline_version": "1.0.0",
   "status": "experimental",
   "accepted_at": null,
-  "contract_set_sha256": "8142c9d6f579273f9b3050488777f57240f8b9d3422cd97d30243740c3d0b273",
+  "contract_set_sha256": "f008529b789ea1581d38c564b82ed0d41d62437372c409a2db09dc753abab981",
   "addons": [
     {
       "$id": "https://openbrec.org/schemas/addons/beacon-capability/1.0.0",
@@ -75,6 +75,10 @@
     {
       "$id": "https://openbrec.org/schemas/addons/interop-emergency-standards-profile/1.0.0",
       "sha256": "3971d09027649f7bae84fa672c7f8e02e2b0eaa9f9404bb7ee3373d760c321df"
+    },
+    {
+      "$id": "https://openbrec.org/schemas/addons/offline-finding-observation/1.0.0",
+      "sha256": "53b9a7f7cfddeeb5a47791d0844b3e2a3d46d4f365ad7db6f59921580e47ce25"
     },
     {
       "$id": "https://openbrec.org/schemas/addons/offline-mapping-profile/1.0.0",

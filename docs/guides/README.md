@@ -24,7 +24,8 @@ La entrada recomendada es [Start Here](../START_HERE.md). Cada guía resuelve un
 20. [Recepción SDR de balizas](sdr-beacons.md)
 21. [Drones como geometría de sensing](drone-geometry.md)
 22. [RF quieting](rf-quieting.md)
+23. [Redes de localización crowdsourced](offline-finding.md)
 
-Las guías 18–22 documentan los dominios de RF sensing reintegrados como addons experimentales; su base citable de evidencia es [docs/research/rf-sensing-state-of-the-art.md](../research/rf-sensing-state-of-the-art.md).
+Las guías 18–22 documentan los dominios de RF sensing reintegrados como addons experimentales; su base citable de evidencia es [docs/research/rf-sensing-state-of-the-art.md](../research/rf-sensing-state-of-the-art.md). La guía 23 cubre la detección pasiva de redes de localización crowdsourced (RFC-0002), también `specified`.
 
 Estas guías son informativas. La autoridad normativa vive en [`docs/open-spec`](../open-spec/README.md), los ejemplos reproducibles en [`docs/reference-builds`](../reference-builds/README.md) y la evidencia física en [`docs/evidence-packs`](../evidence-packs/README.md).

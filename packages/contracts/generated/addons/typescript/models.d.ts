@@ -17,6 +17,7 @@ export type { HumanMessageEvent } from './human-message-event.schema';
 export type { HumanMessage } from './human-message.schema';
 export type { IdentityKeyLifecycleProfile } from './identity-key-lifecycle-profile.schema';
 export type { InteropEmergencyStandardsProfile } from './interop-emergency-standards-profile.schema';
+export type { OfflineFindingObservation } from './offline-finding-observation.schema';
 export type { OfflineMappingProfile } from './offline-mapping-profile.schema';
 export type { PassiveRfObservation } from './passive-rf-observation.schema';
 export type { ReviewTaskEvent } from './review-task-event.schema';

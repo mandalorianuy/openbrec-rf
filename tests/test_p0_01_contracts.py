@@ -32,6 +32,7 @@ EXPECTED_ADDON_SCHEMAS = {
     "human-message-event",
     "identity-key-lifecycle-profile",
     "interop-emergency-standards-profile",
+    "offline-finding-observation",
     "offline-mapping-profile",
     "passive-rf-observation",
     "review-task-event",
@@ -91,19 +92,19 @@ class P001AddonContractTests(unittest.TestCase):
     def test_addon_contract_gate_validates_metaschema_and_catalog(self) -> None:
         output = self.assert_passed(self.run_verify("addon-contracts"))
         self.assertEqual(output["scope"], "addon_metaschema_and_catalog")
-        self.assertEqual(output["summary"]["addon_schemas"], 29)
+        self.assertEqual(output["summary"]["addon_schemas"], 30)
         self.assertEqual(output["summary"]["support_status"], "experimental")
 
     def test_addon_fixture_gate_reconciles_positive_and_negative_cases(self) -> None:
         output = self.assert_passed(self.run_verify("addon-fixtures"))
         self.assertEqual(output["scope"], "addon_schema_fixture_matrix")
-        self.assertEqual(output["summary"]["schemas"], 29)
-        self.assertEqual(output["summary"]["valid_fixtures"], 58)
-        self.assertEqual(output["summary"]["invalid_fixtures"], 203)
+        self.assertEqual(output["summary"]["schemas"], 30)
+        self.assertEqual(output["summary"]["valid_fixtures"], 60)
+        self.assertEqual(output["summary"]["invalid_fixtures"], 210)
 
     def test_generated_consumers_include_all_addon_contracts(self) -> None:
         output = self.assert_passed(self.run_verify("contracts-gen", "--check"))
-        self.assertEqual(output["summary"]["addon_schemas"], 29)
+        self.assertEqual(output["summary"]["addon_schemas"], 30)
         python_models = (
             REPO_ROOT / "packages/contracts/generated/addons/python/models.py"
         )
@@ -119,7 +120,7 @@ class P001AddonContractTests(unittest.TestCase):
 
     def test_addon_compatibility_baseline_is_frozen(self) -> None:
         output = self.assert_passed(self.run_verify("schema-compat"))
-        self.assertEqual(output["summary"]["addon_schemas"], 29)
+        self.assertEqual(output["summary"]["addon_schemas"], 30)
         self.assertEqual(output["summary"]["addon_status"], "experimental")
 
     def test_contracts_enforce_life_safety_and_transport_boundaries(self) -> None:
@@ -235,6 +236,32 @@ class P001AddonContractTests(unittest.TestCase):
         isolation = copy.deepcopy(schema("rf-isolation-profile")["examples"][0])
         isolation["never_enclose_possible_victim_sector_without_analysis"] = False
         self.assertTrue(errors("rf-isolation-profile", isolation))
+
+        finding = copy.deepcopy(
+            schema("offline-finding-observation")["examples"][0]
+        )
+        finding["gatt_connection_attempted"] = True
+        self.assertTrue(errors("offline-finding-observation", finding))
+        finding = copy.deepcopy(
+            schema("offline-finding-observation")["examples"][0]
+        )
+        finding["identification_attempted"] = True
+        self.assertTrue(errors("offline-finding-observation", finding))
+        finding = copy.deepcopy(
+            schema("offline-finding-observation")["examples"][0]
+        )
+        finding["raw_identifier_retained"] = True
+        self.assertTrue(errors("offline-finding-observation", finding))
+        finding = copy.deepcopy(
+            schema("offline-finding-observation")["examples"][0]
+        )
+        finding["alert_trigger_allowed"] = True
+        self.assertTrue(errors("offline-finding-observation", finding))
+        finding = copy.deepcopy(
+            schema("offline-finding-observation")["examples"][0]
+        )
+        finding["silence_means_absence"] = True
+        self.assertTrue(errors("offline-finding-observation", finding))
 
         for item, _path in addon_schemas:
             validator = Draft202012Validator(

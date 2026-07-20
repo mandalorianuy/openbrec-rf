@@ -1,0 +1,32 @@
+{
+  "alert_trigger_allowed": false,
+  "capabilities_absent": [
+    "gatt",
+    "identification"
+  ],
+  "frame_pattern": "0x004C/0x12",
+  "fusion_weight": "low",
+  "gatt_connection_attempted": false,
+  "identification_attempted": false,
+  "limitations": [
+    "weak presence hint only",
+    "airtag in connected state is silent",
+    "silence never means absence"
+  ],
+  "max_declared_evidence": "bench-validated",
+  "network": "apple_find_my",
+  "observation_id": "35000000-0000-4000-8000-000000000001",
+  "own_fleet_exclusion_applied": true,
+  "passive_only": true,
+  "pseudonym_scheme": "incident_rotating_hmac",
+  "raw_identifier_retained": false,
+  "record_type": "offline_finding_observation",
+  "rssi_dbm": -78.5,
+  "rssi_uncertainty_db": 4,
+  "schema_version": "9.9.9",
+  "sensor_id": "ble-node-01",
+  "silence_means_absence": false,
+  "subject_ref": "hmac-sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "window_end": "2026-07-17T17:25:00.000000Z",
+  "window_start": "2026-07-17T17:20:00.000000Z"
+}

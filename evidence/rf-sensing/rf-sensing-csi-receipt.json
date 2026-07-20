@@ -1,0 +1,158 @@
+{
+  "command": [
+    "python",
+    "-m",
+    "openbrec.verify",
+    "rf-sensing-csi",
+    "--receipt",
+    "evidence/rf-sensing/rf-sensing-csi-receipt.json"
+  ],
+  "dirty": true,
+  "errors": [],
+  "finished_at": "2026-07-19T23:10:25.165104Z",
+  "gate": "rf-sensing-csi",
+  "gate_version": "0.1.0",
+  "git_sha": "e3a42d4c456044528f49709d33f8c975ea336496",
+  "inputs": [
+    {
+      "path": "fixtures/replay/rf-sensing/csi-link-campaign.json",
+      "sha256": "13cf67801359b29625267c9fb72cbd6e1a817cc23de4afdb2fe873c49ab5fe54"
+    },
+    {
+      "path": "openbrec/rf_sensing.py",
+      "sha256": "c3b9ae8cf7e24e4c075be6e55780fc4689fb716ac5ea651a859d026564df7dd4"
+    },
+    {
+      "path": "openbrec/fusion.py",
+      "sha256": "3f3d3d92a462ebf5762f69ea82265984f414a14ba3c049259e19c11996e3efab"
+    },
+    {
+      "path": "schemas/addons/1.0.0/csi-link-observation.schema.json",
+      "sha256": "3684bd07cb19d3fd5ce7470bb1f6205611ec29a4371e94a59cfa9f72c38c7bea"
+    },
+    {
+      "path": "schemas/addons/1.0.0/passive-rf-observation.schema.json",
+      "sha256": "8fb93b64bf71a4837aa9da7053a73c1a2eb9b17b151aed52a354036012595477"
+    },
+    {
+      "path": "schemas/core/1.0.0/observation.schema.json",
+      "sha256": "2038ce3c3f1953f3c6afe84b33a8df19caf52c488642889602726630f41fe234"
+    }
+  ],
+  "lockfiles": [
+    {
+      "path": "uv.lock",
+      "sha256": "2d1b79df4cd5878ec7f4674a133c54ca7b16dfa559560ba3a93911e620f435d5"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "sha256": "ed7659f050b279f37e5cf84fb065fc528e15b3204d374681f3a70ad081d1c25a"
+    },
+    {
+      "path": "apps/web/pnpm-lock.yaml",
+      "sha256": "f25dc17073860d2d18f806673d45b1ea7e461a424be10c4bea5126aeff155e62"
+    }
+  ],
+  "output_sha256": "eb52147996092e490f332a3bc5fa72f59b2e3db13b9cb8ba9ea390f613fcb1e3",
+  "receipt_version": "1.0.0",
+  "responsible_role": "beacon-science-maintainer",
+  "result": "passed",
+  "runtime": {
+    "docker": "Docker version 29.5.3, build d1c06ef",
+    "node": "v26.5.0",
+    "pnpm": null,
+    "python": "3.12.13"
+  },
+  "scope": "deterministic_csi_link_replay_abstention_and_confounders",
+  "started_at": "2026-07-19T23:10:24.860575Z",
+  "summary": {
+    "absence_inferences": 0,
+    "automatic_presence_confirmations": 0,
+    "cases": 4,
+    "claim_scope": "deterministic_simulation_only",
+    "determinism_distinct_hashes": 1,
+    "forbidden_claim_tokens": 0,
+    "observations_generated": 12,
+    "observations_schema_validated": 12,
+    "projection": [
+      {
+        "abstained": false,
+        "abstention_reasons": [],
+        "case_id": "breathing-candidate",
+        "confidence": 0.2,
+        "explanation": "single-source candidate",
+        "link_id": "link-alpha",
+        "observation_ids": [
+          "639a63ac-472a-5f50-ad59-762ca8043986",
+          "b710007a-0d4d-52f1-b5e3-b758a839ef50",
+          "d8d523f2-441b-5561-a58e-62edcb0f1a47"
+        ],
+        "result_id": "759e1631-5671-532c-a78c-cb4847815b73",
+        "signal_kind": "breathing_candidate",
+        "state": "indicator",
+        "zone_id": "zone-a"
+      },
+      {
+        "abstained": true,
+        "abstention_reasons": [
+          "insufficient independent evidence"
+        ],
+        "case_id": "empty-room",
+        "confidence": 0.0,
+        "explanation": "no usable evidence in window; abstaining instead of inferring presence or absence",
+        "link_id": "link-alpha",
+        "observation_ids": [
+          "1d84ef07-77de-580f-9336-910d16b1e318",
+          "c8e57cdb-4bba-503b-8b31-f6b26b73d812",
+          "e4df8a6f-d667-5e40-a82d-a944ddcd50ee"
+        ],
+        "result_id": "1986d215-e12f-5c41-a4c8-e7b9259d0e48",
+        "signal_kind": "empty",
+        "state": "abstained",
+        "zone_id": "zone-a"
+      },
+      {
+        "abstained": false,
+        "abstention_reasons": [],
+        "case_id": "quiet-person",
+        "confidence": 0.2,
+        "explanation": "single-source candidate",
+        "link_id": "link-alpha",
+        "observation_ids": [
+          "122e61e8-aaa9-5621-a001-3ea7ae418cde",
+          "3f8c0280-a7e0-5321-89bc-0295e64251f0",
+          "d6d489ec-a202-592f-8715-2df789224131"
+        ],
+        "result_id": "0994d6a5-d3e1-5569-8674-af3c429a4b9f",
+        "signal_kind": "quiet_person",
+        "state": "indicator",
+        "zone_id": "zone-a"
+      },
+      {
+        "abstained": false,
+        "abstention_reasons": [],
+        "case_id": "ventilator",
+        "confidence": 0.2,
+        "explanation": "single-source candidate",
+        "link_id": "link-alpha",
+        "observation_ids": [
+          "5eb136a6-c3c2-5b7b-ba32-b4037ea6e89d",
+          "88f1906f-017a-5a2f-bb02-c0f81e860d30",
+          "a6c1626f-2fb5-54b3-8399-712194deea84"
+        ],
+        "result_id": "9c62df62-f463-5786-a46f-d6db256b52ed",
+        "signal_kind": "non_human_motion",
+        "state": "indicator",
+        "zone_id": "zone-a"
+      }
+    ],
+    "result_sha256": "d88d69c141d641f25c7cf66f39d3de9cb7530dd8b371d84415e7c1e786cd7e9d",
+    "scenario": "fixtures/replay/rf-sensing/csi-link-campaign.json",
+    "silence_means_absence_violations": 0,
+    "states": [
+      "abstained",
+      "indicator"
+    ]
+  },
+  "warnings": []
+}

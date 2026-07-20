@@ -1,0 +1,1 @@
+{"rvf": "jsonl", "model": "synthetic-victim-rf-v1", "weights_ref": "urn:sha256:5555555555555555555555555555555555555555555555555555555555555555", "note": "distributed as JSONL while the sensing-server loader expects RVF binary"}

@@ -68,6 +68,12 @@ Fixtures válidos/inválidos de los addons y gate de dominio:
 uv run --offline python -m openbrec.verify addon-fixtures
 ```
 
+Replay determinístico del dominio (persona quieta, respiración candidata, confundidor no-humano y ambiente vacío con abstención obligatoria):
+
+```bash
+uv run --offline python -m openbrec.verify rf-sensing-csi
+```
+
 ## Fallos comunes y recuperación
 
 Ante drift o cambio de geometría, rehacer baseline y bajar confianza/abstenerse. Ante AGC no bloqueado o fase inestable, declarar la limitación y operar amplitud-only. Ante modelo que no separa multi-persona, declarar `simulated` con evidencia negativa (39–56 % de separación en commodity) y no ofrecer conteo.
@@ -87,6 +93,7 @@ El CSI puede observar personas sin su consentimiento y es dual-use (vigilancia e
 | Multi-persona / conteo | `simulated` (evidencia negativa) |
 | RTI red dedicada (20–30 nodos) | `bench-validated` (entorno controlado) |
 | Uso en rescate real | `unverified` (cero casos documentados) |
+| Addon `csi-link-observation` (contrato + replay) | `simulated` (gate `rf-sensing-csi`, receipt en `evidence/rf-sensing/`) |
 
 Nada en esta guía supera la [tabla de evidencia de la investigación](../research/rf-sensing-state-of-the-art.md).
 

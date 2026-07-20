@@ -1,0 +1,201 @@
+{
+  "command": [
+    "python",
+    "-m",
+    "openbrec.verify",
+    "rf-sensing-passive",
+    "--receipt",
+    "evidence/rf-sensing/rf-sensing-passive-receipt.json"
+  ],
+  "dirty": true,
+  "errors": [],
+  "finished_at": "2026-07-19T23:10:25.516545Z",
+  "gate": "rf-sensing-passive",
+  "gate_version": "0.1.0",
+  "git_sha": "e3a42d4c456044528f49709d33f8c975ea336496",
+  "inputs": [
+    {
+      "path": "fixtures/replay/rf-sensing/passive-rf-campaign.json",
+      "sha256": "98f75d37afb03f558db59ebd365a79f5a363eb885643c7853191e2e0af4f4a77"
+    },
+    {
+      "path": "openbrec/rf_sensing.py",
+      "sha256": "c3b9ae8cf7e24e4c075be6e55780fc4689fb716ac5ea651a859d026564df7dd4"
+    },
+    {
+      "path": "openbrec/fusion.py",
+      "sha256": "3f3d3d92a462ebf5762f69ea82265984f414a14ba3c049259e19c11996e3efab"
+    },
+    {
+      "path": "schemas/addons/1.0.0/csi-link-observation.schema.json",
+      "sha256": "3684bd07cb19d3fd5ce7470bb1f6205611ec29a4371e94a59cfa9f72c38c7bea"
+    },
+    {
+      "path": "schemas/addons/1.0.0/passive-rf-observation.schema.json",
+      "sha256": "8fb93b64bf71a4837aa9da7053a73c1a2eb9b17b151aed52a354036012595477"
+    },
+    {
+      "path": "schemas/core/1.0.0/observation.schema.json",
+      "sha256": "2038ce3c3f1953f3c6afe84b33a8df19caf52c488642889602726630f41fe234"
+    }
+  ],
+  "lockfiles": [
+    {
+      "path": "uv.lock",
+      "sha256": "2d1b79df4cd5878ec7f4674a133c54ca7b16dfa559560ba3a93911e620f435d5"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "sha256": "ed7659f050b279f37e5cf84fb065fc528e15b3204d374681f3a70ad081d1c25a"
+    },
+    {
+      "path": "apps/web/pnpm-lock.yaml",
+      "sha256": "f25dc17073860d2d18f806673d45b1ea7e461a424be10c4bea5126aeff155e62"
+    }
+  ],
+  "output_sha256": "ff8daed1c83e00a3c9f7102d8709c1a7c5e7b84cd18ea5c76285de5485569577",
+  "receipt_version": "1.0.0",
+  "responsible_role": "beacon-science-maintainer",
+  "result": "passed",
+  "runtime": {
+    "docker": "Docker version 29.5.3, build d1c06ef",
+    "node": "v26.5.0",
+    "pnpm": null,
+    "python": "3.12.13"
+  },
+  "scope": "synthetic_passive_rf_pseudonymization_and_payload_stripping",
+  "started_at": "2026-07-19T23:10:25.347949Z",
+  "summary": {
+    "claim_scope": "deterministic_simulation_only",
+    "determinism_distinct_hashes": 1,
+    "duplicates_deduplicated": 1,
+    "forbidden_claim_tokens": 0,
+    "input_jsonl": "fixtures/replay/rf-sensing/passive-rf-kismet.jsonl",
+    "mac_leaks": 0,
+    "observations_emitted": 4,
+    "payload_retained_violations": 0,
+    "projection": {
+      "duplicates_deduplicated": 1,
+      "observations": [
+        {
+          "active_emulation": false,
+          "band": "ism_2_4_ghz",
+          "capabilities_absent": [
+            "payload_inspection"
+          ],
+          "content_interception": false,
+          "limitations": [
+            "metadata only",
+            "mac randomization degrades linkage",
+            "no presence or absence inference",
+            "deterministic simulation only"
+          ],
+          "observation_id": "c378e8bc-c28e-5f8f-9623-5b491293f272",
+          "observed_at": "2026-07-19T18:30:08.000000Z",
+          "payload_retained": false,
+          "pseudonym_scheme": "incident_rotating_hmac",
+          "record_type": "passive_rf_observation",
+          "rssi_dbm": -80.0,
+          "rssi_uncertainty_db": 3,
+          "schema_version": "1.0.0",
+          "sensor_id": "kismet-node-01",
+          "source": "bt_advertisement",
+          "subject_ref": "hmac-sha256:a29296331331662ca5d9061b0937252cbb7d6fbf09f492df9d45afcb2ce8ceaa"
+        },
+        {
+          "active_emulation": false,
+          "band": "sub_ghz_ism",
+          "capabilities_absent": [
+            "payload_inspection"
+          ],
+          "content_interception": false,
+          "limitations": [
+            "metadata only",
+            "mac randomization degrades linkage",
+            "no presence or absence inference",
+            "deterministic simulation only"
+          ],
+          "observation_id": "c9befb87-1b9b-5b4d-9f9f-a95db81c8b8d",
+          "observed_at": "2026-07-19T18:30:12.000000Z",
+          "payload_retained": false,
+          "pseudonym_scheme": "incident_rotating_hmac",
+          "record_type": "passive_rf_observation",
+          "rssi_dbm": -65.0,
+          "rssi_uncertainty_db": 3,
+          "schema_version": "1.0.0",
+          "sensor_id": "kismet-node-01",
+          "source": "rtl_433",
+          "subject_ref": "hmac-sha256:ee22ee92a7015caa6cd9a51cacb9bca858dc3f690bc9a1a240fffebeccbb3225"
+        },
+        {
+          "active_emulation": false,
+          "band": "ism_2_4_ghz",
+          "capabilities_absent": [
+            "payload_inspection"
+          ],
+          "content_interception": false,
+          "limitations": [
+            "metadata only",
+            "mac randomization degrades linkage",
+            "no presence or absence inference",
+            "deterministic simulation only"
+          ],
+          "observation_id": "e4112239-8ff9-5a59-b704-fcdb819dc7e8",
+          "observed_at": "2026-07-19T18:30:00.000000Z",
+          "payload_retained": false,
+          "pseudonym_scheme": "incident_rotating_hmac",
+          "record_type": "passive_rf_observation",
+          "rssi_dbm": -72.5,
+          "rssi_uncertainty_db": 3,
+          "schema_version": "1.0.0",
+          "sensor_id": "kismet-node-01",
+          "source": "probe_request",
+          "subject_ref": "hmac-sha256:9b28f5a5af2aaf704a33bf591fd043e26aa9cfa034a40e942e0be1bf3c7c5080"
+        },
+        {
+          "active_emulation": false,
+          "band": "uas_remote_id",
+          "capabilities_absent": [
+            "payload_inspection"
+          ],
+          "content_interception": false,
+          "limitations": [
+            "metadata only",
+            "mac randomization degrades linkage",
+            "no presence or absence inference",
+            "deterministic simulation only"
+          ],
+          "observation_id": "f4d0d83e-512e-5a6e-bb47-3c88afb0c538",
+          "observed_at": "2026-07-19T18:30:20.000000Z",
+          "payload_retained": false,
+          "pseudonym_scheme": "incident_rotating_hmac",
+          "record_type": "passive_rf_observation",
+          "rssi_dbm": -58.0,
+          "rssi_uncertainty_db": 3,
+          "schema_version": "1.0.0",
+          "sensor_id": "kismet-node-01",
+          "source": "drone_id",
+          "subject_ref": "hmac-sha256:e64177d425ea9e2b41bcdf4754e10ae7a39ddbcc86964e44c49e1d367bd4aeda"
+        }
+      ],
+      "rejected": [
+        {
+          "error": "record carries non-whitelisted fields that would leak payload: ['ssid']",
+          "input_ref": "256e7c1b9161"
+        }
+      ],
+      "rotation": {
+        "rotates_across_epochs": true,
+        "stable_within_epoch": true
+      }
+    },
+    "records_rejected": 1,
+    "result_sha256": "2d10a68652ebb0a336ba300d971087fa0003dd4b470fc74c8e7023c0f02e85eb",
+    "rotation": {
+      "rotates_across_epochs": true,
+      "stable_within_epoch": true
+    },
+    "scenario": "fixtures/replay/rf-sensing/passive-rf-campaign.json"
+  },
+  "warnings": []
+}
