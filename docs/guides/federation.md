@@ -60,4 +60,4 @@ No demuestra capacidad para miles de nodos, latencia de campo, interoperabilidad
 
 ## Contratos normativos relacionados
 
-[Perfiles de federación recursiva](../../specs/openbrec/1.0.0-draft.1/recursive-federation-profiles.json), [mensajería](../../specs/openbrec/1.0.0-draft.1/messaging-interoperability-profiles.json) y [transportes](../../specs/openbrec/1.0.0-draft.1/multi-bearer-transport-profiles.json).
+[Perfiles de federación recursiva](../../specs/openbrec/1.0.0-draft.1/recursive-federation-profiles.json), [mensajería](../../specs/openbrec/1.0.0-draft.1/messaging-interoperability-profiles.json) y [transportes](../../specs/openbrec/1.0.0-draft.1/multi-bearer-transport-profiles.json). Los contratos de máquina del dominio viven como addons en schemas/addons/1.0.0/ ([catálogo](../../schemas/addons/catalog.json)): `federation-event` y `federation-topology-event`.

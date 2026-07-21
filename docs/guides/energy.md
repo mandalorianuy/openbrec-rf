@@ -60,4 +60,4 @@ No demuestra 72 horas reales, vida útil, seguridad eléctrica, rendimiento sola
 
 ## Contratos normativos relacionados
 
-[Perfiles de energía](../../specs/openbrec/1.0.0-draft.1/energy-architecture-profiles.json) y [capacidades de referencia](../../specs/openbrec/1.0.0-draft.1/reference-capability-profiles.json).
+[Perfiles de energía](../../specs/openbrec/1.0.0-draft.1/energy-architecture-profiles.json) y [capacidades de referencia](../../specs/openbrec/1.0.0-draft.1/reference-capability-profiles.json). Los contratos de máquina del dominio viven como addons en schemas/addons/1.0.0/ ([catálogo](../../schemas/addons/catalog.json)): `energy-capability`, `energy-budget` y `energy-status`.

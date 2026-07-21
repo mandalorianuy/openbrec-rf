@@ -62,4 +62,4 @@ Un `received_by_peer` no demuestra lectura; `displayed_to_human` no demuestra co
 
 ## Contratos normativos relacionados
 
-[Mensajería interoperable](../../specs/openbrec/1.0.0-draft.1/messaging-interoperability-profiles.json), [transportes](../../specs/openbrec/1.0.0-draft.1/multi-bearer-transport-profiles.json) y [conformance](../open-spec/CONFORMANCE.md).
+[Mensajería interoperable](../../specs/openbrec/1.0.0-draft.1/messaging-interoperability-profiles.json), [transportes](../../specs/openbrec/1.0.0-draft.1/multi-bearer-transport-profiles.json) y [conformance](../open-spec/CONFORMANCE.md). Los contratos de máquina del dominio viven como addons en schemas/addons/1.0.0/ ([catálogo](../../schemas/addons/catalog.json)): `human-message`, `human-message-event` y `terminal-capability` (declaración de capacidad de una terminal offline: acciones disponibles sin red, modos de entrada/salida, accesibilidad y capacidades ausentes).

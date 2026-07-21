@@ -74,7 +74,7 @@ export interface CotBridgeProfile {
   silence_means_absence: false;
   evidence_level_elevation_by_export: false;
   cot_type_vocabulary: "open_with_default_icons";
-  declared_evidence: "specified";
+  declared_evidence: "simulated";
   /**
    * @minItems 1
    */

@@ -83,4 +83,4 @@ No demuestra interoperabilidad certificada con TAK/CalTopo/APRS, ni aceptación 
 
 ## Contratos normativos relacionados
 
-Addons experimentales `cot-bridge-profile` y `interop-emergency-standards-profile` en schemas/addons/1.0.0/ ([catálogo de addons](../../schemas/addons/catalog.json)), [arquitectura de integración](../research/sar-integration.md), [perfiles multi-bearer](../../specs/openbrec/1.0.0-draft.1/multi-bearer-transport-profiles.json) y [Interoperación CAP/EDXL](interop-emergency-standards.md).
+Addons experimentales `cot-bridge-profile` y `interop-emergency-standards-profile` en schemas/addons/1.0.0/ ([catálogo de addons](../../schemas/addons/catalog.json)), decisión del puente CoT en [RFC 0004](../open-spec/rfc/0004-cot-tak-bridge-addon.md), [arquitectura de integración](../research/sar-integration.md), [perfiles multi-bearer](../../specs/openbrec/1.0.0-draft.1/multi-bearer-transport-profiles.json) y [Interoperación CAP/EDXL](interop-emergency-standards.md).

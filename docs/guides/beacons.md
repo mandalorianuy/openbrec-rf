@@ -60,4 +60,6 @@ Silencio acústico, falta de movimiento, falta de calor o ausencia de detección
 
 ## Contratos normativos relacionados
 
-[Perfiles de beacon](../../specs/openbrec/1.0.0-draft.1/beacon-capability-profiles.json), [Observation](../../schemas/observation.schema.json) y [matriz funcional](../decision-matrices/open-spec-functionality-matrix.json).
+[Perfiles de beacon](../../specs/openbrec/1.0.0-draft.1/beacon-capability-profiles.json), [Observation](../../schemas/core/1.0.0/observation.schema.json) y [matriz funcional](../decision-matrices/open-spec-functionality-matrix.json). Los contratos de máquina del dominio viven como addons en schemas/addons/1.0.0/ ([catálogo](../../schemas/addons/catalog.json)): `beacon-capability`, `beacon-observation`, `beacon-health` y `beacon-placement`.
+
+**Addons de review y captura gobernada (sin guía propia):** dos addons del dominio de beacons no tienen guía porque son eventos internos del pipeline de evidencia, no tareas de operador. `capture-authorization-event` registra la autorización firmada de una captura cruda gobernada (modo de captura, vigencia, actor, política de retención, razón y limitaciones): es el carril por el que una señal de posible distress puede preservarse con control dual. `review-task-event` modela la tarea de revisión humana sobre una observación (estado de revisión, disposición, actor, notas): ninguna observación sensible se promueve sin ese review. Un tercer addon, `terminal-capability`, declara la capacidad de una terminal offline y se describe en [Mensajería y SOS](messaging-sos.md).

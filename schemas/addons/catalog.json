@@ -2,7 +2,7 @@
   "catalog_version": "1.0.0",
   "draft": "https://json-schema.org/draft/2020-12/schema",
   "status": "experimental",
-  "contract_set_sha256": "e951d6c3bc011668faaeb421a9fcbf5e795e364dbe3c526d1ea611b4ff6e36f1",
+  "contract_set_sha256": "14ec08d3a2311805b3850de0fee425582954c089451ef7ef1ef4f9f005512ae1",
   "entries": [
     {
       "path": "schemas/addons/1.0.0/beacon-capability.schema.json",
@@ -87,7 +87,7 @@
       "path": "schemas/addons/1.0.0/cot-bridge-profile.schema.json",
       "$id": "https://openbrec.org/schemas/addons/cot-bridge-profile/1.0.0",
       "declared_version": "1.0.0",
-      "sha256": "50efa79c1470c989fbe3f3830ed16c02aed254f4ff025ac98e799b54e1dfa779",
+      "sha256": "40f80076e786747fd9be2685737a721bc385dd554948275477045bd825108110",
       "category": "policy",
       "status": "experimental",
       "dependencies": [],

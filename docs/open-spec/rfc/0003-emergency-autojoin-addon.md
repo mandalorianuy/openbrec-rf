@@ -2,7 +2,7 @@
 
 - Estado: `accepted` (2026-07-19)
 - Decisor: project owner, según [RFC-PROCESS](../RFC-PROCESS.md) (proceso unipersonal vigente; sus obligaciones de registro append-only y preservación de disenso aplican a este archivo)
-- Decisión asociada: extiende el carril regulatorio `emergency_assumed_risk` ya normativo en [`multi-bearer-transport-profiles.json`](../../../specs/openbrec/1.0.0-draft.1/multi-bearer-transport-profiles.json); relacionado con [ADR-004](../../adr/ADR-004-rf-sensing-reintegration.md) (boundaries de RF)
+- Decisión asociada: extiende el carril regulatorio `emergency_assumed_risk` ya normativo en [`multi-bearer-transport-profiles.json`](../../../specs/openbrec/1.0.0-draft.1/multi-bearer-transport-profiles.json); relacionado con [ADR-004](../../adr/ADR-004-rf-sensing-reintegration.md) (boundaries de RF) y registrado como decisión de arquitectura en [ADR-005](../../adr/ADR-005-emergency-autojoin-governed-exception.md) (excepción gobernada)
 - Comentarios en contra recibidos: ninguno (proceso unipersonal; esta sección se conserva para registrar disenso futuro)
 
 ## 1. Problema

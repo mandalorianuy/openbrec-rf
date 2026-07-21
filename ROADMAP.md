@@ -1,6 +1,6 @@
 # Roadmap — OpenBREC RF
 
-**Última actualización: 2026-07-19.** Este es el roadmap vigente del proyecto.
+**Última actualización: 2026-07-20.** Este es el roadmap vigente del proyecto.
 El roadmap de la encarnación previa (Wi-Fi-CSI) quedó archivado en
 [`docs/legacy/06-roadmap.md`](docs/legacy/06-roadmap.md) y no tiene autoridad.
 [`DELIVERY_BOARD.md`](DELIVERY_BOARD.md) se conserva como audit trail
@@ -78,6 +78,21 @@ histórico de la ejecución M0/P0/Open Spec.
    modernos) con experimento de medición definido. Guía
    `docs/guides/emergency-autojoin.md`, review
    `docs/security/emergency-autojoin-review.md`, TM-020..TM-022.
+10. **Fase 9 — Integración con el ecosistema SAR (hecha, 2026-07-19/20).**
+    Posicionamiento (`docs/research/sar-landscape.md`) y arquitectura de
+    integración priorizada (`docs/research/sar-integration.md`: puente CoT/TAK
+    local #1, Meshtastic MQTT #2, export CAP/EDXL #3, CalTopo #4, APRS
+    opcional; goTenna/Virtual OSOCC descartados con razón). Nuevo addon
+    `cot-bridge-profile` (32 totales, RFC-0004 `accepted`) con mapper CoT
+    lab-sim y gate `interop-cot`, que lo eleva a `simulated`; la interop ATAK
+    real sigue `unverified`. Guía `docs/guides/ecosystem-integration.md`.
+11. **Fase 10 — Colaboración institucional y onboarding (hecha, 2026-07-20).**
+    Programa de validación física con universidades e instituciones:
+    `docs/outreach/institutional-collaboration.md` (8 labs con protocolo,
+    costos estimados y DoD: evidence pack por COMMUNITY-EVIDENCE, resultados
+    negativos válidos) y `docs/outreach/pitch-onepager.md`. Onboarding
+    individual revisado: START_HERE cubre los perfiles; se agregaron entradas
+    a quickstart, ayuda/contribución e instituciones.
 
 ## Siguiente
 
@@ -87,22 +102,10 @@ histórico de la ejecución M0/P0/Open Spec.
   `docs/outreach/pitch-onepager.md`; es el camino activo para conseguir los
   evidence packs que el proyecto no puede producir solo.
 
-- **Integración con el ecosistema SAR:** arquitectura priorizada en
-  `docs/research/sar-integration.md` y guía
-  `docs/guides/ecosystem-integration.md` (puente CoT/TAK local #1, Meshtastic
-  MQTT #2, export CAP/EDXL #3, CalTopo #4, APRS opcional); el addon
-  `cot-bridge-profile` y el mapper CoT son el próximo paso contractual.
-
-- **Posicionamiento SAR/USAR documentado:** el análisis de qué usa el mundo
-  hoy, el vacío y las barreras reales de adopción vive en
-  `docs/research/sar-landscape.md`; guía qué evidencia hace falta para que un
-  equipo real adopte el proyecto (evidence packs, validación comunitaria,
-  exportación EDXL/SARCOP, comunidad de práctica).
-
 - **Evidencia física P1a:** permanece en pausa declarativa; se retoma cuando
   exista hardware real disponible y autoridad para operarlo.
-- **Validación comunitaria de addons:** los doce addons experimentales de las
-  Fases 3, 6 y 7 esperan review y evidencia de terceros vía
+- **Validación comunitaria de addons:** los catorce addons experimentales de
+  las Fases 3 y 6–9 esperan review y evidencia de terceros vía
   `docs/open-spec/COMMUNITY-EVIDENCE.md` antes de cualquier promoción.
 - **Experimentos de evidencia por dominio RF:** banco CSI del build exacto,
   ensayo con MAC randomization activa, baliza 406 MHz de test, drop pod en

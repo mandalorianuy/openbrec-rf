@@ -41,7 +41,7 @@
     "silence_means_absence": false,
     "evidence_level_elevation_by_export": false,
     "cot_type_vocabulary": "open_with_default_icons",
-    "declared_evidence": "specified",
+    "declared_evidence": "simulated",
     "limitations": [
       "mapping verified in lab-sim only, no gateway and no sockets",
       "no official usar cot taxonomy, neutral per-class types",
@@ -90,5 +90,5 @@
     "no sockets, no network emission",
     "no presence or absence conclusion"
   ],
-  "expected_result_sha256": "84fa10c9ab089253efe6f41637fd4933d12caec1acc8dc5b320f732c3c03eb25"
+  "expected_result_sha256": "a60b3f032b9753b5aea3aa3e04ae29fe7536370f4316ad472662cc2da3faeda0"
 }

@@ -14,7 +14,7 @@ Este mapa separa la norma de sus implementaciones y ofrece una única entrada p�
 
 ### C. Manuales y guías
 
-[`docs/guides/`](guides/README.md) explica cómo seleccionar, construir, integrar, operar, validar y diagnosticar. Las guías orientan tareas; si contradicen la capa A, prevalece la Open Spec. Incluye las guías prácticas originales (quickstart, planificación, energía, transportes, mensajería, beacons, federación, construcción, troubleshooting), la guía del implementador ([implementing-the-spec](guides/implementing-the-spec.md)) y las guías de los addons experimentales ([víctimas](guides/victim-tracking.md), [identidad y claves](guides/identity-key-lifecycle.md), [reloj](guides/clock-discipline.md), [GIS offline](guides/offline-mapping.md), [interop CAP/EDXL](guides/interop-emergency-standards.md), [regulatorio](guides/regulatory.md), [doctrina USAR](guides/usar-doctrine-integration.md)) y las guías de los dominios de RF sensing reintegrados ([CSI](guides/csi-sensing.md), [RF pasiva](guides/passive-rf.md), [SDR receive-only](guides/sdr-beacons.md), [drones como geometría](guides/drone-geometry.md), [RF quieting](guides/rf-quieting.md)), cuya base citable de evidencia vive en [`docs/research/`](research/rf-sensing-state-of-the-art.md).
+[`docs/guides/`](guides/README.md) explica cómo seleccionar, construir, integrar, operar, validar y diagnosticar. Las guías orientan tareas; si contradicen la capa A, prevalece la Open Spec. Incluye las guías prácticas originales (quickstart, planificación, energía, transportes, mensajería, beacons, federación, construcción, troubleshooting), la guía del implementador ([implementing-the-spec](guides/implementing-the-spec.md)) y las guías de los addons experimentales ([víctimas](guides/victim-tracking.md), [identidad y claves](guides/identity-key-lifecycle.md), [reloj](guides/clock-discipline.md), [GIS offline](guides/offline-mapping.md), [interop CAP/EDXL](guides/interop-emergency-standards.md), [regulatorio](guides/regulatory.md), [doctrina USAR](guides/usar-doctrine-integration.md)) y las guías de los dominios de RF sensing reintegrados ([CSI](guides/csi-sensing.md), [RF pasiva](guides/passive-rf.md), [SDR receive-only](guides/sdr-beacons.md), [drones como geometría](guides/drone-geometry.md), [RF quieting](guides/rf-quieting.md), [offline finding](guides/offline-finding.md)), la excepción gobernada del [AP de emergencia con auto-join](guides/emergency-autojoin.md) y la [integración con el ecosistema SAR](guides/ecosystem-integration.md), cuya base citable de evidencia vive en [`docs/research/`](research/rf-sensing-state-of-the-art.md).
 
 ### D. Reference builds
 
@@ -42,10 +42,20 @@ Documentos de entrada y referencia que no son capa normativa ni guía de tarea:
 
 La autoridad transversal se ejerce con registros append-only, fuera de la capa normativa pero vinculados a ella:
 
-- [`docs/adr/`](adr/): decisiones de arquitectura. ADR-0001 fija alcance del core, autoridad y red lines; [ADR-004](adr/ADR-004-rf-sensing-reintegration.md) reintegra los dominios de RF sensing como addons experimentales y mantiene vigentes ADR-001 (RuView), ADR-002 (drones) y ADR-003 (aislamiento medido).
-- [`docs/open-spec/rfc/`](open-spec/rfc/): RFCs de la spec según [RFC-PROCESS](open-spec/RFC-PROCESS.md); el primer caso es [RFC 0001](open-spec/rfc/0001-rf-sensing-addons.md) (addons de RF sensing, `accepted`).
+- [`docs/adr/`](adr/): decisiones de arquitectura. ADR-0001 fija alcance del core, autoridad y red lines; [ADR-004](adr/ADR-004-rf-sensing-reintegration.md) reintegra los dominios de RF sensing como addons experimentales y mantiene vigentes ADR-001 (RuView), ADR-002 (drones) y ADR-003 (aislamiento medido); [ADR-005](adr/ADR-005-emergency-autojoin-governed-exception.md) fija el AP de emergencia con auto-join como excepción gobernada bajo `emergency_assumed_risk`.
+- [`docs/open-spec/rfc/`](open-spec/rfc/): RFCs de la spec según [RFC-PROCESS](open-spec/RFC-PROCESS.md): [RFC 0001](open-spec/rfc/0001-rf-sensing-addons.md) (addons de RF sensing, `accepted`), [RFC 0002](open-spec/rfc/0002-offline-finding-addon.md) (`offline-finding-observation`, `accepted`), [RFC 0003](open-spec/rfc/0003-emergency-autojoin-addon.md) (`emergency-autojoin-profile`, `accepted`) y [RFC 0004](open-spec/rfc/0004-cot-tak-bridge-addon.md) (`cot-bridge-profile`, `accepted`).
 - [`docs/security/`](security/): threat model y reviews datadas, incluidas las reviews de diseño de los dominios RF sensing (`rf-sensing-csi`, `passive-rf`, `sdr-receive`, `drone-geometry`, `rf-quieting`).
 - [`docs/decision-matrices/`](decision-matrices/): matrices de decisión con historial de gobernanza; la de 2026-07-19 registra la reintegración de RF sensing.
+
+### Material de soporte del repositorio
+
+Directorios de trabajo que no son capa normativa ni documentación pública de tarea:
+
+- [`docs/governance/`](governance/): registros residuales de la ejecución M0/P0 y el intake del carril P1a (`P1A_ASSET_INTAKE`).
+- [`docs/runtime/`](runtime/): notas de operación del lab-sim y SOPs de ciclo de vida de claves.
+- [`docs/testing/`](testing/): protocolos de ensayo humano del carril P1a (p.ej. comprensión de terminal).
+- [`docs/assets/`](assets/): imágenes y recursos referenciados por los documentos.
+- [`docs/superpowers/`](superpowers/): planes internos de diseño y ejecución; material de trabajo sin autoridad normativa.
 
 ### Documentos legacy (sin autoridad)
 

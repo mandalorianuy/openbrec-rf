@@ -68,4 +68,4 @@ No demuestra rango, capacidad, coexistencia, seguridad del firmware, autorizaci�
 
 ## Contratos normativos relacionados
 
-[Perfiles multi-bearer y registro de extensiones](../../specs/openbrec/1.0.0-draft.1/multi-bearer-transport-profiles.json) y [mensajería](../../specs/openbrec/1.0.0-draft.1/messaging-interoperability-profiles.json).
+[Perfiles multi-bearer y registro de extensiones](../../specs/openbrec/1.0.0-draft.1/multi-bearer-transport-profiles.json) y [mensajería](../../specs/openbrec/1.0.0-draft.1/messaging-interoperability-profiles.json). Los contratos de máquina del dominio viven como addons en schemas/addons/1.0.0/ ([catálogo](../../schemas/addons/catalog.json)): `transport-profile`, `transport-envelope`, `transport-policy-decision` y `bearer-capability`.

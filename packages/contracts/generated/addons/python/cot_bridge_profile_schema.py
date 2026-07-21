@@ -106,5 +106,5 @@ class CotBridgeProfile(BaseModel):
     silence_means_absence: Literal[False]
     evidence_level_elevation_by_export: Literal[False]
     cot_type_vocabulary: Literal['open_with_default_icons']
-    declared_evidence: Literal['specified']
+    declared_evidence: Literal['simulated']
     limitations: list[Limitation] = Field(..., min_length=1)

@@ -103,7 +103,7 @@ Por qué un equipo USAR clasificado **no** usaría OpenBREC hoy:
 
 1. **Evidence packs de despliegues reales** (ejercicios primero): la trayectoria P1a de banco → campo sigue siendo el único camino que eleva claims (hoy todo es `specified`/`simulated`).
 2. **Validación comunitaria de los addons experimentales** vía [`docs/open-spec/COMMUNITY-EVIDENCE.md`](../open-spec/COMMUNITY-EVIDENCE.md): review y evidencia de terceros antes de cualquier promoción.
-3. **Exportación real hacia el ecosistema existente:** conectores documentados a CAP/EDXL y a SARCOP/TAK/Virtual OSOCC (el perfil de interop hoy es `specified`, sin gateway implementado).
+3. **Exportación real hacia el ecosistema existente:** conectores documentados a CAP/EDXL y a SARCOP/TAK/Virtual OSOCC (el perfil de interop es `specified`; el mapper CoT lab-sim ya existe con gate `interop-cot` — evidencia `simulated` del mapeo — pero la interop ATAK real sigue `unverified` y CAP/EDXL no tiene gateway implementado).
 4. **Una comunidad de práctica, no solo código:** ejercicios con equipos voluntarios del nicho realista, SOPs, formación y feedback incorporado por RFC — la variable que decidió el destino de Project OWL.
 
 ## 7. Notas metodológicas y debilidades

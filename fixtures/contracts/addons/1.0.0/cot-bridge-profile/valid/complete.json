@@ -1,7 +1,7 @@
 {
   "cot_type_vocabulary": "open_with_default_icons",
   "created_at": "2026-07-17T20:10:00.000000Z",
-  "declared_evidence": "specified",
+  "declared_evidence": "simulated",
   "direction": "export_only",
   "evidence_level_elevation_by_export": false,
   "external_ack_means_person_located": false,

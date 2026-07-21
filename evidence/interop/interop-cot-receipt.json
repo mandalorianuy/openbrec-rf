@@ -9,14 +9,14 @@
   ],
   "dirty": true,
   "errors": [],
-  "finished_at": "2026-07-20T19:23:44.465515Z",
+  "finished_at": "2026-07-21T01:07:42.146271Z",
   "gate": "interop-cot",
   "gate_version": "0.1.0",
-  "git_sha": "5772344c36d553d8780cf1d159447b0e32ba31f4",
+  "git_sha": "6f68f603cbc52ef6cc5b8a107a27a5ea066a4e21",
   "inputs": [
     {
       "path": "fixtures/replay/interop/cot-export-campaign.json",
-      "sha256": "013c02155e33823638403a916a9a8809e196860f762c67c3c5f7112b387ace8e"
+      "sha256": "555a4f1641baf455429a6b48fb45e36c02e8707301a3d86399c205c4b6aa5ecc"
     },
     {
       "path": "openbrec/cot_export.py",
@@ -24,7 +24,7 @@
     },
     {
       "path": "schemas/addons/1.0.0/cot-bridge-profile.schema.json",
-      "sha256": "50efa79c1470c989fbe3f3830ed16c02aed254f4ff025ac98e799b54e1dfa779"
+      "sha256": "40f80076e786747fd9be2685737a721bc385dd554948275477045bd825108110"
     },
     {
       "path": "schemas/core/1.0.0/observation.schema.json",
@@ -57,7 +57,7 @@
       "sha256": "f25dc17073860d2d18f806673d45b1ea7e461a424be10c4bea5126aeff155e62"
     }
   ],
-  "output_sha256": "798b2287d417f53b652d5feef8c1046fe87489d0d65295ab10034f44dc2bd235",
+  "output_sha256": "859db7cdb7c2468a7b4dd7661afd51207162b4371755abc1d5bdeb6fae04b057",
   "receipt_version": "1.0.0",
   "responsible_role": "contract-maintainer",
   "result": "passed",
@@ -68,7 +68,7 @@
     "python": "3.12.13"
   },
   "scope": "deterministic_cot_xml_mapping_lab_sim_only",
-  "started_at": "2026-07-20T19:23:43.579391Z",
+  "started_at": "2026-07-21T01:07:41.690137Z",
   "summary": {
     "abstention_preserved": true,
     "campaign": "fixtures/replay/interop/cot-export-campaign.json",
@@ -132,7 +132,7 @@
       }
     ],
     "raw_payload_leaks": 0,
-    "result_sha256": "84fa10c9ab089253efe6f41637fd4933d12caec1acc8dc5b320f732c3c03eb25",
+    "result_sha256": "a60b3f032b9753b5aea3aa3e04ae29fe7536370f4316ad472662cc2da3faeda0",
     "scope_note": "verifies the deterministic XML mapping only; interoperability with real ATAK/TAK stays unverified",
     "victim_status_in_type": 0
   },
